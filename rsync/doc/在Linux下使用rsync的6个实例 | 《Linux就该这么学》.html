@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<!-- 设置标题 -->
+
+<title>
+  在Linux下使用rsync的6个实例 | 《Linux就该这么学》</title>
+<!-- 关键词写在模板中 header.php -->
+<meta name="keywords" content="Linux就该这么学,红帽,linux认证,红帽linux,linux,linux操作系统,linux命令大全,鸟哥的linux私房菜,linux系统,linux命令,linux教程,linux视频">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+ <meta name="robots" content="max-image-preview:large">
+<!-- DX-Seo plugin start -->
+<meta name="description" content="对于各种组织和公司，数据对他们是最重要的，即使对于电子商务，数据也是同样重要的。Rsync是一款通过网络备份重要数据的工具/软件。">
+<!-- DX-Seo plugin end -->
+<link rel="stylesheet" id="wp-block-library-css" href="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/style.css" type="text/css" media="all">
+<style id="global-styles-inline-css" type="text/css">
+body{--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--duotone--dark-grayscale: url('#wp-duotone-dark-grayscale');--wp--preset--duotone--grayscale: url('#wp-duotone-grayscale');--wp--preset--duotone--purple-yellow: url('#wp-duotone-purple-yellow');--wp--preset--duotone--blue-red: url('#wp-duotone-blue-red');--wp--preset--duotone--midnight: url('#wp-duotone-midnight');--wp--preset--duotone--magenta-yellow: url('#wp-duotone-magenta-yellow');--wp--preset--duotone--purple-green: url('#wp-duotone-purple-green');--wp--preset--duotone--blue-orange: url('#wp-duotone-blue-orange');--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+</style>
+<link rel="stylesheet" id="toc-screen-css" href="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/screen.css" type="text/css" media="all">
+<link rel="stylesheet" id="bootstrap-style-css" href="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/bootstrap.css" type="text/css" media="all">
+<link rel="stylesheet" id="fontawesome-style-css" href="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/font-awesome.css" type="text/css" media="all">
+<link rel="stylesheet" id="icheck-style-css" href="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/red.css" type="text/css" media="all">
+<link rel="stylesheet" id="custom-style-css" href="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/core.css" type="text/css" media="all">
+<link rel="stylesheet" id="zanblog-style-css" href="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/style_002.css" type="text/css" media="all">
+<link rel="stylesheet" id="tablepress-default-css" href="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/default.css" type="text/css" media="all">
+<script charset="utf-8" src="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/s.js"></script><script src="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/push.js"></script><script src="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/hm.js"></script><script type="text/javascript" src="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/jquery_003.js" id="jquery-core-js"></script>
+<script type="text/javascript" src="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/jquery-migrate.js" id="jquery-migrate-js"></script>
+<script type="text/javascript" src="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/bootstrap.js" id="bootstrap-script-js"></script>
+<script type="text/javascript" src="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/jquery_002.js" id="icheck-script-js"></script>
+<script type="text/javascript" src="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/jquery_004.js" id="validate-script-js"></script>
+<script type="text/javascript" src="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/jquery_005.js" id="lazyload-script-js"></script>
+<script type="text/javascript" src="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/zanblog.js" id="zanblog-script-js"></script>
+<script type="text/javascript" src="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/custom.js" id="custom-script-js"></script>
+<link rel="https://api.w.org/" href="https://www.linuxprobe.com/wp-json/"><link rel="alternate" type="application/json" href="https://www.linuxprobe.com/wp-json/wp/v2/posts/82888"><link rel="alternate" type="application/json+oembed" href="https://www.linuxprobe.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.linuxprobe.com%2Fhow-linux-rsync.html">
+<link rel="alternate" type="text/xml+oembed" href="https://www.linuxprobe.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.linuxprobe.com%2Fhow-linux-rsync.html&amp;format=xml">
+<link rel="icon" href="https://www.linuxprobe.com/wp-content/uploads/2016/07/cropped-redhat-32x32.png" sizes="32x32">
+<link rel="icon" href="https://www.linuxprobe.com/wp-content/uploads/2016/07/cropped-redhat-192x192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="https://www.linuxprobe.com/wp-content/uploads/2016/07/cropped-redhat-180x180.png">
+<meta name="msapplication-TileImage" content="https://www.linuxprobe.com/wp-content/uploads/2016/07/cropped-redhat-270x270.png">
+ 
+<link rel="stylesheet" href="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/flexslider.css">
+<script src="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/jquery.js"></script>
+<!--[if lt IE 9]>
+  <script src="https://www.linuxprobe.com/wp-content/themes/zanblog2_1_0/ui/js/modernizr.js"></script>
+  <script src="https://www.linuxprobe.com/wp-content/themes/zanblog2_1_0/ui/js/respond.min.js"></script>
+  <script src="https://www.linuxprobe.com/wp-content/themes/zanblog2_1_0/ui/js/html5shiv.js"></script>
+<![endif]-->
+<script>
+jQuery(document).ready(function(){
+  jQuery('#related-slider').flexslider({
+    animation: "slide",
+    controlNav: false,
+    animationSpeed: 1200,
+    slideshowSpeed: 6000
+  });
+})
+</script>
+<script>
+jQuery(document).ready(function(){
+    jQuery(".nav.navbar-nav").append('<li><a href="https://www.linuxprobe.com/wp-login.php">登录</a></li>');
+});
+</script>
+<style>html #hm_t_undefined .hm-t-go-top {position:fixed;right:2px;bottom:2px;z-index:99998;cursor:pointer;width:40px;height:37px!important;text-align:center;white-space:normal;font-size:14px;line-height:17px;padding-top:3px;color:#fff;background:#404040;background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEkAAAAXCAYAAABH92JbAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2hpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDowMjgwMTE3NDA3MjA2ODExODA4M0UyNDA4ODdDRTZBQiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpBQjc5RkRFNkI5ODMxMUUzQkZGNDhENEJFQjM2OTcyRiIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpBQjc5RkRFNUI5ODMxMUUzQkZGNDhENEJFQjM2OTcyRiIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M2IChNYWNpbnRvc2gpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6MDI4MDExNzQwNzIwNjgxMTgwODNFMjQwODg3Q0U2QUIiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6MDI4MDExNzQwNzIwNjgxMTgwODNFMjQwODg3Q0U2QUIiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5HPYM5AAACC0lEQVR42uyZTSgEYRjH90NoqaVcpDblvKW2XOSkNh8H5Yac9sBBDqQokiJKSMpNTi5OPo6Ktsgu67JcUHIXWfK1u3b8Xx6Zxuzu+64dM83uv34zNfu8b8/8Z+d5P8YqSZLFJNLsRmyWvIRMKgVD4AhEwA3YAV0pzGwEqyAEwmAddIICHe7FqhnsdQM14FxKLj+ooFiGE2ykiD8GVbJ4I1ELAnTmasMODnAhpVcIFIMicMgRH6Z4IxnUAh4pP3Zu5TVpUOLXDJgWiB8wkEF9IK7IL07X05oUFLjpZ4JXQQOYYwfzafJcoDjVPqw43KE4lWtUTF+AQ8eBqQSsgTaO2E0apJ7URrdCDZOM62hQJfBzGmShOD+1+2XSiYaJ7utkkBsEgEewnYfauZUmzWmU6DuY0sEgLzgArgzbu6i992cu/1WclqXsa1iHIt0DYlnKP0b9fRZu5pWdZs7dWXqa7B80+s//oF5aMSjflGqBPq5BQnFtVv4UmGHjIPEH96PAZ6C5kVMwf6daPzbFKnqCqvx9Bk/yFjSBFTMvcL+1DerAmUA/p9Rm1+y7AHJdgnqwx9EHm1s0gKtc2CpR6gE00/ZHMm3RKxbJlf0kNb2BDrCk8hsbDdvBay5tuiUTGxL7waTs2iLw0YTR9BLZQRwDUVqwjuTS9q3VRB8C1OQUnM6UqdXX/IcADn0IMADs2AqDOPSutQAAAABJRU5ErkJggg==) no-repeat -42px center #666;*background-image:url(http://ecma.bdimg.com/holmes/t-popup-icons-png8.png);_position:absolute;_top:expression(eval(document.documentElement.scrollTop+(document.documentElement.clientHeight||document.body.clientHeight)-this.offsetHeight-2));}</style></head>
+<body data-rsssl="1" class="post-template-default single single-post postid-82888 single-format-standard nav-fixed">
+<header id="zan-header" class="navbar navbar-inverse navbar-fixed-top">
+  <nav class="container">
+<button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="fa fa-reorder fa-lg"></span>
+    </button>
+    <div class="navbar-collapse bs-navbar-collapse collapse">
+      <ul id="menu-%e9%a6%96%e9%a1%b5%e5%af%bc%e8%88%aa" class="nav navbar-nav"><li id="menu-item-223479" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-223479"><a href="https://www.linuxprobe.com/">网站首页</a></li>
+<li id="menu-item-43454" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-43454"><a href="https://www.linuxprobe.com/basic-learning-00.html">开始读书</a>
+<ul class="dropdown-menu">
+	<li id="menu-item-43455" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-43455"><a href="https://www.linuxprobe.com/basic-learning-00.html">第0章 咱们先来谈谈为什么要学习Linux系统</a></li>
+	<li id="menu-item-43464" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-43464"><a href="https://www.linuxprobe.com/basic-learning-01.html">第1章 动手部署一台Linux操作系统</a></li>
+	<li id="menu-item-43465" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-43465"><a href="https://www.linuxprobe.com/basic-learning-02.html">第2章 新手必须掌握的Linux命令</a></li>
+	<li id="menu-item-43466" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-43466"><a href="https://www.linuxprobe.com/basic-learning-03.html">第3章 管道符、重定向与环境变量</a></li>
+	<li id="menu-item-43467" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-43467"><a href="https://www.linuxprobe.com/basic-learning-04.html">第4章 Vim编辑器与Shell命令脚本</a></li>
+	<li id="menu-item-43468" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-43468"><a href="https://www.linuxprobe.com/basic-learning-05.html">第5章 用户身份与文件权限</a></li>
+	<li id="menu-item-43469" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-43469"><a href="https://www.linuxprobe.com/basic-learning-06.html">第6章 存储结构与管理硬盘</a></li>
+	<li id="menu-item-43470" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-43470"><a href="https://www.linuxprobe.com/basic-learning-07.html">第7章 使用RAID与LVM磁盘阵列技术</a></li>
+	<li id="menu-item-43471" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-43471"><a href="https://www.linuxprobe.com/basic-learning-08.html">第8章 使用Iptables与Firewalld防火墙</a></li>
+	<li id="menu-item-43472" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-43472"><a href="https://www.linuxprobe.com/basic-learning-09.html">第9章 使用ssh服务管理远程主机</a></li>
+	<li id="menu-item-43473" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-43473"><a href="https://www.linuxprobe.com/basic-learning-10.html">第10章 使用Apache服务部署静态网站</a></li>
+	<li id="menu-item-43474" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-43474"><a href="https://www.linuxprobe.com/basic-learning-11.html">第11章 使用Vsftpd服务传输文件</a></li>
+	<li id="menu-item-43475" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-43475"><a href="https://www.linuxprobe.com/basic-learning-12.html">第12章 使用Samba或NFS实现文件共享</a></li>
+	<li id="menu-item-43476" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-43476"><a href="https://www.linuxprobe.com/basic-learning-13.html">第13章 使用Bind提供域名解析服务</a></li>
+	<li id="menu-item-43477" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-43477"><a href="https://www.linuxprobe.com/basic-learning-14.html">第14章 使用DHCP动态管理主机地址</a></li>
+	<li id="menu-item-43478" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-43478"><a href="https://www.linuxprobe.com/basic-learning-15.html">第15章 使用Postfix与Dovecot部署邮件系统</a></li>
+	<li id="menu-item-43479" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-43479"><a href="https://www.linuxprobe.com/basic-learning-16.html">第16章 使用Ansible服务实现自动化运维</a></li>
+	<li id="menu-item-43480" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-43480"><a href="https://www.linuxprobe.com/basic-learning-17.html">第17章 使用iSCSI服务部署网络存储</a></li>
+	<li id="menu-item-43481" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-43481"><a href="https://www.linuxprobe.com/basic-learning-18.html">第18章 使用MariaDB数据库管理系统</a></li>
+	<li id="menu-item-43482" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-43482"><a href="https://www.linuxprobe.com/basic-learning-19.html">第19章 使用PXE+Kickstart无人值守安装服务</a></li>
+	<li id="menu-item-43483" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-43483"><a href="https://www.linuxprobe.com/basic-learning-20.html">第20章 使用LNMP架构部署动态网站环境</a></li>
+</ul>
+</li>
+<li id="menu-item-153272" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-153272"><a href="#">下载</a>
+<ul class="dropdown-menu">
+	<li id="menu-item-14036" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-14036"><a href="https://www.linuxprobe.com/tools">随书配套工具</a></li>
+	<li id="menu-item-14035" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-14035"><a href="https://www.linuxprobe.com/book">PDF离线电子书</a></li>
+</ul>
+</li>
+<li id="menu-item-3250" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3250"><a href="https://www.linuxprobe.com/news">Linux资讯<span class="icon-new"></span></a></li>
+<li id="menu-item-145246" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-145246"><a target="_blank" rel="noopener" href="https://www.linuxcool.com/">Linux命令</a></li>
+<li id="menu-item-224392" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-224392"><a href="https://www.linuxprobe.com/training">Linux培训<span class="icon-hot"></span></a></li>
+<li id="menu-item-224391" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-224391"><a href="https://www.linuxprobe.com/train">培训记录</a></li>
+<li id="menu-item-4825" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-4825"><a href="https://www.linuxprobe.com/thread">技术干货</a></li>
+<li id="menu-item-154776" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-154776"><a href="https://www.linuxprobe.com/books">Linux书籍</a></li>
+<li id="menu-item-12509" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-12509"><a href="https://www.linuxprobe.com/tougao">投稿</a></li>
+<li id="menu-item-6385" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-6385"><a href="https://www.linuxprobe.com/redhat-certificate">红帽认证</a>
+<ul class="dropdown-menu">
+	<li id="menu-item-215620" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-215620"><a target="_blank" rel="noopener" href="https://www.linuxprobe.com/record">我们的上课时间</a></li>
+	<li id="menu-item-16670" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-16670"><a target="_blank" rel="noopener" href="https://www.linuxprobe.com/examination.html">全国考点分布图</a></li>
+	<li id="menu-item-236089" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-236089"><a target="_blank" rel="noopener" href="https://www.rhce.net/">红帽考试心得 – RHCE.net</a></li>
+	<li id="menu-item-14037" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-14037"><a target="_blank" rel="noopener" href="https://www.linuxprobe.com/redhat-certificate">讲解红帽RHCSA+RHCE认证视频</a></li>
+	<li id="menu-item-151287" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-151287"><a href="https://www.linuxprobe.com/redhat-questions">取得RHCE认证后下载电子版证书的方法</a></li>
+	<li id="menu-item-197482" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-197482"><a target="_blank" rel="noopener" href="https://www.linuxprobe.com/rhcsa-exam">*RHCSA考试真题&amp;超精辅导（请先登录学员账号）</a></li>
+	<li id="menu-item-197481" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-197481"><a target="_blank" rel="noopener" href="https://www.linuxprobe.com/rhce-exam">*RHCE  考试真题&amp;超精辅导（请先登录学员账号）</a></li>
+</ul>
+</li>
+<li><a href="https://www.linuxprobe.com/wp-login.php">登录</a></li></ul>    </div>
+  </nav>
+</header>
+<div id="zan-bodyer">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8">	
+				<!-- 广告 -->
+<!-- 广告结束 -->	
+<!-- 内容主体 -->
+<article class="article container well">
+	<!-- 大型设备文章属性 -->
+	<div class="hidden-xs">
+<br>
+		<div class="title-article">
+<h1><a href="https://www.linuxprobe.com/how-linux-rsync.html" title="在Linux下使用rsync的6个实例">在Linux下使用rsync的6个实例</a></h1>
+		</div>
+		<div class="tag-article container">
+		</div>
+	</div>
+	<!-- 大型设备文章属性结束 -->
+
+	<!-- 小型设备文章属性 -->
+	<div class="visible-xs">
+		<div class="title-article">
+			<h1 class="post-title"><a href="https://www.linuxprobe.com/how-linux-rsync.html" title="在Linux下使用rsync的6个实例">在Linux下使用rsync的6个实例</a></h1>
+		</div>
+	</div>
+	<!-- 小型设备文章属性结束 -->
+<a href="https://www.linuxprobe.com/training"><img src="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/peixun.jpg"></a>
+<p style="text-align: center;"><span style="font-size: 14pt;"><span style="color: #008000;"><strong><span style="text-decoration: underline;">Linux系统技术交流QQ群</span>（<span style="color: #ff0000; font-size: 18pt;">2261840</span>）<span style="color: #800080;">验证问题答案：<span style="text-decoration: underline;">刘遄</span></span></strong></span><a target="_blank" href="https://www.linuxprobe.com/links/qun.html"><img src="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/QQ.png" alt="Linux就该这么学" title="Linux就该这么学" border="0"></a></span></p>
+<div class="centent-article fonts">	
+		<div class="post-content"><table>
+<tbody>
+<tr>
+<td style="padding: 5px 12px; width: 25px; font-size: 22px; text-align: center; background: #E8E8E8; line-height: 30px; color: #999;">导读</td>
+<td style="padding: 10px 10px 12px; line-height: 20px;"><strong>对于各种组织和公司，数据对他们是最重要的，即使对于电子商务，数据也是同样重要的。Rsync是一款通过网络备份重要数据的工具/软件。</strong></td>
+</tr>
+</tbody>
+</table>
+<p><img src="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/how-linux-rsync-01.jpg" alt="在Linux下使用rsync的6个实例在Linux下使用rsync的6个实例" class="alignnone size-full wp-image-82890" srcset="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/how-linux-rsync-01.jpg 320w, %E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/how-linux-rsync-01-300x188.jpg 300w" sizes="(max-width: 320px) 100vw, 320px" title="在Linux下使用rsync的6个实例在Linux下使用rsync的6个实例" width="320" height="200"></p>
+<p>Rsync同样是一个在类Unix和Window系统上通过网络在系统间同步文件夹和文件的网络协议。Rsync可以复制或者显示目录并复制文件。Rsync默认监听TCP 873端口，通过远程<a href="https://www.linuxcool.com/" title="shell" target="_blank">shell</a>如rsh和ssh复制文件。Rsync必须在远程和本地系统上都安装。</p>
+<p>rsync的主要好处是：</p>
+<p>速度：最初会在本地和远程之间拷贝所有内容。下次，只会传输发生改变的块或者字节。</p>
+<p>安全：传输可以通过ssh协议加密数据。</p>
+<p>低带宽：rsync可以在两端压缩和解压数据块。</p>
+<p>语法:</p>
+<pre>#rsysnc [options] source path destination path
+</pre>
+<p></p>
+<div style="font-size: 14pt; color: white; background-color: black; border-left: red 10px solid; padding-left: 14px; margin-bottom: 20px; margin-top: 20px;"><strong>示例： 1 - 启用压缩</strong></div>
+<p></p><pre>[root@localhost /]# rsync -zvr /home/aloft/ /backuphomedir
+building file list ... done
+bash_logout
+bash_profile
+bashrc
+sent 472 bytes received 86 bytes 1116.00 bytes/sec
+total size is 324 speedup is 0.58
+</pre>
+<p>上面的rsync<a href="https://www.linuxcool.com/" title="命令" target="_blank">命令</a>使用了-z来启用压缩，-v是可视化，-r是递归。上面在本地的/home/aloft/和/backuphomedir之间同步。
+</p>
+<div style="font-size: 14pt; color: white; background-color: black; border-left: red 10px solid; padding-left: 14px; margin-bottom: 20px; margin-top: 20px;"><strong>示例： 2 - 保留文件和文件夹的属性</strong></div>
+<p></p><pre>[root@localhost /]# rsync -azvr /home/aloft/ /backuphomedir
+building file list ... done
+/
+bash_logout
+bash_profile
+bashrc
+ 
+sent 514 bytes received 92 bytes 1212.00 bytes/sec
+total size is 324 speedup is 0.53
+</pre>
+<p>上面我们使用了-a选项，它保留了所有人和所属组、时间戳、软链接、权限，并以递归模式运行。
+</p>
+<div style="font-size: 14pt; color: white; background-color: black; border-left: red 10px solid; padding-left: 14px; margin-bottom: 20px; margin-top: 20px;"><strong>示例： 3 - 同步本地到远程主机</strong></div>
+<p></p><pre>root@localhost /]# rsync -avz /home/aloft/ azmath@192.168.1.4:192.168.1.4:/share/rsysnctest/
+Password:
+ 
+building file list ... done
+/
+bash_logout
+bash_profile
+bashrc
+sent 514 bytes received 92 bytes 1212.00 bytes/sec
+total size is 324 speedup is 0.53
+</pre>
+<p>上面的<a href="https://www.linuxcool.com/" title="命令" target="_blank">命令</a>允许你在本地和远程机器之间同步。你可以看到，在同步文件到另一个系统时提示你输入密码。在做远程同步时，你需要指定远程系统的用户名和IP或者主机名。
+</p>
+<div style="font-size: 14pt; color: white; background-color: black; border-left: red 10px solid; padding-left: 14px; margin-bottom: 20px; margin-top: 20px;"><strong>示例： 4 - 远程同步到本地</strong></div>
+<p></p><pre>[root@localhost /]# rsync -avz azmath@192.168.1.4:192.168.1.4:/share/rsysnctest/ /home/aloft/
+Password:
+building file list ... done
+/
+bash_logout
+bash_profile
+bashrc
+sent 514 bytes received 92 bytes 1212.00 bytes/sec
+total size is 324 speedup is 0.53
+
+</pre>
+<p>上面的命令同步远程文件到本地。</p>
+<div style="font-size: 14pt; color: white; background-color: black; border-left: red 10px solid; padding-left: 14px; margin-bottom: 20px; margin-top: 20px;"><strong>示例： 5 - 找出文件间的不同</strong></div>
+<p></p><pre>[root@localhost backuphomedir]# rsync -avzi /backuphomedir /home/aloft/
+building file list ... done
+cd+++++++ backuphomedir/
+&gt;f+++++++ backuphomedir/.bash_logout
+&gt;f+++++++ backuphomedir/.bash_profile
+&gt;f+++++++ backuphomedir/.bashrc
+&gt;f+++++++ backuphomedir/abc
+&gt;f+++++++ backuphomedir/xyz
+ 
+sent 650 bytes received 136 bytes 1572.00 bytes/sec
+total size is 324 speedup is 0.41
+</pre>
+<p></p>
+<div style="font-size: 14pt; color: white; background-color: black; border-left: red 10px solid; padding-left: 14px; margin-bottom: 20px; margin-top: 20px;"><strong>示例: 6 - 备份</strong></div>
+<p>
+rsync命令可以用来备份<a href="https://www.linuxprobe.com/" title="linux" target="_blank">linux</a>。</p>
+<p>你可以在cron中使用rsync安排备份。</p>
+<pre>0 0 * * * /usr/local/sbin/bkpscript &amp;&gt; /dev/null</pre>
+<pre>vi /usr/local/sbin/bkpscript
+ 
+rsync -avz -e ‘ssh -p2093′ /home/test/ root@192.168.1.150:/oracle/data/
+</pre>
+<p></p>
+<p>作者：Bobbin Zachariah 译者：geekpi校对：wxy</p>
+<p>本文由 <a href="https://github.com/LCTT/TranslateProject">LCTT</a> 原创翻译，<a href="http://linux.cn/">Linux中国</a> 荣誉推出</p>
+<blockquote>
+<p style="text-align: left; color: #88a6a4;">原文来自：<a href="https://linux.cn/article-4503-1.html" target="_blank">https://linux.cn/article-4503-1.html</a></p>
+<p style="text-align: left; color: #88a6a4;">本文地址：<a href="https://www.linuxprobe.com/how-linux-rsync.html" target="_blank">https://www.linuxprobe.com/how-linux-rsync.html</a><span style="float: right;">编辑：张@宇，审核员：逄增宝</span></p>
+</blockquote>
+<p style="text-align: left; color: #88a6a4;">本文原创地址：<a href="https://www.linuxprobe.com/how-linux-rsync.html" target="_blank">https://www.linuxprobe.com/how-linux-rsync.html</a><span style="float: right;">编辑：张@宇，审核员：暂无</span></p>
+<div id="dxseo-related-posts" style="clear:both;"><h3 style="margin:20px 0 10px;padding:0;font-weight:bold;font-size:14px;">为您推荐一些与本文相关的文章：</h3><ul class="dxseo-rl-items"><li style="list-style-type: disc;" class="dxseo-rl-item"><a href="https://www.linuxprobe.com/foreach-mybatis-data.html" target="_blank" title="还用foreach在MyBatis批量插入数据，服务器还没崩？">还用foreach在MyBatis批量插入数据，服务器还没崩？</a></li><li style="list-style-type: disc;" class="dxseo-rl-item"><a href="https://www.linuxprobe.com/microsoft-introduced-a.html" target="_blank" title="微软在Edge 浏览器引入了全新的睡眠标签功能">微软在Edge 浏览器引入了全新的睡眠标签功能</a></li><li style="list-style-type: disc;" class="dxseo-rl-item"><a href="https://www.linuxprobe.com/deep-know-search.html" target="_blank" title="《深入理解Elasticsearch(原书第2版) 》pdf电子书免费下载">《深入理解Elasticsearch(原书第2版) 》pdf电子书免费下载</a></li><li style="list-style-type: disc;" class="dxseo-rl-item"><a href="https://www.linuxprobe.com/spring-cloud-dy.html" target="_blank" title="《Spring Cloud微服务架构实战派 》pdf版电子书免费下载">《Spring Cloud微服务架构实战派 》pdf版电子书免费下载</a></li><li style="list-style-type: disc;" class="dxseo-rl-item"><a href="https://www.linuxprobe.com/ubuntu-burg-linux.html" target="_blank" title="自定义Ubuntu/Windows双系统引导菜单主题">自定义Ubuntu/Windows双系统引导菜单主题</a></li><li style="list-style-type: disc;" class="dxseo-rl-item"><a href="https://www.linuxprobe.com/quantitative-research-methods.html" target="_blank" title="《计算机体系结构：量化研究方法 (英文版·第6版)》pdf电子书免费下载">《计算机体系结构：量化研究方法 (英文版·第6版)》pdf电子书免费下载</a></li><li style="list-style-type: disc;" class="dxseo-rl-item"><a href="https://www.linuxprobe.com/novice-programmers.html" target="_blank" title="给新手程序员的一些话">给新手程序员的一些话</a></li><li style="list-style-type: disc;" class="dxseo-rl-item"><a href="https://www.linuxprobe.com/the-european-market.html" target="_blank" title="iOS 12.2暗示watchOS 5.2将为欧洲市场带来健康应用">iOS 12.2暗示watchOS 5.2将为欧洲市场带来健康应用</a></li><li style="list-style-type: disc;" class="dxseo-rl-item"><a href="https://www.linuxprobe.com/ubuntu-dokuwiki-wiki.html" target="_blank" title="在 Ubuntu 上使用 DokuWiki 构建你自己的 wiki">在 Ubuntu 上使用 DokuWiki 构建你自己的 wiki</a></li><li style="list-style-type: disc;" class="dxseo-rl-item"><a href="https://www.linuxprobe.com/fedora-26-publish.html" target="_blank" title="Fedora 26路线图公布 明年6月6日正式发布">Fedora 26路线图公布 明年6月6日正式发布</a></li></ul></div></div>
+		<!-- 分页 -->
+<div class="related-head-inner">
+     <div class="cat-head-title"> 
+          <i class="fa fa-share"></i>相关文章[<a href="https://www.linuxprobe.com/tougao" target="_blank">点此投稿</a>]
+     </div>
+     <div id="related-slider" class="flexslider">
+          
+	<div class="flex-viewport" style="overflow: hidden; position: relative;"><ul class="slides" style="width: 1400%; transition-duration: 0s; transform: translate3d(-2848px, 0px, 0px);"><li class="clone" aria-hidden="true" style="width: 712px; float: left; display: block;">
+					   <div class="related-thumb">
+					       <a href="https://www.linuxprobe.com/shell-input-redirection.html" rel="bookmark" title="Shell 输入重定向"><img data-img="162455" src="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/44-8.gif" alt="Shell 输入重定向" draggable="false"></a>
+					   </div>
+					   <div class="related-head">
+					       <a href="https://www.linuxprobe.com/shell-input-redirection.html" rel="bookmark" title="Shell 输入重定向">Shell 输入重定向</a> 
+					       <span><i class="fa fa-clock-o"></i>2019-11-25</span>
+					       <span><i class="fa fa-comments"></i><a href="https://www.linuxprobe.com/shell-input-redirection.html#SOHUCS">0 个评论</a></span>
+					   </div>
+					</li>
+															<li style="width: 712px; float: left; display: block;" class="">
+					   <div class="related-thumb">
+					       <a href="https://www.linuxprobe.com/vercel-serverless.html" rel="bookmark" title="前端技术Serverless 介绍"><img data-img="209630" src="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/build-websites.jpg" alt="前端技术Serverless 介绍" draggable="false"></a>
+					   </div>
+					   <div class="related-head">
+					       <a href="https://www.linuxprobe.com/vercel-serverless.html" rel="bookmark" title="前端技术Serverless 介绍">前端技术Serverless 介绍</a> 
+					       <span><i class="fa fa-clock-o"></i>2021-01-28</span>
+					       <span><i class="fa fa-comments"></i><a href="https://www.linuxprobe.com/vercel-serverless.html#SOHUCS">0 个评论</a></span>
+					   </div>
+					</li>
+										<li style="width: 712px; float: left; display: block;" class="">
+					   <div class="related-thumb">
+					       <a href="https://www.linuxprobe.com/http-status-code.html" rel="bookmark" title="你需要了解的 HTTP Status Code"><img data-img="194673" src="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/ITBE9R_I5Z7SUCNVH5KG7.png" alt="你需要了解的 HTTP Status Code" draggable="false"></a>
+					   </div>
+					   <div class="related-head">
+					       <a href="https://www.linuxprobe.com/http-status-code.html" rel="bookmark" title="你需要了解的 HTTP Status Code">你需要了解的 HTTP Status Code</a> 
+					       <span><i class="fa fa-clock-o"></i>2020-07-02</span>
+					       <span><i class="fa fa-comments"></i><a href="https://www.linuxprobe.com/http-status-code.html#SOHUCS">0 个评论</a></span>
+					   </div>
+					</li>
+										<li style="width: 712px; float: left; display: block;" class="">
+					   <div class="related-thumb">
+					       <a href="https://www.linuxprobe.com/apache-virtual-hosts.html" rel="bookmark" title="在CentOS 8上安装与配置Apache虚拟主机"><img data-img="192227" src="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/apache-1.png" alt="在CentOS 8上安装与配置Apache虚拟主机" draggable="false"></a>
+					   </div>
+					   <div class="related-head">
+					       <a href="https://www.linuxprobe.com/apache-virtual-hosts.html" rel="bookmark" title="在CentOS 8上安装与配置Apache虚拟主机">在CentOS 8上安装与配置Apache虚拟主机</a> 
+					       <span><i class="fa fa-clock-o"></i>2020-06-06</span>
+					       <span><i class="fa fa-comments"></i><a href="https://www.linuxprobe.com/apache-virtual-hosts.html#SOHUCS">0 个评论</a></span>
+					   </div>
+					</li>
+										<li style="width: 712px; float: left; display: block;" class="flex-active-slide">
+					   <div class="related-thumb">
+					       <a href="https://www.linuxprobe.com/nc-command-linux.html" rel="bookmark" title="ncat 几个常用例子"><img data-img="91936" src="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/-1-31.jpg" alt="ncat 几个常用例子" draggable="false"></a>
+					   </div>
+					   <div class="related-head">
+					       <a href="https://www.linuxprobe.com/nc-command-linux.html" rel="bookmark" title="ncat 几个常用例子">ncat 几个常用例子</a> 
+					       <span><i class="fa fa-clock-o"></i>2018-01-12</span>
+					       <span><i class="fa fa-comments"></i><a href="https://www.linuxprobe.com/nc-command-linux.html#SOHUCS">0 个评论</a></span>
+					   </div>
+					</li>
+										<li style="width: 712px; float: left; display: block;" class="">
+					   <div class="related-thumb">
+					       <a href="https://www.linuxprobe.com/shell-input-redirection.html" rel="bookmark" title="Shell 输入重定向"><img data-img="162455" src="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/44-8.gif" alt="Shell 输入重定向" draggable="false"></a>
+					   </div>
+					   <div class="related-head">
+					       <a href="https://www.linuxprobe.com/shell-input-redirection.html" rel="bookmark" title="Shell 输入重定向">Shell 输入重定向</a> 
+					       <span><i class="fa fa-clock-o"></i>2019-11-25</span>
+					       <span><i class="fa fa-comments"></i><a href="https://www.linuxprobe.com/shell-input-redirection.html#SOHUCS">0 个评论</a></span>
+					   </div>
+					</li>
+																    <li style="width: 712px; float: left; display: block;" class="clone" aria-hidden="true">
+					   <div class="related-thumb">
+					       <a href="https://www.linuxprobe.com/vercel-serverless.html" rel="bookmark" title="前端技术Serverless 介绍"><img data-img="209630" src="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/build-websites.jpg" alt="前端技术Serverless 介绍" draggable="false"></a>
+					   </div>
+					   <div class="related-head">
+					       <a href="https://www.linuxprobe.com/vercel-serverless.html" rel="bookmark" title="前端技术Serverless 介绍">前端技术Serverless 介绍</a> 
+					       <span><i class="fa fa-clock-o"></i>2021-01-28</span>
+					       <span><i class="fa fa-comments"></i><a href="https://www.linuxprobe.com/vercel-serverless.html#SOHUCS">0 个评论</a></span>
+					   </div>
+					</li></ul></div><ul class="flex-direction-nav"><li><a class="flex-prev" href="#">Previous</a></li><li><a class="flex-next" href="#">Next</a></li></ul></div>
+</div>	
+
+		<!-- 文章版权信息 -->
+		<div class="copyright alert alert-success">
+			<p>
+转载必需保留本文链接:
+				<a href="https://www.linuxprobe.com/how-linux-rsync.html" title="在Linux下使用rsync的6个实例">https://www.linuxprobe.com/how-linux-rsync.html</a><br></p>
+<p>本文依据<u>CC-BY-NC-SA 3.0协议</u>发布,竭诚为读者提供Linux视频教程、Linux学习资料以及红帽考试资料等优质学习资源。<br>
+			</p>
+		</div>
+		<!-- 文章版权信息结束 -->
+<script type="text/javascript">
+	jQuery(document).ready(function(){
+		var title = jQuery('.title-article h1 a').text();
+		jQuery('.post-content img').attr('alt',title);
+		jQuery('.post-content img').attr('title',title);
+	})
+</script>        
+	</div>				
+</article>
+<!-- 内容主体结束 -->
+
+<!-- 广告 -->
+  <div class="ad hidden-xs">
+    <a href="https://s.click.taobao.com/hP19OFw"><img class="alignnone " src="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/hengfu.jpg" width="750" height="100"></a>
+<a href="https://www.linuxprobe.com/training"><img class="alignnone " src="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/booking.jpg" width="750" height="100"></a>  </div>
+<!-- 广告结束 -->
+ 
+			</div>
+			<aside class="col-md-4" id="sidebar">
+  <aside id="text-5"><h2 class="widgettitle">最新书籍目录</h2>
+			<div class="textwidget"><p><a href="https://www.linuxprobe.com/basic-learning-00.html" target="_blank" rel="noopener" title="第0章 咱们先来谈谈为什么要学习Linux系统">第0章 咱们先来谈谈为什么要学习Linux系统</a><br>
+<a href="https://www.linuxprobe.com/basic-learning-01.html" target="_blank" rel="noopener" title="第1章 动手部署一台Linux操作系统">第1章 动手部署一台Linux操作系统</a><br>
+<a href="https://www.linuxprobe.com/basic-learning-02.html" target="_blank" rel="noopener" title="第2章 新手必须掌握的Linux命令">第2章 新手必须掌握的Linux命令</a><br>
+<a href="https://www.linuxprobe.com/basic-learning-03.html" target="_blank" rel="noopener" title="第3章 管道符、重定向与环境变量">第3章 管道符、重定向与环境变量</a><br>
+<a href="https://www.linuxprobe.com/basic-learning-04.html" target="_blank" rel="noopener" title="第4章 Vim编辑器与Shell命令脚本">第4章 Vim编辑器与Shell命令脚本</a><br>
+<a href="https://www.linuxprobe.com/basic-learning-05.html" target="_blank" rel="noopener" title="第5章 用户身份与文件权限">第5章 用户身份与文件权限</a><br>
+<a href="https://www.linuxprobe.com/basic-learning-06.html" target="_blank" rel="noopener" title="第6章 存储结构与管理硬盘">第6章 存储结构与管理硬盘</a><br>
+<a href="https://www.linuxprobe.com/basic-learning-07.html" target="_blank" rel="noopener" title="第7章 使用RAID与LVM磁盘阵列技术">第7章 使用RAID与LVM磁盘阵列技术</a><br>
+<a href="https://www.linuxprobe.com/basic-learning-08.html" target="_blank" rel="noopener" title="第8章 使用Iptables与Firewalld防火墙">第8章 使用Iptables与Firewalld防火墙</a><br>
+<a href="https://www.linuxprobe.com/basic-learning-09.html" target="_blank" rel="noopener" title="第9章 使用ssh服务管理远程主机">第9章 使用ssh服务管理远程主机</a><br>
+<a href="https://www.linuxprobe.com/basic-learning-10.html" target="_blank" rel="noopener" title="第10章 使用Apache服务部署静态网站">第10章 使用Apache服务部署静态网站</a><br>
+<a href="https://www.linuxprobe.com/basic-learning-11.html" target="_blank" rel="noopener" title="第11章 使用Vsftpd服务传输文件">第11章 使用Vsftpd服务传输文件</a><br>
+<a href="https://www.linuxprobe.com/basic-learning-12.html" target="_blank" rel="noopener" title="第12章 使用Samba或NFS实现文件共享">第12章 使用Samba或NFS实现文件共享</a><br>
+<a href="https://www.linuxprobe.com/basic-learning-13.html" target="_blank" rel="noopener" title="第13章 使用Bind提供域名解析服务">第13章 使用Bind提供域名解析服务</a><br>
+<a href="https://www.linuxprobe.com/basic-learning-14.html" target="_blank" rel="noopener" title="第14章 使用DHCP动态管理主机地址">第14章 使用DHCP动态管理主机地址</a><br>
+<a href="https://www.linuxprobe.com/basic-learning-15.html" target="_blank" rel="noopener" title="第15章 使用Postfix与Dovecot部署邮件系统">第15章 使用Postfix与Dovecot部署邮件系统</a><br>
+<a href="https://www.linuxprobe.com/basic-learning-16.html" target="_blank" rel="noopener" title="第16章 使用Ansible服务实现自动化运维">第16章 使用Ansible服务实现自动化运维</a><br>
+<a href="https://www.linuxprobe.com/basic-learning-17.html" target="_blank" rel="noopener" title="第17章 使用iSCSI服务部署网络存储">第17章 使用iSCSI服务部署网络存储</a><br>
+<a href="https://www.linuxprobe.com/basic-learning-18.html" target="_blank" rel="noopener" title="第18章 使用MariaDB数据库管理系统">第18章 使用MariaDB数据库管理系统</a><br>
+<a href="https://www.linuxprobe.com/basic-learning-19.html" target="_blank" rel="noopener" title="第19章 使用PXE+Kickstart无人值守安装服务">第19章 使用PXE+Kickstart无人值守安装服务</a><br>
+<a href="https://www.linuxprobe.com/basic-learning-20.html" target="_blank" rel="noopener" title="第20章 使用LNMP架构部署动态网站环境">第20章 使用LNMP架构部署动态网站环境</a></p>
+</div>
+		</aside><aside id="text-36">			<div class="textwidget"><p><img loading="lazy" class="alignnone" src="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/cover.png" alt="booking" width="300" height="400"></p>
+<p><span style="color: #ff0000;"><strong>Linux系统镜像及所需软件工具包下载地址：</strong></span><br>
+<a href="https://www.linuxprobe.com/tools" title="https://www.linuxprobe.com/tools">https://www.linuxprobe.com/tools</a></p>
+<div class="panel panel-success"><div class="panel-heading"><h3 class="panel-title"><strong>淘宝网</strong></h3></div><div class="panel-body"><a href="https://www.linuxprobe.com/links/taobao.html" target="_blank" rel="nofollow noopener" title="https://s.click.taobao.com/ZcvrFiu">https://s.click.taobao.com/ZcvrFiu</a></div></div>
+<div class="panel panel-success"><div class="panel-heading"><h3 class="panel-title"><strong>京东网</strong></h3></div><div class="panel-body"><a href="https://www.linuxprobe.com/links/jd.html" target="_blank" rel="nofollow noopener" title="https://item.jd.com/12935103.html">https://item.jd.com/12935103.html</a></div></div>
+<div class="panel panel-info"><div class="panel-heading"><h3 class="panel-title"><strong>当当网</strong></h3></div><div class="panel-body"><a href="https://www.linuxprobe.com/links/dangdang.html" target="_blank" rel="nofollow noopener" title="http://product.dangdang.com/29297129.html">http://product.dangdang.com/29297129.html</a></div></div>
+</div>
+		</aside><aside id="text-43">			<div class="textwidget"><p><a href="https://www.linuxprobe.com/training" target="_blank" rel="noopener" title=""><img loading="lazy" class="alignleft wp-image-193323 size-full" src="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/6-1.png" alt="" srcset="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/6-1.png 940w, %E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/6-1-300x153.png 300w, %E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/6-1-768x392.png 768w" sizes="(max-width: 940px) 100vw, 940px" width="940" height="480"></a></p>
+</div>
+		</aside><aside id="text-9"><h2 class="widgettitle">配套资料</h2>
+			<div class="textwidget"><p><a href="https://www.linuxprobe.com/book/" target="_blank" rel="noopener" title="Linux就该这么学PDF、word电子版下载。">Linux就该这么学PDF、word电子版下载。</a></p>
+<p><a href="https://www.linuxprobe.com/redhat-certificate/" target="_blank" rel="noopener" title="深度评解红帽RHCSA、RHCE、RHCA认证。">深度评解红帽RHCSA、RHCE、RHCA认证。</a></p>
+<p><a href="https://www.linuxprobe.com/tools/" target="_blank" rel="noopener" title="Linux系统与VMware虚拟机免费下载。">Linux系统与VMware虚拟机免费下载。</a></p>
+<p><a href="https://www.linuxcool.com/" target="_blank" rel="noopener" title="Linux命令大全，在技术之路上为您护航！">Linux命令大全，在技术之路上为您护航！</a></p>
+<p><a href="https://www.linuxdown.com/" target="_blank" rel="noopener" title="Linux系统下载，让技术人员放心使用的系统！">Linux系统下载，让技术人员放心使用的系统！</a></p>
+<p><a href="https://www.linuxprobe.com/links/RH124/" target="_blank" rel="noopener" title="【RH124】RHCSA 8.0红帽认证原厂讲义">【RH124】RHCSA 8.0红帽认证原厂讲义</a></p>
+<p><a href="https://www.linuxprobe.com/links/RH134/" target="_blank" rel="noopener" title="【RH134】RHCSA 8.0红帽认证原厂讲义">【RH134】RHCSA 8.0红帽认证原厂讲义</a></p>
+<p><a href="https://www.linuxprobe.com/links/RH294/" target="_blank" rel="noopener" title="【RH294】RHCE 8.0红帽认证原厂讲义">【RH294】RHCE 8.0红帽认证原厂讲义</a></p>
+</div>
+		</aside><aside id="text-14"><h2 class="widgettitle">Linux技术交流QQ群</h2>
+			<div class="textwidget"><p><span style="float:left"><img src="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/linux.png" width="121" height="75"></span>向每个正在奋斗的Linuxer致敬.<br>
+Linux技术交流群01：<strong>560843</strong><br>
+Linux技术交流群02：<strong>340829</strong><br>
+Linux技术交流群03：<strong>463590</strong><br>
+Linux技术交流群04：<strong>915246</strong><br>
+Linux技术交流群05：<strong>1663106</strong><br>
+Linux技术交流群06：<strong>1653851</strong><br>
+Linux技术交流群07：<strong>2632018</strong><br>
+Linux技术交流群08：<strong>2636170</strong><br>
+Linux技术交流群09：<strong>2650582</strong><br>
+Linux技术交流群10：<strong>3026356</strong><br>
+Linux技术交流群11：<strong>2659793</strong><br>
+Linux技术交流群12：<strong>2659106</strong><br>
+Linux技术交流群13：<strong>1675603</strong><br>
+Linux技术交流群14：<strong>2063798</strong><br>
+Linux技术交流群15：<strong>2093570</strong><br>
+Linux技术交流群16：<strong>1670392</strong><br>
+Linux技术交流群17：<strong>3682536</strong><br>
+Linux技术交流群18：<strong>3859061</strong><br>
+Linux技术交流群19：<strong>3589230</strong><br>
+Linux技术交流群20：<strong>3807239</strong><br>
+Linux技术交流群21：<strong>2765086</strong><br>
+Linux技术交流群22：<strong>2096581</strong><br>
+Linux技术交流群23：<strong>193666689</strong><br>
+Linux技术交流群24：<strong>193666690</strong><br>
+Linux技术交流群25：<strong>193666691</strong><br>
+Linux技术交流群26：<strong>193666692</strong><br>
+Linux技术交流群27：<strong>193666693</strong><br>
+Linux技术交流群28：<strong>193666694</strong><br>
+Linux技术交流群29：<strong>193666695</strong><br>
+Linux技术交流群30：<strong>193666696</strong><br>
+Linux技术交流群31：<strong>193666697</strong><br>
+Linux技术交流群32：<strong>193666698</strong><br>
+Linux技术交流群33：<strong>3208759</strong><br>
+Linux技术交流群34：<strong>2265381</strong><br>
+Linux技术交流群35：<strong>240955</strong><br>
+Linux技术交流群36：<strong>290864</strong><br>
+Linux技术交流群37：<strong>3096719</strong><br>
+Linux技术交流群38：<strong>3165837</strong><br>
+Linux技术交流群39：<strong>3173921</strong><br>
+Linux技术交流群40：<strong>3189607</strong><br>
+全国Linux技术交流群(总)：<a href="https://www.linuxprobe.com/club" target="_blank" rel="noopener" title="https://www.linuxprobe.com/club">https://www.linuxprobe.com/club</a></p>
+</div>
+		</aside><aside id="text-38">			<div class="textwidget"><p><a href="https://www.linuxprobe.com/redhat-certificate/" target="_blank" rel="noopener" title=""><img loading="lazy" class="alignnone" src="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/rhce.jpg" alt="2016rhce" width="360" height="110"></a></p>
+</div>
+		</aside><aside id="zan_latest_posts-4">      <div class="panel panel-zan recent hidden-xs">
+        <div class="panel-heading">
+          <i class="fa fa-refresh"></i> Linux最新资讯（微信搜索：LinuxProbe）          <i class="fa fa-times-circle panel-remove"></i>
+          <i class="fa fa-chevron-circle-up panel-toggle"></i>
+        </div>
+        <ul class="list-group list-group-flush">
+                      <li class="list-group-item">
+              <span class="post-title">
+                <a href="https://www.linuxprobe.com/of-navigation-nodes.html" title="XML DOM – 导航节点概述">
+                  XML DOM – 导航节点概述                </a>
+              </span>
+                          </li>
+                      <li class="list-group-item">
+              <span class="post-title">
+                <a href="https://www.linuxprobe.com/dom-browser-differences.html" title="XML DOM 浏览器差异概述">
+                  XML DOM 浏览器差异概述                </a>
+              </span>
+                          </li>
+                      <li class="list-group-item">
+              <span class="post-title">
+                <a href="https://www.linuxprobe.com/red-hat-enterprise-linuxshilijiaocheng.html" title="《Red Hat Enterprise Linux服务器配置实例教程》pdf电子书免费下载">
+                  《Red Hat Enterprise Linux服务器配置实例教程》pdf电子书免费下载                </a>
+              </span>
+                          </li>
+                      <li class="list-group-item">
+              <span class="post-title">
+                <a href="https://www.linuxprobe.com/xshell-ssh.html" title="比 Xshell 更好用酷炫的 SSH 终端工具">
+                  比 Xshell 更好用酷炫的 SSH 终端工具                </a>
+              </span>
+                          </li>
+                      <li class="list-group-item">
+              <span class="post-title">
+                <a href="https://www.linuxprobe.com/the-freebsd-project.html" title="FreeBSD项目发布2021年第四季度的状态报告">
+                  FreeBSD项目发布2021年第四季度的状态报告                </a>
+              </span>
+                          </li>
+                      <li class="list-group-item">
+              <span class="post-title">
+                <a href="https://www.linuxprobe.com/lmde-5-elsie-relase.html" title="基于 Debian 11的 LMDE 5 “Elsie” 正式发布">
+                  基于 Debian 11的 LMDE 5 “Elsie” 正式发布                </a>
+              </span>
+                          </li>
+                      <li class="list-group-item">
+              <span class="post-title">
+                <a href="https://www.linuxprobe.com/linux-2.html" title="《Linux管理入门经典 第8版》pdf电子书免费下载">
+                  《Linux管理入门经典 第8版》pdf电子书免费下载                </a>
+              </span>
+                          </li>
+                      <li class="list-group-item">
+              <span class="post-title">
+                <a href="https://www.linuxprobe.com/rhel7-system-kernel.html" title="RHEL7系统管理之内核管理">
+                  RHEL7系统管理之内核管理                </a>
+              </span>
+                          </li>
+                      <li class="list-group-item">
+              <span class="post-title">
+                <a href="https://www.linuxprobe.com/ubuntu-linux-2.html" title="《Ubuntu Linux操作系统案例教程》pdf电子书免费下载">
+                  《Ubuntu Linux操作系统案例教程》pdf电子书免费下载                </a>
+              </span>
+                          </li>
+                      <li class="list-group-item">
+              <span class="post-title">
+                <a href="https://www.linuxprobe.com/clear-dns-cache.html" title="如何清空DNS缓存Windows&amp;linux">
+                  如何清空DNS缓存Windows&amp;linux                </a>
+              </span>
+                          </li>
+                      <li class="list-group-item">
+              <span class="post-title">
+                <a href="https://www.linuxprobe.com/mac-linux-alpha.html" title="适用于M1 Mac的首个Linux发行版Alpha发布">
+                  适用于M1 Mac的首个Linux发行版Alpha发布                </a>
+              </span>
+                          </li>
+                      <li class="list-group-item">
+              <span class="post-title">
+                <a href="https://www.linuxprobe.com/cc-linux.html" title="复活的 C4C Linux 发行版">
+                  复活的 C4C Linux 发行版                </a>
+              </span>
+                          </li>
+                  </ul>
+      </div>
+    </aside><aside style="position: static; margin-top: 0px; margin-bottom: 0px; width: 360px; height: 488.2px; display: none;"></aside><aside id="text-37" class="FixedWidget__fixed_widget">			<div class="textwidget"><p style="text-align: center;"><img loading="lazy" class="alignnone" src="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/code.png" alt="booking" width="200" height="150"></p>
+<p><a href="https://www.linuxprobe.com/links/jd.html" target="_blank" rel="noopener" title=""><img loading="lazy" class="alignnone" src="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/banner1.jpg" alt="booking" width="360" height="110"></a><br>
+<a href="https://www.linuxprobe.com/training" target="_blank" rel="noopener" title=""><img loading="lazy" class="alignnone" src="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/booking.jpg" alt="booking" width="360" height="110"></a><br>
+<a href="https://www.linuxprobe.com/club" target="_blank" rel="noopener" title=""><img loading="lazy" class="alignnone" src="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/club.jpg" alt="booking" width="360" height="110"></a></p>
+</div>
+		</aside>      </aside>
+		</div>		
+	</div>
+</div>
+
+﻿<footer id="zan-footer">
+	<div class="container">
+		<!-- 版权信息 -->
+		<a href="https://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener noreferrer">京ICP备14023444号-1</a><br>
+<a href="https://www.rhce.net/"><strong>RHCE.net</strong></a> - 专注于红帽认证工程师证书考试心得分享！<br>
+<a href="https://www.linuxcool.com/"><strong>Linux命令大全</strong></a> - 准确，丰富，稳定，在技术之路上为您护航！<br>
+<a href="https://www.linuxdown.com/"><strong>Linux系统下载</strong></a> - 权威、纯净、稳定，让技术人员放心使用的系统！<br>
+《Linux就该这么学》公布后受到了超乎意料的强烈关注，文章也被读者们无数次的考核着。<br>
+我们承诺为每位<strong>linux技术</strong>爱好者提供最优质的<strong>linux教程</strong>、最纯净的<strong>linux系统</strong>以及最贴心的<strong>红帽linux考试指导</strong>。<br>
+正如Linux系统因开源精神而强壮，如果您热爱Linux技术并且愿意奉献自己的学识，认同本书的宗旨与较强的团队精神请加入我们。		<!-- 版权信息结束 -->
+		<!--统计代码-->
+        <!--统计代码结束-->
+	</div>
+</footer>
+<script type="text/javascript" id="toc-front-js-extra">
+/* <![CDATA[ */
+var tocplus = {"smooth_scroll":"1"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/front.js" id="toc-front-js"></script>
+<script type="text/javascript" id="q2w3_fixed_widget-js-extra">
+/* <![CDATA[ */
+var q2w3_sidebar_options = [{"sidebar":"sidebar-2","use_sticky_position":false,"margin_top":130,"margin_bottom":200,"stop_elements_selectors":"","screen_max_width":0,"screen_max_height":0,"widgets":["#text-37"]},{"sidebar":"sidebar-3","use_sticky_position":false,"margin_top":130,"margin_bottom":200,"stop_elements_selectors":"","screen_max_width":0,"screen_max_height":0,"widgets":["#text-42"]},{"sidebar":"sidebar-4","use_sticky_position":false,"margin_top":130,"margin_bottom":200,"stop_elements_selectors":"","screen_max_width":0,"screen_max_height":0,"widgets":["#text-41"]}];
+/* ]]> */
+</script>
+<script type="text/javascript" src="%E5%9C%A8Linux%E4%B8%8B%E4%BD%BF%E7%94%A8rsync%E7%9A%846%E4%B8%AA%E5%AE%9E%E4%BE%8B%20|%20%E3%80%8ALinux%E5%B0%B1%E8%AF%A5%E8%BF%99%E4%B9%88%E5%AD%A6%E3%80%8B_files/frontend.js" id="q2w3_fixed_widget-js"></script>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?5f1c20a98869a4804163bcebcb2d0e85";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+
+
+
+
+<div id="hm_t_undefined" class="hm-t-container"><div class="hm-t-go-top" style="display: none;"></div></div></body></html>
+<!-- Dynamic page generated in 0.574 seconds. -->
+<!-- Cached page generated by WP-Super-Cache on 2022-03-29 13:36:37 -->
+<!-- super cache -->
