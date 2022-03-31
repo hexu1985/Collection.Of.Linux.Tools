@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html style="--TextColor1: #4d4d4d; --TextColor2: #5f5f6b; --TextColor3: #97979f; --DividColor: #e7eaf0; --BackgroundColor: #f4f6fa; --BlockColor: #ffffff;" lang="zh-cn"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin-when-crossorigin">
+    <meta name="description" content="top命令是Linux下常用的性能分析工具，能够实时显示系统中各个进程的资源占用状况，类似于Windows的任务管理器 top参数详解 第一行，任务队列信息，同 uptime 命令的执行结果 系统时间">
+    <meta property="og:description" content="top命令是Linux下常用的性能分析工具，能够实时显示系统中各个进程的资源占用状况，类似于Windows的任务管理器 top参数详解 第一行，任务队列信息，同 uptime 命令的执行结果 系统时间">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Linux top命令详解 - 牛奔 - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="https://common.cnblogs.com/favicon.svg" type="image/svg+xml">
+    
+    <style>:not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([class*="language-"]):not([highlighted]):not(.hljs):not([class*="brush:"]) {
+        background: rgb(245, 245, 245);
+        padding: 5px;
+        border: 1px solid rgb(204, 204, 204);
+        border-radius: 3px;
+        border-color: transparent;
+        color: rgb(68, 68, 68);
+        font-family: "Courier New", sans-serif;
+    }:not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]):not([class*="brush:"]) code:not(.hljs) {
+            background: rgb(245, 245, 245) !important;
+            border-color: transparent !important;
+        }</style><link rel="stylesheet" href="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/blog-common.css">
+    
+    <link id="highlighter-theme-cnblogs" type="text/css" rel="stylesheet" href="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/cnblogs.css">
+    <link type="text/css" rel="stylesheet" href="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/custom.css">
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/bundle-custom-mobile.css">
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/niuben/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/niuben/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/niuben/wlwmanifest.xml">
+    <script type="text/javascript" async="" src="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/analytics.js"></script><script type="text/javascript" src="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/encoder.js"></script><script>
+        var currentBlogId = 402670;
+        var currentBlogApp = 'niuben';
+        var cb_enable_mathjax = true;
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'Custom';
+        var visitorUserId = '';
+        var hasCustomScript = true;
+        try {
+            if (hasCustomScript && document.referrer && document.referrer.indexOf('baidu.com') >= 0) {
+                Object.defineProperty(document, 'referrer', { value: '' });
+                Object.defineProperty(Document.prototype, 'referrer', { get: function(){ return ''; } });
+            }
+        } catch(error) { }
+        window.codeHighlightEngine = 1;
+        window.enableCodeLineNumber = false;
+        window.codeHighlightTheme = 'cnblogs';
+    </script>
+        <script>
+            var currentPostDateAdded = '2019-12-10 16:02';
+        </script>
+    <script src="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/jquery-2.js"></script>
+    <script src="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/blog-common.js"></script><style type="text/css">.medium-zoom-overlay{position:fixed;top:0;right:0;bottom:0;left:0;opacity:0;transition:opacity .3s;will-change:opacity}.medium-zoom--opened .medium-zoom-overlay{cursor:pointer;cursor:zoom-out;opacity:1}.medium-zoom-image{cursor:pointer;cursor:zoom-in;transition:transform .3s cubic-bezier(.2,0,.2,1)!important}.medium-zoom-image--hidden{visibility:hidden}.medium-zoom-image--opened{position:relative;cursor:pointer;cursor:zoom-out;will-change:transform}</style><script id="hljs-script" async="" data-loaded="true" src="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/highlight.js"></script>
+    <script type="text/x-mathjax-config;executed=true">
+        MathJax.Hub.Config({
+        tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']], processClass: 'math', processEscapes: true },
+        TeX: {
+        equationNumbers: { autoNumber: ['AMS'], useLabelIds: true },
+        extensions: ['extpfeil.js', 'mediawiki-texvc.js'],
+        Macros: {bm: "\\boldsymbol"}
+        },
+        'HTML-CSS': { linebreaks: { automatic: true } },
+        SVG: { linebreaks: { automatic: true } }
+        });
+    </script>
+    <script src="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/MathJax.js"></script>
+    
+<style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Menu_Button .MathJax_Hover_Arrow {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px; font-family: 'Courier New',Courier; font-size: 9px; color: #F0F0F0}
+.MathJax_Menu_Button .MathJax_Hover_Arrow span {display: block; background-color: #AAA; border: 1px solid; border-radius: 3px; line-height: 0; padding: 4px}
+.MathJax_Hover_Arrow:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_Hover_Arrow:hover span {background-color: #CCC!important}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 5px 0px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 5px; -webkit-border-radius: 5px; -moz-border-radius: 5px; -khtml-border-radius: 5px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 1px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: .7em}
+.MathJax_MenuRadioCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuLabel {padding: 1px 2em 3px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #DDDDDD; margin: 4px 3px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: #606872; color: white}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+</style><style type="text/css">.MathJax_Preview .MJXf-math {color: inherit!important}
+</style><style type="text/css">.MJX_Assistive_MathML {position: absolute!important; top: 0; left: 0; clip: rect(1px, 1px, 1px, 1px); padding: 1px 0 0 0!important; border: 0!important; height: 1px!important; width: 1px!important; overflow: hidden!important; display: block!important; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none}
+.MJX_Assistive_MathML.MJX_Assistive_MathML_Block {width: 100%!important}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1px; bottom: 2px; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><link rel="shortcut icon" type="image/x-icon" href="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/12017242_002.html"><style type="text/css">.MJXp-script {font-size: .8em}
+.MJXp-right {-webkit-transform-origin: right; -moz-transform-origin: right; -ms-transform-origin: right; -o-transform-origin: right; transform-origin: right}
+.MJXp-bold {font-weight: bold}
+.MJXp-italic {font-style: italic}
+.MJXp-scr {font-family: MathJax_Script,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-frak {font-family: MathJax_Fraktur,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-sf {font-family: MathJax_SansSerif,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-cal {font-family: MathJax_Caligraphic,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-mono {font-family: MathJax_Typewriter,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-largeop {font-size: 150%}
+.MJXp-largeop.MJXp-int {vertical-align: -.2em}
+.MJXp-math {display: inline-block; line-height: 1.2; text-indent: 0; font-family: 'Times New Roman',Times,STIXGeneral,serif; white-space: nowrap; border-collapse: collapse}
+.MJXp-display {display: block; text-align: center; margin: 1em 0}
+.MJXp-math span {display: inline-block}
+.MJXp-box {display: block!important; text-align: center}
+.MJXp-box:after {content: " "}
+.MJXp-rule {display: block!important; margin-top: .1em}
+.MJXp-char {display: block!important}
+.MJXp-mo {margin: 0 .15em}
+.MJXp-mfrac {margin: 0 .125em; vertical-align: .25em}
+.MJXp-denom {display: inline-table!important; width: 100%}
+.MJXp-denom > * {display: table-row!important}
+.MJXp-surd {vertical-align: top}
+.MJXp-surd > * {display: block!important}
+.MJXp-script-box > *  {display: table!important; height: 50%}
+.MJXp-script-box > * > * {display: table-cell!important; vertical-align: top}
+.MJXp-script-box > *:last-child > * {vertical-align: bottom}
+.MJXp-script-box > * > * > * {display: block!important}
+.MJXp-mphantom {visibility: hidden}
+.MJXp-munderover, .MJXp-munder {display: inline-table!important}
+.MJXp-over {display: inline-block!important; text-align: center}
+.MJXp-over > * {display: block!important}
+.MJXp-munderover > *, .MJXp-munder > * {display: table-row!important}
+.MJXp-mtable {vertical-align: .25em; margin: 0 .125em}
+.MJXp-mtable > * {display: inline-table!important; vertical-align: middle}
+.MJXp-mtr {display: table-row!important}
+.MJXp-mtd {display: table-cell!important; text-align: center; padding: .5em 0 0 .5em}
+.MJXp-mtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-mlabeledtr {display: table-row!important}
+.MJXp-mlabeledtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mlabeledtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MJXp-scale0 {-webkit-transform: scaleX(.0); -moz-transform: scaleX(.0); -ms-transform: scaleX(.0); -o-transform: scaleX(.0); transform: scaleX(.0)}
+.MJXp-scale1 {-webkit-transform: scaleX(.1); -moz-transform: scaleX(.1); -ms-transform: scaleX(.1); -o-transform: scaleX(.1); transform: scaleX(.1)}
+.MJXp-scale2 {-webkit-transform: scaleX(.2); -moz-transform: scaleX(.2); -ms-transform: scaleX(.2); -o-transform: scaleX(.2); transform: scaleX(.2)}
+.MJXp-scale3 {-webkit-transform: scaleX(.3); -moz-transform: scaleX(.3); -ms-transform: scaleX(.3); -o-transform: scaleX(.3); transform: scaleX(.3)}
+.MJXp-scale4 {-webkit-transform: scaleX(.4); -moz-transform: scaleX(.4); -ms-transform: scaleX(.4); -o-transform: scaleX(.4); transform: scaleX(.4)}
+.MJXp-scale5 {-webkit-transform: scaleX(.5); -moz-transform: scaleX(.5); -ms-transform: scaleX(.5); -o-transform: scaleX(.5); transform: scaleX(.5)}
+.MJXp-scale6 {-webkit-transform: scaleX(.6); -moz-transform: scaleX(.6); -ms-transform: scaleX(.6); -o-transform: scaleX(.6); transform: scaleX(.6)}
+.MJXp-scale7 {-webkit-transform: scaleX(.7); -moz-transform: scaleX(.7); -ms-transform: scaleX(.7); -o-transform: scaleX(.7); transform: scaleX(.7)}
+.MJXp-scale8 {-webkit-transform: scaleX(.8); -moz-transform: scaleX(.8); -ms-transform: scaleX(.8); -o-transform: scaleX(.8); transform: scaleX(.8)}
+.MJXp-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
+.MathJax_PHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style><meta http-equiv="origin-trial" content="AxujKG9INjsZ8/gUq8+dTruNvk7RjZQ1oFhhgQbcTJKDnZfbzSTE81wvC2Hzaf3TW4avA76LTZEMdiedF1vIbA4AAABueyJvcmlnaW4iOiJodHRwczovL2ltYXNkay5nb29nbGVhcGlzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzVGhpcmRQYXJ0eSI6dHJ1ZX0="><meta http-equiv="origin-trial" content="Azuce85ORtSnWe1MZDTv68qpaW3iHyfL9YbLRy0cwcCZwVnePnOmkUJlG8HGikmOwhZU22dElCcfrfX2HhrBPAkAAAB7eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A16nvcdeoOAqrJcmjLRpl1I6f3McDD8EfofAYTt/P/H4/AWwB99nxiPp6kA0fXoiZav908Z8etuL16laFPUdfQsAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="AxBHdr0J44vFBQtZUqX9sjiqf5yWZ/OcHRcRMN3H9TH+t90V/j3ENW6C8+igBZFXMJ7G3Pr8Dd13632aLng42wgAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A88BWHFjcawUfKU3lIejLoryXoyjooBXLgWmGh+hNcqMK44cugvsI5YZbNarYvi3roc1fYbHA1AVbhAtuHZflgEAAAB2eyJvcmlnaW4iOiJodHRwczovL2dvb2dsZS5jb206NDQzIiwiZmVhdHVyZSI6IlRydXN0VG9rZW5zIiwiZXhwaXJ5IjoxNjUyNzc0NDAwLCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A8FHS1NmdCwGqD9DwOicnHHY+y27kdWfxKa0YHSGDfv0CSpDKRHTQdQmZVPDUdaFWUsxdgVxlwAd6o+dhJykPA0AAACWeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjQzMTU1MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><meta http-equiv="origin-trial" content="A8zdXi6dr1hwXEUjQrYiyYQGlU3557y5QWDnN0Lwgj9ePt66XMEvNkVWOEOWPd7TP9sBQ25X0Q15Lr1Nn4oGFQkAAACceyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjQzMTU1MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><meta http-equiv="origin-trial" content="A4/Htern2udN9w3yJK9QgWQxQFruxOXsXL7cW60DyCl0EZFGCSme/J33Q/WzF7bBkVvhEWDlcBiUyZaim5CpFQwAAACceyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjQzMTU1MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><script src="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/pubads_impl_2022032106.js" async=""></script><link rel="preload" href="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/integrator.js" as="script"><script type="text/javascript" src="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/integrator.js"></script></head>
+<body class="skin-custom no-navbar"><div id="MathJax_Message" style="display: none;"></div>
+    <a name="top"></a>
+    <div id="top_nav" class="navbar forpc navbar-custom">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding">
+                    <a href="https://www.cnblogs.com/" title="开发者的网上家园" role="banner">
+                            <img src="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/logo.svg" alt="博客园Logo">
+                    </a>
+                </li>
+                <li><a href="https://www.cnblogs.com/" onclick="countClicks('skin-navbar-sitehome')">首页</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="countClicks('nav', 'skin-navbar-news')">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="countClicks('nav', 'skin-navbar-q')">博问</a></li>
+                <li><a id="nav_brandzone" href="https://brands.cnblogs.com/huawei" onclick="countClicks('nav', 'skin-navbar-brands')">专区</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="countClicks('nav', 'skin-navbar-ing')">闪存</a></li>
+                <li><a href="https://edu.cnblogs.com/" onclick="countClicks('nav', 'skin-navbar-edu')">班级</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search" action="https://zzk.cnblogs.com/s" method="get" role="search">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="search" tabindex="3">
+                        <button type="submit" id="zzk_search_button">
+                            <img src="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/search.svg" alt="搜索">
+                        </button>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔" style="display: none;">
+                        <img id="new_post_icon" class="navbar-icon" src="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/newpost.svg" alt="写随笔">
+                    </a>
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客" style="display: none;">
+                        <img id="myblog_icon" class="navbar-icon" src="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/myblog.svg" alt="我的博客">
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息" style="display: none;">
+                        <img id="msg_icon" class="navbar-icon" src="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/message.svg" alt="短消息">
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <a id="navbar_lite_mode_indicator" data-current-page="blog" style="display: none" href="javascript:void(0)" alt="简洁模式" title="简洁模式启用，您在访问他人博客时会使用简洁款皮肤展示">
+                        <img class="navbar-icon" src="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/lite-mode-on.svg" alt="简洁模式">
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown" style="display: none;">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/avatar-default.svg" alt="用户头像">
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <img id="navbar_lite_mode_on" src="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/lite-mode-check.svg" class="hide"><span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+                            <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup" style="display: inline;">注册</a>
+                    <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()" style="display: inline;">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div id="page_begin_html">
+        <div id="loading">
+  <div class="pulse-container">  
+    <div class="pulse-bubble pulse-bubble-1"></div>
+    <div class="pulse-bubble pulse-bubble-2"></div>
+    <div class="pulse-bubble pulse-bubble-3"></div>
+  </div>
+</div>
+
+
+    </div>
+    <!--done-->
+<div id="home">
+<div id="header" class="header-hidden"><a href="#navigator" class="toNav hidden"></a>
+	<div id="blogTitle" class="hidden">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/niuben/"><img id="blogLogo" src="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/logo.gif" alt="返回主页"></a>		
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/niuben/">牛奔</a>
+</h1>
+<h2>每个优秀的人,都有一段沉默的时光,那段时光,是付出了很多努力,却得不到结果的日子,我们把它叫做扎根。</h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/niuben/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/%E7%89%9B%E5%A5%94">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/niuben/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+<li><a id="blog_nav_cnblogs" class="menu" href="https://home.cnblogs.com/">园子</a></li><li><a id="blog_nav_theme" class="menu" href="javascript:changeTheme()">切换主题</a></li></ul>
+
+
+		<div class="blogStats">
+			<span id="stats_post_count">随笔 - 656&nbsp; </span>
+<span id="stats_article_count">文章 - 81&nbsp; </span>
+<span id="stats-comment_count">评论 - 72&nbsp; </span>
+<span id="stats-total-view-count">阅读 - 
+<span title="总阅读数: 1633081">
+163万</span></span>
+
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    <!--done-->
+    <div id="topics">
+        <div class="post">
+            <h1 class="postTitle">
+                
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/niuben/p/12017242.html">
+    <span role="heading" aria-level="2">Linux top命令详解</span>
+    
+
+
+
+</a><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                <div id="cnblogs_post_body" class="blogpost-body blogpost-body-html">
+<p><span style="font-size: medium">top命令是Linux下常用的性能分析工具，能够实时显示系统中各个进程的资源占用状况，类似于Windows的任务管理器</span></p>
+<h1 offset="1" id="scroller-0"><span style="font-family: Microsoft YaHei; font-size: 18pt"><strong>top参数详解</strong></span><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<p><span style="font-size: medium"><img src="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/1303876-20191210152709726-52408463.png" alt="" class="medium-zoom-image"></span></p>
+<p><strong>第一行，任务队列信息，同 uptime 命令的执行结果</strong></p>
+<blockquote>
+<p>系统时间：07:27:05</p>
+<p>运行时间：up 1:57 min,</p>
+<p>当前登录用户：&nbsp; 3 user</p>
+<p>负载均衡(uptime)&nbsp; load average: 0.00, 0.00, 0.00</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp; average后面的三个数分别是1分钟、5分钟、15分钟的负载情况。</p>
+<p>load average数据是每隔5秒钟检查一次活跃的进程数，然后按特定算法计算出的数值。如果这个数除以逻辑CPU的数量，结果高于5的时候就表明系统在超负荷运转了</p>
+</blockquote>
+<p><strong>第二行，Tasks — 任务（进程）</strong></p>
+<blockquote>
+<p>总进程:150 total, 运行:1 running, 休眠:149 sleeping, 停止: 0 stopped, 僵尸进程: 0 zombie</p>
+</blockquote>
+<p><strong>第三行，cpu状态信息</strong></p>
+<blockquote>
+<p>0.0%us【user space】— 用户空间占用CPU的百分比。</p>
+<p>0.3%sy【sysctl】— 内核空间占用CPU的百分比。</p>
+<p>0.0%ni【】— 改变过优先级的进程占用CPU的百分比</p>
+<p>99.7%id【idolt】— 空闲CPU百分比</p>
+<p>0.0%wa【wait】— IO等待占用CPU的百分比</p>
+<p>0.0%hi【Hardware IRQ】— 硬中断占用CPU的百分比</p>
+<p>0.0%si【Software Interrupts】— 软中断占用CPU的百分比</p>
+</blockquote>
+<p><strong>第四行,内存状态</strong></p>
+<blockquote>
+<p>&nbsp; 1003020k total,&nbsp;&nbsp; 234464k used,&nbsp;&nbsp; 777824k free,&nbsp;&nbsp;&nbsp; 24084k buffers【缓存的内存量】</p>
+</blockquote>
+<p><strong>第五行，swap交换分区信息</strong></p>
+<blockquote>
+<p>2031612k total,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 536k used,&nbsp; 2031076k free,&nbsp;&nbsp; 505864k cached【缓冲的交换区总量】</p>
+</blockquote>
+<blockquote>
+<p>备注：</p>
+<p>可用内存=free + buffer + cached</p>
+<p>对于内存监控，在top里我们要时刻监控第五行swap交换分区的used，如果这个数值在不断的变化，说明内核在不断进行内存和swap的数据交换，这是真正的内存不够用了。</p>
+<p>第四行中使用中的内存总量（used）指的是现在系统内核控制的内存数，</p>
+<p>第四行中空闲内存总量（free）是内核还未纳入其管控范围的数量。</p>
+<p>纳入内核管理的内存不见得都在使用中，还包括过去使用过的现在可以被重复利用的内存，内核并不把这些可被重新使用的内存交还到free中去，因此在linux上free内存会越来越少，但不用为此担心。</p>
+</blockquote>
+<p><strong>第六行，空行</strong></p>
+<p><strong>第七行以下：各进程（任务）的状态监控</strong></p>
+<blockquote>
+<p>PID — 进程id<br>USER — 进程所有者<br>PR — 进程优先级<br>NI — nice值。负值表示高优先级，正值表示低优先级<br>VIRT — 进程使用的虚拟内存总量，单位kb。VIRT=SWAP+RES<br>RES — 进程使用的、未被换出的物理内存大小，单位kb。RES=CODE+DATA<br>SHR — 共享内存大小，单位kb<br>S —进程状态。D=不可中断的睡眠状态 R=运行 S=睡眠 T=跟踪/停止 Z=僵尸进程<br>%CPU — 上次更新到现在的CPU时间占用百分比<br>%MEM — 进程使用的物理内存百分比<br>TIME+ — 进程使用的CPU时间总计，单位1/100秒<br>COMMAND — 进程名称（命令名/命令行）</p>
+
+
+
+
+
+
+
+
+</blockquote>
+<p>详解</p>
+<blockquote>
+<p style="margin-top: 0; margin-bottom: 1.2855rem; line-height: 20px; color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px"> <strong>VIRT：virtual memory usage 虚拟内存<br>
+</strong>1、进程“需要的”虚拟内存大小，包括进程使用的库、代码、数据等<br>
+2、假如进程申请100m的内存，但实际只使用了10m，那么它会增长100m，而不是实际的使用量</p>
+<p style="margin-top: 0; margin-bottom: 1.2855rem; line-height: 20px; color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px">
+<strong>RES：resident memory usage 常驻内存</strong><br>
+1、进程当前使用的内存大小，但不包括swap out<br>
+2、包含其他进程的共享<br>
+3、如果申请100m的内存，实际使用10m，它只增长10m，与VIRT相反<br>
+4、关于库占用内存的情况，它只统计加载的库文件所占内存大小</p>
+<p style="margin-top: 0; margin-bottom: 1.2855rem; line-height: 20px; color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px">
+<strong>SHR：shared memory 共享内存</strong><br>
+1、除了自身进程的共享内存，也包括其他进程的共享内存<br>
+2、虽然进程只使用了几个共享库的函数，但它包含了整个共享库的大小<br>
+3、计算某个进程所占的物理内存大小公式：RES – SHR<br>
+4、swap out后，它将会降下来</p>
+<p style="margin-top: 0; margin-bottom: 1.2855rem; line-height: 20px; color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px">
+<strong>DATA</strong><br>
+1、数据占用的内存。如果top没有显示，按f键可以显示出来。<br>
+2、真正的该程序要求的数据空间，是真正在运行中要使用的。</p>
+<p style="margin-top: 0; margin-bottom: 1.2855rem; line-height: 20px; color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px">
+<strong>top 运行中可以通过 top 的内部命令对进程的显示方式进行控制。内部命令如下：</strong><br>
+s – 改变画面更新频率<br>
+l – 关闭或开启第一部分第一行 top 信息的表示<br>
+t – 关闭或开启第一部分第二行 Tasks 和第三行 Cpus 信息的表示<br>
+m – 关闭或开启第一部分第四行 Mem 和 第五行 Swap 信息的表示<br>
+N – 以 PID 的大小的顺序排列表示进程列表<br>
+P – 以 CPU 占用率大小的顺序排列进程列表<br>
+M – 以内存占用率大小的顺序排列进程列表<br>
+h – 显示帮助<br>
+n – 设置在进程列表所显示进程的数量<br>
+q – 退出 top<br>
+s – 改变画面更新周期</p>
+
+
+
+
+
+
+</blockquote>
+<p>&nbsp;</p>
+<h1 id="scroller-1" offset="1"><span style="color: rgba(0, 0, 0, 1); font-family: Microsoft YaHei; font-size: 18pt"><strong>top使用方法</strong></span><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<p><strong>使用格式：</strong></p>
+<p><strong><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">top [-] [d] [p] [q] [c] [C] [S] [s] [n]<br>
+</span></strong></p>
+<p><strong><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">参数说明：</span></strong></p>
+<p><strong><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">d：<span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">指定每两次屏幕信息刷新之间的时间间隔。当然用户可以使用s交互命令来改变之。</span></span></strong></p>
+<p><span style="font-weight: bold"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">p:<span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">通过指定监控进程ID来仅仅监控某个进程的状态。</span></span></span></span></p>
+<p><span style="font-weight: bold"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">q:<span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">该选项将使top没有任何延迟的进行刷新。如果调用程序有超级用户权限，那么top将以尽可能高的优先级运行。</span></span></span></span></p>
+<p><span style="font-weight: bold"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">S：<span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">指定累计模式。</span></span></span></span></p>
+<p><span style="font-weight: bold"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">s：<span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">使top命令在安全模式中运行。这将去除交互命令所带来的潜在危险。</span></span></span></span></p>
+<p><span style="font-weight: bold"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">i：<span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">使top不显示任何闲置或者僵死进程。</span></span></span></span></p>
+<p><span style="font-weight: bold"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">c:<span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">显示整个命令行而不只是显示命令名。</span></span></span></span></p>
+<h1 id="scroller-2" offset="1"><span style="font-weight: bold; color: rgba(0, 0, 0, 1); font-family: Microsoft YaHei; font-size: 18pt"><span style="line-height: 20px"><span style="line-height: 20px"><span style="line-height: 20px">常用命令说明</span></span></span></span><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<p><span style="font-weight: bold"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">Ctrl+L：<span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">擦除并且重写屏幕<br>
+</span></span></span></span></span></span></p>
+<p><span style="font-weight: bold"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">K：<span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">终止一个进程。系统将提示用户输入需要终止的进程PID，以及需要发送给该进程什么样的信号。一般的终止进程可以使用15信号；如果不能正常结束那就使用信号9强制结束该进程。默认值是信号15。在安全模式中此命令被屏蔽。</span></span></span></span></span></span></span></p>
+<p><span style="font-weight: bold"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">i：<span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">忽略闲置和僵死进程。这是一个开关式命令。</span></span></span></span></span></span></span></span></p>
+<p><span style="font-weight: bold"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">q：退出程序</span></span></span></span></span></span></span></span></p>
+<p><span style="font-weight: bold"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">r:<span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">重新安排一个进程的优先级别。系统提示用户输入需要改变的进程PID以及需要设置的进程优先级值。输入一个正值将使优先级降低，反之则可以使该进程拥有更高的优先权。默认值是10。</span></span></span></span></span></span></span></span></span></p>
+<p><span style="font-weight: bold"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">S：<span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">切换到累计模式。</span></span></span></span></span></span></span></span></span></span></p>
+<p><span style="font-weight: bold"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">s：<span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">改变两次刷新之间的延迟时间。系统将提示用户输入新的时间，单位为s。如果有小数，就换算成m
+ s。输入0值则系统将不断刷新，默认值是5 s。需要注意的是如果设置太小的时间，很可能会引起不断刷新，从而根本来不及看清显示的情况，而且系统负载也会大大增加。</span></span></span></span></span></span></span></span></span></span></p>
+<p><span style="font-weight: bold"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">f或者F：<span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">从当前显示中添加或者删除项目。<br>
+</span></span></span></span></span></span></span></span></span></span></span></span></p>
+<p><span style="font-weight: bold"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">o或者O：<span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">改变显示项目的顺序<br>
+</span></span></span></span></span></span></span></span></span></span></span></span></span></span></p>
+<p><span style="font-weight: bold"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">l：<span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">切换显示平均负载和启动时间信息。<br>
+</span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></p>
+<p><span style="font-weight: bold"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">m:<span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">切换显示内存信息。</span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></p>
+<p><span style="font-weight: bold"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">t:<span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">切换显示进程和CPU状态信息。</span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></p>
+<p><span style="font-weight: bold"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">c:<span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">切换显示命令名称和完整命令行。</span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></p>
+<p><span style="font-weight: bold"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px"><span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">M:<span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">根据驻留内存大小进行排序。</span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></p>
+<p><span style="font-family: Helvetica Neue, Helvetica, Arial, sans-serif; color: rgba(51, 51, 51, 1)"><span style="font-size: 14.2857141494751px; line-height: 20px"><strong>P:<span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">根据CPU使用百分比大小进行排序。</span></strong></span></span></p>
+<p><span style="font-family: Helvetica Neue, Helvetica, Arial, sans-serif; color: rgba(51, 51, 51, 1)"><span style="font-size: 14.2857141494751px; line-height: 20px"><strong>T:<span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">根据时间/累计时间进行排序。</span></strong></span></span></p>
+<p><span style="font-family: Helvetica Neue, Helvetica, Arial, sans-serif; color: rgba(51, 51, 51, 1)"><span style="font-size: 14.2857141494751px; line-height: 20px"><strong>W:<span style="color: rgba(51, 51, 51, 1); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14.1666660308838px; line-height: 20px">将当前设置写入~/.toprc文件中。</span></strong></span></span></p>
+<p>&nbsp;</p>
+<h1 id="scroller-3" offset="1"><span style="color: rgba(0, 0, 0, 1); font-family: Microsoft YaHei; font-size: 18pt"><strong>查看多核CPU命令</strong></span><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<p>mpstat&nbsp;-P&nbsp;ALL&nbsp;&nbsp;和&nbsp;&nbsp;sar&nbsp;-P&nbsp;ALL&nbsp;</p>
+<p>说明：sar&nbsp;-P&nbsp;ALL&nbsp;&gt;&nbsp;aaa.txt&nbsp;&nbsp;&nbsp;重定向输出内容到文件&nbsp;aaa.txt</p>
+<div id="cnblogs_post_body" class="blogpost-body ">
+<p><span style="font-size: 16px"><strong>1 top&nbsp; 命令，然后按数字“1”可监控每个逻辑CPU的状况：</strong></span></p>
+<p><img src="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/1157397-20181017100533283-166393098.png" alt="" class="medium-zoom-image"></p>
+<p><strong><span style="font-size: 16px">观察上图，服务器有8个逻辑CPU，实际上是1个物理CPU。</span></strong></p>
+<p><strong><span style="font-size: 16px">如果不按1，则在top视图里面显示的是所有cpu的平均值。</span></strong></p>
+<p><strong><span style="font-size: 16px">2&nbsp; 命令：mpstat -P ALL&nbsp;</span></strong></p>
+<p><img src="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/1157397-20181017100751739-411311577.png" alt="" class="medium-zoom-image"></p>
+<p><span style="font-size: 16px"><strong>3 命令：sar -P ALL</strong></span></p>
+<p>输出较多，可grep或者重定向至文件查看</p>
+<p><img src="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/1157397-20181017100959747-1149535457.png" alt="" class="medium-zoom-image"></p>
+
+
+
+
+
+</div>
+<p>&nbsp;</p>
+<h1 id="scroller-4" offset="1"><span style="color: rgba(0, 0, 0, 1); font-size: 18pt"><strong><span style="font-family: Microsoft YaHei">进程字段排序</span></strong></span><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<p>默认进入top时，各进程是按照CPU的占用量来排序的，在【top视图&nbsp;01】中进程ID为14210的java进程排在第一（cpu
+占用100%），进程ID为14183的java进程排在第二（cpu占用12%）。可通过键盘指令来改变排序字段，比如想监控哪个进程占用MEM最多，
+我一般的使用方法如下：</p>
+<p align="left">1.&nbsp;敲击键盘“b”（打开/关闭加亮效果），top的视图变化如下：</p>
+<p align="left">&nbsp;&nbsp;&nbsp; <img src="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/16027-20160520170619748-1167793600.png" alt="" class="medium-zoom-image"></p>
+<p align="left"> 我们发现进程id为12363的“top”进程被加亮了，top进程就是视图第二行显示的唯一的运行态（runing）的那个进程，可以通过敲击“y”键关闭或打开运行态进程的加亮效果。<br>2.&nbsp;敲击键盘“x”（打开/关闭排序列的加亮效果），top的视图变化如下：<br>   可以看到，top默认的排序列是“%CPU”。<br>3.&nbsp;通过”shift&nbsp;+&nbsp;&gt;”或”shift&nbsp;+&nbsp;&lt;”可以向右或左改变排序列，下图是按一次”shift&nbsp;+&nbsp;&gt;”的效果图：</p>
+<p align="left">&nbsp;<img src="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/16027-20160520170639419-1365814857.png" alt="" class="medium-zoom-image"></p>
+<p align="left">视图现在已经按照%MEM来排序了。</p>
+<p align="left">&nbsp;</p>
+<h1 id="scroller-5" offset="1"><span style="color: rgba(0, 0, 0, 1); font-size: 18pt"><strong>改变进程显示字段</strong></span><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<p align="left">1.&nbsp;敲击“f”键，top进入另一个视图，在这里可以编排基本视图中的显示字段：</p>
+<p align="left">&nbsp;<img src="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/16027-20160520170651982-1680445705.png" alt="" class="medium-zoom-image"></p>
+<p align="left">&nbsp;这里列出了所有可在top基本视图中显示的进程字段，有”*”并且标注为大写字母的字段是可显示的，没有”*”并且是小写字母的字段是不显示的。如果要在基本视图中显示“CODE”和“DATA”两个字段，可以通过敲击“r”和“s”键：</p>
+<p align="left">&nbsp;2.&nbsp;“回车”返回基本视图，可以看到多了“CODE”和“DATA”两个字段：</p>
+<p align="left">&nbsp;<img src="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/16027-20160520170703669-112634148.png" alt="" class="medium-zoom-image"></p>
+<p align="left"><span style="font-family: Microsoft YaHei; font-size: 15px">&nbsp;</span></p>
+<h1 class="postTitle" id="scroller-6" offset="1"><strong><span class="postTitle2" style="font-family: Microsoft YaHei; font-size: 18pt">Linux查看物理CPU个数、核数、逻辑CPU个数</span></strong><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/copycode.gif" alt="复制代码"></a></span></div>
+<div class="clipboard-button" id="copy_btn_0 " data-clipboard-target="#copy_target_0" title="复制代码" style="padding: 4px; border-radius: 2px; text-align: right; user-select: none;">复制代码</div><pre id="copy_target_0"># 总核数 =<span style="color: rgba(0, 0, 0, 1)"> 物理CPU个数 X 每颗物理CPU的核数 
+# 总逻辑CPU数 </span>=<span style="color: rgba(0, 0, 0, 1)"> 物理CPU个数 X 每颗物理CPU的核数 X 超线程数
+
+# 查看物理CPU个数
+cat </span>/proc/cpuinfo| grep <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">physical id</span><span style="color: rgba(128, 0, 0, 1)">"</span>| sort| uniq| wc -<span style="color: rgba(0, 0, 0, 1)">l
+
+# 查看每个物理CPU中core的个数(即核数)
+cat </span>/proc/cpuinfo| grep <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">cpu cores</span><span style="color: rgba(128, 0, 0, 1)">"</span>|<span style="color: rgba(0, 0, 0, 1)"> uniq
+
+# 查看逻辑CPU的个数
+cat </span>/proc/cpuinfo| grep <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">processor</span><span style="color: rgba(128, 0, 0, 1)">"</span>| wc -l</pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p>查看CPU信息（型号）<br>cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c</p>
+<p>&nbsp;</p>
+<p>
+
+<span style="color: rgba(0, 153, 2, 1)">查看内 存信息<br style="color: rgba(0, 153, 2, 1)"><span style="color: rgba(0, 153, 2, 1)"># cat /proc/meminfo</span></span></p>
+<p>&nbsp;</p>
+</div>
+<div class="clear"></div>
+<div id="blog_post_info_block" role="contentinfo"><div id="BlogPostCategory">
+    分类: 
+            <a href="https://www.cnblogs.com/niuben/category/1314338.html" target="_blank">Linux</a></div>
+<div id="EntryTag">
+    标签: 
+            <a href="https://www.cnblogs.com/niuben/tag/linux/">linux</a></div>
+
+    <div id="blog_post_info">
+<div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(12017242,cb_blogId,1);green_channel_success(this,'谢谢推荐！');">好文要顶</a>
+        <a id="green_channel_follow" onclick="follow('26821f0f-9b1b-481c-0190-08d52f269006');" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/niuben/" target="_blank"><img src="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/20190407095647.png" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/niuben/">牛奔</a><br>
+            <a href="https://home.cnblogs.com/u/niuben/followees/">关注 - 27</a><br>
+            <a href="https://home.cnblogs.com/u/niuben/followers/">粉丝 - 82</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow">
+                <a href="javascript:void(0);" onclick="follow('26821f0f-9b1b-481c-0190-08d52f269006');return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(12017242,'Digg')">
+        <span class="diggnum" id="digg_count">40</span>
+    </div>
+    <div class="buryit" onclick="votePost(12017242,'Bury')">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+    <div class="clear"></div>
+    <div id="post_next_prev">
+
+    <a href="https://www.cnblogs.com/niuben/p/12016660.html" class="p_n_p_prefix">« </a> 上一篇：    <a href="https://www.cnblogs.com/niuben/p/12016660.html" title="发布于 2019-12-10 14:54">SSH远程会话管理工具 - screen使用教程</a>
+    <br>
+    <a href="https://www.cnblogs.com/niuben/p/12017501.html" class="p_n_p_prefix">» </a> 下一篇：    <a href="https://www.cnblogs.com/niuben/p/12017501.html" title="发布于 2019-12-10 16:33">nginx ip配置反向代理为本地域名</a>
+
+</div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date">2019-12-10 16:02</span>&nbsp;
+<a href="https://www.cnblogs.com/niuben/">牛奔</a>&nbsp;
+阅读(<span id="post_view_count">210668</span>)&nbsp;
+评论(<span id="post_comment_count">13</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=12017242" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(12017242);return false;">收藏</a>&nbsp;
+<a href="javascript:void(0)" onclick="reportManager.report({ currentUserId: '', targetType: 'blogPost', targetId: '12017242', targetLink: 'https://www.cnblogs.com/niuben/p/12017242.html', title: 'Linux top命令详解' })">举报</a></div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+
+<script>
+    var cb_entryId = 12017242, cb_entryCreatedDate = '2019-12-10 16:02', cb_postType = 1;
+    var allowComments = true, cb_blogId = 402670, cb_blogApp = 'niuben', cb_blogUserGuid = '26821f0f-9b1b-481c-0190-08d52f269006';
+    mermaidRender.render()
+    markdown_highlight()
+    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");
+    updatePostStats(
+            [cb_entryId],
+            function(id, count) { $("#post_view_count").text(count) },
+            function(id, count) { $("#post_comment_count").text(count) })
+</script>
+<a id="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="#" onclick="return RefreshPage();">刷新页面</a><a href="#top">返回顶部</a></div>
+    <div id="comment_form_container" style="visibility: visible;"><div class="login_tips">
+    登录后才能查看或发表评论，立即 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return account.login('!comments');">登录</a> 或者
+    <a href="https://www.cnblogs.com/">逛逛</a> 博客园首页
+</div>
+</div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="cnblogs_ch"><a href="https://cloud.baidu.com/campaign/2022/index.html?track=f685c156ee58624f28cc3a33e1947160036fe70e52355ff7#person" target="_blank" onclick="gtag('event', 'click', {'event_category': 'ad', 'event_label': 'T2-百度智能云-开年采购季'})">【推荐】百度智能云2022开年大促0.4折起，企业新用户享高配优惠</a><br><a href="https://developer.huawei.com/consumer/cn/forum/topic/0201833401197920098?fid=18&amp;ha_source=bokeyuan" target="_blank" onclick="gtag('event', 'click', {'event_category': 'ad', 'event_label': 'T2-华为专区-移动应用白皮书'})">【推荐】开发者必读：华为 2022 年移动应用趋势洞察白皮书</a><br></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="under-post-card" style="">
+            <div id="div-gpt-ad-1592365906576-0" style="width: 300px; height: 250px;" data-google-query-id="CKzRptTE8PYCFU8KXAod4AoKDg"><div id="google_ads_iframe_/1090369/C1_0__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/1090369/C1_0" name="google_ads_iframe_/1090369/C1_0" title="3rd party ad content" scrolling="no" marginwidth="0" marginheight="0" style="border: 0px none; vertical-align: bottom;" role="region" aria-label="Advertisement" tabindex="0" srcdoc="" data-google-container-id="1" data-load-complete="true" width="300" height="250" frameborder="0"></iframe></div></div>
+    </div>
+    <div id="under_post_card1"><div class="under-post-card">
+<b>编辑推荐：</b>
+<br>
+
+· <a href="https://www.cnblogs.com/skychen1218/p/16068503.html" target="_blank">记我第一次做线下技术分享的那些事</a>
+    <br>
+· <a href="https://www.cnblogs.com/thisiswhy/p/16066548.html" target="_blank">换个数据结构，一不小心节约了 591 台机器！</a>
+    <br>
+· <a href="https://www.cnblogs.com/tcjiaan/p/16058491.html" target="_blank">[ASP.NET Core] MVC 模型绑定：非规范正文内容的处理</a>
+    <br>
+· <a href="https://www.cnblogs.com/yexiaochai/p/16041013.html" target="_blank">全面认识数据指标体系</a>
+    <br>
+· <a href="https://www.cnblogs.com/weixiao-he/p/16051730.html" target="_blank">项目开发中对成长的一些思考</a>
+    <br>
+</div></div>
+        <div id="cnblogs_c2" class="under-post-card">
+            <a href="https://developer.huawei.com/consumer/cn/forum/topic/0201833401197920098?fid=18&amp;ha_source=bokeyuan" rel="nofollow" target="_blank" onclick="countCreativeClicks('C2-华为专区-补量-移动应用白皮书')">
+                <img src="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/35695-20220329191439390-706965398.jpg" alt="" onload="countCreativeImpressions('C2-华为专区-补量-移动应用白皮书')">
+            </a>
+        </div>
+    <div id="under_post_card2"><div class="itnews under-post-card">
+    <b>最新新闻</b>：
+    <br>
+ ·          <a href="https://news.cnblogs.com/n/717929/" target="_blank">新冠病毒未来会如何演化</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/717928/" target="_blank">大众上海工厂因零部件短缺减产</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/717927/" target="_blank">环保组织推动比特币网络放弃耗能代码</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/717926/" target="_blank">波士顿动力的物流机器人开售</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/717925/" target="_blank">俄罗斯搜索巨头面临半导体硬件短缺</a>
+        <br>
+    » <a href="https://news.cnblogs.com/" title="IT 新闻" target="_blank">更多新闻...</a>
+</div></div>
+    <div id="HistoryToday" class="under-post-card"></div>
+    <script type="text/javascript">
+        var commentManager = new blogCommentManager();
+        commentManager.renderComments(0);
+        fixPostBody();
+
+                window.tocManager.displayDisableTocTips = false;
+                window.tocManager.generateToc();
+            setTimeout(function() { incrementViewCount(cb_entryId); }, 50);        deliverT2();
+        deliverC1C2();
+        loadNewsAndKb();
+LoadPostCategoriesTags(cb_blogId, cb_entryId);        LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+        GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+        loadOptUnderPost();
+        GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    </script>
+</div>
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+	<div id="sideBar">
+		<!--end: sideBarMain -->
+	<div id="sidebar_scroller" class="catListPostArchive sidebar-block stuckMenu isStuck" style="width: 320px; position: fixed; top: 0px;"><h3 class="catListTitle">导航目录</h3><ul class="nav"><li class="scroller-offset1"><a href="#scroller-0">top参数详解</a></li><li class="scroller-offset1"><a href="#scroller-1">top使用方法</a></li><li class="scroller-offset1"><a href="#scroller-2">常用命令说明</a></li><li class="scroller-offset1"><a href="#scroller-3">查看多核CPU命令</a></li><li class="scroller-offset1"><a href="#scroller-4">进程字段排序</a></li><li class="scroller-offset1"><a href="#scroller-5">改变进程显示字段</a></li><li class="scroller-offset1 active"><a href="#scroller-6">Linux查看物理CPU个数、核数、逻辑CPU个数</a></li></ul></div></div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer"><a href="#navigator" class="upToNav"></a>
+		<!--done-->
+Copyright © 2022 牛奔
+<br><span id="poweredby">Powered by .NET 6 on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+    <div id="page_end_html">
+        
+<!--代码复制-->
+<script src="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/clipboard.js"></script>
+
+<!--主题-->
+<script src="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/gshang.js"></script>
+<!--scrollTo-->
+<script src="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/jquery.js"></script>
+<!--owo表情-->
+<script src="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/gshang_002.js"></script>
+<link rel="stylesheet" href="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/gshang.css">
+<!-- import Vue.js -->
+<script src="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/vue.js"></script>
+    </div><script type="text/javascript">
+	// 设置公告
+	var news = 
+[
+'<a href="https://www.cnblogs.com/gshang/p/biliTheme.html#scroller-3">主题已经升级至V2.0.7，点击查看</a>',
+'武汉加油 🇨🇳 中国加油!',
+'<a href="https://epi.starsee.cn/">全国疫情趋势AI预测</a>',
+'<a href="https://j-x.gitee.io/home/yiqing/covid-19">武汉光谷周边小区疫情地图</a>',
+
+]
+	// 设置博客信息
+	var myprofile = [{
+		blogName: "牛奔",
+		blogAvatar: "",
+		blogSign: "只有你变得足够优秀，才能遇到更加优秀的人。",
+		blogFollow: "follow('30807ee3-3273-4cff-72df-08d619358b99')",
+		QQ: "2474246886",
+		Github: "https://github.com/OnlyDawn",
+		WeChat: "https://files-cdn.cnblogs.com/files/niuben/qrcode_for_gh_1433f3bd421f_258.bmp"
+	}];
+
+	// 设置首页轮播
+	var mybanner = [
+{
+			url: "https://www.cnblogs.com/gshang/p/12318492.html",
+			img: "https://images.cnblogs.com/cnblogs_com/gshang/1609278/o_200216143950Wuhan.jpg",
+			title: "武汉加油！"
+		},
+	{
+			url: "https://news.ifeng.com/c/special/7tPlDSzDgVk",
+			img: "https://x0.ifengimg.com/ucms/2020_07/7C3B11DC8FF81E8DE68FD4A610F6CB12A0D04ED6_w1125_h483.png",
+			title: "疫情实时动态"
+		},
+		{
+			url: "https://www.cnblogs.com/gshang/p/tools.html",
+			img: "https://www.kanjiantu.com/images/2019/07/05/post169393a677253c679.png",
+			title: "实用工具分享"
+		},
+
+		{
+			url: "https://www.cnblogs.com/gshang/p/movie.html",
+			img: "https://www.kanjiantu.com/images/2019/07/05/post4242f1ce89576c2f3.png",
+			title: "动画电影分享"
+		},
+
+		{
+			url: "https://www.cnblogs.com/gshang/p/11185613.html",
+			img: "https://img2018.cnblogs.com/blog/1489774/201909/1489774-20190923190114426-2061049622.png",
+			title: "VIP视频解析"
+		},
+
+		{
+			url: "https://www.cnblogs.com/gshang/p/11135154.html",
+			img: "https://www.kanjiantu.com/images/2019/07/05/post2b40b83305f79d463.png",
+			title: "常用网站集合"
+		},
+
+	];
+
+	// 设置导航栏扩展
+
+	var mynav = [{
+			id: "blog_nav_cnblogs",
+			url: "https://home.cnblogs.com",
+			title: "园子"
+		},
+		{
+			id: "blog_nav_theme",
+			url: "javascript:changeTheme()",
+			title: "切换主题"
+		}
+	];
+$(document).ready(function(){
+	//loadNewsinfo(news); //公告
+	setFavio(myprofile); // 网页tab图像
+	loadThemeColor(); //导入主题颜色
+	extendNav(mynav); // 导航栏扩展
+	//loadBanner(mybanner); //首页轮播
+    mymd(); //自定义语法
+	setPostSideBar(); //侧边栏目录
+	loadMobileContent(); //移动端目录功能栏
+	blankTarget(); //文章链接新窗口打开
+	copyCode(); //代码块复制
+	tableScorll(); //表格滚动
+	ninghtTip(); //夜间模式提醒
+       myscroll();
+});
+
+ 
+window.onload=function(){
+setTimeout("owoEmoji()","1000"); 
+       //owo表情插件
+}
+
+</script><script type="text/javascript">getFollowStatus('26821f0f-9b1b-481c-0190-08d52f269006');</script><iframe style="border: 0px none; width: 0px; height: 0px; display: none;"></iframe>
+
+    <input type="hidden" id="antiforgery_token" value="CfDJ8AuMt_3FvyxIgNOR82PHE4k0rIKj-E025ppGG8NNTtKmYizxEvh3rzHfFTVTYN2DtcehtQtt1BmsZkX6uZar-BhgCsFCnkxc2dorC3UF8miwYRtu5XbQ-AxYiSr6N7y5Dz_MlqfCcQNX_eMW1tmIDZw">
+    <script async="" src="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/js.js"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    var kv = getGACustom();
+    if (kv) {
+        gtag('set', kv);
+    }
+    gtag('config', 'UA-476124-1');
+    </script>
+    <script defer="defer" src="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/hm.js"></script><iframe src="Linux%20top%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3_files/container.html" style="visibility: hidden; display: none;"></iframe>
+
+<iframe src="https://www.google.com/recaptcha/api2/aframe" style="display: none;" width="0" height="0"></iframe></body></html>
