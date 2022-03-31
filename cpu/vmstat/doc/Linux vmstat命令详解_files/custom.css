@@ -1,0 +1,199 @@
+#cnblogs_post_body h3 {
+	background: #009ACD;
+    color: #FFFFFF;
+	font-family: comic sans ms,"微软雅黑" , "宋体" , "黑体" ,Arial;
+    border-left: 5px solid #21759b;
+    border-right: 5px solid #21759b;
+	font-family: comic sans ms,"微软雅黑" , "宋体" , "黑体" ,Arial;
+    border-radius: 6px 6px 6px 6px !important;
+    font-size: 20px;
+    font-weight: bold;
+    height: 22px;
+    line-height: 22px;
+    padding: 5px 0 3px 15px;
+    box-shadow: 0 0 0 1px #5F5A4B, 0px 0px 6px 0px rgba(10, 10, 0, 0.5);
+}
+
+#cnblogs_post_body h1 {
+	background: #009ACD;
+    color: #FFFFFF;
+	font-family: comic sans ms,"微软雅黑" , "宋体" , "黑体" ,Arial;
+	font-size: 250%;
+    /* box-shadow: 0 0 0 1px #5F5A4B, 0px 0px 6px 0px rgba(10, 10, 0, 0.5); */
+    text-shadow: 1px 1px 1px #222222;
+    /* padding: 5px 0 5px 20px; */
+    margin:0px 0px 15px 0px;
+}
+
+
+
+#cnblogs_post_body h4 {
+	background: #009ACD;
+    color: #FFFFFF;
+	font-family: comic sans ms,"微软雅黑" , "宋体" , "黑体" ,Arial;
+    border-left: 3px solid #8888FF;
+    border-right: 3px solid #8888FF;
+    border-radius: 4px 4px 4px 4px !important;
+    padding: 3px 0 3px 18px;
+    font-size: 20px;
+    font-weight: bold;
+    height: 17px;
+    line-height: 17px;
+	font-family: comic sans ms,"微软雅黑" , "宋体" , "黑体" ,Arial;
+}
+
+#cnblogs_post_body h5 {
+	background: #009ACD;
+    color: #FFFFFF;
+	font-family: comic sans ms,"微软雅黑" , "宋体" , "黑体" ,Arial;
+    border-left: 3px solid #00dd99;
+    padding: 3px 0 3px 21px;
+    font-size: 20px;
+    font-weight: bold;
+    height: 14px;
+    line-height: 14px;
+}
+
+#cnblogs_post_body h2 {
+	background: #009ACD;
+    color: #FFFFFF;
+	font-family: comic sans ms,"微软雅黑" , "宋体" , "黑体" ,Arial;
+    border-radius: 6px 6px 6px 6px !important;
+    box-shadow: 0 0 0 1px #5F5A4B, 1px 1px 6px 1px rgba(10, 10, 0, 0.5);
+    font-size: 20px;
+    font-weight: bold;
+    height: 25px;
+    line-height: 25px;
+    margin: 15px 0 !important;
+    padding: 5px 0 5px 20px;
+    text-shadow: 2px 2px 3px #222222;
+}
+
+.day {
+    border: 1px solid #E8E7D0;
+    padding-left: 15px;
+    margin-bottom: 20px;
+    background: #fff;
+    min-height: 50px;
+    padding-bottom: 5px;
+}
+
+.dayTitle {
+    border-bottom: 0px solid #666;
+    clear: both;
+    color: #666;
+    font-size: 160%;
+    font-weight: bold;
+    line-height: 2em;
+    margin-bottom: 30px;
+    margin-top: 3px;
+    text-align: center;
+    width: 100%;
+}
+
+.postTitle {
+    border-bottom: 0px dotted #D2E4B7;
+    padding-bottom: 5px;
+    clear: both;
+    color: #64A038;
+    float: right;
+    font-size: 120%;
+    font-weight: bold;
+    line-height: 1.5em;
+    width: 100%;
+}
+
+.postTitle2 {
+    color: #f60;
+    padding-left: 22px;
+}
+
+.postTitle {
+    background: transparent
+        url(//www.cnblogs.com/images/cnblogs_com/Terrylee/147338/o_ico.gif)
+        no-repeat scroll 0% 0%;
+}
+
+a:link {
+    text-decoration: none;
+}
+
+.postTitle a:link,.postTitle a:visited,.postTitle a:active {
+    color: #f60;
+    transition: all 0.4s linear 0s;
+}
+
+.postCon {
+    clear: both;
+    float: right;
+    line-height: 26px;
+    padding: 10px 0pt;
+    width: 100%;
+}
+
+.c_b_p_desc {
+    margin-left: 10px;
+    margin-right: 15px;
+}
+
+.postDesc {
+    border-top: 1px dashed #E8E7D0;
+    clear: both;
+    color: #666666;
+    float: right;
+    margin-right: 20px;
+    margin-top: 5px;
+    padding-top: 8px;
+    text-align: right;
+    width: 96%;
+}
+
+.postSeparator {
+    margin-bottom: 30px;
+}
+
+#div_digg {
+    right: 20%;
+    width: 46px;
+    bottom: 110px;
+    position: fixed;
+    z-index: 9999;
+    background-color: #fff;
+    font-size: 12px;
+    margin: 10px 0 0;
+    padding: 5px;
+    border: 1px solid #55895b;
+    border-radius: 5px;
+    float: right;
+}
+/* 设置签名格式 定制css样式 */
+#MySignature {
+    display: none;
+    background-color: #B2E866;
+    border-radius: 10px;
+    box-shadow: 1px 1px 1px #6B6B6B;
+    padding: 10px;
+    line-height: 1.5;
+    text-shadow: 1px 1px 1px #FFF;
+    font-size: 16px;
+    font-family: 'Microsoft Yahei';
+}
+/* 定制返回顶部按键 */
+#toTop {
+    background: url(//https://images.cnblogs.com/*.bmp) no-repeat 0px top;
+    width: 57px;
+    height: 57px;
+    overflow: hidden;
+    position: fixed;
+    right: 180px;
+    bottom: 20px;
+    cursor: pointer;
+}
+/*  正文 */
+#cnblogs_post_body p {
+    font-size: 12pt;
+}
+/* 定制公告栏时钟位置 */
+#clockdiv {
+  text-align: center;
+}

@@ -1,0 +1,1894 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <link rel="canonical" href="https://blog.csdn.net/m0_38110132/article/details/84190319"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="renderer" content="webkit"/>
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="report" content='{"pid": "blog", "spm":"1001.2101"}'>
+    <meta name="referrer" content="always">
+    <meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+    <meta name="shenma-site-verification" content="5a59773ab8077d4a62bf469ab966a63b_1497598848">
+    <meta name="applicable-device" content="pc">
+    <link  href="https://g.csdnimg.cn/static/logo/favicon32.ico"  rel="shortcut icon" type="image/x-icon" />
+    <title>Linux vmstat命令实战详解_浮生忆梦的博客-CSDN博客_vmstat</title>
+    <script>
+      (function(){ 
+        var el = document.createElement("script"); 
+        el.src = "https://s3a.pstatp.com/toutiao/push.js?1abfa13dfe74d72d41d83c86d240de427e7cac50c51ead53b2e79d40c7952a23ed7716d05b4a0f683a653eab3e214672511de2457e74e99286eb2c33f4428830"; 
+        el.id = "ttzz"; 
+        var s = document.getElementsByTagName("script")[0]; 
+        s.parentNode.insertBefore(el, s);
+      })(window)
+    </script>
+        <meta name="keywords" content="vmstat">
+        <meta name="csdn-baidu-search"  content='{"autorun":true,"install":true,"keyword":"vmstat"}'>
+    <meta name="description" content="1.说明vmstat命令是最常见的Linux/Unix监控工具，属于sysstat包。可以展现给定时间间隔的服务器的状态值,包括服务器的CPU使用率，内存使用，虚拟内存交换情况,IO读写情况。这个命令是我查看Linux/Unix最喜爱的命令，一个是Linux/Unix都支持，二是相比top，我可以看到整个机器的CPU,内存,IO的使用情况，而不是单单看到各个进程的CPU使用率和内存使用率(使用...">
+    <script src="//g.csdnimg.cn/tingyun/1.8.5/blog.js" type='text/javascript'></script>
+        <link rel="stylesheet" type="text/css" href="https://csdnimg.cn/release/blogv2/dist/pc/css/detail_enter-74b279796d.min.css">
+    <script type="application/ld+json">{"@context":"https://ziyuan.baidu.com/contexts/cambrian.jsonld","@id":"https://blog.csdn.net/m0_38110132/article/details/84190319","appid":"1638831770136827","pubDate":"2018-11-17T16:47:41","title":"Linux vmstat命令实战详解_浮生忆梦的博客-CSDN博客_vmstat","upDate":"2018-11-17T16:47:41"}</script>
+        <link rel="stylesheet" type="text/css" href="https://csdnimg.cn/release/blogv2/dist/pc/themesSkin/skin3-template/skin3-template-762f7595fd.min.css">
+    <script src="https://csdnimg.cn/public/common/libs/jquery/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var isCorporate = false;//注释删除enterprise
+        var username =  "m0_38110132";
+        var skinImg = "white";
+        var blog_address = "https://blog.csdn.net/m0_38110132";
+        var currentUserName = "u013454589";
+        var isOwner = false;
+        var loginUrl = "http://passport.csdn.net/account/login?from=https://blog.csdn.net/m0_38110132/article/details/84190319";
+        var blogUrl = "https://blog.csdn.net/";
+        var avatar = "https://profile.csdnimg.cn/0/1/3/3_m0_38110132";
+        var articleTitle = "Linux vmstat命令实战详解";
+        var articleDesc = "1.说明vmstat命令是最常见的Linux/Unix监控工具，属于sysstat包。可以展现给定时间间隔的服务器的状态值,包括服务器的CPU使用率，内存使用，虚拟内存交换情况,IO读写情况。这个命令是我查看Linux/Unix最喜爱的命令，一个是Linux/Unix都支持，二是相比top，我可以看到整个机器的CPU,内存,IO的使用情况，而不是单单看到各个进程的CPU使用率和内存使用率(使用...";
+        var articleTitles = "Linux vmstat命令实战详解_浮生忆梦的博客-CSDN博客_vmstat";
+        var nickName = "浮生忆梦";
+        var articleDetailUrl = "https://blog.csdn.net/m0_38110132/article/details/84190319";
+        if(window.location.host.split('.').length == 3) {
+            blog_address = blogUrl + username;
+        }
+        var skinStatus = "White";
+        var blogStaticHost = "https://csdnimg.cn/release/blogv2/"
+        var isShowConcision = false;
+        var isCookieConcision = false
+        var isHasDirectoryModel = false
+        var isShowSideModel = false
+        var isShowDirectoryModel = true
+        function getCookieConcision(sName){
+            var allCookie = document.cookie.split("; ");
+            for (var i=0; i < allCookie.length; i++){
+                var aCrumb = allCookie[i].split("=");
+                if (sName == aCrumb[0])
+                    return aCrumb[1];
+            }
+            return null;
+        }
+        if (getCookieConcision('blog_details_concision') && getCookieConcision('blog_details_concision') == 0){
+            isCookieConcision = true
+            isShowSideModel = true
+            isShowDirectoryModel = false
+        }
+    </script>
+    <script src="https://g.csdnimg.cn/??fixed-sidebar/1.1.6/fixed-sidebar.js" type="text/javascript"></script>
+    <script src='//g.csdnimg.cn/common/csdn-report/report.js' type='text/javascript'></script>
+    <link rel="stylesheet" type="text/css" href="https://csdnimg.cn/public/sandalstrap/1.4/css/sandalstrap.min.css">
+    <style>
+        .MathJax, .MathJax_Message, .MathJax_Preview{
+            display: none
+        }
+    </style>
+    <script src="https://dup.baidustatic.com/js/ds.js"></script>
+</head>
+  <body class="nodata " style="">
+        <script>
+            var toolbarSearchExt = '{"landingWord":["vmstat"],"queryWord":"","tag":["vmstat"],"title":"Linux vmstat命令实战详解"}';
+        </script>
+    <script src="https://g.csdnimg.cn/common/csdn-toolbar/csdn-toolbar.js" type="text/javascript"></script>
+    <script>
+    (function(){
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        }
+        else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+    </script>
+<link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/pc/css/blog_code-01256533b5.min.css">
+<link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/chart-3456820cac.css" />
+
+<script>
+    var articleId = 84190319;
+    var commentscount = 6;
+    var curentUrl = "https://blog.csdn.net/m0_38110132/article/details/84190319";
+    var myUrl = "https://my.csdn.net/";
+    var highlight = ["vmstat","linux","stat","linu","inux","sta","tat","mst","lin","nux","vms","st","ux","nu","详解","ta","命令","实战","vm","li"];//高亮数组
+    var isRecommendModule = true;
+    var isBaiduPre = true;
+    var baiduCount = 2;
+    var share_card_url = "https://app-blog.csdn.net/share?article_id=84190319&username=m0_38110132"
+	var articleType = 2;
+    var baiduKey = "vmstat";
+    var userNewReport = true;
+    var needInsertBaidu = true;
+    var recommendRegularDomainArr = ["blog.csdn.net/.+/article/details/","download.csdn.net/download/","edu.csdn.net/course/detail/","ask.csdn.net/questions/","bbs.csdn.net/topics/","www.csdn.net/gather_.+/"]
+    var codeStyle = "";
+    var baiduSearchType = "baidulandingword";
+    var canRead = true;
+    var blogMoveHomeArticle = false;
+    var showPcWindowAd = false;
+    var showHeadWord = true;
+    var showSearchText = "";
+    var linkPage = true;
+    var articleSource = 1;
+    var articleReport = '{"pid": "blog", "spm":"1001.2101"}';
+    var isShowToQuestion = false;
+    var baiduSearchChannel = 'pc_relevant'
+    var baiduSearchIdentification = '.pc_relevant_default'
+    var distRequestId = '1648734781849_29506'
+    var initRewardObject = {
+        giver: currentUserName,
+        anchor: username,
+        articleId: articleId,
+        sign: ''
+    }
+    var isLikeStatus = false;
+    var isUnLikeStatus = false;
+    var studyLearnWord = "赠一年"
+    var isCurrentUserVip = false;
+    var commentIsNewBeat = "control"
+</script>
+<div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> 
+    <div class="container clearfix " id="mainBox">
+        <script>
+        if(!isCookieConcision){
+            $('.main_father').removeClass('mainfather-concision')
+            $('.main_father .container').removeClass('container-concision')
+        }
+        </script>
+        <main>
+<script type="text/javascript">
+    function getQueryString(name) {   
+      var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象  
+      var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+      if( r != null ) return decodeURIComponent( r[2] ); return '';   
+    }
+    function stripscript(s){ 
+      var pattern = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？%]") 
+      var rs = ""; 
+      for (var i = 0; i < s.length; i++) { 
+        rs = rs+s.substr(i, 1).replace(pattern, ''); 
+      } 
+      return rs; 
+    }
+    var blogHotWords = stripscript(getQueryString('utm_term')).length > 1 ? stripscript(getQueryString('utm_term')) : ''
+</script>
+<div class="blog-content-box">
+        <div class="article-header-box">
+        <div class="article-header">
+            <div class="article-title-box">
+                <h1 class="title-article" id="articleContentId">Linux vmstat命令实战详解</h1>
+            </div>
+            <div class="article-info-box">
+                <div class="article-bar-top">
+                    <img class="article-type-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/reprint.png" alt="">
+                    <div class="bar-content">
+                    <a class="follow-nickName " href="https://blog.csdn.net/m0_38110132" target="_blank" rel="noopener">浮生忆梦</a>
+                    <img class="article-time-img article-heard-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/newCurrentTime2.png" alt="">
+                    <span class="time">于&nbsp;2018-11-17 16:47:41&nbsp;发布</span>
+                    <img class="article-read-img article-heard-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/articleReadEyes2.png" alt="">
+                    <span class="read-count">36221</span>
+                    <a id="blog_detail_zk_collection" class="un-collection" data-report-click='{"mod":"popu_823","spm":"1001.2101.3001.4232","ab":"new"}'>
+                        <img class="article-collect-img article-heard-img un-collect-status isdefault" style="display:inline-block" src="https://csdnimg.cn/release/blogv2/dist/pc/img/tobarCollect2.png" alt="">
+                        <img class="article-collect-img article-heard-img collect-status isactive" style="display:none" src="https://csdnimg.cn/release/blogv2/dist/pc/img/tobarCollectionActive2.png" alt="">
+                        <span class="name">收藏</span>
+                        <span class="get-collection">
+                            166
+                        </span>
+                    </a>
+                    </div>
+                </div>
+                <div class="blog-tags-box">
+                    <div class="tags-box artic-tag-box">
+                            <span class="label">分类专栏：</span>
+                                <a class="tag-link" href="https://blog.csdn.net/m0_38110132/category_7125480.html" target="_blank" rel="noopener">Linux</a>
+                                <a class="tag-link" href="https://blog.csdn.net/m0_38110132/category_7028205.html" target="_blank" rel="noopener">工具使用</a>
+                            <span class="label">文章标签：</span>
+                                <a data-report-click='{"mod":"popu_626","spm":"1001.2101.3001.4223","strategy":"vmstat","ab":"new"}' class="tag-link" href="https://so.csdn.net/so/search/s.do?q=vmstat&amp;t=blog&amp;o=vip&amp;s=&amp;l=&amp;f=&amp;viparticle=" target="_blank" rel="noopener">vmstat</a>
+                    </div>
+                </div>
+                <div class="slide-content-box">
+                </div>
+                <div class="operating">
+                </div>
+            </div>
+        </div>
+    </div>
+        <div id="blogColumnPayAdvert">
+            <div class="column-group">
+                <div class="column-group-item column-group0 ">
+                    <div class="item-l">
+                        <a class="item-target" href="https://blog.csdn.net/m0_38110132/category_7125480.html" target="_blank" title="Linux"
+                        data-report-view='{"spm":"1001.2101.3001.6332"}'
+                        data-report-click='{"spm":"1001.2101.3001.6332"}'>
+                            <img class="item-target" src="https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="">
+                            <span class="title item-target">
+                                <span>
+                                <span class="tit">Linux</span>
+                                    <span class="dec more">同时被 2 个专栏收录<img src="https://csdnimg.cn/release/blogv2/dist/pc/img/newArrowDown1White.png" alt=""></span>
+                                </span>
+                            </span>
+                        </a>
+                    </div>
+                    <div class="item-m">
+                        <span>30 篇文章</span>
+                        <span>2 订阅</span>
+                    </div>
+                    <div class="item-r">
+                            <a class="item-target article-column-bt articleColumnFreeBt" data-id="7125480">订阅专栏</a>
+                    </div>
+                </div>
+                <div class="column-group-item column-group1 ">
+                    <div class="item-l">
+                        <a class="item-target" href="https://blog.csdn.net/m0_38110132/category_7028205.html" target="_blank" title="工具使用"
+                        data-report-view='{"spm":"1001.2101.3001.6332"}'
+                        data-report-click='{"spm":"1001.2101.3001.6332"}'>
+                            <img class="item-target" src="https://img-blog.csdnimg.cn/20201014180756925.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="">
+                            <span class="title item-target">
+                                <span>
+                                <span class="tit">工具使用</span>
+                                </span>
+                            </span>
+                        </a>
+                    </div>
+                    <div class="item-m">
+                        <span>23 篇文章</span>
+                        <span>0 订阅</span>
+                    </div>
+                    <div class="item-r">
+                            <a class="item-target article-column-bt articleColumnFreeBt" data-id="7028205">订阅专栏</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <article class="baidu_pl">
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-163de54645.css">
+                <div id="content_views" class="htmledit_views">
+                    <h2>1.说明</h2> 
+<p>vmstat命令是最常见的Linux/Unix监控工具&#xff0c;属于sysstat包。可以展现给定时间间隔的服务器的状态值,包括服务器的CPU使用率&#xff0c;内存使用&#xff0c;虚拟内存交换情况,IO读写情况。这个命令是我查看Linux/Unix最喜爱的命令&#xff0c;一个是Linux/Unix都支持&#xff0c;二是相比top&#xff0c;我可以看到整个机器的CPU,内存,IO的使用情况&#xff0c;而不是单单看到各个进程的CPU使用率和内存使用率(使用场景不一样)。</p> 
+<h2>2.安装</h2> 
+<pre class="has"><code>yum install -y sysstat</code></pre> 
+<p>一般vmstat工具的使用是通过两个数字参数来完成的&#xff0c;第一个参数是采样的时间间隔数&#xff0c;单位是秒&#xff0c;第二个参数是采样的次数&#xff0c;如:</p> 
+<pre class="has"><code>root&#64;local:~# vmstat 2 1
+procs -----------memory---------- ---swap-- -----io---- -system-- ----cpu----
+ r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa
+ 1  0      0 3498472 315836 3819540    0    0     0     1    2    0  0  0 100  0</code></pre> 
+<p><br /> 2表示每个两秒采集一次服务器状态&#xff0c;1表示只采集一次。</p> 
+<p>实际上&#xff0c;在应用过程中&#xff0c;我们会在一段时间内一直监控&#xff0c;不想监控直接结束vmstat就行了,例如:</p> 
+<p> </p> 
+<pre class="has"><code>root&#64;local:~# vmstat 2  
+procs -----------memory---------- ---swap-- -----io---- -system-- ----cpu----
+ r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa
+ 1  0      0 3499840 315836 3819660    0    0     0     1    2    0  0  0 100  0
+ 0  0      0 3499584 315836 3819660    0    0     0     0   88  158  0  0 100  0
+ 0  0      0 3499708 315836 3819660    0    0     0     2   86  162  0  0 100  0
+ 0  0      0 3499708 315836 3819660    0    0     0    10   81  151  0  0 100  0
+ 1  0      0 3499732 315836 3819660    0    0     0     2   83  154  0  0 100  0</code></pre> 
+<p>这表示vmstat每2秒采集数据&#xff0c;一直采集&#xff0c;直到我结束程序&#xff0c;这里采集了5次数据我就结束了程序。</p> 
+<h2><strong>3.</strong><strong>字段含义说明&#xff1a;</strong></h2> 
+<table border="1" cellpadding="0" cellspacing="0"><tbody><tr><td style="vertical-align:top;"> <p><strong>类别</strong></p> </td><td style="vertical-align:top;"> <p><strong>项目</strong></p> </td><td style="vertical-align:top;width:197px;"> <p><strong>含义</strong></p> </td><td style="vertical-align:top;width:505px;"> <p><strong>说明</strong></p> </td></tr><tr><td rowspan="2" style="vertical-align:top;"> <p><strong>Procs</strong><strong>&#xff08;进程&#xff09;</strong></p> </td><td style="vertical-align:top;"> <p>r</p> </td><td style="vertical-align:top;width:197px;"> <p><strong>等待执行的任务数</strong></p> </td><td style="vertical-align:top;width:505px;"> <p><strong>展示了正在执行和等待cpu资源的任务个数。当这个值超过了cpu个数&#xff0c;就会出现cpu瓶颈。</strong></p> </td></tr><tr><td style="vertical-align:top;"> <p>B</p> </td><td style="vertical-align:top;width:197px;"> <p>等待IO的进程数量</p> </td><td style="vertical-align:top;width:505px;"> <p> </p> </td></tr><tr><td rowspan="6" style="vertical-align:top;"> <p><strong>Memory(</strong><strong>内存</strong><strong>)</strong></p> </td><td style="vertical-align:top;"> <p>swpd</p> </td><td style="vertical-align:top;width:197px;"> <p>正在使用虚拟的内存大小&#xff0c;单位k</p> </td><td style="vertical-align:top;width:505px;"> <p> </p> </td></tr><tr><td style="vertical-align:top;"> <p>free</p> </td><td style="vertical-align:top;width:197px;"> <p>空闲内存大小</p> </td><td style="vertical-align:top;width:505px;"> <p> </p> </td></tr><tr><td style="vertical-align:top;"> <p>buff</p> </td><td style="vertical-align:top;width:197px;"> <p>已用的buff大小&#xff0c;对块设备的读写进行缓冲</p> </td><td style="vertical-align:top;width:505px;"> <p> </p> </td></tr><tr><td style="vertical-align:top;"> <p>cache</p> </td><td style="vertical-align:top;width:197px;"> <p>已用的cache大小&#xff0c;文件系统的cache</p> </td><td style="vertical-align:top;width:505px;"> <p> </p> </td></tr><tr><td style="vertical-align:top;"> <p>inact</p> </td><td style="vertical-align:top;width:197px;"> <p>非活跃内存大小&#xff0c;即被标明可回收的内存&#xff0c;区别于free和active</p> </td><td style="vertical-align:top;width:505px;"> <p>具体含义见&#xff1a;概念补充&#xff08;当使用-a选项时显示&#xff09;</p> </td></tr><tr><td style="vertical-align:top;"> <p>active</p> </td><td style="vertical-align:top;width:197px;"> <p>活跃的内存大小</p> </td><td style="vertical-align:top;width:505px;"> <p>具体含义见&#xff1a;概念补充&#xff08;当使用-a选项时显示&#xff09;</p> </td></tr><tr><td rowspan="2" style="vertical-align:top;"> <p><strong>Swap</strong></p> </td><td style="vertical-align:top;"> <p>si</p> </td><td style="vertical-align:top;width:197px;"> <p>每秒从交换区写入内存的大小&#xff08;单位&#xff1a;kb/s&#xff09;</p> </td><td style="vertical-align:top;width:505px;"> <p> </p> </td></tr><tr><td style="vertical-align:top;"> <p>so</p> </td><td style="vertical-align:top;width:197px;"> <p>每秒从内存写到交换区的大小</p> </td><td style="vertical-align:top;width:505px;"> <p> </p> </td></tr><tr><td rowspan="2" style="vertical-align:top;"> <p><strong>IO</strong></p> </td><td style="vertical-align:top;"> <p>bi</p> </td><td style="vertical-align:top;width:197px;"> <p>每秒读取的块数&#xff08;读磁盘&#xff09;</p> </td><td style="vertical-align:top;width:505px;"> <p>块设备每秒接收的块数量&#xff0c;单位是block&#xff0c;这里的块设备是指系统上所有的磁盘和其他块设备&#xff0c;现在的Linux版本块的大小为1024bytes</p> </td></tr><tr><td style="vertical-align:top;"> <p>bo</p> </td><td style="vertical-align:top;width:197px;"> <p>每秒写入的块数&#xff08;写磁盘&#xff09;</p> </td><td style="vertical-align:top;width:505px;"> <p>块设备每秒发送的块数量&#xff0c;单位是block</p> </td></tr><tr><td rowspan="2" style="vertical-align:top;"> <p><strong>system</strong></p> </td><td style="vertical-align:top;"> <p>in</p> </td><td style="vertical-align:top;width:197px;"> <p><strong>每秒中断数&#xff0c;包括时钟中断</strong></p> </td><td rowspan="2" style="vertical-align:top;width:505px;"> <p><strong>这两个值越大&#xff0c;会看到由内核消耗的cpu时间sy会越多</strong></p> <p> </p> <p><strong>秒上下文切换次数&#xff0c;例如我们调用系统函数&#xff0c;就要进行上下文切换&#xff0c;线程的切换&#xff0c;也要进程上下文切换&#xff0c;这个值要越小越好&#xff0c;太大了&#xff0c;<u>要考虑调低线程或者进程的数目</u></strong></p> </td></tr><tr><td style="vertical-align:top;"> <p>cs</p> </td><td style="vertical-align:top;width:197px;"> <p><strong>每秒上下文切换数</strong></p> </td></tr><tr><td rowspan="4" style="vertical-align:top;"> <p><strong>CPU</strong><strong>&#xff08;以百分比表示&#xff09;</strong></p> </td><td style="vertical-align:top;"> <p>us</p> </td><td style="vertical-align:top;width:197px;"> <p>用户进程执行消耗cpu时间(user time)</p> </td><td style="vertical-align:top;width:505px;"> <p>us的值比较高时&#xff0c;说明用户进程消耗的cpu时间多&#xff0c;<strong>但是如果长期超过50%的使用&#xff0c;那么我们就该考虑优化程序算法或其他措施了</strong></p> </td></tr><tr><td style="vertical-align:top;"> <p>sy</p> </td><td style="vertical-align:top;width:197px;"> <p>系统进程消耗cpu时间(system time)</p> </td><td style="vertical-align:top;width:505px;"> <p>sys的值过高时&#xff0c;说明系统内核消耗的cpu资源多&#xff0c;这个不是良性的表现&#xff0c;我们应该检查原因。<strong>这里us &#43; sy的参考值为80%&#xff0c;如果us&#43;sy 大于 80%说明可能存在CPU不足</strong></p> </td></tr><tr><td style="vertical-align:top;"> <p>Id</p> </td><td style="vertical-align:top;width:197px;"> <p>空闲时间(包括IO等待时间)</p> </td><td style="vertical-align:top;width:505px;"> <p>一般来说 us&#43;sy&#43;id&#61;100</p> </td></tr><tr><td style="vertical-align:top;"> <p>wa</p> </td><td style="vertical-align:top;width:197px;"> <p>等待IO时间</p> </td><td style="vertical-align:top;width:505px;"> <p>wa过高时&#xff0c;说明io等待比较严重&#xff0c;这可能是由于磁盘大量随机访问造成的&#xff0c;也有可能是磁盘的带宽出现瓶颈。</p> </td></tr></tbody></table>
+<p> </p> 
+<h2><strong>4、常见问题处理</strong></h2> 
+<h3><strong>4.1 常见问题及解决方法</strong></h3> 
+<p>如果r经常大于4&#xff0c;且id经常少于40&#xff0c;表示cpu的负荷很重。</p> 
+<p>如果pi&#xff0c;po长期不等于0&#xff0c;表示内存不足。</p> 
+<p>如果disk经常不等于0&#xff0c;且在b中的队列大于3&#xff0c;表示io性能不好。</p> 
+<p>1.)如果在processes中运行的序列(process r)是连续的大于在系统中的CPU的个数表示系统现在运行比较慢,有多数的进程等待CPU。</p> 
+<p>2.)如果r的输出数大于系统中可用CPU个数的4倍的话,则系统面临着CPU短缺的问题,或者是CPU的速率过低,系统中有多数的进程在等待CPU,造成系统中进程运行过慢。</p> 
+<p>3.)如果空闲时间(cpu id)持续为0并且系统时间(cpu sy)是用户时间的两倍(cpu us)系统则面临着CPU资源的短缺。</p> 
+<p>当发生以上问题的时候请先调整应用程序对CPU的占用情况.使得应用程序能够更有效的使用CPU.同时可以考虑增加更多的CPU.  关于CPU的使用情况还可以结合mpstat,  ps aux top  prstat –a等等一些相应的命令来综合考虑关于具体的CPU的使用情况,和那些进程在占用大量的CPU时间.一般情况下&#xff0c;应用程序的问题会比较大一些.比如一些sql语句不合理等等都会造成这样的现象.</p> 
+<p>内存问题现象:</p> 
+<p>内存的瓶颈是由scan rate (sr)来决定的.scan rate是通过每秒的始终算法来进行页扫描的.如果scan rate(sr)连续的大于每秒200页则表示可能存在内存缺陷.同样的如果page项中的pi和po这两栏表示每秒页面的调入的页数和每秒调出的页数.如果该值经常为非零值,也有可能存在内存的瓶颈,当然,如果个别的时候不为0的话,属于正常的页面调度这个是虚拟内存的主要原理.</p> 
+<p>解决办法: <br /> 1.调节applications &amp; servers使得对内存和cache的使用更加有效.</p> 
+<p>2.增加系统的内存.</p> 
+<p>3. Implement priority paging in s in pre solaris 8 versions by adding line &#34;set priority paging&#61;1&#34; in /etc/system. Remove this line if upgrading from Solaris 7 to 8 &amp; retaining old /etc/system file.</p> 
+<p>关于内存的使用情况还可以结ps aux top  prstat –a等等一些相应的命令来综合考虑关于具体的内存的使用情况,和那些进程在占用大量的内存.一般情况下&#xff0c;如果内存的占用率比较高,但是,CPU的占用很低的时候,可以考虑是有很多的应用程序占用了内存没有释放,但是,并没有占用CPU时间,可以考虑应用程序,对于未占用CPU时间和一些后台的程序,释放内存的占用。</p> 
+<p><strong>r</strong> 表示运行队列(就是说多少个进程真的分配到CPU)&#xff0c;我测试的服务器目前CPU比较空闲&#xff0c;没什么程序在跑&#xff0c;当这个值超过了CPU数目&#xff0c;就会出现CPU瓶颈了。这个也和top的负载有关系&#xff0c;一般负载超过了3就比较高&#xff0c;超过了5就高&#xff0c;超过了10就不正常了&#xff0c;服务器的状态很危险。top的负载类似每秒的运行队列。如果运行队列过大&#xff0c;表示你的CPU很繁忙&#xff0c;一般会造成CPU使用率很高。</p> 
+<h2><strong>5.常见性能问题分析</strong></h2> 
+<p><strong> IO/CPU/men连锁反应</strong><br />     1.free急剧下降<br />     2.buff和cache被回收下降&#xff0c;但也无济于事<br />     3.依旧需要使用大量swap交换分区swpd<br />     4.等待进程数&#xff0c;b增多<br />     5.读写IO&#xff0c;bi bo增多<br />     6.si so大于0开始从硬盘中读取<br />     7.cpu等待时间用于 IO等待&#xff0c;wa增加<br /><strong>内存不足</strong><br />     1.开始使用swpd&#xff0c;swpd不为0<br />     2.si so大于0开始从硬盘中读取<br /><strong>io瓶颈</strong><br />     1.读写IO&#xff0c;bi bo增多超过2000<br />     2.cpu等待时间用于 IO等待&#xff0c;wa增加 超过20<br />     3.sy 系统调用时间长&#xff0c;IO操作频繁会导致增加 &gt;30%<br />     4.wa io等待时间长<br />         iowait% &lt;20%            良好<br />         iowait% &lt;35%            一般<br />         iowait% &gt;50%<br />     5.进一步使用iostat观察<br /><strong>CPU瓶颈&#xff1a;load,vmstat中r列</strong><br />     1.反应为CPU队列长度<br />     2.一段时间内&#xff0c;CPU正在处理和等待CPU处理的进程数之和&#xff0c;直接反应了CPU的使用和申请情况。<br />     3.理想的load average&#xff1a;核数*CPU数*0.7<br />         CPU个数&#xff1a;grep &#39;physical id&#39; /proc/cpuinfo | sort -u<br />         核数&#xff1a;grep &#39;core id&#39; /proc/cpuinfo | sort -u | wc -l<br />     4.超过这个值就说明已经是CPU瓶颈了<br /><strong>CPU瓶颈</strong><br />     1.us 用户CPU时间高超过90%<br /> 涉及到web服务器&#xff0c;cs 每秒上下文切换次数<br />     例如我们调用系统函数&#xff0c;就要进行上下文切换&#xff0c;线程的切换&#xff0c;也要进程上下文切换&#xff0c;这个值要越小越好&#xff0c;太大了&#xff0c;要考虑调低线程或者进程的数目,例如在apache和nginx这种web服务器中&#xff0c;我们一般做性能测试时会进行几千并发甚至几万并发的测试&#xff0c;选择web服务器的进程可以由进程或者线程的峰值一直下调&#xff0c;压测&#xff0c;直到cs到一个比较小的值&#xff0c;这个进程和线程数就是比较合适的值了。系统调用也是&#xff0c;每次调用系统函数&#xff0c;我们的代码就会进入内核空间&#xff0c;导致上下文切换&#xff0c;这个是很耗资源&#xff0c;也要尽量避免频繁调用系统函数。上下文切换次数过多表示你的CPU大部分浪费在上下文切换&#xff0c;导致CPU干正经事的时间少了&#xff0c;CPU没有充分利用&#xff0c;是不可取的。<br />     1.cs可以对apache和nginx线程和进程数限制起到一定的参考作用<br />     2.我们一般做性能测试时会进行几千并发甚至几万并发的测试&#xff0c;选择web服务器的进程可以由进程或者线程的峰值一直下调&#xff0c;压测&#xff0c;直到cs到一个比较小的值&#xff0c;这个进程和线程数就是比较合适的值了<br /> 较好的趋势&#xff1a;主要是 swap使用少&#xff0c;swpd数值低。si so分页读取写入数值趋近于零</p> 
+<h2>6.其他说明&#xff1a;</h2> 
+<p><strong>b</strong> 表示阻塞的进程,这个不多说&#xff0c;进程阻塞&#xff0c;大家懂的。</p> 
+<p><strong>swpd</strong> 虚拟内存已使用的大小&#xff0c;如果大于0&#xff0c;表示你的机器物理内存不足了&#xff0c;如果不是程序内存泄露的原因&#xff0c;那么你该升级内存了或者把耗内存的任务迁移到其他机器。</p> 
+<p><strong>free</strong>   空闲的物理内存的大小&#xff0c;我的机器内存总共8G&#xff0c;剩余3415M。</p> 
+<p><strong>buff</strong>   Linux/Unix系统是用来存储&#xff0c;目录里面有什么内容&#xff0c;权限等的缓存&#xff0c;我本机大概占用300多M</p> 
+<p><strong>cache</strong> cache直接用来记忆我们打开的文件,给文件做缓冲&#xff0c;我本机大概占用300多M(这里是Linux/Unix的聪明之处&#xff0c;把空闲的物理内存的一部分拿来做文件和目录的缓存&#xff0c;是为了提高 程序执行的性能&#xff0c;当程序使用内存时&#xff0c;buffer/cached会很快地被使用。)</p> 
+<p><strong>si</strong>  每秒从磁盘读入虚拟内存的大小&#xff0c;如果这个值大于0&#xff0c;表示物理内存不够用或者内存泄露了&#xff0c;要查找耗内存进程解决掉。我的机器内存充裕&#xff0c;一切正常。</p> 
+<p><strong>so</strong>  每秒虚拟内存写入磁盘的大小&#xff0c;如果这个值大于0&#xff0c;同上。</p> 
+<p><strong>bi</strong>  块设备每秒接收的块数量&#xff0c;这里的块设备是指系统上所有的磁盘和其他块设备&#xff0c;默认块大小是1024byte&#xff0c;我本机上没什么IO操作&#xff0c;所以一直是0&#xff0c;但是我曾在处理拷贝大量数据(2-3T)的机器上看过可以达到140000/s&#xff0c;磁盘写入速度差不多140M每秒</p> 
+<p><strong>bo</strong> 块设备每秒发送的块数量&#xff0c;例如我们读取文件&#xff0c;bo就要大于0。bi和bo一般都要接近0&#xff0c;不然就是IO过于频繁&#xff0c;需要调整。</p> 
+<p><strong>in</strong> 每秒CPU的中断次数&#xff0c;包括时间中断</p> 
+<p><strong>cs</strong> 每秒上下文切换次数&#xff0c;例如我们调用系统函数&#xff0c;就要进行上下文切换&#xff0c;线程的切换&#xff0c;也要进程上下文切换&#xff0c;这个值要越小越好&#xff0c;太大了&#xff0c;要考虑调低线程或者进程的数目,例如在apache和nginx这种web服务器中&#xff0c;我们一般做性能测试时会进行几千并发甚至几万并发的测试&#xff0c;选择web服务器的进程可以由进程或者线程的峰值一直下调&#xff0c;压测&#xff0c;直到cs到一个比较小的值&#xff0c;这个进程和线程数就是比较合适的值了。系统调用也是&#xff0c;每次调用系统函数&#xff0c;我们的代码就会进入内核空间&#xff0c;导致上下文切换&#xff0c;这个是很耗资源&#xff0c;也要尽量避免频繁调用系统函数。上下文切换次数过多表示你的CPU大部分浪费在上下文切换&#xff0c;导致CPU干正经事的时间少了&#xff0c;CPU没有充分利用&#xff0c;是不可取的。</p> 
+<p><strong>us</strong> 用户CPU时间&#xff0c;我曾经在一个做加密解密很频繁的服务器上&#xff0c;可以看到us接近100,r运行队列达到80(机器在做压力测试&#xff0c;性能表现不佳)。</p> 
+<p><strong>sy</strong> 系统CPU时间&#xff0c;如果太高&#xff0c;表示系统调用时间长&#xff0c;例如是IO操作频繁。</p> 
+<p><strong>id</strong>  空闲 CPU时间&#xff0c;一般来说&#xff0c;id &#43; us &#43; sy &#61; 100,一般我认为id是空闲CPU使用率&#xff0c;us是用户CPU使用率&#xff0c;sy是系统CPU使用率。</p> 
+<p><strong>wt</strong> 等待IO CPU时间。</p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+    </article>
+
+  <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        var testImg = new Image();
+        testImg.onerror = function () {
+          mathcodeList.forEach(function (item) {
+            $(item).before('<span class="img-codecogs">\\(' + item.alt + '\\)</span>');
+            $(item).remove();
+          })
+          MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+        }
+        testImg.src = mathcodeList[0].src;
+      }
+    }, 1000)
+  })
+  </script>
+</div>
+<div class="more-toolbox-new" id="toolBarBox">
+    <div class="left-toolbox">
+        <div class="toolbox-left">
+            <div class="profile-box"><a class="profile-href" target="_blank" href="https://blog.csdn.net/m0_38110132"><img class="profile-img" src="https://profile.csdnimg.cn/0/1/3/3_m0_38110132"><span class="profile-name">浮生忆梦</span></a></div>
+            <div class="profile-attend">
+                    <a class="tool-attend tool-bt-button tool-bt-attend" href="javascript:;" data-report-view='{"mod":"1592215036_002","spm":"1001.2101.3001.4232","extend1":"关注"}'>关注</a>
+                <a class="tool-item-follow active-animation" style="display:none;">关注</a>
+            </div>
+        </div>
+        <div class="toolbox-middle">
+        <ul class="toolbox-list">
+            <li class="tool-item tool-item-size tool-active is-like" id="is-like">
+            <a class="tool-item-href">
+                <img style="display:none;" id="is-like-imgactive-animation-like" class="animation-dom active-animation" src="https://csdnimg.cn/release/blogv2/dist/pc/img/tobarThumbUpactive.png" alt="">
+                <img class="isactive" style="display:none" id="is-like-imgactive" src="https://csdnimg.cn/release/blogv2/dist/pc/img/newHeart2021Active.png" alt="">
+                <img class="isdefault" style="display:block" id="is-like-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/newHeart2021White.png" alt="">  
+                <span id="spanCount" class="count ">
+                        35
+                </span>
+            </a>
+            <div class="tool-hover-tip"><span class="text space">点赞</span></div>
+            </li>
+            <li class="tool-item tool-item-size tool-active is-unlike" id="is-unlike">
+            <a class="tool-item-href">
+                <img class="isactive" style="margin-right:0px;display:none" id="is-unlike-imgactive" src="https://csdnimg.cn/release/blogv2/dist/pc/img/newUnHeart2021Active.png" alt="">
+                <img class="isdefault" style="margin-right:0px;display:block" id="is-unlike-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/newUnHeart2021White.png" alt="">
+                <span id="unlikeCount" class="count "></span>
+            </a>
+            <div class="tool-hover-tip"><span class="text space">踩</span></div>
+            </li>
+            <li class="tool-item tool-item-size tool-active tool-item-comment">
+            <a class="tool-item-href" href="#commentBox" data-report-click='{"spm":"1001.2101.3001.7009"}'>
+                <img class="isdefault" src="https://csdnimg.cn/release/blogv2/dist/pc/img/newComment2021White.png" alt="">
+                <span class="count">
+                    6
+                </span>
+            </a>
+            <div class="tool-hover-tip"><span class="text space">评论</span></div>
+            </li>
+            <li class="tool-item tool-item-size tool-active is-collection ">
+            <a class="tool-item-href" href="javascript:;" data-report-click='{"mod":"popu_824","spm":"1001.2101.3001.4130","ab":"new"}'>
+                <img style="display:none" id="is-collection-img-collection" class="animation-dom active-animation" src="https://csdnimg.cn/release/blogv2/dist/pc/img/tobarCollectionActive.png" alt="">
+                <img class="isdefault" id="is-collection-img" style="display:block" src="https://csdnimg.cn/release/blogv2/dist/pc/img/newCollectWhite.png" alt="">
+                <img class="isactive" id="is-collection-imgactive" style="display:none" src="https://csdnimg.cn/release/blogv2/dist/pc/img/newCollectActive.png" alt="">
+                <span class="count get-collection " id="get-collection">
+                    166
+                </span>
+            </a>
+            <div class="tool-hover-tip"><span class="text space">收藏</span></div>
+            </li>
+            <li class="tool-item tool-item-bar">
+            </li>
+            <li class="tool-item tool-item-size tool-active tool-QRcode" id="tool-share">
+                <a class="tool-item-href" href="javascript:;" data-report-click='{"mod":"1582594662_002","spm":"1001.2101.3001.4129","ab":"new"}'>
+                    <img class="isdefault" src="https://csdnimg.cn/release/blogv2/dist/pc/img/newShareWhite.png" alt="">
+                </a>
+                <div class="QRcode" id="tool-QRcode">
+                    <p class="title">
+                    扫一扫，分享内容
+                    </p>
+                    <div id='shareCode'></div>
+                    <a id="copyPosterUrl" class="url" data-report-click='{"spm":"1001.2101.3001.7493"}' data-report-view='{"spm":"1001.2101.3001.7493"}'>点击复制链接</a>
+                </div>
+            </li>
+        </ul>
+        </div>
+        <div class="toolbox-right">
+                <div class="tool-directory">
+                    <a class="bt-columnlist-show"
+                    data-id="7125480"
+                    data-free="true"
+                    data-subscribe="false"
+                    data-title="Linux"
+                    data-img="https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64"
+                    data-url="https://blog.csdn.net/m0_38110132/category_7125480.html"
+                    data-sum="30"
+                    data-people="2"
+                    data-price="0"
+                    data-oldprice="0"
+                    data-join="false"
+                    data-studyvip="false"
+                    data-studysubscribe="false"
+                    data-report-view='{"spm":"1001.2101.3001.6334","extend1":"专栏目录"}'
+                    data-report-click='{"spm":"1001.2101.3001.6334","extend1":"专栏目录"}'
+                    >专栏目录</a>
+                </div>
+        </div>
+    </div>  
+</div>
+<script type=text/javascript crossorigin src="https://csdnimg.cn/release/phoenix/production/qrcode-7c90a92189.min.js"></script>
+<script src="//g.csdnimg.cn/??sharewx/1.2.1/sharewx.js" type="text/javascript"></script>
+<script type="text/javascript" crossorigin src="https://g.csdnimg.cn/user-login/3.0.1/user-login.js"></script>
+<script type="text/javascript" crossorigin src="https://g.csdnimg.cn/collection-box/2.0.8/collection-box.js"></script>
+                <div class="first-recommend-box recommend-box">
+<div class="recommend-item-box type_download clearfix" data-url="https://download.csdn.net/download/weixin_38584642/12813768"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6661.1","mod":"popu_871","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant_t0.none-task-download-2~default~CTRLIST~AntiPaid-1.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"1","strategy":"2~default~CTRLIST~AntiPaid","dest":"https://download.csdn.net/download/weixin_38584642/12813768"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://download.csdn.net/download/weixin_38584642/12813768" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6661.1","mod":"popu_871","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant_t0.none-task-download-2~default~CTRLIST~AntiPaid-1.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"1","strategy":"2~default~CTRLIST~AntiPaid","dest":"https://download.csdn.net/download/weixin_38584642/12813768"}'  data-report-query='spm=1001.2101.3001.6661.1&utm_medium=distribute.pc_relevant_t0.none-task-download-2%7Edefault%7ECTRLIST%7EAntiPaid-1.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant_t0.none-task-download-2%7Edefault%7ECTRLIST%7EAntiPaid-1.pc_relevant_default'>
+					<div class="left ellipsis-online ellipsis-online-1"><em>Linux</em> <em>vmstat</em><em>命令</em><em>实战</em>详细解析</div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info display-flex">
+					<span class="info-block">09-05</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://download.csdn.net/download/weixin_38584642/12813768" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6661.1","mod":"popu_871","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant_t0.none-task-download-2~default~CTRLIST~AntiPaid-1.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"1","strategy":"2~default~CTRLIST~AntiPaid","dest":"https://download.csdn.net/download/weixin_38584642/12813768"}'  data-report-query='spm=1001.2101.3001.6661.1&utm_medium=distribute.pc_relevant_t0.none-task-download-2%7Edefault%7ECTRLIST%7EAntiPaid-1.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant_t0.none-task-download-2%7Edefault%7ECTRLIST%7EAntiPaid-1.pc_relevant_default'>
+				<div class="desc ellipsis-online ellipsis-online-1">个<em>命令</em>是我查看<em>Linux</em>/Unix最喜爱的<em>命令</em>，一个是<em>Linux</em>/Unix都支持，二是相比top，我可以看到整个机器的CPU,内存,IO的使用情况，而不是单单看到各个进程的CPU使用率和内存使用率(使用场景不一样)</div>
+			</a>
+		</div>
+	</div>
+</div>
+                </div>
+            <script src="https://csdnimg.cn/release/blogv2/dist/components/js/pc_wap_commontools-5e28c4e010.min.js" type="text/javascript" async></script>
+            <div class="second-recommend-box recommend-box">
+<div class="recommend-item-box type_blog clearfix" data-url="https://blog.csdn.net/moonpure/article/details/74978991"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.1","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~Rate-1.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"1","strategy":"2~default~CTRLIST~Rate","dest":"https://blog.csdn.net/moonpure/article/details/74978991"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://blog.csdn.net/moonpure/article/details/74978991" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.1","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~Rate-1.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"1","strategy":"2~default~CTRLIST~Rate","dest":"https://blog.csdn.net/moonpure/article/details/74978991"}'  data-report-query='spm=1001.2101.3001.6650.1&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-1.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-1.pc_relevant_default'>
+					<div class="left ellipsis-online ellipsis-online-1"><em>Linux</em>监控工具介绍系列&mdash;&mdash;<em>vmstat</em></div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/moonpure" target="_blank"><span class="blog-title">moonpure的专栏</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">07-11</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					1724
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://blog.csdn.net/moonpure/article/details/74978991" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.1","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~Rate-1.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"1","strategy":"2~default~CTRLIST~Rate","dest":"https://blog.csdn.net/moonpure/article/details/74978991"}'  data-report-query='spm=1001.2101.3001.6650.1&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-1.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-1.pc_relevant_default'>
+				<div class="desc ellipsis-online ellipsis-online-1">说来惭愧，玩<em>Linux</em>这么久了，居然没有玩转<em>vmstat</em>这个<em>命令</em>，对很多指标的具体意义都有点模糊不清，花了点时间好好学习、整理一下这个<em>命令</em>的相关资料。因为这个<em>命令</em>确实比较重要，而且频繁用到。
+&nbsp;
+&nbsp;
+<em>命令</em>简介：
+&nbsp;
+&nbsp;
+&nbsp;<em>vmstat</em>是Virtual Meomory <em>Stat</em>i<em>st</em>ics（虚拟内存统计）的缩写，可对操作系统的虚拟内存、进程、IO读写、CPU活动等进行监视。它是对系统的整</div>
+			</a>
+		</div>
+	</div>
+</div>
+            </div>
+<a id="commentBox" name="commentBox"></a>
+<div id="pcCommentBox" class="comment-box comment-box-new ">
+	<div class="comment-title">评论<span>6</span></div>
+	<div class="comment-edit-box d-flex">
+		<div class="user-img">
+			<a href="https://blog.csdn.net/m0_38110132" target="_blank">
+				<img src="https://profile.csdnimg.cn/2/1/6/3_u013454589">
+			</a>
+		</div>
+		<form id="commentform">
+			<textarea class="comment-content" name="comment_content" id="comment_content" placeholder="请发表有价值的评论， 博客评论不欢迎灌水，良好的社区氛围需大家一起维护。" maxlength="1000"></textarea>
+			<div class="comment-operate-box active">
+				<div class="comment-operate-l">
+					<span id="tip_comment" class="tip">还能输入<em>1000</em>个字符</span>
+				</div>
+				<div class="comment-operate-c">
+					&nbsp;
+				</div>
+				<div class="comment-operate-r">
+					<div class="comment-operate-item comment-emoticon">
+						<img class="comment-operate-img" data-url="https://csdnimg.cn/release/blogv2/dist/pc/img/" src="https://csdnimg.cn/release/blogv2/dist/pc/img/commentEmotionIcon.png" alt="表情包">
+						<span class="comment-operate-tip">插入表情</span>
+						<div class="comment-emoticon-box comment-operate-isshow">
+							<div class="comment-emoticon-img-box"></div>
+						</div>
+					</div>
+					<div class="comment-operate-item comment-code">
+						<img class="comment-operate-img" data-url="https://csdnimg.cn/release/blogv2/dist/pc/img/" src="https://csdnimg.cn/release/blogv2/dist/pc/img/commentCodeIcon.png" alt="表情包">
+						<span class="comment-operate-tip">代码片</span>
+						<div class="comment-code-box comment-operate-isshow">
+							<ul id="commentCode">
+								<li><a data-code="html">HTML/XML</a></li>
+								<li><a data-code="objc">objective-c</a></li>
+								<li><a data-code="ruby">Ruby</a></li>
+								<li><a data-code="php">PHP</a></li>
+								<li><a data-code="csharp">C</a></li>
+								<li><a data-code="cpp">C++</a></li>
+								<li><a data-code="javascript">JavaScript</a></li>
+								<li><a data-code="python">Python</a></li>
+								<li><a data-code="java">Java</a></li>
+								<li><a data-code="css">CSS</a></li>
+								<li><a data-code="sql">SQL</a></li>
+								<li><a data-code="plain">其它</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="comment-operate-item">
+						<input type="hidden" id="comment_replyId" name="comment_replyId">
+						<input type="hidden" id="article_id" name="article_id" value="84190319">
+						<input type="hidden" id="comment_userId" name="comment_userId" value="">
+						<input type="hidden" id="commentId" name="commentId" value="">
+						<a data-report-click='{"mod":"1582594662_003","spm":"1001.2101.3001.4227","ab":"new"}'><input type="submit" class="btn-comment btn-comment-input" value="评论"><input type="button" class="btn-comment-input btn-comment-defualt" value="评论"></a>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="comment-list-container">
+		<div class="comment-list-box">
+		</div>
+		<div id="commentPage" class="pagination-box d-none"></div>
+		<div class="opt-box text-center">
+			<div class="btn btn-sm btn-link-blue" id="btnMoreComment"></div>
+		</div>
+	</div>
+</div>
+            <div class="recommend-box insert-baidu-box">
+                <div class="recommend-item-box clearfix no-index" style="display:none"></div>
+<div class="recommend-item-box type_blog clearfix" data-url="https://blog.csdn.net/u013836909/article/details/108646703"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.2","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~Rate-2.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"2","strategy":"2~default~CTRLIST~Rate","dest":"https://blog.csdn.net/u013836909/article/details/108646703"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://blog.csdn.net/u013836909/article/details/108646703" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.2","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~Rate-2.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"2","strategy":"2~default~CTRLIST~Rate","dest":"https://blog.csdn.net/u013836909/article/details/108646703"}'  data-report-query='spm=1001.2101.3001.6650.2&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-2.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-2.pc_relevant_default'>
+					<div class="left ellipsis-online ellipsis-online-1"><em>Linux</em>性能分析之<em>vmstat</em></div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/u013836909" target="_blank"><span class="blog-title">枫潇潇</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">09-17</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					276
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://blog.csdn.net/u013836909/article/details/108646703" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.2","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~Rate-2.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"2","strategy":"2~default~CTRLIST~Rate","dest":"https://blog.csdn.net/u013836909/article/details/108646703"}'  data-report-query='spm=1001.2101.3001.6650.2&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-2.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-2.pc_relevant_default'>
+				<div class="desc ellipsis-online ellipsis-online-1"><em>Linux</em>性能分析之<em>vmstat</em>
+1 <em>vmstat</em>简介
+<em>vmstat</em>是Virtual Meomory <em>Stat</em>i<em>st</em>ics（虚拟内存统计）的缩写，可对操作系统的虚拟内存、进程、CPU活动进行监控。是对系统的整体情况进行统计，不足之处是无法对某个进程进行深入分析。
+CPU性能统计：
+	正在运行的进程个数；
+	CPU接收的终端个数；
+	调度器执行的上下文切换次数。
+内存性能统计：
+	使用的了交换分区的大小；
+	物理内存是如何使用的；
+	剩余空闲内存。
+2 物理内存与虚拟内存的区别
+我们知道，直接从物</div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_blog clearfix" data-url="https://blog.csdn.net/islandstar/article/details/7580442"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.3","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~Rate-3.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"3","strategy":"2~default~CTRLIST~Rate","dest":"https://blog.csdn.net/islandstar/article/details/7580442"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://blog.csdn.net/islandstar/article/details/7580442" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.3","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~Rate-3.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"3","strategy":"2~default~CTRLIST~Rate","dest":"https://blog.csdn.net/islandstar/article/details/7580442"}'  data-report-query='spm=1001.2101.3001.6650.3&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-3.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-3.pc_relevant_default'>
+					<div class="left ellipsis-online ellipsis-online-1"><em>Linux</em>监控工具<em>vmstat</em><em>命令</em><em>详解</em></div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/islandstar" target="_blank"><span class="blog-title">★ 分享、传播、open source</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">05-18</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					1645
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://blog.csdn.net/islandstar/article/details/7580442" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.3","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~Rate-3.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"3","strategy":"2~default~CTRLIST~Rate","dest":"https://blog.csdn.net/islandstar/article/details/7580442"}'  data-report-query='spm=1001.2101.3001.6650.3&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-3.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-3.pc_relevant_default'>
+				<div class="desc ellipsis-online ellipsis-online-1">http://www.ha97.com/4512.html
+
+
+
+一、前言
+很显然从名字中我们就可以知道<em>vmstat</em>是一个查看虚拟内存（Virtual
+Memory）使用状况的工具，但是怎样通过<em>vmstat</em>来发现系统中的瓶颈呢？在回答这个问题前，还是让我们回顾一下<em>Linux</em>中关于虚拟内存相关内容。
+二、虚拟内存原理
+在系统中运行的每个进程都需要使用到内存，但不是每个进程都需要每时每</div>
+			</a>
+		</div>
+	</div>
+</div>
+		<dl id="recommend-item-box-tow" class="recommend-item-box type_blog clearfix">
+			
+		</dl>
+<div class="recommend-item-box type_blog clearfix" data-url="https://blog.csdn.net/wmj1291262808/article/details/105786581"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.4","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~Rate-4.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"4","strategy":"2~default~CTRLIST~Rate","dest":"https://blog.csdn.net/wmj1291262808/article/details/105786581"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://blog.csdn.net/wmj1291262808/article/details/105786581" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.4","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~Rate-4.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"4","strategy":"2~default~CTRLIST~Rate","dest":"https://blog.csdn.net/wmj1291262808/article/details/105786581"}'  data-report-query='spm=1001.2101.3001.6650.4&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-4.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-4.pc_relevant_default'>
+					<div class="left ellipsis-online ellipsis-online-1"><em>vmstat</em></div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/wmj1291262808" target="_blank"><span class="blog-title">wmj1291262808的博客</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">04-27</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					89
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://blog.csdn.net/wmj1291262808/article/details/105786581" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.4","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~Rate-4.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"4","strategy":"2~default~CTRLIST~Rate","dest":"https://blog.csdn.net/wmj1291262808/article/details/105786581"}'  data-report-query='spm=1001.2101.3001.6650.4&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-4.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-4.pc_relevant_default'>
+				<div class="desc ellipsis-online ellipsis-online-1">1
+<em>vmstat</em> 5  5 【在5秒时间内进行5次采样】
+image
+字段说明：
+Procs（进程）：
+r: 运行队列中进程数量
+b： 等待IO的进程数量
+Memory（内存）：
+swpd: 使用虚拟内存大小
+free: 可用内存大小
+buff: 用作缓冲的内存大小
+cache: 用作缓存的内存大小
+Swap：
+si: 每秒从交换区写到内存的大小
+so: 每秒写入交换区的内存大小
+IO：（现在的L...</div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_blog clearfix" data-url="https://blog.csdn.net/dyh200896/article/details/112849759"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.5","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-5.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"5","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/dyh200896/article/details/112849759"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://blog.csdn.net/dyh200896/article/details/112849759" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.5","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-5.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"5","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/dyh200896/article/details/112849759"}'  data-report-query='spm=1001.2101.3001.6650.5&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-5.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-5.pc_relevant_default'>
+					<div class="left ellipsis-online ellipsis-online-1"><em>VMSTAT</em></div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/dyh200896" target="_blank"><span class="blog-title">dyh200896的专栏</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">01-19</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					123
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://blog.csdn.net/dyh200896/article/details/112849759" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.5","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-5.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"5","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/dyh200896/article/details/112849759"}'  data-report-query='spm=1001.2101.3001.6650.5&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-5.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-5.pc_relevant_default'>
+				<div class="desc ellipsis-online ellipsis-online-1">----只是为了方便参考----
+
+File: *manpages*, Node: <em>vmstat</em>, Up: (dir)
+
+<em>VMSTAT</em>(8)          Sy<em>st</em>em Admini<em>st</em>ration          <em>VMSTAT</em>(8)
+
+NAME
+   <em>vmstat</em> - Report virtual memory <em>stat</em>i<em>st</em>ics
+
+SYNOPSIS
+   <em>vmstat</em> [options] [delay [count]]
+
+DESCRIPT...</div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_blog clearfix" data-url="https://blog.csdn.net/weixin_33815613/article/details/85532991"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.6","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-6.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"6","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/weixin_33815613/article/details/85532991"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://blog.csdn.net/weixin_33815613/article/details/85532991" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.6","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-6.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"6","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/weixin_33815613/article/details/85532991"}'  data-report-query='spm=1001.2101.3001.6650.6&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-6.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-6.pc_relevant_default'>
+					<div class="left ellipsis-online ellipsis-online-1">每天一个<em>linux</em><em>命令</em>（46）：<em>vmstat</em><em>命令</em></div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/weixin_33815613" target="_blank"><span class="blog-title">weixin_33815613的博客</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">12-25</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					394
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://blog.csdn.net/weixin_33815613/article/details/85532991" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.6","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-6.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"6","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/weixin_33815613/article/details/85532991"}'  data-report-query='spm=1001.2101.3001.6650.6&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-6.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-6.pc_relevant_default'>
+				<div class="desc ellipsis-online ellipsis-online-1"><em>vmstat</em>是Virtual&nbsp;Meomory&nbsp;<em>Stat</em>i<em>st</em>ics（虚拟内存统计）的缩写，可对操作系统的虚拟内存、进程、CPU活动进行监控。他是对系统的整体情况进行统计，不足之处是无法对某个进程进行深入分析。<em>vmstat</em>&nbsp;工具提供了一种低开销的系统性能观察方式。因为&nbsp;<em>vmstat</em>&nbsp;本身就是低开销工具，在非常高负荷的服务器上，你需要查看并监控系统的健康情况,在控制窗口还是能够使用<em>vmstat</em>&nbsp;输出结...</div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_blog clearfix" data-url="https://blog.csdn.net/iteye_7425/article/details/82089376"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.7","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-7.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"7","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/iteye_7425/article/details/82089376"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://blog.csdn.net/iteye_7425/article/details/82089376" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.7","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-7.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"7","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/iteye_7425/article/details/82089376"}'  data-report-query='spm=1001.2101.3001.6650.7&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-7.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-7.pc_relevant_default'>
+					<div class="left ellipsis-online ellipsis-online-1"><em>vmstat</em><em>命令</em><em>详解</em></div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/iteye_7425" target="_blank"><span class="blog-title">iteye_7425的博客</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">07-01</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					148
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://blog.csdn.net/iteye_7425/article/details/82089376" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.7","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-7.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"7","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/iteye_7425/article/details/82089376"}'  data-report-query='spm=1001.2101.3001.6650.7&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-7.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-7.pc_relevant_default'>
+				<div class="desc ellipsis-online ellipsis-online-1"><em>vmstat</em>结果内容的解释
+
+<em>Vmstat</em> 
+
+procs -----------memory----------       ---swap--   -----io----       --sy<em>st</em>em--   -----cpu------
+        r b   swpd   free    buff       cache   si   so      bi    bo    ...</div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_blog clearfix" data-url="https://ghostwritten.blog.csdn.net/article/details/117924490"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.8","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-8.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"8","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://ghostwritten.blog.csdn.net/article/details/117924490"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://ghostwritten.blog.csdn.net/article/details/117924490" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.8","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-8.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"8","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://ghostwritten.blog.csdn.net/article/details/117924490"}'  data-report-query='spm=1001.2101.3001.6650.8&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-8.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-8.pc_relevant_default'>
+					<div class="left ellipsis-online ellipsis-online-1"><em>linux</em> 【监控<em>vm</em>】<em>vmstat</em><em>命令</em><em>详解</em></div>
+					<div class="tag">最新发布</div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/xixihahalelehehe" target="_blank"><span class="blog-title">爱死亡机器人</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">06-15</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					375
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://ghostwritten.blog.csdn.net/article/details/117924490" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.8","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-8.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"8","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://ghostwritten.blog.csdn.net/article/details/117924490"}'  data-report-query='spm=1001.2101.3001.6650.8&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-8.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-8.pc_relevant_default'>
+				<div class="desc ellipsis-online ellipsis-online-1">文章目录1. 简介2. <em>命令</em>格式3. <em>命令</em>参数4. 示例4.1 显示虚拟内存使用情况4.2 显示活跃和非活跃内存4.3 查看系统已经fork了多少次4.4 查看内存使用的详细信息4.5 查看磁盘的读/写4.6 查看/dev/sda1磁盘的读/写4.7 查看系统的slab信息
+
+1. 简介
+<em>vmstat</em>(VirtualMeomory<em>Stat</em>i<em>st</em>ics,虚拟内存统计) 是<em>Linux</em>中监控内存的常用工具,可对操作系统的虚拟内存、进程、CPU等的整体情况进行监视。
+<em>vmstat</em>的常规用法：<em>vmstat</em> inter</div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_blog clearfix" data-url="https://blog.csdn.net/yincg/article/details/8480858"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.9","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~Rate-9.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"9","strategy":"2~default~CTRLIST~Rate","dest":"https://blog.csdn.net/yincg/article/details/8480858"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://blog.csdn.net/yincg/article/details/8480858" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.9","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~Rate-9.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"9","strategy":"2~default~CTRLIST~Rate","dest":"https://blog.csdn.net/yincg/article/details/8480858"}'  data-report-query='spm=1001.2101.3001.6650.9&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-9.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-9.pc_relevant_default'>
+					<div class="left ellipsis-online ellipsis-online-1"><em>linux</em>下 <em>vmstat</em> 显示结果 讲解</div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/yincg" target="_blank"><span class="blog-title">孤城烟雨话凄凉</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">01-08</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					693
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://blog.csdn.net/yincg/article/details/8480858" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.9","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~Rate-9.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"9","strategy":"2~default~CTRLIST~Rate","dest":"https://blog.csdn.net/yincg/article/details/8480858"}'  data-report-query='spm=1001.2101.3001.6650.9&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-9.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-9.pc_relevant_default'>
+				<div class="desc ellipsis-online ellipsis-online-1"><em>vmstat</em> 讲解
+&nbsp;<em>vmstat</em> 1 5
+procs -----------memory---------- ---swap-- -----io---- --sy<em>st</em>em-- -----cpu------
+&nbsp;r &nbsp;b &nbsp; swpd &nbsp; free &nbsp; buff &nbsp;cache si &nbsp; so &nbsp; &nbsp;bi &nbsp; &nbsp;bo &nbsp; in
+&nbsp;cs us sy id wa <em>st</em>
+&nbsp;0 &nbsp;0 3295108</div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_download clearfix" data-url="https://download.csdn.net/download/fengwei9800/1874965"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.10","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-download-2~default~CTRLIST~AntiPaid-10.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"10","strategy":"2~default~CTRLIST~AntiPaid","dest":"https://download.csdn.net/download/fengwei9800/1874965"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://download.csdn.net/download/fengwei9800/1874965" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.10","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-download-2~default~CTRLIST~AntiPaid-10.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"10","strategy":"2~default~CTRLIST~AntiPaid","dest":"https://download.csdn.net/download/fengwei9800/1874965"}'  data-report-query='spm=1001.2101.3001.6650.10&utm_medium=distribute.pc_relevant.none-task-download-2%7Edefault%7ECTRLIST%7EAntiPaid-10.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant.none-task-download-2%7Edefault%7ECTRLIST%7EAntiPaid-10.pc_relevant_default'>
+					<div class="left ellipsis-online ellipsis-online-1"><em>Linux</em>系统<em>命令</em>top,ps,kill,free,<em>vmstat</em>等<em>命令</em>的源码</div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info display-flex">
+					<span class="info-block">12-05</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://download.csdn.net/download/fengwei9800/1874965" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.10","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-download-2~default~CTRLIST~AntiPaid-10.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"10","strategy":"2~default~CTRLIST~AntiPaid","dest":"https://download.csdn.net/download/fengwei9800/1874965"}'  data-report-query='spm=1001.2101.3001.6650.10&utm_medium=distribute.pc_relevant.none-task-download-2%7Edefault%7ECTRLIST%7EAntiPaid-10.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant.none-task-download-2%7Edefault%7ECTRLIST%7EAntiPaid-10.pc_relevant_default'>
+				<div class="desc ellipsis-online ellipsis-online-1"><em>Linux</em>系统<em>命令</em>源码包，包含Top,Free,ps,kill等<em>命令</em></div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_blog clearfix" data-url="https://blog.csdn.net/joeyon/article/details/72979023"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.11","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~Rate-11.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"11","strategy":"2~default~CTRLIST~Rate","dest":"https://blog.csdn.net/joeyon/article/details/72979023"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://blog.csdn.net/joeyon/article/details/72979023" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.11","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~Rate-11.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"11","strategy":"2~default~CTRLIST~Rate","dest":"https://blog.csdn.net/joeyon/article/details/72979023"}'  data-report-query='spm=1001.2101.3001.6650.11&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-11.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-11.pc_relevant_default'>
+					<div class="left ellipsis-online ellipsis-online-1"><em>vmstat</em><em>详解</em></div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/joeyon" target="_blank"><span class="blog-title">每天积累一点，一年后你会发现，自己变化很大</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">06-10</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					1472
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://blog.csdn.net/joeyon/article/details/72979023" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.11","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~Rate-11.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"11","strategy":"2~default~CTRLIST~Rate","dest":"https://blog.csdn.net/joeyon/article/details/72979023"}'  data-report-query='spm=1001.2101.3001.6650.11&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-11.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-11.pc_relevant_default'>
+				<div class="desc ellipsis-online ellipsis-online-1"><em>vmstat</em><em>命令</em>是最常见的<em>Linux</em>/Unix监控工具，可以展现给定时间间隔的服务器的状态值,包括服务器的CPU使用率，内存使用，虚拟内存交换情况,IO读写情况。这个<em>命令</em>是我查看<em>Linux</em>/Unix最喜爱的<em>命令</em>，一个是<em>Linux</em>/Unix都支持，二是相比top，我可以看到整个机器的CPU,内存,IO的使用情况，而不是单单看到各个进程的CPU使用率和内存使用率(使用场景不一样)。
+
+一般<em>vms</em>t</div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_blog clearfix" data-url="https://blog.csdn.net/shyrat/article/details/7304092"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.12","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~Rate-12.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"12","strategy":"2~default~CTRLIST~Rate","dest":"https://blog.csdn.net/shyrat/article/details/7304092"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://blog.csdn.net/shyrat/article/details/7304092" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.12","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~Rate-12.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"12","strategy":"2~default~CTRLIST~Rate","dest":"https://blog.csdn.net/shyrat/article/details/7304092"}'  data-report-query='spm=1001.2101.3001.6650.12&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-12.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-12.pc_relevant_default'>
+					<div class="left ellipsis-online ellipsis-online-1"><em>vmstat</em><em>命令</em>参数<em>详解</em></div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/shyrat" target="_blank"><span class="blog-title">守护的信仰.</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">02-28</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					650
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://blog.csdn.net/shyrat/article/details/7304092" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.12","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~Rate-12.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"12","strategy":"2~default~CTRLIST~Rate","dest":"https://blog.csdn.net/shyrat/article/details/7304092"}'  data-report-query='spm=1001.2101.3001.6650.12&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-12.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-12.pc_relevant_default'>
+				<div class="desc ellipsis-online ellipsis-online-1"><em>vmstat</em> <em>命令</em>参数<em>详解</em>：
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;--------- 今天去面试 这个<em>命令</em>给忘了 ，哎~ &nbsp;记着，好记星不如烂笔头
+
+
+&nbsp;<em>vmstat</em> &nbsp;n m &nbsp;:每隔n秒钟刷新，抓取m次数后退出。&nbsp;
+FIELD DESCRIPTION FOR <em>VM</em> MODE
+&nbsp; &nbsp;Procs
+&nbsp; &nbsp; &nbsp; &nbsp;r: The <em>nu</em>mber of</div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_blog clearfix" data-url="https://blog.csdn.net/qq_43382364/article/details/116486220"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.13","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-13.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"13","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/qq_43382364/article/details/116486220"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://blog.csdn.net/qq_43382364/article/details/116486220" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.13","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-13.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"13","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/qq_43382364/article/details/116486220"}'  data-report-query='spm=1001.2101.3001.6650.13&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-13.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-13.pc_relevant_default'>
+					<div class="left ellipsis-online ellipsis-online-1"><em>Vmstat</em>说明及简单使用</div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/qq_43382364" target="_blank"><span class="blog-title">qq_43382364的博客</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">05-07</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					53
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://blog.csdn.net/qq_43382364/article/details/116486220" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.13","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-13.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"13","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/qq_43382364/article/details/116486220"}'  data-report-query='spm=1001.2101.3001.6650.13&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-13.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-13.pc_relevant_default'>
+				<div class="desc ellipsis-online ellipsis-online-1"><em>Vmstat</em> <em>命令</em><em>详解</em>
+一、<em>vmstat</em>是什么？
+<em>vmstat</em> <em>命令</em>报告关于内核线程、虚拟内存、磁盘、陷阱和 CPU 活动的统计信息。由 <em>vmstat</em> <em>命令</em>生成的报告可以用于平衡系统负载活动。系统范围内的这些统计信息（所有的处理器中）都计算出以百分比表示的平均值，或者计算其总和。
+
+二、<em>vmstat</em>使用
+以下为它的<em>命令</em>的使用，使用<em>vmstat</em> --help查看它的详细<em>命令</em>说明
+
+三、为什么使用<em>Vmstat</em>
+查看运行的情况
+查看当前系统运行的情况
+<em>vmstat</em> 1 10 
+
+
+打印信息说明
+1.procs
+ </div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_blog clearfix" data-url="https://blog.csdn.net/zhanghy_80/article/details/6869631"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.14","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-14.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"14","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/zhanghy_80/article/details/6869631"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://blog.csdn.net/zhanghy_80/article/details/6869631" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.14","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-14.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"14","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/zhanghy_80/article/details/6869631"}'  data-report-query='spm=1001.2101.3001.6650.14&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-14.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-14.pc_relevant_default'>
+					<div class="left ellipsis-online ellipsis-online-1"><em>命令</em><em>VMSTAT</em></div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/zhanghy_80" target="_blank"><span class="blog-title">zhanghy_80的专栏</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">10-13</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					346
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://blog.csdn.net/zhanghy_80/article/details/6869631" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.14","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-14.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"14","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/zhanghy_80/article/details/6869631"}'  data-report-query='spm=1001.2101.3001.6650.14&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-14.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-14.pc_relevant_default'>
+				<div class="desc ellipsis-online ellipsis-online-1">1.语法
+&nbsp;
+2.说明
+
+3.参数介绍&nbsp; &nbsp;
+
+4.输出介绍
+
+5.例子</div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_blog clearfix" data-url="https://blog.csdn.net/yuioplv/article/details/95034590"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.15","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-15.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"15","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/yuioplv/article/details/95034590"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://blog.csdn.net/yuioplv/article/details/95034590" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.15","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-15.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"15","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/yuioplv/article/details/95034590"}'  data-report-query='spm=1001.2101.3001.6650.15&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-15.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-15.pc_relevant_default'>
+					<div class="left ellipsis-online ellipsis-online-1"><em>vmstat</em><em>命令</em></div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/yuioplv" target="_blank"><span class="blog-title">yuioplv的博客</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">07-07</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					2709
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://blog.csdn.net/yuioplv/article/details/95034590" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.15","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-15.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"15","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/yuioplv/article/details/95034590"}'  data-report-query='spm=1001.2101.3001.6650.15&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-15.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-15.pc_relevant_default'>
+				<div class="desc ellipsis-online ellipsis-online-1">1.安装
+<em>vmstat</em>是在sys<em>stat</em>包里的，安装时执行<em>命令</em>yum in<em>sta</em>ll -y sys<em>stat</em>即可。
+2.参数说明
+<em>vmstat</em>常见<em>命令</em>格式如下：
+<em>vmstat</em> [-a] [-n] [-S unit] [delay [ count]]
+<em>vmstat</em> [-s] [-n] [-S unit]
+<em>vmstat</em> [-m] [-n] [delay [ count]]
+<em>vmstat</em> [-d] [-n...</div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_blog clearfix" data-url="https://blog.csdn.net/weixin_37569048/article/details/105900353"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.16","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-16.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"16","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/weixin_37569048/article/details/105900353"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://blog.csdn.net/weixin_37569048/article/details/105900353" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.16","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-16.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"16","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/weixin_37569048/article/details/105900353"}'  data-report-query='spm=1001.2101.3001.6650.16&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-16.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-16.pc_relevant_default'>
+					<div class="left ellipsis-online ellipsis-online-1"><em>Linux</em> <em>vmstat</em><em>命令</em><em>详解</em></div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/weixin_37569048" target="_blank"><span class="blog-title">一路奔跑94的博客</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">05-03</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					1101
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://blog.csdn.net/weixin_37569048/article/details/105900353" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.16","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-16.pc_relevant_default\",\"dist_request_id\":\"1648734781849_29506\"}","dist_request_id":"1648734781849_29506","ab_strategy":"default","index":"16","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/weixin_37569048/article/details/105900353"}'  data-report-query='spm=1001.2101.3001.6650.16&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-16.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-16.pc_relevant_default'>
+				<div class="desc ellipsis-online ellipsis-online-1">一、<em>vmstat</em> <em>命令</em>参数
+
+
+<em>vmstat</em> [-a] [-n] [-S unit] [delay [ count]]
+<em>vmstat</em> [-s] [-n] [-S unit]
+<em>vmstat</em> [-m] [-n] [delay [ count]]
+<em>vmstat</em> [-d] [-n] [delay [ count]]
+<em>vmstat</em> [-p disk partition] [-n] [delay [ coun...</div>
+			</a>
+		</div>
+	</div>
+</div>
+            </div>
+<div id="recommendNps" class="recommend-nps-box common-nps-box">
+  <h3 class="aside-title">“相关推荐”对你有帮助么？</h3>
+  <div class="aside-content">
+      <ul class="newnps-list">
+          <li class="newnps-item" data-type="非常没帮助">
+              <div class="newnps-img-box">
+                  <img class="newnps-img active" src="https://csdnimg.cn/release/blogv2/dist/pc/img/npsFeel1.png" alt="">
+                  <img class="newnps-img default" src="https://csdnimg.cn/release/blogv2/dist/pc/img/npsFeelGrey1.png" alt="">
+              </div>
+              <div class="newnps-text">非常没帮助</div>
+          </li>
+          <li class="newnps-item" data-type="没帮助">
+              <div class="newnps-img-box">
+                  <img class="newnps-img active" src="https://csdnimg.cn/release/blogv2/dist/pc/img/npsFeel2.png" alt="">
+                  <img class="newnps-img default" src="https://csdnimg.cn/release/blogv2/dist/pc/img/npsFeelGrey2.png" alt="">
+              </div>
+              <div class="newnps-text">没帮助</div>
+          </li>
+          <li class="newnps-item" data-type="一般">
+              <div class="newnps-img-box">
+                  <img class="newnps-img active" src="https://csdnimg.cn/release/blogv2/dist/pc/img/npsFeel3.png" alt="">
+                  <img class="newnps-img default" src="https://csdnimg.cn/release/blogv2/dist/pc/img/npsFeelGrey3.png" alt="">
+              </div>
+              <div class="newnps-text">一般</div>
+          </li>
+          <li class="newnps-item" data-type="有帮助">
+              <div class="newnps-img-box">
+                  <img class="newnps-img active" src="https://csdnimg.cn/release/blogv2/dist/pc/img/npsFeel4.png" alt="">
+                  <img class="newnps-img default" src="https://csdnimg.cn/release/blogv2/dist/pc/img/npsFeelGrey4.png" alt="">
+              </div>
+              <div class="newnps-text">有帮助</div>
+          </li>
+          <li class="newnps-item" data-type="非常有帮助">
+              <div class="newnps-img-box">
+                  <img class="newnps-img active" src="https://csdnimg.cn/release/blogv2/dist/pc/img/npsFeel5.png" alt="">
+                  <img class="newnps-img default" src="https://csdnimg.cn/release/blogv2/dist/pc/img/npsFeelGrey5.png" alt="">
+              </div>
+              <div class="newnps-text">非常有帮助</div>
+          </li>
+      </ul>
+      <div class="newnps-form-box">
+      <div class="newnps-form">
+          <input type="text" placeholder="请输入建议或反馈后点击提交" class="newnps-input">
+          <span class="newnps-btn">提交</span>
+      </div>
+      </div>
+  </div>
+</div>            <div class="template-box">
+                <span>©️2022 CSDN</span>
+                <span>皮肤主题：大白</span>
+                <span> 设计师：CSDN官方博客</span>
+                <span>
+                    <a href="https://blog.csdn.net/" class="back-home c-blue c-blue-hover c-blue-focus">返回首页</a>
+                </span>
+            </div>
+<div class="blog-footer-bottom" style="margin-top:10px;"></div>
+<script src="https://g.csdnimg.cn/common/csdn-footer/csdn-footer.js" data-isfootertrack="false" type="text/javascript"></script>
+<script type="text/javascript">
+    window.csdn.csdnFooter.options = {
+        el: '.blog-footer-bottom',
+        type: 2
+    }
+</script>        </main>
+<aside class="blog_container_aside">
+	<div id="asideProfile" class="aside-box">
+    <div class="profile-intro d-flex">
+        <div class="avatar-box d-flex justify-content-center flex-column">
+            <a href="https://blog.csdn.net/m0_38110132" target="_blank" data-report-click='{"mod":"popu_379","spm":"1001.2101.3001.4121","dest":"https://blog.csdn.net/m0_38110132","ab":"new"}'>
+                <img src="https://profile.csdnimg.cn/0/1/3/3_m0_38110132" class="avatar_pic">
+            </a>
+        </div>
+        <div class="user-info d-flex flex-column profile-intro-name-box">
+            <div class="profile-intro-name-boxTop">
+                <a href="https://blog.csdn.net/m0_38110132" target="_blank" class="" id="uid" title="浮生忆梦" data-report-click='{"mod":"popu_379","spm":"1001.2101.3001.4122","dest":"https://blog.csdn.net/m0_38110132","ab":"new"}'>
+                    <span class="name " username="m0_38110132">浮生忆梦</span>
+                </a>
+                <span>
+                </span>
+                <span class="flag expert-blog">
+                <span class="bubble">CSDN认证博客专家</span>
+                </span>
+                <span class="flag company-blog">
+                <span class="bubble">CSDN认证企业博客</span>
+                </span>
+            </div>
+            <div class="profile-intro-name-boxFooter">
+                <span class="personal-home-page personal-home-years">码龄5年</span>
+                    <span class="personal-home-page">
+                    <a class="personal-home-certification" href="https://i.csdn.net/#/uc/profile?utm_source=14998968" target="_blank" title="暂无认证">
+                    <img src="https://csdnimg.cn/identity/nocErtification.png" alt="">
+                    暂无认证
+                    </a>
+                    </span>
+            </div>
+        </div>
+    </div>
+    <div class="data-info d-flex item-tiling">
+        <dl class="text-center" title="39">
+            <a href="https://blog.csdn.net/m0_38110132" data-report-click='{"mod":"1598321000_001","spm":"1001.2101.3001.4310"}' data-report-query="t=1">  
+                <dt><span class="count">39</span></dt>
+                <dd class="font">原创</dd>
+            </a>
+        </dl>
+        <dl class="text-center" data-report-click='{"mod":"1598321000_002","spm":"1001.2101.3001.4311"}' title="823762">
+            <a href="https://blog.csdn.net/rank/list/weekly" target="_blank">
+                <dt><span class="count">82万+</span></dt>
+                <dd class="font">周排名</dd>
+            </a>
+        </dl>
+        <dl class="text-center" title="1275879">
+            <a href="https://blog.csdn.net/rank/list/total" data-report-click='{"mod":"1598321000_003","spm":"1001.2101.3001.4312"}' target="_blank">
+                <dt><span class="count">127万+</span></dt>
+                <dd class="font">总排名</dd>
+            </a>
+        </dl>
+        <dl class="text-center" style="min-width:58px" title="538772">  
+            <dt><span class="count">53万+</span></dt>
+            <dd>访问</dd>
+        </dl>
+        <dl class="text-center" title="5级,点击查看等级说明">
+            <dt><a href="https://blog.csdn.net/blogdevteam/article/details/103478461" target="_blank">
+                <img class="level" src="https://csdnimg.cn/identity/blog5.png">
+            </a>
+            </dt>
+            <dd>等级</dd>
+        </dl>
+    </div>
+    <div class="item-rank"></div>
+    <div class="data-info d-flex item-tiling">
+        <dl class="text-center" title="3667">
+            <dt><span class="count">3667</span></dt>
+            <dd>积分</dd>
+        </dl>
+         <dl class="text-center" id="fanBox" title="87">
+            <dt><span class="count" id="fan">87</span></dt>
+            <dd>粉丝</dd>
+        </dl>
+        <dl class="text-center" title="209">
+            <dt><span class="count">209</span></dt>
+            <dd>获赞</dd>
+        </dl>
+        <dl class="text-center" title="54">
+            <dt><span class="count">54</span></dt>
+            <dd>评论</dd>
+        </dl>
+        <dl class="text-center" title="689">
+            <dt><span class="count">689</span></dt>
+            <dd>收藏</dd>
+        </dl>
+    </div>
+    <div class="profile-intro-name-boxOpration">
+        <div class="opt-letter-watch-box">
+        <a class="bt-button personal-letter" href="https://im.csdn.net/chat/m0_38110132" target="_blank" rel="noopener">私信</a>
+        </div>
+        <div class="opt-letter-watch-box"> 
+            <a class="personal-watch bt-button" id="btnAttent" >关注</a>  
+        </div>
+    </div>
+</div>
+ <div id="asideSearchArticle" class="aside-box">
+	<div class="aside-content search-comter">
+    <div class="aside-search aside-search-blog">         
+        <input type="text" class="input-serch-blog" name="" autocomplete="off" value="" id="search-blog-words" placeholder="搜博主文章">
+        <a class="btn-search-blog">
+                    <img src="//csdnimg.cn/cdn/content-toolbar/csdn-sou.png?v=1587021042">
+        </a>
+    </div>
+    </div>
+</div>
+
+
+<div id="asideHotArticle" class="aside-box">
+	<h3 class="aside-title">热门文章</h3>
+	<div class="aside-content">
+		<ul class="hotArticle-list">
+			<li>
+				<a href="https://blog.csdn.net/m0_38110132/article/details/77716792" target="_blank"  data-report-click='{"mod":"popu_541","spm":"1001.2101.3001.4139","dest":"https://blog.csdn.net/m0_38110132/article/details/77716792","ab":"new"}'>
+				BSON的介绍及BSON与JSON的区别
+					<img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					<span class="read">66921</span>
+                </a>
+			</li>
+			<li>
+				<a href="https://blog.csdn.net/m0_38110132/article/details/76906422" target="_blank"  data-report-click='{"mod":"popu_541","spm":"1001.2101.3001.4139","dest":"https://blog.csdn.net/m0_38110132/article/details/76906422","ab":"new"}'>
+				redis的持久化方式RDB和AOF的区别
+					<img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					<span class="read">53338</span>
+                </a>
+			</li>
+			<li>
+				<a href="https://blog.csdn.net/m0_38110132/article/details/84190319" target="_blank"  data-report-click='{"mod":"popu_541","spm":"1001.2101.3001.4139","dest":"https://blog.csdn.net/m0_38110132/article/details/84190319","ab":"new"}'>
+				Linux vmstat命令实战详解
+					<img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					<span class="read">36125</span>
+                </a>
+			</li>
+			<li>
+				<a href="https://blog.csdn.net/m0_38110132/article/details/81986334" target="_blank"  data-report-click='{"mod":"popu_541","spm":"1001.2101.3001.4139","dest":"https://blog.csdn.net/m0_38110132/article/details/81986334","ab":"new"}'>
+				JAVA 常见内存泄露例子及详解
+					<img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					<span class="read">29910</span>
+                </a>
+			</li>
+			<li>
+				<a href="https://blog.csdn.net/m0_38110132/article/details/80390072" target="_blank"  data-report-click='{"mod":"popu_541","spm":"1001.2101.3001.4139","dest":"https://blog.csdn.net/m0_38110132/article/details/80390072","ab":"new"}'>
+				centos7安装nodejs运行环境及卸载
+					<img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					<span class="read">26559</span>
+                </a>
+			</li>
+		</ul>
+	</div>
+</div>
+<div id="asideCategory" class="aside-box flexible-box">
+    <h3 class="aside-title">分类专栏</h3>
+    <div class="aside-content">
+        <ul>
+            <li class="">
+                <a class="clearfix" target="_blank" href="https://blog.csdn.net/m0_38110132/category_7010627.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/m0_38110132/category_7010627.html","ab":"new"}'>
+                    <img src="https://img-blog.csdnimg.cn/20201014180756930.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        <span class="text">java核心技术</span>
+                    </span>
+                    <span class="count float-right">22篇</span>
+                </a>
+            </li>
+            <li class="">
+                <a class="clearfix" target="_blank" href="https://blog.csdn.net/m0_38110132/category_7023900.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/m0_38110132/category_7023900.html","ab":"new"}'>
+                    <img src="https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        <span class="text">java并发编程技术</span>
+                    </span>
+                    <span class="count float-right">2篇</span>
+                </a>
+            </li>
+            <li class="">
+                <a class="clearfix" target="_blank" href="https://blog.csdn.net/m0_38110132/category_7010628.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/m0_38110132/category_7010628.html","ab":"new"}'>
+                    <img src="https://img-blog.csdnimg.cn/20201014180756923.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        <span class="text">框架相关技术</span>
+                    </span>
+                    <span class="count float-right">7篇</span>
+                </a>
+            </li>
+            <li class="">
+                <a class="clearfix" target="_blank" href="https://blog.csdn.net/m0_38110132/category_7010631.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/m0_38110132/category_7010631.html","ab":"new"}'>
+                    <img src="https://img-blog.csdnimg.cn/20201014180756927.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        <span class="text">分布式相关技术</span>
+                    </span>
+                    <span class="count float-right">18篇</span>
+                </a>
+            </li>
+            <li class="">
+                <a class="clearfix" target="_blank" href="https://blog.csdn.net/m0_38110132/category_7054213.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/m0_38110132/category_7054213.html","ab":"new"}'>
+                    <img src="https://img-blog.csdnimg.cn/20201014180756916.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        <span class="text">spring相关</span>
+                    </span>
+                    <span class="count float-right">3篇</span>
+                </a>
+            </li>
+            <li class="">
+                <a class="clearfix" target="_blank" href="https://blog.csdn.net/m0_38110132/category_7125480.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/m0_38110132/category_7125480.html","ab":"new"}'>
+                    <img src="https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        <span class="text">Linux</span>
+                    </span>
+                    <span class="count float-right">30篇</span>
+                </a>
+            </li>
+            <li class="">
+                <a class="clearfix" target="_blank" href="https://blog.csdn.net/m0_38110132/category_7010629.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/m0_38110132/category_7010629.html","ab":"new"}'>
+                    <img src="https://img-blog.csdnimg.cn/20201014180756928.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        <span class="text">数据库相关技术</span>
+                    </span>
+                    <span class="count float-right">8篇</span>
+                </a>
+            </li>
+            <li class="">
+                <a class="clearfix" target="_blank" href="https://blog.csdn.net/m0_38110132/category_7010630.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/m0_38110132/category_7010630.html","ab":"new"}'>
+                    <img src="https://img-blog.csdnimg.cn/20201014180756926.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        <span class="text">web开发相关技术</span>
+                    </span>
+                    <span class="count float-right">4篇</span>
+                </a>
+            </li>
+            <li class="">
+                <a class="clearfix" target="_blank" href="https://blog.csdn.net/m0_38110132/category_7010633.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/m0_38110132/category_7010633.html","ab":"new"}'>
+                    <img src="https://img-blog.csdnimg.cn/20201014180756916.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        <span class="text">mybatis相关技术</span>
+                    </span>
+                </a>
+            </li>
+            <li class="">
+                <a class="clearfix" target="_blank" href="https://blog.csdn.net/m0_38110132/category_7028205.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/m0_38110132/category_7028205.html","ab":"new"}'>
+                    <img src="https://img-blog.csdnimg.cn/20201014180756925.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        <span class="text">工具使用</span>
+                    </span>
+                    <span class="count float-right">23篇</span>
+                </a>
+            </li>
+            <li class="">
+                <a class="clearfix" target="_blank" href="https://blog.csdn.net/m0_38110132/category_7466201.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/m0_38110132/category_7466201.html","ab":"new"}'>
+                    <img src="https://img-blog.csdnimg.cn/20201014180756928.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        <span class="text">Linux安装和使用extundelete数据恢复工具</span>
+                    </span>
+                    <span class="count float-right">1篇</span>
+                </a>
+            </li>
+            <li class="">
+                <a class="clearfix" target="_blank" href="https://blog.csdn.net/m0_38110132/category_7898954.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/m0_38110132/category_7898954.html","ab":"new"}'>
+                    <img src="https://img-blog.csdnimg.cn/20201014180756913.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        <span class="text">多线程</span>
+                    </span>
+                    <span class="count float-right">1篇</span>
+                </a>
+            </li>
+            <li class="">
+                <a class="clearfix" target="_blank" href="https://blog.csdn.net/m0_38110132/category_9042026.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/m0_38110132/category_9042026.html","ab":"new"}'>
+                    <img src="https://img-blog.csdnimg.cn/20201014180756918.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        <span class="text">mac系统</span>
+                    </span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <p class="text-center">
+        <a class="flexible-btn" data-fbox="aside-archive"><img class="look-more" src="https://csdnimg.cn/release/blogv2/dist/pc/img/arrowDownWhite.png" alt=""></a>
+    </p>
+</div>
+<div id="asideNewComments" class="aside-box">
+    <h3 class="aside-title">最新评论</h3>
+    <div class="aside-content">
+        <ul class="newcomment-list">
+            <li>
+                <a class="title text-truncate" target="_blank" href="https://blog.csdn.net/m0_38110132/article/details/74573304#comments_20094591" data-report-click='{"mod":"popu_542","spm":"1001.2101.3001.4231","dest":"https://blog.csdn.net/m0_38110132/article/details/74573304#comments_20094591","ab":"new"}' data-report-view='{"mod":"popu_542","spm":"1001.2101.3001.4231","dest":"https://blog.csdn.net/m0_38110132/article/details/74573304#comments_20094591","ab":"new"}'>spring事务的七种传播属性和五种隔离级别</a>
+                <p class="comment ellipsis">
+                    <a href="https://blog.csdn.net/weixin_45081087" class="user-name" target="_blank">PopDemo: </a>
+                    <span class="code-comments">重点都突出了～ 很厉害</span>
+                </p>
+            </li>
+            <li>
+                <a class="title text-truncate" target="_blank" href="https://blog.csdn.net/m0_38110132/article/details/84190319#comments_19943005" data-report-click='{"mod":"popu_542","spm":"1001.2101.3001.4231","dest":"https://blog.csdn.net/m0_38110132/article/details/84190319#comments_19943005","ab":"new"}' data-report-view='{"mod":"popu_542","spm":"1001.2101.3001.4231","dest":"https://blog.csdn.net/m0_38110132/article/details/84190319#comments_19943005","ab":"new"}'>Linux vmstat命令实战详解</a>
+                <p class="comment ellipsis">
+                    <a href="https://blog.csdn.net/ab601026460" class="user-name" target="_blank">仰望明天: </a>
+                    <span class="code-comments">原文链接，应该是：https://www.cnblogs.com/ggjucheng/archive/2012/01/05/2312625.html</span>
+                </p>
+            </li>
+            <li>
+                <a class="title text-truncate" target="_blank" href="https://blog.csdn.net/m0_38110132/article/details/76906422#comments_19328728" data-report-click='{"mod":"popu_542","spm":"1001.2101.3001.4231","dest":"https://blog.csdn.net/m0_38110132/article/details/76906422#comments_19328728","ab":"new"}' data-report-view='{"mod":"popu_542","spm":"1001.2101.3001.4231","dest":"https://blog.csdn.net/m0_38110132/article/details/76906422#comments_19328728","ab":"new"}'>redis的持久化方式RDB和AOF的区别</a>
+                <p class="comment ellipsis">
+                    <a href="https://blog.csdn.net/csdn499058156" class="user-name" target="_blank">老子沙里飞: </a>
+                    <span class="code-comments">不错</span>
+                </p>
+            </li>
+            <li>
+                <a class="title text-truncate" target="_blank" href="https://blog.csdn.net/m0_38110132/article/details/84190319#comments_18744097" data-report-click='{"mod":"popu_542","spm":"1001.2101.3001.4231","dest":"https://blog.csdn.net/m0_38110132/article/details/84190319#comments_18744097","ab":"new"}' data-report-view='{"mod":"popu_542","spm":"1001.2101.3001.4231","dest":"https://blog.csdn.net/m0_38110132/article/details/84190319#comments_18744097","ab":"new"}'>Linux vmstat命令实战详解</a>
+                <p class="comment ellipsis">
+                    <a href="https://blog.csdn.net/aliyaoming" class="user-name" target="_blank">aliyaoming: </a>
+                    <span class="code-comments">满篇的错误  楼主发之前应该检查下</span>
+                </p>
+            </li>
+            <li>
+                <a class="title text-truncate" target="_blank" href="https://blog.csdn.net/m0_38110132/article/details/84190319#comments_18561841" data-report-click='{"mod":"popu_542","spm":"1001.2101.3001.4231","dest":"https://blog.csdn.net/m0_38110132/article/details/84190319#comments_18561841","ab":"new"}' data-report-view='{"mod":"popu_542","spm":"1001.2101.3001.4231","dest":"https://blog.csdn.net/m0_38110132/article/details/84190319#comments_18561841","ab":"new"}'>Linux vmstat命令实战详解</a>
+                <p class="comment ellipsis">
+                    <a href="https://blog.csdn.net/sj6Even" class="user-name" target="_blank">currentM: </a>
+                    <span class="code-comments">转载为什么不贴原链接</span>
+                </p>
+            </li>
+        </ul>
+    </div>
+</div>
+<div id="asideNewNps" class="aside-box common-nps-box">
+    <h3 class="aside-title">您愿意向朋友推荐“博客详情页”吗？</h3>
+    <div class="aside-content">
+        <ul class="newnps-list">
+            <li class="newnps-item" data-type="强烈不推荐">
+                <div class="newnps-img-box">
+                    <img class="newnps-img active" src="https://csdnimg.cn/release/blogv2/dist/pc/img/npsFeel1.png" alt="">
+                    <img class="newnps-img default" src="https://csdnimg.cn/release/blogv2/dist/pc/img/npsFeelGrey1.png" alt="">
+                </div>
+                <div class="newnps-text">强烈不推荐</div>
+            </li>
+            <li class="newnps-item" data-type="不推荐">
+                <div class="newnps-img-box">
+                    <img class="newnps-img active" src="https://csdnimg.cn/release/blogv2/dist/pc/img/npsFeel2.png" alt="">
+                    <img class="newnps-img default" src="https://csdnimg.cn/release/blogv2/dist/pc/img/npsFeelGrey2.png" alt="">
+                </div>
+                <div class="newnps-text">不推荐</div>
+            </li>
+            <li class="newnps-item" data-type="一般般">
+                <div class="newnps-img-box">
+                    <img class="newnps-img active" src="https://csdnimg.cn/release/blogv2/dist/pc/img/npsFeel3.png" alt="">
+                    <img class="newnps-img default" src="https://csdnimg.cn/release/blogv2/dist/pc/img/npsFeelGrey3.png" alt="">
+                </div>
+                <div class="newnps-text">一般般</div>
+            </li>
+            <li class="newnps-item" data-type="推荐">
+                <div class="newnps-img-box">
+                    <img class="newnps-img active" src="https://csdnimg.cn/release/blogv2/dist/pc/img/npsFeel4.png" alt="">
+                    <img class="newnps-img default" src="https://csdnimg.cn/release/blogv2/dist/pc/img/npsFeelGrey4.png" alt="">
+                </div>
+                <div class="newnps-text">推荐</div>
+            </li>
+            <li class="newnps-item" data-type="强烈推荐">
+                <div class="newnps-img-box">
+                    <img class="newnps-img active" src="https://csdnimg.cn/release/blogv2/dist/pc/img/npsFeel5.png" alt="">
+                    <img class="newnps-img default" src="https://csdnimg.cn/release/blogv2/dist/pc/img/npsFeelGrey5.png" alt="">
+                </div>
+                <div class="newnps-text">强烈推荐</div>
+            </li>
+        </ul>
+        <div class="newnps-form-box">
+        <div class="newnps-form">
+            <input type="text" placeholder="请输入建议或反馈后点击提交" class="newnps-input">
+            <span class="newnps-btn">提交</span>
+        </div>
+        </div>
+    </div>
+</div>
+<div id="asideArchive" class="aside-box" style="display:block!important; width:300px;">
+    <h3 class="aside-title">最新文章</h3>
+    <div class="aside-content">
+        <ul class="inf_list clearfix">
+            <li class="clearfix">
+            <a href="https://blog.csdn.net/m0_38110132/article/details/92794755" target="_blank" data-report-click='{"mod":"popu_382","spm":"1001.2101.3001.4136","dest":"https://blog.csdn.net/m0_38110132/article/details/92794755","ab":"new"}' data-report-view='{"mod":"popu_382","dest":"https://blog.csdn.net/m0_38110132/article/details/92794755","ab":"new"}'>mac授权访问权限</a>
+            </li>
+            <li class="clearfix">
+            <a href="https://blog.csdn.net/m0_38110132/article/details/88944781" target="_blank" data-report-click='{"mod":"popu_382","spm":"1001.2101.3001.4136","dest":"https://blog.csdn.net/m0_38110132/article/details/88944781","ab":"new"}' data-report-view='{"mod":"popu_382","dest":"https://blog.csdn.net/m0_38110132/article/details/88944781","ab":"new"}'>Spring boot 启动原理</a>
+            </li>
+            <li class="clearfix">
+            <a href="https://blog.csdn.net/m0_38110132/article/details/88818130" target="_blank" data-report-click='{"mod":"popu_382","spm":"1001.2101.3001.4136","dest":"https://blog.csdn.net/m0_38110132/article/details/88818130","ab":"new"}' data-report-view='{"mod":"popu_382","dest":"https://blog.csdn.net/m0_38110132/article/details/88818130","ab":"new"}'>常见数据库面试总结</a>
+            </li>
+        </ul>
+        <div class="archive-bar"></div>
+        <div class="archive-box">
+                <div class="archive-list-item"><a href="https://blog.csdn.net/m0_38110132?type=blog&amp;year=2019&amp;month=06" target="_blank" data-report-click='{"mod":"popu_538","spm":"1001.2101.3001.4138","ab":"new","dest":"https://blog.csdn.net/m0_38110132?type=blog&amp;year=2019&amp;month=06"}'><span class="year">2019年</span><span class="num">6篇</span></a></div>
+                <div class="archive-list-item"><a href="https://blog.csdn.net/m0_38110132?type=blog&amp;year=2018&amp;month=12" target="_blank" data-report-click='{"mod":"popu_538","spm":"1001.2101.3001.4138","ab":"new","dest":"https://blog.csdn.net/m0_38110132?type=blog&amp;year=2018&amp;month=12"}'><span class="year">2018年</span><span class="num">41篇</span></a></div>
+                <div class="archive-list-item"><a href="https://blog.csdn.net/m0_38110132?type=blog&amp;year=2017&amp;month=12" target="_blank" data-report-click='{"mod":"popu_538","spm":"1001.2101.3001.4138","ab":"new","dest":"https://blog.csdn.net/m0_38110132?type=blog&amp;year=2017&amp;month=12"}'><span class="year">2017年</span><span class="num">45篇</span></a></div>
+        </div>
+    </div>
+</div>
+	<div id="footerRightAds" class="isShowFooterAds">
+		<div class="aside-box">
+			<div id="kp_box_57" data-pid="57"><!-- google -->
+<ins class="adsbygoogle"
+  style="display:block"
+  data-ad-client="ca-pub-1076724771190722"
+  data-ad-slot="1894159733"
+  data-ad-format="auto"
+  data-full-width-responsive="true"
+>
+  <!-- 插入 万维广告 2-1 -->
+  <div class="wwads-cn wwads-vertical" data-id="149" style="margin-top: 0;margin-bottom: 8px;background-color: #fff;max-width:300px;"></div>
+  <!-- 插入 万维广告 3-1 -->
+</ins>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1076724771190722" crossorigin="anonymous"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+<!-- 插入 万维广告 3-2 -->
+<script type="text/javascript" src="https://cdn.wwads.cn/js/makemoney.js" async></script>
+<!-- 插入 万维广告 3-2 -->
+
+<!-- 插入 万维广告 3-3 -->
+<style>
+  ins.adsbygoogle > .wwads-cn {
+    display: none !important;
+  }
+  ins.adsbygoogle[data-ad-status='unfilled'] {
+    height: auto !important;
+  }
+  ins.adsbygoogle[data-ad-status='unfilled'] > * {
+    display: none !important;
+  }
+  ins.adsbygoogle[data-ad-status='unfilled'] > .wwads-cn {
+    display: block !important;
+    text-align: center; /* 万维广告局中 */
+  }
+</style>
+<!-- 插入 万维广告 3-3 --><img class="pre-img-lasy" data-src="https://kunyu.csdn.net/1.png?p=57&adId=707&a=707&c=0&k=Linux vmstat命令实战详解&spm=1001.2101.3001.5001&articleId=84190319&d=1&t=3&u=a3016d4e704441a2b58d12df96050a78" style="display: block;width: 0px;height: 0px;"></div>
+		</div>
+	</div>
+    <!-- 详情页显示目录 -->
+<!--文章目录-->
+<div id="asidedirectory" class="aside-box">
+    <div class='groupfile' id="directory">
+        <h3 class="aside-title">目录</h3>
+        <div class="align-items-stretch group_item">
+            <div class="pos-box">
+            <div class="scroll-box">
+                <div class="toc-box"></div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+</aside>
+<script>
+	$("a.flexible-btn").click(function(){
+		$(this).parents('div.aside-box').removeClass('flexible-box');
+		$(this).parents("p.text-center").remove();
+	})
+</script>
+<script type="text/javascript"  src="https://g.csdnimg.cn/user-tooltip/2.5/user-tooltip.js"></script>
+<script type="text/javascript"  src="https://g.csdnimg.cn/user-medal/1.0.7/user-medal.js"></script>    </div>
+<div class="recommend-right align-items-stretch clearfix" id="rightAside" data-type="recommend">
+    <aside class="recommend-right_aside">
+        <div id="recommend-right" >
+                        <div class='flex-column aside-box groupfile' id="groupfile">
+                <div class="groupfile-div">
+                <h3 class="aside-title">目录</h3>
+                <div class="align-items-stretch group_item">
+                    <div class="pos-box">
+                        <div class="scroll-box">
+                            <div class="toc-box"></div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+                <div id="recommendAdBox">
+                    <div id="kp_box_479" data-pid="479"><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1076724771190722"
+     crossorigin="anonymous"></script>
+<!-- PC-博客-博文页-右上 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-1076724771190722"
+     data-ad-slot="3484057394"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script><img class="pre-img-lasy" data-src="https://kunyu.csdn.net/1.png?p=479&adId=3267&a=3267&c=0&k=Linux vmstat命令实战详解&spm=1001.2101.3001.4834&articleId=84190319&d=1&t=3&u=4aec3fef88cf46cda46be4d961bb2ace" style="display: block;width: 0px;height: 0px;"></div>
+                </div>
+            <div class='aside-box kind_person d-flex flex-column'>
+                    <h3 class="aside-title">分类专栏</h3>
+                    <div class="align-items-stretch kindof_item" id="kind_person_column">
+                        <div class="aside-content">
+                            <ul>
+                                <li class="">
+                                    <a class="clearfix" target="_blank" href="https://blog.csdn.net/m0_38110132/category_7010627.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/m0_38110132/category_7010627.html","ab":"new"}'>
+                                        <img src="https://img-blog.csdnimg.cn/20201014180756930.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                        <span class="title oneline">
+                                            <span class="text">java核心技术</span>
+                                        </span>
+                                        <span class="count float-right">22篇</span>
+                                    </a>
+                                </li>
+                                <li class="">
+                                    <a class="clearfix" target="_blank" href="https://blog.csdn.net/m0_38110132/category_7023900.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/m0_38110132/category_7023900.html","ab":"new"}'>
+                                        <img src="https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                        <span class="title oneline">
+                                            <span class="text">java并发编程技术</span>
+                                        </span>
+                                        <span class="count float-right">2篇</span>
+                                    </a>
+                                </li>
+                                <li class="">
+                                    <a class="clearfix" target="_blank" href="https://blog.csdn.net/m0_38110132/category_7010628.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/m0_38110132/category_7010628.html","ab":"new"}'>
+                                        <img src="https://img-blog.csdnimg.cn/20201014180756923.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                        <span class="title oneline">
+                                            <span class="text">框架相关技术</span>
+                                        </span>
+                                        <span class="count float-right">7篇</span>
+                                    </a>
+                                </li>
+                                <li class="">
+                                    <a class="clearfix" target="_blank" href="https://blog.csdn.net/m0_38110132/category_7010631.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/m0_38110132/category_7010631.html","ab":"new"}'>
+                                        <img src="https://img-blog.csdnimg.cn/20201014180756927.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                        <span class="title oneline">
+                                            <span class="text">分布式相关技术</span>
+                                        </span>
+                                        <span class="count float-right">18篇</span>
+                                    </a>
+                                </li>
+                                <li class="">
+                                    <a class="clearfix" target="_blank" href="https://blog.csdn.net/m0_38110132/category_7054213.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/m0_38110132/category_7054213.html","ab":"new"}'>
+                                        <img src="https://img-blog.csdnimg.cn/20201014180756916.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                        <span class="title oneline">
+                                            <span class="text">spring相关</span>
+                                        </span>
+                                        <span class="count float-right">3篇</span>
+                                    </a>
+                                </li>
+                                <li class="">
+                                    <a class="clearfix" target="_blank" href="https://blog.csdn.net/m0_38110132/category_7125480.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/m0_38110132/category_7125480.html","ab":"new"}'>
+                                        <img src="https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                        <span class="title oneline">
+                                            <span class="text">Linux</span>
+                                        </span>
+                                        <span class="count float-right">30篇</span>
+                                    </a>
+                                </li>
+                                <li class="">
+                                    <a class="clearfix" target="_blank" href="https://blog.csdn.net/m0_38110132/category_7010629.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/m0_38110132/category_7010629.html","ab":"new"}'>
+                                        <img src="https://img-blog.csdnimg.cn/20201014180756928.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                        <span class="title oneline">
+                                            <span class="text">数据库相关技术</span>
+                                        </span>
+                                        <span class="count float-right">8篇</span>
+                                    </a>
+                                </li>
+                                <li class="">
+                                    <a class="clearfix" target="_blank" href="https://blog.csdn.net/m0_38110132/category_7010630.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/m0_38110132/category_7010630.html","ab":"new"}'>
+                                        <img src="https://img-blog.csdnimg.cn/20201014180756926.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                        <span class="title oneline">
+                                            <span class="text">web开发相关技术</span>
+                                        </span>
+                                        <span class="count float-right">4篇</span>
+                                    </a>
+                                </li>
+                                <li class="">
+                                    <a class="clearfix" target="_blank" href="https://blog.csdn.net/m0_38110132/category_7010633.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/m0_38110132/category_7010633.html","ab":"new"}'>
+                                        <img src="https://img-blog.csdnimg.cn/20201014180756916.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                        <span class="title oneline">
+                                            <span class="text">mybatis相关技术</span>
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="">
+                                    <a class="clearfix" target="_blank" href="https://blog.csdn.net/m0_38110132/category_7028205.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/m0_38110132/category_7028205.html","ab":"new"}'>
+                                        <img src="https://img-blog.csdnimg.cn/20201014180756925.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                        <span class="title oneline">
+                                            <span class="text">工具使用</span>
+                                        </span>
+                                        <span class="count float-right">23篇</span>
+                                    </a>
+                                </li>
+                                <li class="">
+                                    <a class="clearfix" target="_blank" href="https://blog.csdn.net/m0_38110132/category_7466201.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/m0_38110132/category_7466201.html","ab":"new"}'>
+                                        <img src="https://img-blog.csdnimg.cn/20201014180756928.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                        <span class="title oneline">
+                                            <span class="text">Linux安装和使用extundelete数据恢复工具</span>
+                                        </span>
+                                        <span class="count float-right">1篇</span>
+                                    </a>
+                                </li>
+                                <li class="">
+                                    <a class="clearfix" target="_blank" href="https://blog.csdn.net/m0_38110132/category_7898954.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/m0_38110132/category_7898954.html","ab":"new"}'>
+                                        <img src="https://img-blog.csdnimg.cn/20201014180756913.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                        <span class="title oneline">
+                                            <span class="text">多线程</span>
+                                        </span>
+                                        <span class="count float-right">1篇</span>
+                                    </a>
+                                </li>
+                                <li class="">
+                                    <a class="clearfix" target="_blank" href="https://blog.csdn.net/m0_38110132/category_9042026.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/m0_38110132/category_9042026.html","ab":"new"}'>
+                                        <img src="https://img-blog.csdnimg.cn/20201014180756918.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                        <span class="title oneline">
+                                            <span class="text">mac系统</span>
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </aside>
+</div>
+
+<div class="recommend-right1  align-items-stretch clearfix" id="rightAsideConcision" data-type="recommend">
+    <aside class="recommend-right_aside">
+        <div id="recommend-right-concision" >
+            <div class='flex-column aside-box groupfile' id="groupfileConcision">
+                <div class="groupfile-div1">
+                <h3 class="aside-title">目录</h3>
+                <div class="align-items-stretch group_item">
+                    <div class="pos-box">
+                        <div class="scroll-box">
+                            <div class="toc-box"></div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+</div>
+
+</div>
+<div class="mask-dark"></div>
+<script src="https://csdnimg.cn/public/sandalstrap/1.4/js/sandalstrap.min.js"></script>
+<div class="skin-boxshadow"></div>
+<div class="directory-boxshadow"></div>
+<div class="pay-code">
+    <div class="pay-money">实付<span class="pay-money-span" data-nowprice='' data-oldprice=''>元</span></div>
+    <div class="content-blance"><a class="blance-bt" href="javascript:;">使用余额支付</a></div>
+    <div class="content-code">
+    <div id="payCode" data-id="">
+            <div class="renovate">
+                <img src="https://csdnimg.cn/release/blogv2/dist/pc/img/pay-time-out.png">
+                <span>点击重新获取</span>
+            </div>
+        </div>
+        <div class="pay-style"><span><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/weixin.png"></span><span><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/zhifubao.png"></span><span><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/jingdong.png"></span><span class="text">扫码支付</span></div>
+    </div>
+    <div class="bt-close"><svg t="1567152543821" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10924" xmlns:xlink="http://www.w3.org/1999/xlink" width="12" height="12"><defs><style type="text/css"></style></defs><path d="M512 438.378667L806.506667 143.893333a52.032 52.032 0 1 1 73.6 73.621334L585.621333 512l294.485334 294.485333a52.074667 52.074667 0 0 1-73.6 73.642667L512 585.621333 217.514667 880.128a52.053333 52.053333 0 1 1-73.621334-73.642667L438.378667 512 143.893333 217.514667a52.053333 52.053333 0 1 1 73.621334-73.621334L512 438.378667z" fill="" p-id="10925"></path></svg></div>
+    <!-- <p style="margin-top: 8px;font-size: 14px;" class="text-center">支付成功即可阅读</p> -->
+    <div class="pay-balance">
+    <input type="radio" class="pay-code-radio" data-type="details"> 
+    <span class="span">钱包余额</span>
+    <span class="balance" style="color:#FC5531;font-size:14px;">0</span>  
+    <div class="pay-code-tile">
+        <img src="https://csdnimg.cn/release/blogv2/dist/pc/img/pay-help.png" alt="">
+        <div class="pay-code-content">
+            <div class="span">
+                <p class="title">抵扣说明：</p>
+                <p> 1.余额是钱包充值的虚拟货币，按照1:1的比例进行支付金额的抵扣。<br> 2.余额无法直接购买下载，可以购买VIP、C币套餐、付费专栏及课程。</p>
+            </div>
+        </div>
+    </div>
+    </div>
+    <a class="pay-balance-con" href="https://i.csdn.net/#/wallet/balance/recharge" target="_blank"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/recharge.png" alt=""><span  >余额充值</span></a>
+</div>
+<div class="keyword-dec-box" id="keywordDecBox"></div>
+</body>
+    <!-- 富文本柱状图  -->
+	<link rel="stylesheet" href="https://csdnimg.cn/release/blog_editor_html/release1.6.12/ckeditor/plugins/chart/chart.css"/>
+	<script type="text/javascript" src="https://csdnimg.cn/release/blog_editor_html/release1.6.12/ckeditor/plugins/chart/lib/chart.min.js"></script>
+    <script type="text/javascript" src="https://csdnimg.cn/release/blog_editor_html/release1.6.12/ckeditor/plugins/chart/widget2chart.js"></script>
+<script src="https://csdnimg.cn/release/blogv2/dist/components/js/pc_wap_highlight-7e7de84184.min.js" type="text/javascript"></script>
+<script src="https://csdnimg.cn/release/blogv2/dist/components/js/pc_wap_common-fbcbe8567e.min.js" type="text/javascript"></script>
+<script src="https://csdnimg.cn/release/blogv2/dist/components/js/edit_copy_code-9c83e748f5.min.js" type="text/javascript"></script>
+<link rel="stylesheet" href="https://csdnimg.cn/release/blog_editor_html/release1.6.12/ckeditor/plugins/codesnippet/lib/highlight/styles/atom-one-light.css">
+<script src="https://g.csdnimg.cn/user-accusation/1.0.5/user-accusation.js" type="text/javascript" ></script>
+<script>
+ // 全局声明
+ if (window.csdn === undefined) {
+      window.csdn = {};
+    }
+    window.csdn.sideToolbar = {
+        options: {
+            report:{
+                isShow: true,
+            },
+            qr: {
+                isShow: false,
+            },
+            guide: {
+                isShow: true
+            }
+        }
+    }
+    $(function(){
+        $(document).on('click',"a.option-box[data-type='report']",function() {
+            window.csdn.userLogin.loadAjax(function(res){
+                window.csdn.feedback({
+                    "type":'blog',
+                    "rtype":'article',
+                    "rid":articleId,
+                    "reportedName":username,
+                    "submitOptions":{
+                        "title":articleTitle,
+                        "contentUrl":articleDetailUrl
+                    },
+                    "callback":function(){
+                        showToast({
+                            text: "感谢您的举报，我们会尽快审核！",
+                            bottom: '10%', 
+                            zindex: 9000, 
+                            speed: 500,
+                            time: 1500
+                        });
+                    }
+                })
+            })
+        });
+    })
+</script>
+    <script src="https://g.csdnimg.cn/baidu-search/1.0.10/baidu-search.js"  type="text/javascript"></script>
+<script src="https://csdnimg.cn/release/download/old_static/js/qrcode.js"></script>
+<script src="https://g.csdnimg.cn/lib/qrcode/1.0.0/qrcode.min.js"></script>
+<script src="https://g.csdnimg.cn/user-ordercart/3.0.0/user-ordercart.js" type="text/javascript"></script>
+<script src="https://g.csdnimg.cn/user-ordertip/4.1.3/user-ordertip.js" type="text/javascript" ></script>
+<script src="https://g.csdnimg.cn/order-payment/3.1.0/order-payment.js" type="text/javascript" ></script>
+<script src="https://csdnimg.cn/release/blogv2/dist/pc/js/common-a1dfbf1dc3.min.js" type="text/javascript"></script>
+<script src="https://csdnimg.cn/release/blogv2/dist/pc/js/detail-6c785177b4.min.js" type="text/javascript"></script>
+<script src="https://csdnimg.cn/release/blogv2/dist/pc/js/column-06ad1dc2ca.min.js" type="text/javascript"></script>
+<script src="https://g.csdnimg.cn/side-toolbar/3.1/side-toolbar.js" type="text/javascript"></script>
+<script src="https://g.csdnimg.cn/copyright/1.0.4/copyright.js" type="text/javascript"></script>
+<script>
+    $(".MathJax").remove();
+    if ($('div.markdown_views pre.prettyprint code.hljs').length > 0) {
+        $('div.markdown_views')[0].className = 'markdown_views';
+    }
+</script>
+<script type="text/javascript" src="https://csdnimg.cn/release/blog_mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+            "HTML-CSS": {
+                    linebreaks: { automatic: true, width: "94%container" },
+                    imageFont: null
+            },
+            tex2jax: {
+                preview: "none",
+                ignoreClass:"title-article"
+            },
+            mml2jax: {
+                preview: 'none'
+            }
+    });
+</script>
+<script type="text/javascript" crossorigin src="https://g.csdnimg.cn/common/csdn-login-box/csdn-login-box.js"></script></html>
