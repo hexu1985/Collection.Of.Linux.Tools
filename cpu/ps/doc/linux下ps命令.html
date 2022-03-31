@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin-when-crossorigin">
+    <meta name="description" content="Linux中的ps命令是Process&amp;#160;Status的缩写。ps命令用来列出系统中当前运行的那些进程。ps命令列出的是当前那些进程的快照， 就是执行ps命令的那个时刻的那些进程，如果想要动态">
+    <meta property="og:description" content="Linux中的ps命令是Process&amp;#160;Status的缩写。ps命令用来列出系统中当前运行的那些进程。ps命令列出的是当前那些进程的快照， 就是执行ps命令的那个时刻的那些进程，如果想要动态">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>linux下ps命令 - 狂奔~ - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="https://common.cnblogs.com/favicon.svg" type="image/svg+xml">
+    
+    <style>:not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([class*="language-"]):not([highlighted]):not(.hljs):not([class*="brush:"]) {
+        background: rgb(245, 245, 245);
+        padding: 5px;
+        border: 1px solid rgb(204, 204, 204);
+        border-radius: 3px;
+        border-color: transparent;
+        color: rgb(68, 68, 68);
+        font-family: "Courier New", sans-serif;
+    }:not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]):not([class*="brush:"]) code:not(.hljs) {
+            background: rgb(245, 245, 245) !important;
+            border-color: transparent !important;
+        }</style><link rel="stylesheet" href="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/blog-common.css">
+    <link id="MainCss" rel="stylesheet" href="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/bundle-red_autumnal_leaves.css">
+    <link id="highlighter-theme-cnblogs" type="text/css" rel="stylesheet" href="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/cnblogs.css">
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/bundle-red_autumnal_leaves-mobile.css">
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/xiangtingshen/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/xiangtingshen/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/xiangtingshen/wlwmanifest.xml">
+    <script type="text/javascript" async="" src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/analytics.js"></script><script type="text/javascript" src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/encoder.js"></script><script>
+        var currentBlogId = 491156;
+        var currentBlogApp = 'xiangtingshen';
+        var cb_enable_mathjax = false;
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'red_autumnal_leaves';
+        var visitorUserId = '';
+        var hasCustomScript = false;
+        try {
+            if (hasCustomScript && document.referrer && document.referrer.indexOf('baidu.com') >= 0) {
+                Object.defineProperty(document, 'referrer', { value: '' });
+                Object.defineProperty(Document.prototype, 'referrer', { get: function(){ return ''; } });
+            }
+        } catch(error) { }
+        window.codeHighlightEngine = 1;
+        window.enableCodeLineNumber = false;
+        window.codeHighlightTheme = 'cnblogs';
+    </script>
+        <script>
+            var currentPostDateAdded = '2019-05-24 21:15';
+        </script>
+    <script src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/jquery-2.js"></script>
+    <script src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/blog-common.js"></script><style type="text/css">.medium-zoom-overlay{position:fixed;top:0;right:0;bottom:0;left:0;opacity:0;transition:opacity .3s;will-change:opacity}.medium-zoom--opened .medium-zoom-overlay{cursor:pointer;cursor:zoom-out;opacity:1}.medium-zoom-image{cursor:pointer;cursor:zoom-in;transition:transform .3s cubic-bezier(.2,0,.2,1)!important}.medium-zoom-image--hidden{visibility:hidden}.medium-zoom-image--opened{position:relative;cursor:pointer;cursor:zoom-out;will-change:transform}</style><script id="hljs-script" async="" data-loaded="true" src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/highlight.js"></script>
+    
+    
+    
+<meta http-equiv="origin-trial" content="AxujKG9INjsZ8/gUq8+dTruNvk7RjZQ1oFhhgQbcTJKDnZfbzSTE81wvC2Hzaf3TW4avA76LTZEMdiedF1vIbA4AAABueyJvcmlnaW4iOiJodHRwczovL2ltYXNkay5nb29nbGVhcGlzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzVGhpcmRQYXJ0eSI6dHJ1ZX0="><meta http-equiv="origin-trial" content="Azuce85ORtSnWe1MZDTv68qpaW3iHyfL9YbLRy0cwcCZwVnePnOmkUJlG8HGikmOwhZU22dElCcfrfX2HhrBPAkAAAB7eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A16nvcdeoOAqrJcmjLRpl1I6f3McDD8EfofAYTt/P/H4/AWwB99nxiPp6kA0fXoiZav908Z8etuL16laFPUdfQsAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="AxBHdr0J44vFBQtZUqX9sjiqf5yWZ/OcHRcRMN3H9TH+t90V/j3ENW6C8+igBZFXMJ7G3Pr8Dd13632aLng42wgAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A88BWHFjcawUfKU3lIejLoryXoyjooBXLgWmGh+hNcqMK44cugvsI5YZbNarYvi3roc1fYbHA1AVbhAtuHZflgEAAAB2eyJvcmlnaW4iOiJodHRwczovL2dvb2dsZS5jb206NDQzIiwiZmVhdHVyZSI6IlRydXN0VG9rZW5zIiwiZXhwaXJ5IjoxNjUyNzc0NDAwLCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A8FHS1NmdCwGqD9DwOicnHHY+y27kdWfxKa0YHSGDfv0CSpDKRHTQdQmZVPDUdaFWUsxdgVxlwAd6o+dhJykPA0AAACWeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjQzMTU1MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><meta http-equiv="origin-trial" content="A8zdXi6dr1hwXEUjQrYiyYQGlU3557y5QWDnN0Lwgj9ePt66XMEvNkVWOEOWPd7TP9sBQ25X0Q15Lr1Nn4oGFQkAAACceyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjQzMTU1MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><meta http-equiv="origin-trial" content="A4/Htern2udN9w3yJK9QgWQxQFruxOXsXL7cW60DyCl0EZFGCSme/J33Q/WzF7bBkVvhEWDlcBiUyZaim5CpFQwAAACceyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjQzMTU1MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><script src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/pubads_impl_2022032106.js" async=""></script><link rel="preload" href="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/integrator.js" as="script"><script type="text/javascript" src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/integrator.js"></script></head>
+<body class="skin-red_autumnal_leaves has-navbar">
+    <a name="top"></a>
+    <div id="top_nav" class="navbar forpc">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding">
+                    <a href="https://www.cnblogs.com/" title="开发者的网上家园" role="banner">
+                            <img src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/logo.svg" alt="博客园Logo">
+                    </a>
+                </li>
+                <li><a href="https://www.cnblogs.com/" onclick="countClicks('skin-navbar-sitehome')">首页</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="countClicks('nav', 'skin-navbar-news')">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="countClicks('nav', 'skin-navbar-q')">博问</a></li>
+                <li><a id="nav_brandzone" href="https://brands.cnblogs.com/huawei" onclick="countClicks('nav', 'skin-navbar-brands')">专区</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="countClicks('nav', 'skin-navbar-ing')">闪存</a></li>
+                <li><a href="https://edu.cnblogs.com/" onclick="countClicks('nav', 'skin-navbar-edu')">班级</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search" action="https://zzk.cnblogs.com/s" method="get" role="search">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="search" tabindex="3">
+                        <button type="submit" id="zzk_search_button">
+                            <img src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/search.svg" alt="搜索">
+                        </button>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔" style="display: none;">
+                        <img id="new_post_icon" class="navbar-icon" src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/newpost.svg" alt="写随笔">
+                    </a>
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客" style="display: none;">
+                        <img id="myblog_icon" class="navbar-icon" src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/myblog.svg" alt="我的博客">
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息" style="display: none;">
+                        <img id="msg_icon" class="navbar-icon" src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/message.svg" alt="短消息">
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <a id="navbar_lite_mode_indicator" data-current-page="blog" style="display: none" href="javascript:void(0)" alt="简洁模式" title="简洁模式启用，您在访问他人博客时会使用简洁款皮肤展示">
+                        <img class="navbar-icon" src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/lite-mode-on.svg" alt="简洁模式">
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown" style="display: none;">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/avatar-default.svg" alt="用户头像">
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <img id="navbar_lite_mode_on" src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/lite-mode-check.svg" class="hide"><span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+                            <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup" style="display: inline;">注册</a>
+                    <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()" style="display: inline;">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    
+    <!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/xiangtingshen/"><img id="blogLogo" src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/logo.gif" alt="返回主页"></a>		
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/xiangtingshen/">狂奔~</a>
+</h1>
+<h2></h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/xiangtingshen/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/%E7%8B%82%E5%A5%94~">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/xiangtingshen/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			<span id="stats_post_count">随笔 - 497&nbsp; </span>
+<span id="stats_article_count">文章 - 0&nbsp; </span>
+<span id="stats-comment_count">评论 - 1&nbsp; </span>
+<span id="stats-total-view-count">阅读 - 
+<span title="总阅读数: 811709">
+81万</span></span>
+
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    <!--done-->
+    <div id="topics">
+        <div class="post">
+            <h1 class="postTitle">
+                
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/xiangtingshen/p/10920236.html">
+    <span role="heading" aria-level="2">linux下ps命令</span>
+    
+
+
+
+</a><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                <div id="cnblogs_post_body" class="blogpost-body blogpost-body-html">
+<p>Linux中的ps命令是<strong>Process&nbsp;Status</strong>的缩写。ps命令用来列出系统中当前运行的那些进程。ps命令列出的是当前那些进程的快照，</p>
+<p>就是执行ps命令的那个时刻的那些进程，<span style="color: rgba(0, 0, 255, 1)"><strong>如果想要动态的显示进程信息，就可以使用top命令</strong></span>。</p>
+<p>要对进程进行监测和控制，首先必须要了解当前进程的情况，也就是需要查看当前进程，而&nbsp;ps&nbsp;命令就是最基本同时也是非常强大
+的进程查看命令。使用该命令可以确定有哪些进程正在运行和运行的状态、进程是否结束、进程有没有僵死、哪些进程占用了过多的资源等等。总之大部分信息都是
+可以通过执行该命令得到的。</p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: rgba(0, 0, 0, 1)">命令参数：
+a  显示所有进程
+</span>-<span style="color: rgba(0, 0, 0, 1)">a 显示同一终端下的所有程序
+</span>-<span style="color: rgba(0, 0, 0, 1)">A 显示所有进程
+c  显示进程的真实名称
+</span>-<span style="color: rgba(0, 0, 0, 1)">N 反向选择
+</span>-e 等于“-<span style="color: rgba(0, 0, 0, 1)">A”
+e  显示环境变量
+f  显示程序间的关系
+</span>-<span style="color: rgba(0, 0, 0, 1)">H 显示树状结构
+r  显示当前终端的进程
+T  显示当前终端的所有程序
+u  指定用户的所有进程
+</span>-<span style="color: rgba(0, 0, 0, 1)">au 显示较详细的资讯
+</span><span style="color: rgba(0, 0, 255, 1)"><strong>-</strong></span><span style="color: rgba(0, 0, 0, 1)"><span style="color: rgba(0, 0, 255, 1)"><strong>aux</strong></span> 显示所有包含其他使用者的行程 
+</span>-C&lt;命令&gt;<span style="color: rgba(0, 0, 0, 1)"> 列出指定命令的状况
+</span>--lines&lt;行数&gt;<span style="color: rgba(0, 0, 0, 1)"> 每页显示的行数
+</span>--width&lt;字符数&gt;<span style="color: rgba(0, 0, 0, 1)"> 每页显示的字符数
+</span>--<span style="color: rgba(0, 0, 0, 1)">help 显示帮助信息
+</span>--version 显示版本显示</pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p>&nbsp;</p>
+<h3>1. pstree<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h3>
+<p>pstree以树结构显示进程<br>
+<span style="color: rgba(0, 0, 255, 1)"><strong>$ pstree -p work | grep ad</strong></span></p>
+<div class="cnblogs_code">
+<pre>sshd(<span style="color: rgba(128, 0, 128, 1)">22669</span>)---bash(<span style="color: rgba(128, 0, 128, 1)">22670</span>)---ad_preprocess(<span style="color: rgba(128, 0, 128, 1)">4551</span>)-+-{ad_preprocess}(<span style="color: rgba(128, 0, 128, 1)">4552</span><span style="color: rgba(0, 0, 0, 1)">)
+                                                </span>|-{ad_preprocess}(<span style="color: rgba(128, 0, 128, 1)">4553</span><span style="color: rgba(0, 0, 0, 1)">)
+                                                </span>|-{ad_preprocess}(<span style="color: rgba(128, 0, 128, 1)">4554</span><span style="color: rgba(0, 0, 0, 1)">)
+                                                </span>|-{ad_preprocess}(<span style="color: rgba(128, 0, 128, 1)">4555</span><span style="color: rgba(0, 0, 0, 1)">)
+                                                </span>|-{ad_preprocess}(<span style="color: rgba(128, 0, 128, 1)">4556</span><span style="color: rgba(0, 0, 0, 1)">)
+                                                `</span>-{ad_preprocess}(<span style="color: rgba(128, 0, 128, 1)">4557</span>)</pre>
+</div>
+<p>&nbsp;</p>
+<p>work为工作用户，-p为显示进程识别码，ad_preprocess共启动了6个子线程，加上主线程共7个线程</p>
+<h3>2. ps -Lf<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h3>
+<p><span style="color: rgba(0, 0, 255, 1)"><strong>$ ps -Lf 4551</strong></span></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: rgba(0, 0, 0, 1)">UID        PID  PPID   LWP  C NLWP STIME TTY      STAT   TIME CMD
+work      </span><span style="color: rgba(128, 0, 128, 1)">4551</span> <span style="color: rgba(128, 0, 128, 1)">22670</span>  <span style="color: rgba(128, 0, 128, 1)">4551</span>  <span style="color: rgba(128, 0, 128, 1)">2</span>    <span style="color: rgba(128, 0, 128, 1)">7</span> <span style="color: rgba(128, 0, 128, 1)">16</span>:<span style="color: rgba(128, 0, 128, 1)">30</span> pts/<span style="color: rgba(128, 0, 128, 1)">2</span>    Sl+    <span style="color: rgba(128, 0, 128, 1)">0</span>:<span style="color: rgba(128, 0, 128, 1)">02</span> ./<span style="color: rgba(0, 0, 0, 1)">ad_preprocess
+work      </span><span style="color: rgba(128, 0, 128, 1)">4551</span> <span style="color: rgba(128, 0, 128, 1)">22670</span>  <span style="color: rgba(128, 0, 128, 1)">4552</span>  <span style="color: rgba(128, 0, 128, 1)">0</span>    <span style="color: rgba(128, 0, 128, 1)">7</span> <span style="color: rgba(128, 0, 128, 1)">16</span>:<span style="color: rgba(128, 0, 128, 1)">30</span> pts/<span style="color: rgba(128, 0, 128, 1)">2</span>    Sl+    <span style="color: rgba(128, 0, 128, 1)">0</span>:<span style="color: rgba(128, 0, 128, 1)">00</span> ./<span style="color: rgba(0, 0, 0, 1)">ad_preprocess
+work      </span><span style="color: rgba(128, 0, 128, 1)">4551</span> <span style="color: rgba(128, 0, 128, 1)">22670</span>  <span style="color: rgba(128, 0, 128, 1)">4553</span>  <span style="color: rgba(128, 0, 128, 1)">0</span>    <span style="color: rgba(128, 0, 128, 1)">7</span> <span style="color: rgba(128, 0, 128, 1)">16</span>:<span style="color: rgba(128, 0, 128, 1)">30</span> pts/<span style="color: rgba(128, 0, 128, 1)">2</span>    Sl+    <span style="color: rgba(128, 0, 128, 1)">0</span>:<span style="color: rgba(128, 0, 128, 1)">00</span> ./<span style="color: rgba(0, 0, 0, 1)">ad_preprocess
+work      </span><span style="color: rgba(128, 0, 128, 1)">4551</span> <span style="color: rgba(128, 0, 128, 1)">22670</span>  <span style="color: rgba(128, 0, 128, 1)">4554</span>  <span style="color: rgba(128, 0, 128, 1)">0</span>    <span style="color: rgba(128, 0, 128, 1)">7</span> <span style="color: rgba(128, 0, 128, 1)">16</span>:<span style="color: rgba(128, 0, 128, 1)">30</span> pts/<span style="color: rgba(128, 0, 128, 1)">2</span>    Sl+    <span style="color: rgba(128, 0, 128, 1)">0</span>:<span style="color: rgba(128, 0, 128, 1)">00</span> ./<span style="color: rgba(0, 0, 0, 1)">ad_preprocess
+work      </span><span style="color: rgba(128, 0, 128, 1)">4551</span> <span style="color: rgba(128, 0, 128, 1)">22670</span>  <span style="color: rgba(128, 0, 128, 1)">4555</span>  <span style="color: rgba(128, 0, 128, 1)">0</span>    <span style="color: rgba(128, 0, 128, 1)">7</span> <span style="color: rgba(128, 0, 128, 1)">16</span>:<span style="color: rgba(128, 0, 128, 1)">30</span> pts/<span style="color: rgba(128, 0, 128, 1)">2</span>    Sl+    <span style="color: rgba(128, 0, 128, 1)">0</span>:<span style="color: rgba(128, 0, 128, 1)">00</span> ./<span style="color: rgba(0, 0, 0, 1)">ad_preprocess
+work      </span><span style="color: rgba(128, 0, 128, 1)">4551</span> <span style="color: rgba(128, 0, 128, 1)">22670</span>  <span style="color: rgba(128, 0, 128, 1)">4556</span>  <span style="color: rgba(128, 0, 128, 1)">0</span>    <span style="color: rgba(128, 0, 128, 1)">7</span> <span style="color: rgba(128, 0, 128, 1)">16</span>:<span style="color: rgba(128, 0, 128, 1)">30</span> pts/<span style="color: rgba(128, 0, 128, 1)">2</span>    Sl+    <span style="color: rgba(128, 0, 128, 1)">0</span>:<span style="color: rgba(128, 0, 128, 1)">00</span> ./<span style="color: rgba(0, 0, 0, 1)">ad_preprocess
+work      </span><span style="color: rgba(128, 0, 128, 1)">4551</span> <span style="color: rgba(128, 0, 128, 1)">22670</span>  <span style="color: rgba(128, 0, 128, 1)">4557</span>  <span style="color: rgba(128, 0, 128, 1)">0</span>    <span style="color: rgba(128, 0, 128, 1)">7</span> <span style="color: rgba(128, 0, 128, 1)">16</span>:<span style="color: rgba(128, 0, 128, 1)">30</span> pts/<span style="color: rgba(128, 0, 128, 1)">2</span>    Sl+    <span style="color: rgba(128, 0, 128, 1)">0</span>:<span style="color: rgba(128, 0, 128, 1)">00</span> ./ad_preprocess</pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p><strong>进程共启动了7个线程</strong></p>
+<p>&nbsp;</p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: rgba(0, 0, 0, 1)">linux上进程有5种状态:
+</span><span style="color: rgba(128, 0, 128, 1)">1</span><span style="color: rgba(0, 0, 0, 1)">. 运行(正在运行或在运行队列中等待)
+</span><span style="color: rgba(128, 0, 128, 1)">2</span><span style="color: rgba(0, 0, 0, 1)">. 中断(休眠中, 受阻, 在等待某个条件的形成或接受到信号)
+</span><span style="color: rgba(128, 0, 128, 1)">3</span><span style="color: rgba(0, 0, 0, 1)">. 不可中断(收到信号不唤醒和不可运行, 进程必须等待直到有中断发生)
+</span><span style="color: rgba(128, 0, 128, 1)">4</span><span style="color: rgba(0, 0, 0, 1)">. 僵死(进程已终止, 但进程描述符存在, 直到父进程调用wait4()系统调用后释放)
+</span><span style="color: rgba(128, 0, 128, 1)">5</span><span style="color: rgba(0, 0, 0, 1)">. 停止(进程收到SIGSTOP, SIGSTP, SIGTIN, SIGTOU信号后停止运行运行)
+
+ps工具标识进程的5种状态码:
+D 不可中断 uninterruptible sleep (usually IO)
+R 运行 runnable (on run queue)
+S 中断 sleeping
+T 停止 traced or stopped
+Z 僵死 a defunct (”zombie”) process</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p>&nbsp;</p>
+<h3>3. pstack<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h3>
+<p><strong>pstack显示每个进程的栈跟踪</strong></p>
+<div class="cnblogs_code"><img id="code_img_closed_924d9815-e5eb-45c7-a618-5feeeb67af79" class="code_img_closed" src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/ContractedBlock.gif" alt=""><img id="code_img_opened_924d9815-e5eb-45c7-a618-5feeeb67af79" class="code_img_opened" style="display: none" src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/ExpandedBlockStart.gif" alt="">
+<div id="cnblogs_code_open_924d9815-e5eb-45c7-a618-5feeeb67af79" class="cnblogs_code_hide">
+<pre>$ pstack <span style="color: rgba(128, 0, 128, 1)">4551</span><span style="color: rgba(0, 0, 0, 1)">
+Thread </span><span style="color: rgba(128, 0, 128, 1)">7</span> (Thread <span style="color: rgba(128, 0, 128, 1)">1084229984</span> (LWP <span style="color: rgba(128, 0, 128, 1)">4552</span><span style="color: rgba(0, 0, 0, 1)">)):
+#</span><span style="color: rgba(128, 0, 128, 1)">0</span>  <span style="color: rgba(128, 0, 128, 1)">0x000000302afc63dc</span> <span style="color: rgba(0, 0, 255, 1)">in</span> epoll_wait () <span style="color: rgba(0, 0, 255, 1)">from</span> /lib64/tls/libc.so.<span style="color: rgba(128, 0, 128, 1)">6</span><span style="color: rgba(0, 0, 0, 1)">
+#</span><span style="color: rgba(128, 0, 128, 1)">1</span>  <span style="color: rgba(128, 0, 128, 1)">0x00000000006f0730</span> <span style="color: rgba(0, 0, 255, 1)">in</span><span style="color: rgba(0, 0, 0, 1)"> ub::EPollEx::poll ()
+#</span><span style="color: rgba(128, 0, 128, 1)">2</span>  <span style="color: rgba(128, 0, 128, 1)">0x00000000006f172a</span> <span style="color: rgba(0, 0, 255, 1)">in</span><span style="color: rgba(0, 0, 0, 1)"> ub::NetReactor::callback ()
+#</span><span style="color: rgba(128, 0, 128, 1)">3</span>  <span style="color: rgba(128, 0, 128, 1)">0x00000000006fbbbb</span> <span style="color: rgba(0, 0, 255, 1)">in</span><span style="color: rgba(0, 0, 0, 1)"> ub::UBTask::CALLBACK ()
+#</span><span style="color: rgba(128, 0, 128, 1)">4</span>  <span style="color: rgba(128, 0, 128, 1)">0x000000302b80610a</span> <span style="color: rgba(0, 0, 255, 1)">in</span> start_thread () <span style="color: rgba(0, 0, 255, 1)">from</span> /lib64/tls/libpthread.so.<span style="color: rgba(128, 0, 128, 1)">0</span><span style="color: rgba(0, 0, 0, 1)">
+#</span><span style="color: rgba(128, 0, 128, 1)">5</span>  <span style="color: rgba(128, 0, 128, 1)">0x000000302afc6003</span> <span style="color: rgba(0, 0, 255, 1)">in</span> clone () <span style="color: rgba(0, 0, 255, 1)">from</span> /lib64/tls/libc.so.<span style="color: rgba(128, 0, 128, 1)">6</span><span style="color: rgba(0, 0, 0, 1)">
+#</span><span style="color: rgba(128, 0, 128, 1)">6</span>  <span style="color: rgba(128, 0, 128, 1)">0x0000000000000000</span> <span style="color: rgba(0, 0, 255, 1)">in</span> ??<span style="color: rgba(0, 0, 0, 1)"> ()
+Thread </span><span style="color: rgba(128, 0, 128, 1)">6</span> (Thread <span style="color: rgba(128, 0, 128, 1)">1094719840</span> (LWP <span style="color: rgba(128, 0, 128, 1)">4553</span><span style="color: rgba(0, 0, 0, 1)">)):
+#</span><span style="color: rgba(128, 0, 128, 1)">0</span>  <span style="color: rgba(128, 0, 128, 1)">0x000000302afc63dc</span> <span style="color: rgba(0, 0, 255, 1)">in</span> epoll_wait () <span style="color: rgba(0, 0, 255, 1)">from</span> /lib64/tls/libc.so.<span style="color: rgba(128, 0, 128, 1)">6</span><span style="color: rgba(0, 0, 0, 1)">
+#</span><span style="color: rgba(128, 0, 128, 1)">1</span>  <span style="color: rgba(128, 0, 128, 1)">0x00000000006f0730</span> <span style="color: rgba(0, 0, 255, 1)">in</span><span style="color: rgba(0, 0, 0, 1)"> ub::EPollEx::poll ()
+#</span><span style="color: rgba(128, 0, 128, 1)">2</span>  <span style="color: rgba(128, 0, 128, 1)">0x00000000006f172a</span> <span style="color: rgba(0, 0, 255, 1)">in</span><span style="color: rgba(0, 0, 0, 1)"> ub::NetReactor::callback ()
+#</span><span style="color: rgba(128, 0, 128, 1)">3</span>  <span style="color: rgba(128, 0, 128, 1)">0x00000000006fbbbb</span> <span style="color: rgba(0, 0, 255, 1)">in</span><span style="color: rgba(0, 0, 0, 1)"> ub::UBTask::CALLBACK ()
+#</span><span style="color: rgba(128, 0, 128, 1)">4</span>  <span style="color: rgba(128, 0, 128, 1)">0x000000302b80610a</span> <span style="color: rgba(0, 0, 255, 1)">in</span> start_thread () <span style="color: rgba(0, 0, 255, 1)">from</span> /lib64/tls/libpthread.so.<span style="color: rgba(128, 0, 128, 1)">0</span><span style="color: rgba(0, 0, 0, 1)">
+#</span><span style="color: rgba(128, 0, 128, 1)">5</span>  <span style="color: rgba(128, 0, 128, 1)">0x000000302afc6003</span> <span style="color: rgba(0, 0, 255, 1)">in</span> clone () <span style="color: rgba(0, 0, 255, 1)">from</span> /lib64/tls/libc.so.<span style="color: rgba(128, 0, 128, 1)">6</span><span style="color: rgba(0, 0, 0, 1)">
+#</span><span style="color: rgba(128, 0, 128, 1)">6</span>  <span style="color: rgba(128, 0, 128, 1)">0x0000000000000000</span> <span style="color: rgba(0, 0, 255, 1)">in</span> ??<span style="color: rgba(0, 0, 0, 1)"> ()
+Thread </span><span style="color: rgba(128, 0, 128, 1)">5</span> (Thread <span style="color: rgba(128, 0, 128, 1)">1105209696</span> (LWP <span style="color: rgba(128, 0, 128, 1)">4554</span><span style="color: rgba(0, 0, 0, 1)">)):
+#</span><span style="color: rgba(128, 0, 128, 1)">0</span>  <span style="color: rgba(128, 0, 128, 1)">0x000000302b80baa5</span> <span style="color: rgba(0, 0, 255, 1)">in</span><span style="color: rgba(0, 0, 0, 1)"> __nanosleep_nocancel ()
+#</span><span style="color: rgba(128, 0, 128, 1)">1</span>  <span style="color: rgba(128, 0, 128, 1)">0x000000000079e758</span> <span style="color: rgba(0, 0, 255, 1)">in</span><span style="color: rgba(0, 0, 0, 1)"> comcm::ms_sleep ()
+#</span><span style="color: rgba(128, 0, 128, 1)">2</span>  <span style="color: rgba(128, 0, 128, 1)">0x00000000006c8581</span> <span style="color: rgba(0, 0, 255, 1)">in</span><span style="color: rgba(0, 0, 0, 1)"> ub::UbClientManager::healthyCheck ()
+#</span><span style="color: rgba(128, 0, 128, 1)">3</span>  <span style="color: rgba(128, 0, 128, 1)">0x00000000006c8471</span> <span style="color: rgba(0, 0, 255, 1)">in</span><span style="color: rgba(0, 0, 0, 1)"> ub::UbClientManager::start_healthy_check ()
+#</span><span style="color: rgba(128, 0, 128, 1)">4</span>  <span style="color: rgba(128, 0, 128, 1)">0x000000302b80610a</span> <span style="color: rgba(0, 0, 255, 1)">in</span> start_thread () <span style="color: rgba(0, 0, 255, 1)">from</span> /lib64/tls/libpthread.so.<span style="color: rgba(128, 0, 128, 1)">0</span><span style="color: rgba(0, 0, 0, 1)">
+#</span><span style="color: rgba(128, 0, 128, 1)">5</span>  <span style="color: rgba(128, 0, 128, 1)">0x000000302afc6003</span> <span style="color: rgba(0, 0, 255, 1)">in</span> clone () <span style="color: rgba(0, 0, 255, 1)">from</span> /lib64/tls/libc.so.<span style="color: rgba(128, 0, 128, 1)">6</span><span style="color: rgba(0, 0, 0, 1)">
+#</span><span style="color: rgba(128, 0, 128, 1)">6</span>  <span style="color: rgba(128, 0, 128, 1)">0x0000000000000000</span> <span style="color: rgba(0, 0, 255, 1)">in</span> ??<span style="color: rgba(0, 0, 0, 1)"> ()
+Thread </span><span style="color: rgba(128, 0, 128, 1)">4</span> (Thread <span style="color: rgba(128, 0, 128, 1)">1115699552</span> (LWP <span style="color: rgba(128, 0, 128, 1)">4555</span><span style="color: rgba(0, 0, 0, 1)">)):
+#</span><span style="color: rgba(128, 0, 128, 1)">0</span>  <span style="color: rgba(128, 0, 128, 1)">0x000000302b80baa5</span> <span style="color: rgba(0, 0, 255, 1)">in</span><span style="color: rgba(0, 0, 0, 1)"> __nanosleep_nocancel ()
+#</span><span style="color: rgba(128, 0, 128, 1)">1</span>  <span style="color: rgba(128, 0, 128, 1)">0x0000000000482b0e</span> <span style="color: rgba(0, 0, 255, 1)">in</span><span style="color: rgba(0, 0, 0, 1)"> armor::armor_check_thread ()
+#</span><span style="color: rgba(128, 0, 128, 1)">2</span>  <span style="color: rgba(128, 0, 128, 1)">0x000000302b80610a</span> <span style="color: rgba(0, 0, 255, 1)">in</span> start_thread () <span style="color: rgba(0, 0, 255, 1)">from</span> /lib64/tls/libpthread.so.<span style="color: rgba(128, 0, 128, 1)">0</span><span style="color: rgba(0, 0, 0, 1)">
+#</span><span style="color: rgba(128, 0, 128, 1)">3</span>  <span style="color: rgba(128, 0, 128, 1)">0x000000302afc6003</span> <span style="color: rgba(0, 0, 255, 1)">in</span> clone () <span style="color: rgba(0, 0, 255, 1)">from</span> /lib64/tls/libc.so.<span style="color: rgba(128, 0, 128, 1)">6</span><span style="color: rgba(0, 0, 0, 1)">
+#</span><span style="color: rgba(128, 0, 128, 1)">4</span>  <span style="color: rgba(128, 0, 128, 1)">0x0000000000000000</span> <span style="color: rgba(0, 0, 255, 1)">in</span> ??<span style="color: rgba(0, 0, 0, 1)"> ()
+Thread </span><span style="color: rgba(128, 0, 128, 1)">3</span> (Thread <span style="color: rgba(128, 0, 128, 1)">1126189408</span> (LWP <span style="color: rgba(128, 0, 128, 1)">4556</span><span style="color: rgba(0, 0, 0, 1)">)):
+#</span><span style="color: rgba(128, 0, 128, 1)">0</span>  <span style="color: rgba(128, 0, 128, 1)">0x000000302af8f1a5</span> <span style="color: rgba(0, 0, 255, 1)">in</span> __nanosleep_nocancel () <span style="color: rgba(0, 0, 255, 1)">from</span> /lib64/tls/libc.so.<span style="color: rgba(128, 0, 128, 1)">6</span><span style="color: rgba(0, 0, 0, 1)">
+#</span><span style="color: rgba(128, 0, 128, 1)">1</span>  <span style="color: rgba(128, 0, 128, 1)">0x000000302af8f010</span> <span style="color: rgba(0, 0, 255, 1)">in</span> sleep () <span style="color: rgba(0, 0, 255, 1)">from</span> /lib64/tls/libc.so.<span style="color: rgba(128, 0, 128, 1)">6</span><span style="color: rgba(0, 0, 0, 1)">
+#</span><span style="color: rgba(128, 0, 128, 1)">2</span>  <span style="color: rgba(128, 0, 128, 1)">0x000000000044c972</span> <span style="color: rgba(0, 0, 255, 1)">in</span><span style="color: rgba(0, 0, 0, 1)"> Business_config_manager::run ()
+#</span><span style="color: rgba(128, 0, 128, 1)">3</span>  <span style="color: rgba(128, 0, 128, 1)">0x0000000000457b83</span> <span style="color: rgba(0, 0, 255, 1)">in</span><span style="color: rgba(0, 0, 0, 1)"> Thread::run_thread ()
+#</span><span style="color: rgba(128, 0, 128, 1)">4</span>  <span style="color: rgba(128, 0, 128, 1)">0x000000302b80610a</span> <span style="color: rgba(0, 0, 255, 1)">in</span> start_thread () <span style="color: rgba(0, 0, 255, 1)">from</span> /lib64/tls/libpthread.so.<span style="color: rgba(128, 0, 128, 1)">0</span><span style="color: rgba(0, 0, 0, 1)">
+#</span><span style="color: rgba(128, 0, 128, 1)">5</span>  <span style="color: rgba(128, 0, 128, 1)">0x000000302afc6003</span> <span style="color: rgba(0, 0, 255, 1)">in</span> clone () <span style="color: rgba(0, 0, 255, 1)">from</span> /lib64/tls/libc.so.<span style="color: rgba(128, 0, 128, 1)">6</span><span style="color: rgba(0, 0, 0, 1)">
+#</span><span style="color: rgba(128, 0, 128, 1)">6</span>  <span style="color: rgba(128, 0, 128, 1)">0x0000000000000000</span> <span style="color: rgba(0, 0, 255, 1)">in</span> ??<span style="color: rgba(0, 0, 0, 1)"> ()
+Thread </span><span style="color: rgba(128, 0, 128, 1)">2</span> (Thread <span style="color: rgba(128, 0, 128, 1)">1136679264</span> (LWP <span style="color: rgba(128, 0, 128, 1)">4557</span><span style="color: rgba(0, 0, 0, 1)">)):
+#</span><span style="color: rgba(128, 0, 128, 1)">0</span>  <span style="color: rgba(128, 0, 128, 1)">0x000000302af8f1a5</span> <span style="color: rgba(0, 0, 255, 1)">in</span> __nanosleep_nocancel () <span style="color: rgba(0, 0, 255, 1)">from</span> /lib64/tls/libc.so.<span style="color: rgba(128, 0, 128, 1)">6</span><span style="color: rgba(0, 0, 0, 1)">
+#</span><span style="color: rgba(128, 0, 128, 1)">1</span>  <span style="color: rgba(128, 0, 128, 1)">0x000000302af8f010</span> <span style="color: rgba(0, 0, 255, 1)">in</span> sleep () <span style="color: rgba(0, 0, 255, 1)">from</span> /lib64/tls/libc.so.<span style="color: rgba(128, 0, 128, 1)">6</span><span style="color: rgba(0, 0, 0, 1)">
+#</span><span style="color: rgba(128, 0, 128, 1)">2</span>  <span style="color: rgba(128, 0, 128, 1)">0x00000000004524bb</span> <span style="color: rgba(0, 0, 255, 1)">in</span><span style="color: rgba(0, 0, 0, 1)"> Process_thread::sleep_period ()
+#</span><span style="color: rgba(128, 0, 128, 1)">3</span>  <span style="color: rgba(128, 0, 128, 1)">0x0000000000452641</span> <span style="color: rgba(0, 0, 255, 1)">in</span><span style="color: rgba(0, 0, 0, 1)"> Process_thread::run ()
+#</span><span style="color: rgba(128, 0, 128, 1)">4</span>  <span style="color: rgba(128, 0, 128, 1)">0x0000000000457b83</span> <span style="color: rgba(0, 0, 255, 1)">in</span><span style="color: rgba(0, 0, 0, 1)"> Thread::run_thread ()
+#</span><span style="color: rgba(128, 0, 128, 1)">5</span>  <span style="color: rgba(128, 0, 128, 1)">0x000000302b80610a</span> <span style="color: rgba(0, 0, 255, 1)">in</span> start_thread () <span style="color: rgba(0, 0, 255, 1)">from</span> /lib64/tls/libpthread.so.<span style="color: rgba(128, 0, 128, 1)">0</span><span style="color: rgba(0, 0, 0, 1)">
+#</span><span style="color: rgba(128, 0, 128, 1)">6</span>  <span style="color: rgba(128, 0, 128, 1)">0x000000302afc6003</span> <span style="color: rgba(0, 0, 255, 1)">in</span> clone () <span style="color: rgba(0, 0, 255, 1)">from</span> /lib64/tls/libc.so.<span style="color: rgba(128, 0, 128, 1)">6</span><span style="color: rgba(0, 0, 0, 1)">
+#</span><span style="color: rgba(128, 0, 128, 1)">7</span>  <span style="color: rgba(128, 0, 128, 1)">0x0000000000000000</span> <span style="color: rgba(0, 0, 255, 1)">in</span> ??<span style="color: rgba(0, 0, 0, 1)"> ()
+Thread </span><span style="color: rgba(128, 0, 128, 1)">1</span> (Thread <span style="color: rgba(128, 0, 128, 1)">182894129792</span> (LWP <span style="color: rgba(128, 0, 128, 1)">4551</span><span style="color: rgba(0, 0, 0, 1)">)):
+#</span><span style="color: rgba(128, 0, 128, 1)">0</span>  <span style="color: rgba(128, 0, 128, 1)">0x000000302af8f1a5</span> <span style="color: rgba(0, 0, 255, 1)">in</span> __nanosleep_nocancel () <span style="color: rgba(0, 0, 255, 1)">from</span> /lib64/tls/libc.so.<span style="color: rgba(128, 0, 128, 1)">6</span><span style="color: rgba(0, 0, 0, 1)">
+#</span><span style="color: rgba(128, 0, 128, 1)">1</span>  <span style="color: rgba(128, 0, 128, 1)">0x000000302af8f010</span> <span style="color: rgba(0, 0, 255, 1)">in</span> sleep () <span style="color: rgba(0, 0, 255, 1)">from</span> /lib64/tls/libc.so.<span style="color: rgba(128, 0, 128, 1)">6</span><span style="color: rgba(0, 0, 0, 1)">
+#</span><span style="color: rgba(128, 0, 128, 1)">2</span>  <span style="color: rgba(128, 0, 128, 1)">0x0000000000420d79</span> <span style="color: rgba(0, 0, 255, 1)">in</span><span style="color: rgba(0, 0, 0, 1)"> Ad_preprocess::run ()
+#</span><span style="color: rgba(128, 0, 128, 1)">3</span>  <span style="color: rgba(128, 0, 128, 1)">0x0000000000450ad0</span> <span style="color: rgba(0, 0, 255, 1)">in</span> main ()</pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p>&nbsp;</p>
+<h3>4、kill 终止进程<em id="__mceDel"><em id="__mceDel">&nbsp;</em></em><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h3>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: rgba(0, 0, 0, 1)">有十几种控制进程的方法，下面是一些常用的方法:
+kill </span>-<span style="color: rgba(0, 0, 0, 1)">STOP [pid]
+发送SIGSTOP (</span><span style="color: rgba(128, 0, 128, 1)">17</span>,<span style="color: rgba(128, 0, 128, 1)">19</span>,<span style="color: rgba(128, 0, 128, 1)">23</span><span style="color: rgba(0, 0, 0, 1)">)停止一个进程，而并不消灭这个进程。
+kill </span>-<span style="color: rgba(0, 0, 0, 1)">CONT [pid]
+发送SIGCONT (</span><span style="color: rgba(128, 0, 128, 1)">19</span>,<span style="color: rgba(128, 0, 128, 1)">18</span>,<span style="color: rgba(128, 0, 128, 1)">25</span><span style="color: rgba(0, 0, 0, 1)">)重新开始一个停止的进程。
+kill </span>-<span style="color: rgba(0, 0, 0, 1)">KILL [pid]
+发送SIGKILL (</span><span style="color: rgba(128, 0, 128, 1)">9</span><span style="color: rgba(0, 0, 0, 1)">)强迫进程立即停止，并且不实施清理操作。
+kill </span>-<span style="color: rgba(128, 0, 128, 1)">9</span> -<span style="color: rgba(128, 0, 128, 1)">1</span><span style="color: rgba(0, 0, 0, 1)">
+终止你拥有的全部进程。
+SIGKILL 和 SIGSTOP 信号不能被捕捉、封锁或者忽略，但是，其它的信号可以。所以这是你的终极武器。</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p>&nbsp;</p>
+<p><strong>显示所有进程信息</strong></p>
+<p><strong>命令：</strong></p>
+<p>　　ps&nbsp;-A</p>
+<p><strong>输出：</strong></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: rgba(0, 0, 0, 1)">   PID TTY          TIME CMD
+     </span><span style="color: rgba(128, 0, 128, 1)">1</span> ?        <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">08</span><span style="color: rgba(0, 0, 0, 1)"> systemd
+     </span><span style="color: rgba(128, 0, 128, 1)">2</span> ?        <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span><span style="color: rgba(0, 0, 0, 1)"> kthreadd
+     </span><span style="color: rgba(128, 0, 128, 1)">4</span> ?        <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span> kworker/<span style="color: rgba(128, 0, 128, 1)">0</span><span style="color: rgba(0, 0, 0, 1)">:0H
+     </span><span style="color: rgba(128, 0, 128, 1)">6</span> ?        <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span><span style="color: rgba(0, 0, 0, 1)"> mm_percpu_wq
+     </span><span style="color: rgba(128, 0, 128, 1)">7</span> ?        <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">04</span> ksoftirqd/<span style="color: rgba(128, 0, 128, 1)">0</span>
+     <span style="color: rgba(128, 0, 128, 1)">8</span> ?        <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">03</span><span style="color: rgba(0, 0, 0, 1)"> rcu_sched
+     </span><span style="color: rgba(128, 0, 128, 1)">9</span> ?        <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span><span style="color: rgba(0, 0, 0, 1)"> rcu_bh
+    </span><span style="color: rgba(128, 0, 128, 1)">10</span> ?        <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span> migration/<span style="color: rgba(128, 0, 128, 1)">0</span>
+    <span style="color: rgba(128, 0, 128, 1)">11</span> ?        <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span> watchdog/<span style="color: rgba(128, 0, 128, 1)">0</span>
+    <span style="color: rgba(128, 0, 128, 1)">12</span> ?        <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span> cpuhp/<span style="color: rgba(128, 0, 128, 1)">0</span>
+    <span style="color: rgba(128, 0, 128, 1)">13</span> ?        <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span><span style="color: rgba(0, 0, 0, 1)"> kdevtmpfs
+。。。省略</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p><strong>显示指定用户信息</strong></p>
+<p><strong>命令：</strong></p>
+<p>　　ps&nbsp;-u&nbsp;root</p>
+<p><strong>输出：</strong></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: rgba(0, 0, 0, 1)">   PID TTY          TIME CMD
+     </span><span style="color: rgba(128, 0, 128, 1)">1</span> ?        <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">08</span><span style="color: rgba(0, 0, 0, 1)"> systemd
+     </span><span style="color: rgba(128, 0, 128, 1)">2</span> ?        <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span><span style="color: rgba(0, 0, 0, 1)"> kthreadd
+     </span><span style="color: rgba(128, 0, 128, 1)">4</span> ?        <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span> kworker/<span style="color: rgba(128, 0, 128, 1)">0</span><span style="color: rgba(0, 0, 0, 1)">:0H
+     </span><span style="color: rgba(128, 0, 128, 1)">6</span> ?        <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span><span style="color: rgba(0, 0, 0, 1)"> mm_percpu_wq
+     </span><span style="color: rgba(128, 0, 128, 1)">7</span> ?        <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">04</span> ksoftirqd/<span style="color: rgba(128, 0, 128, 1)">0</span>
+     <span style="color: rgba(128, 0, 128, 1)">8</span> ?        <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">03</span><span style="color: rgba(0, 0, 0, 1)"> rcu_sched
+     </span><span style="color: rgba(128, 0, 128, 1)">9</span> ?        <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span><span style="color: rgba(0, 0, 0, 1)"> rcu_bh
+    </span><span style="color: rgba(128, 0, 128, 1)">10</span> ?        <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span> migration/<span style="color: rgba(128, 0, 128, 1)">0</span>
+    <span style="color: rgba(128, 0, 128, 1)">11</span> ?        <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span> watchdog/<span style="color: rgba(128, 0, 128, 1)">0</span>
+    <span style="color: rgba(128, 0, 128, 1)">12</span> ?        <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span> cpuhp/<span style="color: rgba(128, 0, 128, 1)">0</span>
+    <span style="color: rgba(128, 0, 128, 1)">13</span> ?        <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span><span style="color: rgba(0, 0, 0, 1)"> kdevtmpfs
+    </span><span style="color: rgba(128, 0, 128, 1)">14</span> ?        <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span><span style="color: rgba(0, 0, 0, 1)"> netns
+    </span><span style="color: rgba(128, 0, 128, 1)">15</span> ?        <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span> rcu_tasks_kthre</pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p><strong>显示所有进程信息，连同命令行</strong></p>
+<p><strong>命令：</strong></p>
+<p>　　ps&nbsp;-ef</p>
+<p><strong>输出：</strong></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: rgba(0, 0, 0, 1)">UID         PID   PPID  C STIME TTY          TIME CMD
+root          </span><span style="color: rgba(128, 0, 128, 1)">1</span>      <span style="color: rgba(128, 0, 128, 1)">0</span>  <span style="color: rgba(128, 0, 128, 1)">0</span> May23 ?        <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">08</span> /lib/systemd/systemd --system --deserialize <span style="color: rgba(128, 0, 128, 1)">21</span><span style="color: rgba(0, 0, 0, 1)">
+root          </span><span style="color: rgba(128, 0, 128, 1)">2</span>      <span style="color: rgba(128, 0, 128, 1)">0</span>  <span style="color: rgba(128, 0, 128, 1)">0</span> May23 ?        <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span><span style="color: rgba(0, 0, 0, 1)"> [kthreadd]
+root          </span><span style="color: rgba(128, 0, 128, 1)">4</span>      <span style="color: rgba(128, 0, 128, 1)">2</span>  <span style="color: rgba(128, 0, 128, 1)">0</span> May23 ?        <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span> [kworker/<span style="color: rgba(128, 0, 128, 1)">0</span><span style="color: rgba(0, 0, 0, 1)">:0H]
+root          </span><span style="color: rgba(128, 0, 128, 1)">6</span>      <span style="color: rgba(128, 0, 128, 1)">2</span>  <span style="color: rgba(128, 0, 128, 1)">0</span> May23 ?        <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span><span style="color: rgba(0, 0, 0, 1)"> [mm_percpu_wq]
+root          </span><span style="color: rgba(128, 0, 128, 1)">7</span>      <span style="color: rgba(128, 0, 128, 1)">2</span>  <span style="color: rgba(128, 0, 128, 1)">0</span> May23 ?        <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">04</span> [ksoftirqd/<span style="color: rgba(128, 0, 128, 1)">0</span><span style="color: rgba(0, 0, 0, 1)">]
+root          </span><span style="color: rgba(128, 0, 128, 1)">8</span>      <span style="color: rgba(128, 0, 128, 1)">2</span>  <span style="color: rgba(128, 0, 128, 1)">0</span> May23 ?        <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">03</span><span style="color: rgba(0, 0, 0, 1)"> [rcu_sched]
+root          </span><span style="color: rgba(128, 0, 128, 1)">9</span>      <span style="color: rgba(128, 0, 128, 1)">2</span>  <span style="color: rgba(128, 0, 128, 1)">0</span> May23 ?        <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span><span style="color: rgba(0, 0, 0, 1)"> [rcu_bh]
+root         </span><span style="color: rgba(128, 0, 128, 1)">10</span>      <span style="color: rgba(128, 0, 128, 1)">2</span>  <span style="color: rgba(128, 0, 128, 1)">0</span> May23 ?        <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span> [migration/<span style="color: rgba(128, 0, 128, 1)">0</span><span style="color: rgba(0, 0, 0, 1)">]
+root         </span><span style="color: rgba(128, 0, 128, 1)">11</span>      <span style="color: rgba(128, 0, 128, 1)">2</span>  <span style="color: rgba(128, 0, 128, 1)">0</span> May23 ?        <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span> [watchdog/<span style="color: rgba(128, 0, 128, 1)">0</span><span style="color: rgba(0, 0, 0, 1)">]
+root         </span><span style="color: rgba(128, 0, 128, 1)">12</span>      <span style="color: rgba(128, 0, 128, 1)">2</span>  <span style="color: rgba(128, 0, 128, 1)">0</span> May23 ?        <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span> [cpuhp/<span style="color: rgba(128, 0, 128, 1)">0</span><span style="color: rgba(0, 0, 0, 1)">]
+root         </span><span style="color: rgba(128, 0, 128, 1)">13</span>      <span style="color: rgba(128, 0, 128, 1)">2</span>  <span style="color: rgba(128, 0, 128, 1)">0</span> May23 ?        <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span><span style="color: rgba(0, 0, 0, 1)"> [kdevtmpfs]
+root         </span><span style="color: rgba(128, 0, 128, 1)">14</span>      <span style="color: rgba(128, 0, 128, 1)">2</span>  <span style="color: rgba(128, 0, 128, 1)">0</span> May23 ?        <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span><span style="color: rgba(0, 0, 0, 1)"> [netns]
+root         </span><span style="color: rgba(128, 0, 128, 1)">15</span>      <span style="color: rgba(128, 0, 128, 1)">2</span>  <span style="color: rgba(128, 0, 128, 1)">0</span> May23 ?        <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span><span style="color: rgba(0, 0, 0, 1)"> [rcu_tasks_kthre]
+root         </span><span style="color: rgba(128, 0, 128, 1)">16</span>      <span style="color: rgba(128, 0, 128, 1)">2</span>  <span style="color: rgba(128, 0, 128, 1)">0</span> May23 ?        <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span><span style="color: rgba(0, 0, 0, 1)"> [kauditd]
+root         </span><span style="color: rgba(128, 0, 128, 1)">17</span>      <span style="color: rgba(128, 0, 128, 1)">2</span>  <span style="color: rgba(128, 0, 128, 1)">0</span> May23 ?        <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span><span style="color: rgba(0, 0, 0, 1)"> [khungtaskd]
+root         </span><span style="color: rgba(128, 0, 128, 1)">18</span>      <span style="color: rgba(128, 0, 128, 1)">2</span>  <span style="color: rgba(128, 0, 128, 1)">0</span> May23 ?        <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span><span style="color: rgba(0, 0, 0, 1)"> [oom_reaper]
+。。。</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p><strong>实例4：&nbsp;ps&nbsp;与grep&nbsp;常用组合用法，查找特定进程</strong></p>
+<p><strong>命令：</strong></p>
+<p>　　<span style="color: rgba(255, 0, 0, 1)"><strong>ps&nbsp;-ef|grep&nbsp;ssh</strong></span></p>
+<p><strong>输出：</strong></p>
+<div class="cnblogs_code">
+<pre>gec@ubuntu:~/myshare$ ps -ef|<span style="color: rgba(0, 0, 0, 1)">grep bash
+gec        </span><span style="color: rgba(128, 0, 128, 1)">9448</span>  <span style="color: rgba(128, 0, 128, 1)">79650</span>  <span style="color: rgba(128, 0, 128, 1)">0</span> <span style="color: rgba(128, 0, 128, 1)">06</span>:<span style="color: rgba(128, 0, 128, 1)">05</span> pts/<span style="color: rgba(128, 0, 128, 1)">4</span>    <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span> grep --color=<span style="color: rgba(0, 0, 0, 1)">auto bash
+gec       </span><span style="color: rgba(128, 0, 128, 1)">79650</span>  <span style="color: rgba(128, 0, 128, 1)">79575</span>  <span style="color: rgba(128, 0, 128, 1)">0</span> <span style="color: rgba(128, 0, 128, 1)">03</span>:<span style="color: rgba(128, 0, 128, 1)">49</span> pts/<span style="color: rgba(128, 0, 128, 1)">4</span>    <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span><span style="color: rgba(0, 0, 0, 1)"> bash
+gec@ubuntu:</span>~/myshare$ ps -ef |<span style="color: rgba(0, 0, 0, 1)"> grep ssh
+gec        </span><span style="color: rgba(128, 0, 128, 1)">9452</span>  <span style="color: rgba(128, 0, 128, 1)">79650</span>  <span style="color: rgba(128, 0, 128, 1)">0</span> <span style="color: rgba(128, 0, 128, 1)">06</span>:<span style="color: rgba(128, 0, 128, 1)">05</span> pts/<span style="color: rgba(128, 0, 128, 1)">4</span>    <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span> grep --color=<span style="color: rgba(0, 0, 0, 1)">auto ssh
+root      </span><span style="color: rgba(128, 0, 128, 1)">16628</span>      <span style="color: rgba(128, 0, 128, 1)">1</span>  <span style="color: rgba(128, 0, 128, 1)">0</span> <span style="color: rgba(128, 0, 128, 1)">03</span>:<span style="color: rgba(128, 0, 128, 1)">45</span> ?        <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span> /usr/sbin/sshd -D</pre>
+</div>
+<p><strong>将目前属于您自己这次登入的&nbsp;PID&nbsp;与相关信息列示出来</strong></p>
+<p><strong>命令：</strong></p>
+<p>　　ps&nbsp;-l</p>
+<p><strong>输出：</strong></p>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 0, 0, 1)">F S   UID    PID   PPID  C PRI  NI ADDR SZ WCHAN  TTY          TIME CMD
+</span><span style="color: rgba(128, 0, 128, 1)">0</span> R  <span style="color: rgba(128, 0, 128, 1)">1000</span>   <span style="color: rgba(128, 0, 128, 1)">9455</span>  <span style="color: rgba(128, 0, 128, 1)">79650</span>  <span style="color: rgba(128, 0, 128, 1)">0</span>  <span style="color: rgba(128, 0, 128, 1)">80</span>   <span style="color: rgba(128, 0, 128, 1)">0</span> -  <span style="color: rgba(128, 0, 128, 1)">7657</span> -      pts/<span style="color: rgba(128, 0, 128, 1)">4</span>    <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span><span style="color: rgba(0, 0, 0, 1)"> ps
+</span><span style="color: rgba(128, 0, 128, 1)">0</span> S  <span style="color: rgba(128, 0, 128, 1)">1000</span>  <span style="color: rgba(128, 0, 128, 1)">79650</span>  <span style="color: rgba(128, 0, 128, 1)">79575</span>  <span style="color: rgba(128, 0, 128, 1)">0</span>  <span style="color: rgba(128, 0, 128, 1)">80</span>   <span style="color: rgba(128, 0, 128, 1)">0</span> -  <span style="color: rgba(128, 0, 128, 1)">6093</span> wait   pts/<span style="color: rgba(128, 0, 128, 1)">4</span>    <span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>:<span style="color: rgba(128, 0, 128, 1)">00</span> bash</pre>
+</div>
+<p><strong>说明：</strong></p>
+<p><strong>各相关信息的意义：</strong></p>
+<p>F&nbsp;代表这个程序的旗标&nbsp;(flag)，&nbsp;4&nbsp;代表使用者为&nbsp;super&nbsp;user</p>
+<p>S&nbsp;代表这个程序的状态&nbsp;(STAT)，关于各&nbsp;STAT&nbsp;的意义将在内文介绍</p>
+<p>UID&nbsp;程序被该&nbsp;UID&nbsp;所拥有</p>
+<p>PID&nbsp;就是这个程序的&nbsp;ID&nbsp;！</p>
+<p>PPID&nbsp;则是其上级父程序的ID</p>
+<p>C&nbsp;CPU&nbsp;使用的资源百分比</p>
+<p>PRI&nbsp;这个是&nbsp;Priority&nbsp;(优先执行序)&nbsp;的缩写，详细后面介绍</p>
+<p>NI&nbsp;这个是&nbsp;Nice&nbsp;值，在下一小节我们会持续介绍</p>
+<p>ADDR&nbsp;这个是&nbsp;kernel&nbsp;function，指出该程序在内存的那个部分。如果是个&nbsp;running的程序，一般就是&nbsp;"-"</p>
+<p>SZ&nbsp;使用掉的内存大小</p>
+<p>WCHAN&nbsp;目前这个程序是否正在运作当中，若为&nbsp;-&nbsp;表示正在运作</p>
+<p>TTY&nbsp;登入者的终端机位置</p>
+<p>TIME&nbsp;使用掉的&nbsp;CPU&nbsp;时间。</p>
+<p>CMD&nbsp;所下达的指令为何</p>
+<p>在预设的情况下，&nbsp;ps&nbsp;仅会列出与目前所在的&nbsp;bash&nbsp;shell&nbsp;有关
+的&nbsp;PID&nbsp;而已，所以，&nbsp;当我使用&nbsp;ps&nbsp;-l&nbsp;的时候，只有三个&nbsp;PID。</p>
+<p>&nbsp;</p>
+<p><strong>列出目前所有的正在内存当中的程序</strong></p>
+<p><strong>命令：</strong></p>
+<p>　　ps&nbsp;aux</p>
+<p><strong>输出：</strong></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre>USER        PID %CPU %<span style="color: rgba(0, 0, 0, 1)">MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root          </span><span style="color: rgba(128, 0, 128, 1)">1</span>  <span style="color: rgba(128, 0, 128, 1)">0.0</span>  <span style="color: rgba(128, 0, 128, 1)">0.3</span> <span style="color: rgba(128, 0, 128, 1)">185228</span>  <span style="color: rgba(128, 0, 128, 1)">3100</span> ?        Ss   May23   <span style="color: rgba(128, 0, 128, 1)">0</span>:<span style="color: rgba(128, 0, 128, 1)">08</span> /lib/systemd/systemd --system --deserialize <span style="color: rgba(128, 0, 128, 1)">21</span><span style="color: rgba(0, 0, 0, 1)">
+root          </span><span style="color: rgba(128, 0, 128, 1)">2</span>  <span style="color: rgba(128, 0, 128, 1)">0.0</span>  <span style="color: rgba(128, 0, 128, 1)">0.0</span>      <span style="color: rgba(128, 0, 128, 1)">0</span>     <span style="color: rgba(128, 0, 128, 1)">0</span> ?        S    May23   <span style="color: rgba(128, 0, 128, 1)">0</span>:<span style="color: rgba(128, 0, 128, 1)">00</span><span style="color: rgba(0, 0, 0, 1)"> [kthreadd]
+root          </span><span style="color: rgba(128, 0, 128, 1)">4</span>  <span style="color: rgba(128, 0, 128, 1)">0.0</span>  <span style="color: rgba(128, 0, 128, 1)">0.0</span>      <span style="color: rgba(128, 0, 128, 1)">0</span>     <span style="color: rgba(128, 0, 128, 1)">0</span> ?        I&lt;   May23   <span style="color: rgba(128, 0, 128, 1)">0</span>:<span style="color: rgba(128, 0, 128, 1)">00</span> [kworker/<span style="color: rgba(128, 0, 128, 1)">0</span><span style="color: rgba(0, 0, 0, 1)">:0H]
+root          </span><span style="color: rgba(128, 0, 128, 1)">6</span>  <span style="color: rgba(128, 0, 128, 1)">0.0</span>  <span style="color: rgba(128, 0, 128, 1)">0.0</span>      <span style="color: rgba(128, 0, 128, 1)">0</span>     <span style="color: rgba(128, 0, 128, 1)">0</span> ?        I&lt;   May23   <span style="color: rgba(128, 0, 128, 1)">0</span>:<span style="color: rgba(128, 0, 128, 1)">00</span><span style="color: rgba(0, 0, 0, 1)"> [mm_percpu_wq]
+root          </span><span style="color: rgba(128, 0, 128, 1)">7</span>  <span style="color: rgba(128, 0, 128, 1)">0.0</span>  <span style="color: rgba(128, 0, 128, 1)">0.0</span>      <span style="color: rgba(128, 0, 128, 1)">0</span>     <span style="color: rgba(128, 0, 128, 1)">0</span> ?        S    May23   <span style="color: rgba(128, 0, 128, 1)">0</span>:<span style="color: rgba(128, 0, 128, 1)">04</span> [ksoftirqd/<span style="color: rgba(128, 0, 128, 1)">0</span><span style="color: rgba(0, 0, 0, 1)">]
+root          </span><span style="color: rgba(128, 0, 128, 1)">8</span>  <span style="color: rgba(128, 0, 128, 1)">0.0</span>  <span style="color: rgba(128, 0, 128, 1)">0.0</span>      <span style="color: rgba(128, 0, 128, 1)">0</span>     <span style="color: rgba(128, 0, 128, 1)">0</span> ?        I    May23   <span style="color: rgba(128, 0, 128, 1)">0</span>:<span style="color: rgba(128, 0, 128, 1)">03</span><span style="color: rgba(0, 0, 0, 1)"> [rcu_sched]
+root          </span><span style="color: rgba(128, 0, 128, 1)">9</span>  <span style="color: rgba(128, 0, 128, 1)">0.0</span>  <span style="color: rgba(128, 0, 128, 1)">0.0</span>      <span style="color: rgba(128, 0, 128, 1)">0</span>     <span style="color: rgba(128, 0, 128, 1)">0</span> ?        I    May23   <span style="color: rgba(128, 0, 128, 1)">0</span>:<span style="color: rgba(128, 0, 128, 1)">00</span><span style="color: rgba(0, 0, 0, 1)"> [rcu_bh]
+root         </span><span style="color: rgba(128, 0, 128, 1)">10</span>  <span style="color: rgba(128, 0, 128, 1)">0.0</span>  <span style="color: rgba(128, 0, 128, 1)">0.0</span>      <span style="color: rgba(128, 0, 128, 1)">0</span>     <span style="color: rgba(128, 0, 128, 1)">0</span> ?        S    May23   <span style="color: rgba(128, 0, 128, 1)">0</span>:<span style="color: rgba(128, 0, 128, 1)">00</span> [migration/<span style="color: rgba(128, 0, 128, 1)">0</span><span style="color: rgba(0, 0, 0, 1)">]
+root         </span><span style="color: rgba(128, 0, 128, 1)">11</span>  <span style="color: rgba(128, 0, 128, 1)">0.0</span>  <span style="color: rgba(128, 0, 128, 1)">0.0</span>      <span style="color: rgba(128, 0, 128, 1)">0</span>     <span style="color: rgba(128, 0, 128, 1)">0</span> ?        S    May23   <span style="color: rgba(128, 0, 128, 1)">0</span>:<span style="color: rgba(128, 0, 128, 1)">00</span> [watchdog/<span style="color: rgba(128, 0, 128, 1)">0</span>]</pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p>&nbsp;</p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: rgba(0, 0, 0, 1)">USER：该 process 属于那个使用者账号的
+
+PID ：该 process 的号码
+
+</span>%<span style="color: rgba(0, 0, 0, 1)">CPU：该 process 使用掉的 CPU 资源百分比
+
+</span>%<span style="color: rgba(0, 0, 0, 1)">MEM：该 process 所占用的物理内存百分比
+
+VSZ ：该 process 使用掉的虚拟内存量 (Kbytes)
+
+RSS ：该 process 占用的固定的内存量 (Kbytes)
+
+TTY ：该 process 是在那个终端机上面运作，若与终端机无关，则显示 </span>?，另外， tty1-tty6 是本机上面的登入者程序，若为 pts/<span style="color: rgba(128, 0, 128, 1)">0</span><span style="color: rgba(0, 0, 0, 1)"> 等等的，则表示为由网络连接进主机的程序。
+
+STAT：该程序目前的状态，主要的状态有
+
+R ：该程序目前正在运作，或者是可被运作
+
+S ：该程序目前正在睡眠当中 (可说是 idle 状态)，但可被某些讯号 (signal) 唤醒。
+
+T ：该程序目前正在侦测或者是停止了
+
+Z ：该程序应该已经终止，但是其父程序却无法正常的终止他，造成 zombie (疆尸) 程序的状态
+
+START：该 process 被触发启动的时间
+
+TIME ：该 process 实际使用 CPU 运作的时间
+
+COMMAND：该程序的实际指令</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p>&nbsp;</p>
+<p><strong>列出类似程序树的程序显示</strong></p>
+<p><strong>命令：</strong></p>
+<p>　　ps&nbsp;-axjf</p>
+<p><strong>输出：</strong></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: rgba(0, 0, 0, 1)">  PPID    PID   PGID    SID TTY       TPGID STAT   UID   TIME COMMAND
+     </span><span style="color: rgba(128, 0, 128, 1)">0</span>      <span style="color: rgba(128, 0, 128, 1)">2</span>      <span style="color: rgba(128, 0, 128, 1)">0</span>      <span style="color: rgba(128, 0, 128, 1)">0</span> ?            -<span style="color: rgba(128, 0, 128, 1)">1</span> S        <span style="color: rgba(128, 0, 128, 1)">0</span>   <span style="color: rgba(128, 0, 128, 1)">0</span>:<span style="color: rgba(128, 0, 128, 1)">00</span><span style="color: rgba(0, 0, 0, 1)"> [kthreadd]
+     </span><span style="color: rgba(128, 0, 128, 1)">2</span>      <span style="color: rgba(128, 0, 128, 1)">4</span>      <span style="color: rgba(128, 0, 128, 1)">0</span>      <span style="color: rgba(128, 0, 128, 1)">0</span> ?            -<span style="color: rgba(128, 0, 128, 1)">1</span> I&lt;       <span style="color: rgba(128, 0, 128, 1)">0</span>   <span style="color: rgba(128, 0, 128, 1)">0</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>  \_ [kworker/<span style="color: rgba(128, 0, 128, 1)">0</span><span style="color: rgba(0, 0, 0, 1)">:0H]
+     </span><span style="color: rgba(128, 0, 128, 1)">2</span>      <span style="color: rgba(128, 0, 128, 1)">6</span>      <span style="color: rgba(128, 0, 128, 1)">0</span>      <span style="color: rgba(128, 0, 128, 1)">0</span> ?            -<span style="color: rgba(128, 0, 128, 1)">1</span> I&lt;       <span style="color: rgba(128, 0, 128, 1)">0</span>   <span style="color: rgba(128, 0, 128, 1)">0</span>:<span style="color: rgba(128, 0, 128, 1)">00</span><span style="color: rgba(0, 0, 0, 1)">  \_ [mm_percpu_wq]
+     </span><span style="color: rgba(128, 0, 128, 1)">2</span>      <span style="color: rgba(128, 0, 128, 1)">7</span>      <span style="color: rgba(128, 0, 128, 1)">0</span>      <span style="color: rgba(128, 0, 128, 1)">0</span> ?            -<span style="color: rgba(128, 0, 128, 1)">1</span> S        <span style="color: rgba(128, 0, 128, 1)">0</span>   <span style="color: rgba(128, 0, 128, 1)">0</span>:<span style="color: rgba(128, 0, 128, 1)">04</span>  \_ [ksoftirqd/<span style="color: rgba(128, 0, 128, 1)">0</span><span style="color: rgba(0, 0, 0, 1)">]
+     </span><span style="color: rgba(128, 0, 128, 1)">2</span>      <span style="color: rgba(128, 0, 128, 1)">8</span>      <span style="color: rgba(128, 0, 128, 1)">0</span>      <span style="color: rgba(128, 0, 128, 1)">0</span> ?            -<span style="color: rgba(128, 0, 128, 1)">1</span> R        <span style="color: rgba(128, 0, 128, 1)">0</span>   <span style="color: rgba(128, 0, 128, 1)">0</span>:<span style="color: rgba(128, 0, 128, 1)">03</span><span style="color: rgba(0, 0, 0, 1)">  \_ [rcu_sched]
+     </span><span style="color: rgba(128, 0, 128, 1)">2</span>      <span style="color: rgba(128, 0, 128, 1)">9</span>      <span style="color: rgba(128, 0, 128, 1)">0</span>      <span style="color: rgba(128, 0, 128, 1)">0</span> ?            -<span style="color: rgba(128, 0, 128, 1)">1</span> I        <span style="color: rgba(128, 0, 128, 1)">0</span>   <span style="color: rgba(128, 0, 128, 1)">0</span>:<span style="color: rgba(128, 0, 128, 1)">00</span><span style="color: rgba(0, 0, 0, 1)">  \_ [rcu_bh]
+     </span><span style="color: rgba(128, 0, 128, 1)">2</span>     <span style="color: rgba(128, 0, 128, 1)">10</span>      <span style="color: rgba(128, 0, 128, 1)">0</span>      <span style="color: rgba(128, 0, 128, 1)">0</span> ?            -<span style="color: rgba(128, 0, 128, 1)">1</span> S        <span style="color: rgba(128, 0, 128, 1)">0</span>   <span style="color: rgba(128, 0, 128, 1)">0</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>  \_ [migration/<span style="color: rgba(128, 0, 128, 1)">0</span><span style="color: rgba(0, 0, 0, 1)">]
+     </span><span style="color: rgba(128, 0, 128, 1)">2</span>     <span style="color: rgba(128, 0, 128, 1)">11</span>      <span style="color: rgba(128, 0, 128, 1)">0</span>      <span style="color: rgba(128, 0, 128, 1)">0</span> ?            -<span style="color: rgba(128, 0, 128, 1)">1</span> S        <span style="color: rgba(128, 0, 128, 1)">0</span>   <span style="color: rgba(128, 0, 128, 1)">0</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>  \_ [watchdog/<span style="color: rgba(128, 0, 128, 1)">0</span><span style="color: rgba(0, 0, 0, 1)">]
+     </span><span style="color: rgba(128, 0, 128, 1)">2</span>     <span style="color: rgba(128, 0, 128, 1)">12</span>      <span style="color: rgba(128, 0, 128, 1)">0</span>      <span style="color: rgba(128, 0, 128, 1)">0</span> ?            -<span style="color: rgba(128, 0, 128, 1)">1</span> S        <span style="color: rgba(128, 0, 128, 1)">0</span>   <span style="color: rgba(128, 0, 128, 1)">0</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>  \_ [cpuhp/<span style="color: rgba(128, 0, 128, 1)">0</span><span style="color: rgba(0, 0, 0, 1)">]
+     </span><span style="color: rgba(128, 0, 128, 1)">2</span>     <span style="color: rgba(128, 0, 128, 1)">13</span>      <span style="color: rgba(128, 0, 128, 1)">0</span>      <span style="color: rgba(128, 0, 128, 1)">0</span> ?            -<span style="color: rgba(128, 0, 128, 1)">1</span> S        <span style="color: rgba(128, 0, 128, 1)">0</span>   <span style="color: rgba(128, 0, 128, 1)">0</span>:<span style="color: rgba(128, 0, 128, 1)">00</span><span style="color: rgba(0, 0, 0, 1)">  \_ [kdevtmpfs]
+     </span><span style="color: rgba(128, 0, 128, 1)">2</span>     <span style="color: rgba(128, 0, 128, 1)">14</span>      <span style="color: rgba(128, 0, 128, 1)">0</span>      <span style="color: rgba(128, 0, 128, 1)">0</span> ?            -<span style="color: rgba(128, 0, 128, 1)">1</span> I&lt;       <span style="color: rgba(128, 0, 128, 1)">0</span>   <span style="color: rgba(128, 0, 128, 1)">0</span>:<span style="color: rgba(128, 0, 128, 1)">00</span><span style="color: rgba(0, 0, 0, 1)">  \_ [netns]
+     </span><span style="color: rgba(128, 0, 128, 1)">2</span>     <span style="color: rgba(128, 0, 128, 1)">15</span>      <span style="color: rgba(128, 0, 128, 1)">0</span>      <span style="color: rgba(128, 0, 128, 1)">0</span> ?            -<span style="color: rgba(128, 0, 128, 1)">1</span> S        <span style="color: rgba(128, 0, 128, 1)">0</span>   <span style="color: rgba(128, 0, 128, 1)">0</span>:<span style="color: rgba(128, 0, 128, 1)">00</span><span style="color: rgba(0, 0, 0, 1)">  \_ [rcu_tasks_kthre]
+     </span><span style="color: rgba(128, 0, 128, 1)">2</span>     <span style="color: rgba(128, 0, 128, 1)">16</span>      <span style="color: rgba(128, 0, 128, 1)">0</span>      <span style="color: rgba(128, 0, 128, 1)">0</span> ?            -<span style="color: rgba(128, 0, 128, 1)">1</span> S        <span style="color: rgba(128, 0, 128, 1)">0</span>   <span style="color: rgba(128, 0, 128, 1)">0</span>:<span style="color: rgba(128, 0, 128, 1)">00</span>  \_ [kauditd]</pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p><strong>找出与&nbsp;cron&nbsp;与&nbsp;syslog&nbsp;这两个服务有关的&nbsp;PID&nbsp;号码</strong></p>
+<p><strong>命令：</strong>ps aux | egrep '(cron|syslog)'</p>
+<div class="cnblogs_code">
+<pre>root        <span style="color: rgba(128, 0, 128, 1)">786</span>  <span style="color: rgba(128, 0, 128, 1)">0.0</span>  <span style="color: rgba(128, 0, 128, 1)">0.0</span>  <span style="color: rgba(128, 0, 128, 1)">30748</span>   <span style="color: rgba(128, 0, 128, 1)">508</span> ?        Ss   May23   <span style="color: rgba(128, 0, 128, 1)">0</span>:<span style="color: rgba(128, 0, 128, 1)">00</span> /usr/sbin/cron -<span style="color: rgba(0, 0, 0, 1)">f
+syslog      </span><span style="color: rgba(128, 0, 128, 1)">788</span>  <span style="color: rgba(128, 0, 128, 1)">0.0</span>  <span style="color: rgba(128, 0, 128, 1)">0.0</span> <span style="color: rgba(128, 0, 128, 1)">256392</span>   <span style="color: rgba(128, 0, 128, 1)">208</span> ?        Ssl  May23   <span style="color: rgba(128, 0, 128, 1)">0</span>:<span style="color: rgba(128, 0, 128, 1)">00</span> /usr/sbin/rsyslogd -<span style="color: rgba(0, 0, 0, 1)">n
+gec        </span><span style="color: rgba(128, 0, 128, 1)">2147</span>  <span style="color: rgba(128, 0, 128, 1)">0.0</span>  <span style="color: rgba(128, 0, 128, 1)">0.0</span> <span style="color: rgba(128, 0, 128, 1)">436552</span>   <span style="color: rgba(128, 0, 128, 1)">672</span> ?        S&lt;l  May23   <span style="color: rgba(128, 0, 128, 1)">0</span>:<span style="color: rgba(128, 0, 128, 1)">00</span> /usr/bin/pulseaudio --start --log-target=<span style="color: rgba(0, 0, 0, 1)">syslog
+gec        </span><span style="color: rgba(128, 0, 128, 1)">9483</span>  <span style="color: rgba(128, 0, 128, 1)">0.0</span>  <span style="color: rgba(128, 0, 128, 1)">0.1</span>  <span style="color: rgba(128, 0, 128, 1)">15964</span>  <span style="color: rgba(128, 0, 128, 1)">1032</span> pts/<span style="color: rgba(128, 0, 128, 1)">4</span>    S+   <span style="color: rgba(128, 0, 128, 1)">06</span>:<span style="color: rgba(128, 0, 128, 1)">13</span>   <span style="color: rgba(128, 0, 128, 1)">0</span>:<span style="color: rgba(128, 0, 128, 1)">00</span> grep -E --color=auto (cron|syslog)</pre>
+</div>
+<p><strong>说明：</strong></p>
+<p>&nbsp;</p>
+<p><strong>其他实例：</strong></p>
+<p><strong>1.&nbsp;可以用&nbsp;|&nbsp;管道和&nbsp;more&nbsp;连接起来分页查看</strong></p>
+<p><strong>命令：</strong></p>
+<p>　　ps&nbsp;-aux&nbsp;|more</p>
+<p><strong>2.&nbsp;把所有进程显示出来，并输出到ps001.txt文件</strong></p>
+<p><strong>命令：</strong></p>
+<p>　　ps&nbsp;-aux&nbsp;&gt;&nbsp;ps001.txt</p>
+<p><strong>3.&nbsp;输出指定的字段</strong></p>
+<p><strong>命令：</strong></p>
+<p>　　&nbsp;ps&nbsp;-o&nbsp;pid,ppid,pgrp,session,tpgid,comm</p>
+<p><strong>输出：</strong></p>
+<p>&nbsp;</p>
+</div>
+<div class="clear"></div>
+<div id="blog_post_info_block" role="contentinfo"><div id="BlogPostCategory">
+    分类: 
+            <a href="https://www.cnblogs.com/xiangtingshen/category/1399421.html" target="_blank">Linux</a></div>
+
+
+    <div id="blog_post_info">
+<div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(10920236,cb_blogId,1);green_channel_success(this,'谢谢推荐！');">好文要顶</a>
+        <a id="green_channel_follow" onclick="follow('6cf4b3c2-994a-4e86-b0d7-08d686c3c1f9');" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/xiangtingshen/" target="_blank"><img src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/20190322222035.png" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/xiangtingshen/">狂奔~</a><br>
+            <a href="https://home.cnblogs.com/u/xiangtingshen/followees/">关注 - 14</a><br>
+            <a href="https://home.cnblogs.com/u/xiangtingshen/followers/">粉丝 - 43</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow">
+                <a href="javascript:void(0);" onclick="follow('6cf4b3c2-994a-4e86-b0d7-08d686c3c1f9');return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(10920236,'Digg')">
+        <span class="diggnum" id="digg_count">8</span>
+    </div>
+    <div class="buryit" onclick="votePost(10920236,'Bury')">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+    <div class="clear"></div>
+    <div id="post_next_prev">
+
+    <a href="https://www.cnblogs.com/xiangtingshen/p/10909231.html" class="p_n_p_prefix">« </a> 上一篇：    <a href="https://www.cnblogs.com/xiangtingshen/p/10909231.html" title="发布于 2019-05-23 23:26">socket编程和并发服务器</a>
+    <br>
+    <a href="https://www.cnblogs.com/xiangtingshen/p/10920265.html" class="p_n_p_prefix">» </a> 下一篇：    <a href="https://www.cnblogs.com/xiangtingshen/p/10920265.html" title="发布于 2019-05-24 21:22">netstat 基本用法</a>
+
+</div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date">2019-05-24 21:15</span>&nbsp;
+<a href="https://www.cnblogs.com/xiangtingshen/">狂奔~</a>&nbsp;
+阅读(<span id="post_view_count">94414</span>)&nbsp;
+评论(<span id="post_comment_count">0</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=10920236" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(10920236);return false;">收藏</a>&nbsp;
+<a href="javascript:void(0)" onclick="reportManager.report({ currentUserId: '', targetType: 'blogPost', targetId: '10920236', targetLink: 'https://www.cnblogs.com/xiangtingshen/p/10920236.html', title: 'linux下ps命令' })">举报</a></div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+
+<script>
+    var cb_entryId = 10920236, cb_entryCreatedDate = '2019-05-24 21:15', cb_postType = 1;
+    var allowComments = false, cb_blogId = 491156, cb_blogApp = 'xiangtingshen', cb_blogUserGuid = '6cf4b3c2-994a-4e86-b0d7-08d686c3c1f9';
+    mermaidRender.render()
+    markdown_highlight()
+    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");
+    updatePostStats(
+            [cb_entryId],
+            function(id, count) { $("#post_view_count").text(count) },
+            function(id, count) { $("#post_comment_count").text(count) })
+</script>
+<a id="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="#" onclick="return RefreshPage();">刷新页面</a><a href="#top">返回顶部</a></div>
+    <div id="comment_form_container" style="visibility: visible;">（评论功能已被禁用）</div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="cnblogs_ch"><a href="https://cloud.baidu.com/campaign/2022/index.html?track=f685c156ee58624f28cc3a33e1947160036fe70e52355ff7#person" target="_blank" onclick="gtag('event', 'click', {'event_category': 'ad', 'event_label': 'T2-百度智能云-开年采购季'})">【推荐】百度智能云2022开年大促0.4折起，企业新用户享高配优惠</a><br><a href="https://developer.huawei.com/consumer/cn/forum/topic/0201833401197920098?fid=18&amp;ha_source=bokeyuan" target="_blank" onclick="gtag('event', 'click', {'event_category': 'ad', 'event_label': 'T2-华为专区-移动应用白皮书'})">【推荐】开发者必读：华为 2022 年移动应用趋势洞察白皮书</a><br></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="under-post-card">
+            <div id="div-gpt-ad-1592365906576-0" style="width: 300px; height: 250px;" data-google-query-id="CKS71PLC8PYCFRPqvAodaIEDJA"><div id="google_ads_iframe_/1090369/C1_0__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/1090369/C1_0" name="google_ads_iframe_/1090369/C1_0" title="3rd party ad content" scrolling="no" marginwidth="0" marginheight="0" style="border: 0px none; vertical-align: bottom;" role="region" aria-label="Advertisement" tabindex="0" srcdoc="" data-google-container-id="1" data-load-complete="true" width="300" height="250" frameborder="0"></iframe></div></div>
+    </div>
+    <div id="under_post_card1"><div class="under-post-card">
+<b>编辑推荐：</b>
+<br>
+
+· <a href="https://www.cnblogs.com/skychen1218/p/16068503.html" target="_blank">记我第一次做线下技术分享的那些事</a>
+    <br>
+· <a href="https://www.cnblogs.com/thisiswhy/p/16066548.html" target="_blank">换个数据结构，一不小心节约了 591 台机器！</a>
+    <br>
+· <a href="https://www.cnblogs.com/tcjiaan/p/16058491.html" target="_blank">[ASP.NET Core] MVC 模型绑定：非规范正文内容的处理</a>
+    <br>
+· <a href="https://www.cnblogs.com/yexiaochai/p/16041013.html" target="_blank">全面认识数据指标体系</a>
+    <br>
+· <a href="https://www.cnblogs.com/weixiao-he/p/16051730.html" target="_blank">项目开发中对成长的一些思考</a>
+    <br>
+</div></div>
+        <div id="cnblogs_c2" class="under-post-card">
+            <a href="https://developer.huawei.com/consumer/cn/forum/topic/0201833401197920098?fid=18&amp;ha_source=bokeyuan" rel="nofollow" target="_blank" onclick="countCreativeClicks('C2-华为专区-补量-移动应用白皮书')">
+                <img src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/35695-20220329191439390-706965398.jpg" alt="" onload="countCreativeImpressions('C2-华为专区-补量-移动应用白皮书')">
+            </a>
+        </div>
+    <div id="under_post_card2"><div class="itnews under-post-card">
+    <b>最新新闻</b>：
+    <br>
+ ·          <a href="https://news.cnblogs.com/n/717929/" target="_blank">新冠病毒未来会如何演化</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/717928/" target="_blank">大众上海工厂因零部件短缺减产</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/717927/" target="_blank">环保组织推动比特币网络放弃耗能代码</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/717926/" target="_blank">波士顿动力的物流机器人开售</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/717925/" target="_blank">俄罗斯搜索巨头面临半导体硬件短缺</a>
+        <br>
+    » <a href="https://news.cnblogs.com/" title="IT 新闻" target="_blank">更多新闻...</a>
+</div></div>
+    <div id="HistoryToday" class="under-post-card"></div>
+    <script type="text/javascript">
+        var commentManager = new blogCommentManager();
+        commentManager.renderComments(0);
+        fixPostBody();
+
+                window.tocManager.displayDisableTocTips = false;
+                window.tocManager.generateToc();
+            setTimeout(function() { incrementViewCount(cb_entryId); }, 50);        deliverT2();
+        deliverC1C2();
+        loadNewsAndKb();
+LoadPostCategoriesTags(cb_blogId, cb_entryId);        LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+        GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+        loadOptUnderPost();
+        GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    </script>
+</div>
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+	<div id="sideBar">
+		<div id="sideBarMain">
+			<div id="sidebar_news" class="newsItem"><!--done-->
+<h3 class="catListTitle">公告</h3>
+
+<div id="blog-news">
+    
+    <div id="profile_block">
+        昵称：
+        <a href="https://home.cnblogs.com/u/xiangtingshen/">
+            狂奔~
+        </a>
+        <br>
+        园龄：
+        <a href="https://home.cnblogs.com/u/xiangtingshen/" title="入园时间：2019-01-30">
+            3年2个月
+        </a>
+        <br>
+        粉丝：
+        <a href="https://home.cnblogs.com/u/xiangtingshen/followers/">
+            43
+        </a>
+        <br>
+        关注：
+        <a href="https://home.cnblogs.com/u/xiangtingshen/followees/">
+            14
+        </a>
+        <div id="p_b_follow">
+<a href="javascript:void(0)" onclick="follow('6cf4b3c2-994a-4e86-b0d7-08d686c3c1f9')">+加关注</a></div>
+        <script>getFollowStatus('6cf4b3c2-994a-4e86-b0d7-08d686c3c1f9');</script>
+    </div>
+</div>
+
+</div>
+<div id="sidebar_c3"></div>
+			<div id="blog-calendar" style="">
+
+<table id="blogCalendar" class="Cal" title="Calendar" cellspacing="0" cellpadding="0" border="0">
+    <tbody>
+        <tr>
+            <td colspan="7">
+                <table class="CalTitle" cellspacing="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar('2022/02/28'); return false;">&lt;</a>
+                            </td>
+                            <td align="center">2022年3月</td>
+                            <td class="CalNextPrev" align="right">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar('2022/04/30'); return false;">&gt;</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    <tr>
+        <th class="CalDayHeader" abbr="日" scope="col" align="center">日</th>
+        <th class="CalDayHeader" abbr="一" scope="col" align="center">一</th>
+        <th class="CalDayHeader" abbr="二" scope="col" align="center">二</th>
+        <th class="CalDayHeader" abbr="三" scope="col" align="center">三</th>
+        <th class="CalDayHeader" abbr="四" scope="col" align="center">四</th>
+        <th class="CalDayHeader" abbr="五" scope="col" align="center">五</th>
+        <th class="CalDayHeader" abbr="六" scope="col" align="center">六</th>
+    </tr>
+            <tr>
+                            <td class="CalOtherMonthDay" align="center">27</td>
+                            <td class="CalOtherMonthDay" align="center">28</td>
+                        <td class="" align="center">
+                            1
+                        </td>
+                        <td class="" align="center">
+                            2
+                        </td>
+                        <td class="" align="center">
+                            3
+                        </td>
+                        <td class="" align="center">
+                            4
+                        </td>
+                    <td class="CalWeekendDay" align="center">
+                        5
+                    </td>
+            </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            6
+                        </td>
+                            <td class="" align="center">
+                                7
+                            </td>
+                            <td class="" align="center">
+                                8
+                            </td>
+                            <td class="" align="center">
+                                9
+                            </td>
+                            <td class="" align="center">
+                                10
+                            </td>
+                            <td class="" align="center">
+                                11
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            12
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            13
+                        </td>
+                            <td class="" align="center">
+                                14
+                            </td>
+                            <td class="" align="center">
+                                15
+                            </td>
+                            <td class="" align="center">
+                                16
+                            </td>
+                            <td class="" align="center">
+                                17
+                            </td>
+                            <td class="" align="center">
+                                18
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            19
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            20
+                        </td>
+                            <td class="" align="center">
+                                21
+                            </td>
+                            <td class="" align="center">
+                                22
+                            </td>
+                            <td class="" align="center">
+                                23
+                            </td>
+                            <td class="" align="center">
+                                24
+                            </td>
+                            <td class="" align="center">
+                                25
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            26
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            27
+                        </td>
+                            <td class="" align="center">
+                                28
+                            </td>
+                            <td class="" align="center">
+                                29
+                            </td>
+                            <td class="" align="center">
+                                30
+                            </td>
+                            <td class="CalTodayDay" align="center">
+                                31
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                1
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            2
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalOtherMonthDay" align="center">
+                            3
+                        </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                4
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                5
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                6
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                7
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                8
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            9
+                        </td>
+                </tr>
+    </tbody>
+</table></div><script>loadBlogDefaultCalendar();</script>			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"><!-- 搜索 -->
+<div id="sidebar_search" class="sidebar-block">
+    <div id="sidebar_search" class="mySearch">
+        <h3 class="catListTitle">搜索</h3>
+        <div id="sidebar_search_box">
+            <div id="widget_my_zzk" class="div_my_zzk">
+                <input type="text" id="q" onkeydown="return zzk_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="zzk_go()" type="button" value="找找看" id="btnZzk" class="btn_my_zzk">
+            </div>
+            <div id="widget_my_google" class="div_my_zzk">
+                <input type="text" name="google_q" id="google_q" onkeydown="return google_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="google_go()" type="button" value="谷歌搜索" class="btn_my_zzk">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 常用链接 -->
+<div id="sidebar_shortcut" class="sidebar-block"><div class="catListLink">
+<h3 class="catListTitle">
+常用链接
+</h3>
+<ul>
+    
+<li><a href="https://www.cnblogs.com/xiangtingshen/p/" title="我的博客的随笔列表">我的随笔</a></li>
+<li><a href="https://www.cnblogs.com/xiangtingshen/MyComments.html" title="我的发表过的评论列表">我的评论</a></li>
+<li><a href="https://www.cnblogs.com/xiangtingshen/OtherPosts.html" title="我评论过的随笔列表">我的参与</a></li>
+<li><a href="https://www.cnblogs.com/xiangtingshen/RecentComments.html" title="我的博客的评论列表">最新评论</a></li>
+<li><a href="https://www.cnblogs.com/xiangtingshen/tag/" title="我的博客的标签列表">我的标签</a></li>
+
+</ul>
+</div>
+
+</div>
+
+<!-- 最新随笔 -->
+
+
+<!-- 我的标签 -->
+<div id="sidebar_toptags" class="sidebar-block"></div>
+
+<!-- 积分与排名 -->
+
+
+<!-- 随笔分类、随笔档案、文章分类、新闻分类、相册、链接 -->
+<div id="sidebar_categories">
+
+    <div id="sidebar_postcategory" class="catListPostCategory sidebar-block">
+        <h3 class="catListTitle">
+            
+随笔分类
+
+
+
+        </h3>
+
+        <ul>
+
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/category/1497665.html" class="category-item-link" rel="" target="">BCB6(11)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/category/1461695.html" class="category-item-link" rel="" target="">Boost C++(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/category/1396654.html" class="category-item-link" rel="" target="">C++(67)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/category/1393761.html" class="category-item-link" rel="" target="">C++设计模式和数据结构(18)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/category/1427450.html" class="category-item-link" rel="" target="">Django(26)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/category/1495210.html" class="category-item-link" rel="" target="">git(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/category/1427442.html" class="category-item-link" rel="" target="">http协议(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/category/1420721.html" class="category-item-link" rel="" target="">JavaScript(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/category/1399421.html" class="category-item-link" rel="" target="">Linux(47)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/category/1444924.html" class="category-item-link" rel="" target="">MFC(14)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/category/1424816.html" class="category-item-link" rel="" target="">MySQL系列 (18)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/category/1441022.html" class="category-item-link" rel="" target="">ocrale系列(21)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/category/1398036.html" class="category-item-link" rel="" target="">OpenCv(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/category/1615259.html" class="category-item-link" rel="" target="">OpenGL学习笔记(27)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/category/1393642.html" class="category-item-link" rel="" target="">Python(57)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/category/1464078.html" class="category-item-link" rel="" target="">Python GUI编程Tkinter(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/category/1448599.html" class="category-item-link" rel="" target="">Qt系列(75)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/category/1470941.html" class="category-item-link" rel="" target="">shell(13)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/category/1442859.html" class="category-item-link" rel="" target="">Web框架之Tornado(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/category/1416545.html" class="category-item-link" rel="" target="">Web前端(6)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/category/1529492.html" class="category-item-link" rel="" target="">windows批处理(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/category/1487123.html" class="category-item-link" rel="" target="">程序逆向(42)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/category/1669677.html" class="category-item-link" rel="" target="">爬虫(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/category/1472721.html" class="category-item-link" rel="" target="">嵌入式(20)</a>
+ 
+                </li>                
+            <li>
+                <a href="javascript:void(0)" onclick="sideColumnManager.loadMore(this)">更多</a>
+            </li>
+        </ul>
+
+
+    </div>    
+    <div id="sidebar_postarchive" class="catListPostArchive sidebar-block">
+        <h3 class="catListTitle">
+            
+随笔档案
+
+
+
+        </h3>
+
+        <ul>
+
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/archive/2020/11.html" class="category-item-link" rel="" target="">2020年11月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/archive/2020/08.html" class="category-item-link" rel="" target="">2020年8月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/archive/2020/07.html" class="category-item-link" rel="" target="">2020年7月(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/archive/2020/06.html" class="category-item-link" rel="" target="">2020年6月(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/archive/2020/05.html" class="category-item-link" rel="" target="">2020年5月(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/archive/2020/04.html" class="category-item-link" rel="" target="">2020年4月(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/archive/2020/03.html" class="category-item-link" rel="" target="">2020年3月(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/archive/2020/02.html" class="category-item-link" rel="" target="">2020年2月(32)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/archive/2020/01.html" class="category-item-link" rel="" target="">2020年1月(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/archive/2019/12.html" class="category-item-link" rel="" target="">2019年12月(24)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/archive/2019/11.html" class="category-item-link" rel="" target="">2019年11月(8)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/archive/2019/10.html" class="category-item-link" rel="" target="">2019年10月(10)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/archive/2019/09.html" class="category-item-link" rel="" target="">2019年9月(16)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/archive/2019/08.html" class="category-item-link" rel="" target="">2019年8月(22)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/archive/2019/07.html" class="category-item-link" rel="" target="">2019年7月(30)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/archive/2019/06.html" class="category-item-link" rel="" target="">2019年6月(72)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/archive/2019/05.html" class="category-item-link" rel="" target="">2019年5月(68)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/archive/2019/04.html" class="category-item-link" rel="" target="">2019年4月(55)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/archive/2019/03.html" class="category-item-link" rel="" target="">2019年3月(66)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/archive/2019/02.html" class="category-item-link" rel="" target="">2019年2月(59)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/xiangtingshen/archive/2019/01.html" class="category-item-link" rel="" target="">2019年1月(3)</a>
+ 
+                </li>                
+            <li>
+                <a href="javascript:void(0)" onclick="sideColumnManager.loadMore(this)">更多</a>
+            </li>
+        </ul>
+
+
+    </div>    
+</div>
+
+<!-- 最新评论 -->
+<!-- 阅读排行榜 -->
+<div id="sidebar_topviewedposts" class="sidebar-block"><div class="catListView">
+<h3 class="catListTitle">阅读排行榜</h3>
+	<div id="TopViewPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/xiangtingshen/p/10980055.html">
+                            1. extern “C”的作用详解(115851)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/xiangtingshen/p/10920236.html">
+                            2. linux下ps命令(94411)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/xiangtingshen/p/10851851.html">
+                            3. C++强制类型转换操作符 dynamic_cast(20066)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/xiangtingshen/p/12096699.html">
+                            4. linux下安装qt(18496)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/xiangtingshen/p/11005391.html">
+                            5. Qt--解析Json(16274)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div>
+
+</div>
+
+<!-- 评论排行榜 -->
+<div id="sidebar_topcommentedposts" class="sidebar-block"><div class="catListFeedback">
+<h3 class="catListTitle">评论排行榜</h3>
+	<div id="TopFeedbackPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/xiangtingshen/p/11961434.html">
+                            1. 文件描述符fd,struct files_struct(1)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div>
+
+</div>
+
+<!-- 推荐排行榜 -->
+<div id="sidebar_topdiggedposts" class="sidebar-block">
+<div id="topdigg_posts_wrap">
+    <div class="catListView">
+        <h3 class="catListTitle">推荐排行榜</h3>
+        <div id="TopDiggPostsBlock">
+            <ul style="word-break: break-all">
+                        <li>
+                            <a href="https://www.cnblogs.com/xiangtingshen/p/10980055.html">
+                                1. extern “C”的作用详解(29)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/xiangtingshen/p/10920236.html">
+                                2. linux下ps命令(8)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/xiangtingshen/p/11009627.html">
+                                3. QT项目之创建.pri文件(6)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/xiangtingshen/p/10851851.html">
+                                4. C++强制类型转换操作符 dynamic_cast(4)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/xiangtingshen/p/11005391.html">
+                                5. Qt--解析Json(3)
+                            </a>
+                        </li>
+            </ul>
+        </div>
+    </div>
+</div></div><div id="sidebar_recentcomments" class="sidebar-block"><div class="catListComment">
+<h3 class="catListTitle">最新评论</h3>
+
+	<div class="RecentCommentBlock">
+        <ul>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/xiangtingshen/p/11961434.html">1. Re:文件描述符fd,struct files_struct</a></li>
+                    <li class="recent_comment_body"><p>这源码剖析的太到位了！！！</p>
+</li>
+                    <li class="recent_comment_author">--wuqiongjin</li>
+        </ul>
+    </div>
+</div>
+
+</div>
+
+
+</div>
+                    <script>loadBlogSideColumn();</script>
+			</div>			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright © 2022 狂奔~
+<br><span id="poweredby">Powered by .NET 6 on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+    
+
+    <input type="hidden" id="antiforgery_token" value="CfDJ8AuMt_3FvyxIgNOR82PHE4n19LwjBfXWjC2PC5-0RlTlcnWnbuaErAy3AuuhgWXeh_zdR9Dch8Q_r908vKKyRp-1IjVdMfXwv1Ak3j8lRgNBkj5VcZ8N82lB0sxygUuuH1Q0tJn35-oUr-U590d80G4">
+    <script async="" src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/js.js"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    var kv = getGACustom();
+    if (kv) {
+        gtag('set', kv);
+    }
+    gtag('config', 'UA-476124-1');
+    </script>
+    <script defer="defer" src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/hm.js"></script><iframe src="linux%E4%B8%8Bps%E5%91%BD%E4%BB%A4_files/container.html" style="visibility: hidden; display: none;"></iframe>
+
+<iframe src="https://www.google.com/recaptcha/api2/aframe" style="display: none;" width="0" height="0"></iframe></body></html>
