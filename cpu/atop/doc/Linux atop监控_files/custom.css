@@ -1,0 +1,136 @@
+/*====================点赞悬浮CSS==================================*/
+#div_digg {
+    background-color: #FFFFFF;
+    border: 3px solid #019875;
+    bottom: 0;
+    padding: 15px;
+    margin: 15px 465px 20px 15px;
+    position: fixed;
+    right: 0;
+    text-align: center;
+    z-index: 1000;
+    border-radius: 5px;
+}
+/*推荐CSS*/
+.diggit {
+    float: left;
+    width: 46px;
+    height: 52px;
+    background: url('https://static.cnblogs.com/images/upup.gif') no-repeat;
+    text-align: center;
+    cursor: pointer;
+    margin-top: 2px;
+    padding-top: 5px;
+    margin-right: auto;
+    margin-left: 43px;
+}
+/*隐藏反对CSS*/
+.buryit{
+display:none; 
+}
+
+/*==================评论CSS==============================*/
+#btn_comment_submit { border: none; height: 48px; width: 120px;}
+.comment_btn {
+    border: none; height: 48px; width: 120px; font-size: 18px; cursor: pointer; position: relative;
+    vertical-align: middle; display: inline-block; background: #55895B; color: #fff;
+}
+#btn_comment_submit:hover { background: #6DA47D;}
+.feedback_area_title { padding: 10px; font-size: 24px; font-weight: bold; color: #55895B; border-bottom: solid 6px #55895B;}
+.feedbackListSubtitle { font-size: 12px; color: #888;}
+.feedbackListSubtitle a { color: #888;}
+.comment_quote { background: #FCFAAC; padding: 15px; border: 1px solid #CCC;}
+#commentform_title {
+    color: #55895B; background-image: none; background-repeat: no-repeat; margin-bottom: 10px;
+    padding: 10px 20px 10px 10px; font-size: 24px; font-weight: bold; border-bottom: solid 6px #55895B;
+}
+.commentbox_title { width: 940px;}
+#commentbox_opt { position: absolute; text-align: right; width: 940px;}
+#comment_form { margin: 10px 0; padding: 0;}
+.commentform { margin: 10px 0; padding: 10px 20px; background: #fff;}
+#tbCommentBody {
+    margin-top: 10px; width: 940px; max-width: 940px; min-width: 940px; background: white;
+    color: #333; border: 2px solid #fff; box-shadow: inset 0 0 8px #aaa;
+    padding: 10px; height: 120px; font-size: 14px; min-height: 120px;
+}
+.feedbackItem { font-size: 14px; line-height: 24px; margin: 10px 0; padding: 20px; background: #F2F2F2; box-shadow: 0 0 5px #aaa;}
+}
+.feedbackListSubtitle { font-weight: normal;}
+#myposts .PostList { font-size:14px; line-height:24px; margin:10px 0; padding:20px; background:#F2F2F2; box-shadow:0 0 5px #aaa;}
+#myposts .postTitl2 a { color:#6DA47D;}
+
+/*ctrl+enter快捷提交高度CSS*/
+#tip_comment2{height: 29px;}
+
+/*评论高度CSS*/
+#comment_form_container{
+height:353px;
+}
+
+/*============去除底部广告CSS==================================*/
+#ad_t2,#cnblogs_c1,#under_post_news,#cnblogs_c2,#under_post_kb,#HistoryToday {display:none;}
+
+
+
+/*==============生成博客目录的CSS==============================*/
+#sideBar{
+    font-size:12px;
+    font-family:Arial, Helvetica, sans-serif;
+    text-align:left;
+    position:fixed;/*将div的位置固定到距离top:50px，right:0px的位置，这样div就会处在最右边的位置，距离顶部50px*/
+    top:226px;
+    left:0px;
+    width: auto;
+    height: auto; 
+}
+#sideBarTab{
+    float:right;
+    width:30px; 
+    border:1px solid #e5e5e5;
+    border-right:none;
+    text-align:center;
+    background:#ffffff;
+}
+
+#sideBarContents{
+    float:left;
+    overflow:auto; 
+    overflow-x:hidden;!important;
+    width:245px;
+    min-height:108px;
+    max-height:460px;
+    border:1px solid #e5e5e5;
+    border-right:none; 
+    background:#ffffff;
+}
+#sideBarContents dl{
+    margin:0;
+    padding:0;
+}
+
+#sideBarContents dt{
+    margin-top:5px;
+    margin-left:5px;
+}
+
+#sideBarContents dd, dt {
+    cursor: pointer;
+}
+
+#sideBarContents dd:hover, dt:hover {
+    color:#A7995A;
+}
+/*目录颜色CSS*/
+#sideBarTab h2{
+  color:#008080;
+}
+
+/*代码宽度*/
+.cnblogs_code pre{
+max-width: 1005px;
+}
+
+/*图片宽度*/
+#cnblogs_post_body img{
+max-width: 1005px;
+}

@@ -1,0 +1,1490 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin-when-crossorigin">
+    <meta name="description" content="介绍 atop是一个功能非常强大的linux服务器监控工具，它的数据采集主要包括：CPU、内存、磁盘、网络、进程等，并且内容非常的详细，特别是当那一部分存在压力它会以特殊的颜色进行展示，如果颜色是红色">
+    <meta property="og:description" content="介绍 atop是一个功能非常强大的linux服务器监控工具，它的数据采集主要包括：CPU、内存、磁盘、网络、进程等，并且内容非常的详细，特别是当那一部分存在压力它会以特殊的颜色进行展示，如果颜色是红色">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Linux atop监控 - pursuer.chen - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="https://common.cnblogs.com/favicon.svg" type="image/svg+xml">
+    
+    <style>:not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([class*="language-"]):not([highlighted]):not(.hljs):not([class*="brush:"]) {
+        background: rgb(245, 245, 245);
+        padding: 5px;
+        border: 1px solid rgb(204, 204, 204);
+        border-radius: 3px;
+        border-color: transparent;
+        color: rgb(68, 68, 68);
+        font-family: "Courier New", sans-serif;
+    }:not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]):not([class*="brush:"]) code:not(.hljs) {
+            background: rgb(245, 245, 245) !important;
+            border-color: transparent !important;
+        }</style><link rel="stylesheet" href="Linux%20atop%E7%9B%91%E6%8E%A7_files/blog-common.css">
+    <link id="MainCss" rel="stylesheet" href="Linux%20atop%E7%9B%91%E6%8E%A7_files/bundle-minyx2_lite.css">
+    <link id="highlighter-theme-cnblogs" type="text/css" rel="stylesheet" href="Linux%20atop%E7%9B%91%E6%8E%A7_files/cnblogs.css">
+    <link type="text/css" rel="stylesheet" href="Linux%20atop%E7%9B%91%E6%8E%A7_files/custom.css">
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="Linux%20atop%E7%9B%91%E6%8E%A7_files/bundle-minyx2_lite-mobile.css">
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/chenmh/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/chenmh/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/chenmh/wlwmanifest.xml">
+    <script type="text/javascript" async="" src="Linux%20atop%E7%9B%91%E6%8E%A7_files/analytics.js"></script><script type="text/javascript" src="Linux%20atop%E7%9B%91%E6%8E%A7_files/encoder.js"></script><script>
+        var currentBlogId = 71142;
+        var currentBlogApp = 'chenmh';
+        var cb_enable_mathjax = false;
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'Minyx2_Lite';
+        var visitorUserId = '';
+        var hasCustomScript = true;
+        try {
+            if (hasCustomScript && document.referrer && document.referrer.indexOf('baidu.com') >= 0) {
+                Object.defineProperty(document, 'referrer', { value: '' });
+                Object.defineProperty(Document.prototype, 'referrer', { get: function(){ return ''; } });
+            }
+        } catch(error) { }
+        window.codeHighlightEngine = 1;
+        window.enableCodeLineNumber = false;
+        window.codeHighlightTheme = 'cnblogs';
+    </script>
+        <script>
+            var currentPostDateAdded = '2017-02-22 09:42';
+        </script>
+    <script src="Linux%20atop%E7%9B%91%E6%8E%A7_files/jquery-2.js"></script>
+    <script src="Linux%20atop%E7%9B%91%E6%8E%A7_files/blog-common.js"></script><style type="text/css">.medium-zoom-overlay{position:fixed;top:0;right:0;bottom:0;left:0;opacity:0;transition:opacity .3s;will-change:opacity}.medium-zoom--opened .medium-zoom-overlay{cursor:pointer;cursor:zoom-out;opacity:1}.medium-zoom-image{cursor:pointer;cursor:zoom-in;transition:transform .3s cubic-bezier(.2,0,.2,1)!important}.medium-zoom-image--hidden{visibility:hidden}.medium-zoom-image--opened{position:relative;cursor:pointer;cursor:zoom-out;will-change:transform}</style><script id="hljs-script" async="" data-loaded="true" src="Linux%20atop%E7%9B%91%E6%8E%A7_files/highlight.js"></script>
+    
+    
+    <script src="Linux%20atop%E7%9B%91%E6%8E%A7_files/bundle-minyx2_lite.js" type="text/javascript" language="javascript"></script>
+<meta http-equiv="origin-trial" content="AxujKG9INjsZ8/gUq8+dTruNvk7RjZQ1oFhhgQbcTJKDnZfbzSTE81wvC2Hzaf3TW4avA76LTZEMdiedF1vIbA4AAABueyJvcmlnaW4iOiJodHRwczovL2ltYXNkay5nb29nbGVhcGlzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzVGhpcmRQYXJ0eSI6dHJ1ZX0="><meta http-equiv="origin-trial" content="Azuce85ORtSnWe1MZDTv68qpaW3iHyfL9YbLRy0cwcCZwVnePnOmkUJlG8HGikmOwhZU22dElCcfrfX2HhrBPAkAAAB7eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A16nvcdeoOAqrJcmjLRpl1I6f3McDD8EfofAYTt/P/H4/AWwB99nxiPp6kA0fXoiZav908Z8etuL16laFPUdfQsAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="AxBHdr0J44vFBQtZUqX9sjiqf5yWZ/OcHRcRMN3H9TH+t90V/j3ENW6C8+igBZFXMJ7G3Pr8Dd13632aLng42wgAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A88BWHFjcawUfKU3lIejLoryXoyjooBXLgWmGh+hNcqMK44cugvsI5YZbNarYvi3roc1fYbHA1AVbhAtuHZflgEAAAB2eyJvcmlnaW4iOiJodHRwczovL2dvb2dsZS5jb206NDQzIiwiZmVhdHVyZSI6IlRydXN0VG9rZW5zIiwiZXhwaXJ5IjoxNjUyNzc0NDAwLCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A8FHS1NmdCwGqD9DwOicnHHY+y27kdWfxKa0YHSGDfv0CSpDKRHTQdQmZVPDUdaFWUsxdgVxlwAd6o+dhJykPA0AAACWeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjQzMTU1MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><meta http-equiv="origin-trial" content="A8zdXi6dr1hwXEUjQrYiyYQGlU3557y5QWDnN0Lwgj9ePt66XMEvNkVWOEOWPd7TP9sBQ25X0Q15Lr1Nn4oGFQkAAACceyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjQzMTU1MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><meta http-equiv="origin-trial" content="A4/Htern2udN9w3yJK9QgWQxQFruxOXsXL7cW60DyCl0EZFGCSme/J33Q/WzF7bBkVvhEWDlcBiUyZaim5CpFQwAAACceyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjQzMTU1MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><script src="Linux%20atop%E7%9B%91%E6%8E%A7_files/pubads_impl_2022032106.js" async=""></script><link rel="preload" href="Linux%20atop%E7%9B%91%E6%8E%A7_files/integrator.js" as="script"><script type="text/javascript" src="Linux%20atop%E7%9B%91%E6%8E%A7_files/integrator.js"></script></head>
+<body class="skin-minyx2_lite no-navbar">
+    <a name="top"></a>
+    <div id="top_nav" class="navbar forpc navbar-custom">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding">
+                    <a href="https://www.cnblogs.com/" title="开发者的网上家园" role="banner">
+                            <img src="Linux%20atop%E7%9B%91%E6%8E%A7_files/logo.svg" alt="博客园Logo">
+                    </a>
+                </li>
+                <li><a href="https://www.cnblogs.com/" onclick="countClicks('skin-navbar-sitehome')">首页</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="countClicks('nav', 'skin-navbar-news')">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="countClicks('nav', 'skin-navbar-q')">博问</a></li>
+                <li><a id="nav_brandzone" href="https://brands.cnblogs.com/huawei" onclick="countClicks('nav', 'skin-navbar-brands')">专区</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="countClicks('nav', 'skin-navbar-ing')">闪存</a></li>
+                <li><a href="https://edu.cnblogs.com/" onclick="countClicks('nav', 'skin-navbar-edu')">班级</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search" action="https://zzk.cnblogs.com/s" method="get" role="search">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="search" tabindex="3">
+                        <button type="submit" id="zzk_search_button">
+                            <img src="Linux%20atop%E7%9B%91%E6%8E%A7_files/search.svg" alt="搜索">
+                        </button>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔" style="display: none;">
+                        <img id="new_post_icon" class="navbar-icon" src="Linux%20atop%E7%9B%91%E6%8E%A7_files/newpost.svg" alt="写随笔">
+                    </a>
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客" style="display: none;">
+                        <img id="myblog_icon" class="navbar-icon" src="Linux%20atop%E7%9B%91%E6%8E%A7_files/myblog.svg" alt="我的博客">
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息" style="display: none;">
+                        <img id="msg_icon" class="navbar-icon" src="Linux%20atop%E7%9B%91%E6%8E%A7_files/message.svg" alt="短消息">
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <a id="navbar_lite_mode_indicator" data-current-page="blog" style="display: none" href="javascript:void(0)" alt="简洁模式" title="简洁模式启用，您在访问他人博客时会使用简洁款皮肤展示">
+                        <img class="navbar-icon" src="Linux%20atop%E7%9B%91%E6%8E%A7_files/lite-mode-on.svg" alt="简洁模式">
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown" style="display: none;">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="Linux%20atop%E7%9B%91%E6%8E%A7_files/avatar-default.svg" alt="用户头像">
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <img id="navbar_lite_mode_on" src="Linux%20atop%E7%9B%91%E6%8E%A7_files/lite-mode-check.svg" class="hide"><span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+                            <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup" style="display: inline;">注册</a>
+                    <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()" style="display: inline;">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    
+    
+<div id="container">
+    <a class="minyx" href="https://www.cnblogs.com/">代码改变世界</a>
+    <ul id="topMnu">
+        <!-- 统计数据 -->
+        <li>
+            Posts - 187, 
+Articles - 16, 
+Comments - 472,
+Views - 
+<span title="总阅读数: 2185952">
+218万</span>
+<!---->
+
+
+        </li>
+        <!-- 这边可以增加一些链接 -->
+        <!-- 博客园 -->
+        <li><a href="https://www.cnblogs.com/">Cnblogs</a></li>
+        <!-- 管理 -->
+        <li id="topMnu-dashboard">
+            <a id="lnkDashboard" href="https://i.cnblogs.com/">Dashboard</a>
+        </li>
+        <li>
+            
+    <a id="lnkLogin" href="https://account.cnblogs.com/signin?returnUrl=https://www.cnblogs.com/chenmh/">Login</a>
+
+
+        </li>
+    </ul>
+
+    <script type="text/javascript">
+        var m = window.__blog.topMenuRendered;
+        if (m) { m(__$("topMnu")); }
+    </script>
+
+    <div id="header">
+        <ul id="menu">
+            <!-- 首页，当前section加上current类 -->
+            <li id="menu-home" class="current">
+                <a id="lnkHome" href="https://www.cnblogs.com/chenmh/">Home</a></li>
+            <!-- 联系 -->
+            <li id="menu-contact">
+                <a id="lnkContact" href="https://msg.cnblogs.com/send/pursuer.chen">Contact</a></li>
+            <!-- 相册 -->
+            <li id="menu-gallary">
+                <a id="lnkGallery" href="https://www.cnblogs.com/chenmh/gallery.html">Gallery</a></li>
+            <!-- 订阅 -->
+            <li id="menu-subscribe">
+                <a id="blog_nav_rss" href="javascript:void(0);" data-rss="https://www.cnblogs.com/chenmh/rss/">Subscribe</a></li>
+            <!-- Rss订阅 -->
+            <li id="rss">
+                <a id="lnkRss" href="https://www.cnblogs.com/chenmh/rss/">RSS</a></li>
+        </ul>
+        <div id="newmsg"></div>
+        <h1>
+            <!-- 主标题 -->
+            <a id="lnkBlogTitle" href="https://www.cnblogs.com/chenmh/">pursuer.chen</a>
+            <!-- 子标题 -->
+            <small>
+                LIVE AND LEARN
+            </small>
+        </h1>
+    </div>
+
+    <script type="text/javascript">
+        var m = window.__blog.headerRendered;
+        if (m) { m(__$("header")); }
+    </script>
+
+    <div id="wrapper">
+        <div id="content">
+            <script type="text/javascript">
+                var m = window.__blog.preRenderPosts;
+                if (m) { m(); }
+            </script>
+            <div id="post_detail">
+<div class="post" id="post">
+    <a name="top"></a>
+    <h2>
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/chenmh/p/5481700.html">
+    <span role="heading" aria-level="2">Linux atop监控</span>
+    
+
+
+
+</a><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button>
+</h2>
+    <small>
+<span id="post-date">2017-02-22 09:42</span>&nbsp;
+<a href="https://www.cnblogs.com/chenmh/">pursuer.chen</a>&nbsp;
+阅读(<span id="post_view_count">26026</span>)&nbsp;
+评论(<span id="post_comment_count">2</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=5481700" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(5481700);return false;">收藏</a>&nbsp;
+<a href="javascript:void(0)" onclick="reportManager.report({ currentUserId: '', targetType: 'blogPost', targetId: '5481700', targetLink: 'https://www.cnblogs.com/chenmh/p/5481700.html', title: 'Linux atop监控' })">举报</a></small>
+    <div class="entry">
+        <div id="cnblogs_post_body" class="blogpost-body blogpost-body-html">
+<style>.suofang img { max-width: 100% !important; height: auto !important }</style>
+<div class="suofang">
+<h1 style="color: rgba(0, 128, 128, 1); background-color: rgba(0, 128, 128, 1)"><span style="font-size: 16px"><a name="介绍" rel="noopener"></a><span style="color: rgba(0, 0, 0, 1); font-family: 宋体; font-size: 18pt">介绍</span></span><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<p>atop是一个功能非常强大的linux服务器监控工具，它的数据采集主要包括：CPU、内存、磁盘、网络、进程等，并且内容非常的详细，特别是当那一部分存在压力它会以特殊的颜色进行展示，如果颜色是红色那么说明已经非常严重了。</p>
+<p>&nbsp;</p>
+<p><span style="color: rgba(255, 0, 0, 1)">&nbsp;注意：所有的信息都是反映过去10S的状态信息</span></p>
+<p><span style="font-size: 18pt">使用</span></p>
+<p>atop工具安装好后在运行命令atop就能弹出监控界面</p>
+<p><img src="Linux%20atop%E7%9B%91%E6%8E%A7_files/135426-20160511142532093-2045162251.png" alt="" class="medium-zoom-image" width="100%"></p>
+<p>&nbsp;接下来我们就来详细看看每行参数意义。</p>
+<p><strong>atop:</strong>改行列出了服务器的host、当前时间、信息收集的频率</p>
+<p><strong>PRC:</strong>该列展示整个系统的性能状况；</p>
+<ol>
+<li>sys:过去10s所有的进程在内核态运行的时间总和</li>
+<li>usr:过去10s所有的进程在用户态的运行时间总和</li>
+<li>#proc:进程总数</li>
+<li>#trun:过去10s转换的进程数</li>
+<li>#zombie：过去10s僵死进程的数量</li>
+<li>#exit：在10s采样周期期间退出的进程数量</li>
+</ol>
+<p><strong>CPU: </strong>cpu列展示了服务器的CPU整体的一个状态信息，包括内核和用户所占的比例、处理中断所占的比例、CPU的处于空闲下比例（这里是100%*cpu核心数，CPU有时候也会因为由于磁盘性能问题出现等待的空闲）</p>
+<ol>
+<li>sys:cpu在处理进程时处于内核态的时间所占的比例</li>
+<li>usr:cpu在处理进程时处于用户态的时间所占的比例</li>
+<li>irq:cpu在处理进程的中断请求所占的实际比例</li>
+<li>idle:cpu处于空闲状态下的时间比例（除了本身空闲，还有比如等待磁盘io的情况下也会处于空闲状态）</li>
+</ol>
+<p><strong>cpu</strong>:每个核心的状态信息，和总的CPU信息一样，每列加起来的总和就是总的CPU的状态信息。</p>
+<p><strong>CPL:</strong>cpl也反应了服务器整体的性能，展示信息包括进程等待队列数，分别从过去1分钟、5分钟、15分钟的采样信息。</p>
+<ol>
+<li>avg1:过去1分钟进程等待队列数</li>
+<li>avg5:过去5分钟进程等待队列数</li>
+<li>avg15:过去15分钟进程等待队列数</li>
+<li>csw(context swapping)：上下文交换次数</li>
+<li>intr(interrupt):中断发生的次数</li>
+<li>numcpu:cpu的核心数</li>
+</ol>
+<p><strong>mem:该列主要展示内存的使用信息。</strong></p>
+<ol>
+<li>tot：物理内存总量</li>
+<li>free：空闲内存的大小（不能单单从这个字段就判断内存不足，还需要参考free -m中的-/+ buffers/cache:free因为这块的内容随时就可以拿过来使用，还可以从是否有使用Swap来判断是否内存不足）</li>
+<li>cache：用于页缓存的内存大小</li>
+<li>dirty：内存中的脏页大小</li>
+<li>buff：用于文件缓存的内存大小</li>
+<li>slab：系统内核占用的内存大小</li>
+</ol>
+<p><strong>SWP：交换空间使用情况</strong></p>
+<ol>
+<li>tot:交换空间总量</li>
+<li>free:交换空间剩余空间总量</li>
+</ol>
+<p><strong>PAG列</strong>：虚拟内存分页情况</p>
+<ol>
+<li>swin:换入内存页数</li>
+<li>swout：换出内存页数</li>
+</ol>
+<p><strong>LVM/DSK:</strong>每个分区信息以一列来进行展示</p>
+<ol>
+<li>busy：磁盘忙时所占比例</li>
+<li>read、KiB/r 、MBr/s：每秒读的请求数和请求的kb、mb数</li>
+<li>write、KiB/w 、MBr/w：每秒写的请求数和请求的kb、mb数</li>
+<li>avq:磁盘平均队列长度（根据实际的监控该列好像是磁盘平均请求数avgrq）</li>
+<li>avio:磁盘的平均io时间</li>
+</ol>
+<p>&nbsp;</p>
+<p><strong>NET</strong>:展示了传输层（TCP/UDP）、网络层（ip）、网络接口的网络传输信息。</p>
+<p><strong>transport：</strong>传输层（TCP/UDP）的数据输入输出的展示，例如在服务器的内部进程之间的数据传输就是在传输层展示，以为还不需要往下通过网络进行传输。</p>
+<p><strong>network：</strong>网络层（ip）的数据输入输出的展示；</p>
+<p><strong>eth0：</strong>默认的网络接口的数据输入输出的展示，也就是通过etho的ip的数据传输的展示，</p>
+<ol>
+<li>sp:网卡的带宽（1000M）</li>
+<li>pcki：传入的数据包的大小</li>
+<li>pcko：传出的数据包的大小</li>
+<li>si:每秒传入的数据大小</li>
+<li>so：每秒传出的数据大小</li>
+<li>coll（collisions）：每秒的冲突数</li>
+<li>mlti（MULTICAST）：每秒的多路广播的数量</li>
+<li>erri/erro:每秒输入输出的错误数</li>
+<li>drpi/drpo:每秒的输入输出的丢包数</li>
+</ol>
+<p><strong>lo:</strong>通过127.0.0.1网络接口的数据传输的数据展示，参数和上面的eth0是一样的</p>
+<p>&nbsp;</p>
+<p><span style="font-size: 18pt"><strong>进程列</strong></span></p>
+<p>进程列展示了每个进程在过去10S内的数据</p>
+<p><strong>m模式：内存状态模式</strong></p>
+<p>SYSCPU:过去10s内进程处于内核模式占用的CPU时间</p>
+<p>USRCPU:过去10S进程处于用户模式占用的CPU时间</p>
+<p>VSIZE:过去10S进程占用的虚拟空间大小</p>
+<p>RSIZE:过去10S进程占用的内存空间大小</p>
+<p>PSIZE:过去10S进程占用的页大小</p>
+<p>VGROW：过去10S进程增长的虚拟空间大小</p>
+<p>RGROW：过去10S进程增长的内存大小</p>
+<p>SWAPSZ:过去10S进程使用交换空间的大小。</p>
+<p>MEM:过去10S进程占用内存百分比</p>
+<p><strong>d模式：磁盘状态模式</strong></p>
+RDDSK:过去10S进程读磁盘的数据量</div>
+<div class="suofang">WRDSK:过去10S进程写磁盘的数据量</div>
+<div class="suofang">DSK:过去10S进程所占磁盘的百分比</div>
+<div class="suofang">CMD:进程名&nbsp;</div>
+<div class="suofang">
+<p><strong>p模式：</strong>进程状态模式，同一个名称的进程显示一列，根据进程名进行分组显示</p>
+<p>NPROCS:相同名称的进程数量</p>
+<p>其它的参数上面已经有列出</p>
+<p><strong>v模式：线程状态模式</strong></p>
+<p><strong>u模式：用户模式</strong></p>
+<p>根据用户进行分组显示</p>
+<p><strong><strong>g模式：标准模式</strong></strong></p>
+<p>s:进程当前的状态，包括：s(sleeping),R(runing)等</p>
+<p><span style="font-size: 14pt"><strong>atop的相关文件</strong></span></p>
+<p>/etc/atop：目录保存的是atop的配置文件<br>/etc/rc.d/init.d/atop：atop的启动文件<br>/etc/cron.d/atop：atop的定时任务文件，默认是每天0点开始<br>/var/log/atop：atop日志文件，默认是每天0点开始会产生当天的一个日志文件，然后可以通过atop -r file 查看信息，但是没有找到自动播放的的功能，只能通过输入b显示一个指定的时间的信息，可以写个循环来实现<br>/usr/bin/atop：atop命令目录</p>
+<p>&nbsp;</p>
+<div class="cnblogs_code">
+<pre>atop -r atop_20160510 -b <span style="color: rgba(128, 0, 128, 1)">13</span>:<span style="color: rgba(128, 0, 128, 1)">00</span> -e <span style="color: rgba(128, 0, 128, 1)">17</span>:<span style="color: rgba(128, 0, 128, 1)">00</span> <span style="color: rgba(128, 0, 128, 1)"><br></span></pre>
+</div>
+<p>atop产生的日志文件信息是10分钟一个采样周期进行记录，可以通过修改/etc/atop/atop.daily文件进行修改。</p>
+<p>&nbsp;</p>
+<p><strong>atop的其它参数：</strong></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="Linux%20atop%E7%9B%91%E6%8E%A7_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre>Usage: atop [-<span style="color: rgba(0, 0, 0, 1)">flags] [interval [samples]]
+        or
+Usage: atop </span>-w  file  [-S] [-<span style="color: rgba(0, 0, 0, 1)">a] [interval [samples]]
+       atop </span>-r [file] [-b hh:mm] [-e hh:mm] [-<span style="color: rgba(0, 0, 0, 1)">flags]
+
+    generic flags:
+      </span>-<span style="color: rgba(0, 0, 0, 1)">a  show or log all processes (i.s.o. active processes only)
+      </span>-R  calculate proportional <span style="color: rgba(0, 0, 255, 1)">set</span><span style="color: rgba(0, 0, 0, 1)"> size (PSS) per process
+      </span>-P  generate parseable output <span style="color: rgba(0, 0, 255, 1)">for</span><span style="color: rgba(0, 0, 0, 1)"> specified label(s)
+      </span>-L  alternate line length (<span style="color: rgba(0, 0, 255, 1)">default</span> <span style="color: rgba(128, 0, 128, 1)">80</span>) <span style="color: rgba(0, 0, 255, 1)">in</span> <span style="color: rgba(0, 0, 255, 1)">case</span> of non-<span style="color: rgba(0, 0, 0, 1)">screen output
+      </span>-f  show <span style="color: rgba(0, 0, 255, 1)">fixed</span><span style="color: rgba(0, 0, 0, 1)"> number of lines with system statistics
+      </span>-<span style="color: rgba(0, 0, 0, 1)">F  suppress sorting of system resources
+      </span>-G  suppress exited processes <span style="color: rgba(0, 0, 255, 1)">in</span><span style="color: rgba(0, 0, 0, 1)"> output
+      </span>-l  show limited number of lines <span style="color: rgba(0, 0, 255, 1)">for</span><span style="color: rgba(0, 0, 0, 1)"> certain resources
+      </span>-<span style="color: rgba(0, 0, 0, 1)">y  show individual threads
+      </span>-<span style="color: rgba(128, 0, 128, 1)">1</span>  show average-per-<span style="color: rgba(0, 0, 0, 1)">second i.s.o. total values
+
+      </span>-x  no colors <span style="color: rgba(0, 0, 255, 1)">in</span> <span style="color: rgba(0, 0, 255, 1)">case</span><span style="color: rgba(0, 0, 0, 1)"> of high occupation
+      </span>-g  show general process-info (<span style="color: rgba(0, 0, 255, 1)">default</span><span style="color: rgba(0, 0, 0, 1)">)
+      </span>-m  show memory-related process-<span style="color: rgba(0, 0, 0, 1)">info
+      </span>-d  show disk-related process-<span style="color: rgba(0, 0, 0, 1)">info
+      </span>-n  show network-related process-<span style="color: rgba(0, 0, 0, 1)">info
+      </span>-s  show scheduling-related process-<span style="color: rgba(0, 0, 0, 1)">info
+      </span>-v  show various process-info (ppid, user/group, date/<span style="color: rgba(0, 0, 0, 1)">time)
+      </span>-<span style="color: rgba(0, 0, 0, 1)">c  show command line per process
+      </span>-o  show own defined process-<span style="color: rgba(0, 0, 0, 1)">info
+      </span>-u  show cumulated process-<span style="color: rgba(0, 0, 0, 1)">info per user
+      </span>-p  show cumulated process-<span style="color: rgba(0, 0, 0, 1)">info per program (i.e. same name)
+
+      </span>-C  sort processes <span style="color: rgba(0, 0, 255, 1)">in</span> order of cpu-consumption (<span style="color: rgba(0, 0, 255, 1)">default</span><span style="color: rgba(0, 0, 0, 1)">)
+      </span>-M  sort processes <span style="color: rgba(0, 0, 255, 1)">in</span> order of memory-<span style="color: rgba(0, 0, 0, 1)">consumption
+      </span>-D  sort processes <span style="color: rgba(0, 0, 255, 1)">in</span> order of disk-<span style="color: rgba(0, 0, 0, 1)">activity
+      </span>-N  sort processes <span style="color: rgba(0, 0, 255, 1)">in</span> order of network-<span style="color: rgba(0, 0, 0, 1)">activity
+      </span>-A  sort processes <span style="color: rgba(0, 0, 255, 1)">in</span><span style="color: rgba(0, 0, 0, 1)"> order of most active resource (auto mode)
+
+    specific flags </span><span style="color: rgba(0, 0, 255, 1)">for</span><span style="color: rgba(0, 0, 0, 1)"> raw logfiles:
+      </span>-<span style="color: rgba(0, 0, 0, 1)">w  write raw data to   file (compressed)
+      </span>-r  read  raw data <span style="color: rgba(0, 0, 255, 1)">from</span><span style="color: rgba(0, 0, 0, 1)"> file (compressed)
+          special file: y[y...] </span><span style="color: rgba(0, 0, 255, 1)">for</span><span style="color: rgba(0, 0, 0, 1)"> yesterday (repeated)
+      </span>-<span style="color: rgba(0, 0, 0, 1)">S  finish atop automatically before midnight (i.s.o. #samples)
+      </span>-b  begin showing data <span style="color: rgba(0, 0, 255, 1)">from</span><span style="color: rgba(0, 0, 0, 1)"> specified time
+      </span>-e  finish showing data after specified time</pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="Linux%20atop%E7%9B%91%E6%8E%A7_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p>下载地址：<a href="http://www.atoptool.nl/downloadatop.php" target="_blank" rel="noopener">http://www.atoptool.nl/downloadatop.php</a></p>
+<h1 style="color: rgba(0, 128, 128, 1); background-color: rgba(0, 128, 128, 1)"><a name="总结" rel="noopener"></a><span style="color: rgba(0, 0, 0, 1); font-family: 宋体; font-size: 18pt"><strong>总结</strong></span><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<p>&nbsp;在atop的展示页面也可以输入m（内存）、p（进程）、u(用户)、d（磁盘）、c（进程运行的代码）、v(线程) 进行页面切换。</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<div class="feedbackCon">
+<div class="table-wrapper"><table style="width: 100%" border="0">
+<tbody>
+<tr>
+<td>
+<p><span style="font-size: 14px; color: rgba(55, 199, 191, 1); font-family: 宋体">备注：</span></p>
+<p><span style="color: rgba(55, 199, 191, 1)"><span style="font-size: 14px; font-family: 宋体">&nbsp;&nbsp;&nbsp; 作者：</span><span style="font-size: 14px"><a style="text-decoration: none" title="点击跳转到原文" href="http://www.cnblogs.com/chenmh/" target="_blank" rel="noopener"><span style="color: rgba(55, 199, 191, 1)">pursuer.chen</span></a></span></span></p>
+<p><span style="font-size: 14px; color: rgba(55, 199, 191, 1); font-family: 宋体">&nbsp;&nbsp;&nbsp; 博客：<span style="font-size: 16px"><a id="lnkMyHome" style="text-decoration: none" title="点击跳转到原文" href="http://www.cnblogs.com/chenmh/" target="_blank" rel="noopener"><span style="color: rgba(55, 199, 191, 1)">http://www.cnblogs.com/chenmh</span></a></span></span></p>
+<p><span style="font-size: 14px; color: rgba(55, 199, 191, 1); font-family: 宋体">本站点所有随笔都是原创，欢迎大家转载；但转载时必须注明文章来源，且在文章开头明显处给明链接。</span></p>
+<p><span style="font-size: 14px; color: rgba(55, 199, 191, 1); font-family: 宋体">《欢迎交流讨论》</span></p>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<style>.feedbackCon a { border-bottom: 1px dotted rgba(51, 51, 51, 1) }</style>
+<p><span style="font-family: Arial; line-height: normal">&nbsp;</span></p>
+</div>
+<div class="clear"></div>
+<div id="blog_post_info_block" role="contentinfo">
+    <div id="blog_post_info">
+<div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(5481700,cb_blogId,1);green_channel_success(this,'谢谢推荐！');">好文要顶</a>
+        <a id="green_channel_follow" onclick="follow('925488b1-a567-df11-ba8f-001cf0cd104b');" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="Linux%20atop%E7%9B%91%E6%8E%A7_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="Linux%20atop%E7%9B%91%E6%8E%A7_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/chenmh/" target="_blank"><img src="Linux%20atop%E7%9B%91%E6%8E%A7_files/u135426.jpg" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/chenmh/">pursuer.chen</a><br>
+            <a href="https://home.cnblogs.com/u/chenmh/followees/">关注 - 23</a><br>
+            <a href="https://home.cnblogs.com/u/chenmh/followers/">粉丝 - 905</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow">
+                <a href="javascript:void(0);" onclick="follow('925488b1-a567-df11-ba8f-001cf0cd104b');return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg"><div id="follow_me" style="padding-bottom: 5px"><a id="follow_me_dennis" onclick="follow_me();" href="javascript:void(0);" style="font-weight: bold; padding-left:5px;">+加关注</a></div>
+    <div class="diggit" onclick="votePost(5481700,'Digg')">
+        <span class="diggnum" id="digg_count">5</span>
+    </div>
+    <div class="buryit" onclick="votePost(5481700,'Bury')">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+<div id="goto_page_top" style="padding-top: 5px"><a onclick="javascript:goto_comment();" href="javascript:void(0);" style="font-weight: bold; padding-left: 5px;">快速评论</a>&nbsp;&nbsp;<a href="#top" style="font-weight: bold; padding-left: 10px;">返回顶部</a></div></div>
+
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+    <div class="clear"></div>
+    <div id="post_next_prev">
+
+    <a href="https://www.cnblogs.com/chenmh/p/6305448.html" class="p_n_p_prefix">« </a> 上一篇：    <a href="https://www.cnblogs.com/chenmh/p/6305448.html" title="发布于 2017-01-19 09:31">SQL Server profile使用技巧</a>
+    <br>
+    <a href="https://www.cnblogs.com/chenmh/p/5796115.html" class="p_n_p_prefix">» </a> 下一篇：    <a href="https://www.cnblogs.com/chenmh/p/5796115.html" title="发布于 2017-04-26 11:03">MySQL MHA高可用方案</a>
+
+</div>
+</div>
+        <div class="clear"></div>
+        <div id="blog_post_info_block">
+        <div id="blog_post_info">
+        </div>
+        <div class="clear"></div>
+        <div id="post_next_prev"></div>
+    </div>
+</div>
+    <ul class="postmetadata">
+        
+<li class="icon_cat" id="BlogPostCategory">
+分类            <a href="https://www.cnblogs.com/chenmh/category/827445.html" target="_blank">Linux 监控</a>
+</li>
+<li class="icon_bullet" id="EntryTag">
+&nbsp;</li>
+    </ul>
+</div>
+<script type="text/javascript">
+    var m = window.__blog.postRendered;
+    if (m) { m(__$("post")); }
+</script>
+<script type="text/javascript">
+    var m = window.__blog.postRenderPosts;
+    if (m) { m(); }
+</script>
+
+<script>
+    var cb_entryId = 5481700, cb_entryCreatedDate = '2017-02-22 09:42', cb_postType = 1;
+    var allowComments = true, cb_blogId = 71142, cb_blogApp = 'chenmh', cb_blogUserGuid = '925488b1-a567-df11-ba8f-001cf0cd104b';
+    mermaidRender.render()
+    markdown_highlight()
+    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");
+    updatePostStats(
+            [cb_entryId],
+            function(id, count) { $("#post_view_count").text(count) },
+            function(id, count) { $("#post_comment_count").text(count) })
+</script>
+<a id="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="#" onclick="return RefreshPage();">刷新页面</a><a href="#top">返回顶部</a></div>
+    <div id="comment_form_container" style="visibility: visible;"><div class="login_tips">
+    登录后才能查看或发表评论，立即 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return account.login('!comments');">登录</a> 或者
+    <a href="https://www.cnblogs.com/">逛逛</a> 博客园首页
+</div>
+</div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="cnblogs_ch"><a href="https://cloud.baidu.com/campaign/2022/index.html?track=f685c156ee58624f28cc3a33e1947160036fe70e52355ff7#person" target="_blank" onclick="gtag('event', 'click', {'event_category': 'ad', 'event_label': 'T2-百度智能云-开年采购季'})">【推荐】百度智能云2022开年大促0.4折起，企业新用户享高配优惠</a><br><a href="https://developer.huawei.com/consumer/cn/forum/topic/0201833401197920098?fid=18&amp;ha_source=bokeyuan" target="_blank" onclick="gtag('event', 'click', {'event_category': 'ad', 'event_label': 'T2-华为专区-移动应用白皮书'})">【推荐】开发者必读：华为 2022 年移动应用趋势洞察白皮书</a><br></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="under-post-card" style="">
+            <div id="div-gpt-ad-1592365906576-0" style="width: 300px; height: 250px;" data-google-query-id="CNOM3bLI8PYCFccHXAodpzYCuQ"><div id="google_ads_iframe_/1090369/C1_0__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/1090369/C1_0" name="google_ads_iframe_/1090369/C1_0" title="3rd party ad content" scrolling="no" marginwidth="0" marginheight="0" style="border: 0px none; vertical-align: bottom;" role="region" aria-label="Advertisement" tabindex="0" srcdoc="" data-google-container-id="1" data-load-complete="true" width="300" height="250" frameborder="0"></iframe></div></div>
+    </div>
+    <div id="under_post_card1"><div class="under-post-card">
+<b>编辑推荐：</b>
+<br>
+
+· <a href="https://www.cnblogs.com/skychen1218/p/16068503.html" target="_blank">记我第一次做线下技术分享的那些事</a>
+    <br>
+· <a href="https://www.cnblogs.com/thisiswhy/p/16066548.html" target="_blank">换个数据结构，一不小心节约了 591 台机器！</a>
+    <br>
+· <a href="https://www.cnblogs.com/tcjiaan/p/16058491.html" target="_blank">[ASP.NET Core] MVC 模型绑定：非规范正文内容的处理</a>
+    <br>
+· <a href="https://www.cnblogs.com/yexiaochai/p/16041013.html" target="_blank">全面认识数据指标体系</a>
+    <br>
+· <a href="https://www.cnblogs.com/weixiao-he/p/16051730.html" target="_blank">项目开发中对成长的一些思考</a>
+    <br>
+</div></div>
+        <div id="cnblogs_c2" class="under-post-card">
+            <a href="https://developer.huawei.com/consumer/cn/forum/topic/0201833401197920098?fid=18&amp;ha_source=bokeyuan" rel="nofollow" target="_blank" onclick="countCreativeClicks('C2-华为专区-补量-移动应用白皮书')">
+                <img src="Linux%20atop%E7%9B%91%E6%8E%A7_files/35695-20220329191439390-706965398.jpg" alt="" onload="countCreativeImpressions('C2-华为专区-补量-移动应用白皮书')">
+            </a>
+        </div>
+    <div id="under_post_card2"><div class="itnews under-post-card">
+    <b>最新新闻</b>：
+    <br>
+ ·          <a href="https://news.cnblogs.com/n/717929/" target="_blank">新冠病毒未来会如何演化</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/717928/" target="_blank">大众上海工厂因零部件短缺减产</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/717927/" target="_blank">环保组织推动比特币网络放弃耗能代码</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/717926/" target="_blank">波士顿动力的物流机器人开售</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/717925/" target="_blank">俄罗斯搜索巨头面临半导体硬件短缺</a>
+        <br>
+    » <a href="https://news.cnblogs.com/" title="IT 新闻" target="_blank">更多新闻...</a>
+</div></div>
+    <div id="HistoryToday" class="under-post-card"></div>
+    <script type="text/javascript">
+        var commentManager = new blogCommentManager();
+        commentManager.renderComments(0);
+        fixPostBody();
+
+                window.tocManager.displayDisableTocTips = false;
+                window.tocManager.generateToc();
+            setTimeout(function() { incrementViewCount(cb_entryId); }, 50);        deliverT2();
+        deliverC1C2();
+        loadNewsAndKb();
+        LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+        GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+        loadOptUnderPost();
+        GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    </script>
+</div>
+
+</div>
+
+
+        </div>
+
+        <script type="text/javascript">
+            var m = window.__blog.contentRendered;
+            if (m) { m(__$("content")); }
+        </script>
+
+        <div id="sidebar">
+            <div id="about">
+                <div>
+                    <h2 id="about_title">About</h2>
+                    <div id="about_body">
+                        <div id="sidebar_news">
+
+<div id="blog-news">
+    <p><span style="color: red;">欢迎加入数据库技术交流群。群号：62122135</span><span style="color: red;">：&nbsp;</span></p>
+<p><img src="Linux%20atop%E7%9B%91%E6%8E%A7_files/141818416521435.png" alt=""></p>
+
+<a target="_blank" href="https://shang.qq.com/wpa/qunwpa?idkey=72f039b44c54173ebafcb53173f4180cc582cfa4e0ac8029af041b732297d4a8"><img src="Linux%20atop%E7%9B%91%E6%8E%A7_files/group.png" alt="数据库技术交流群" title="数据库技术交流群" border="0"></a>
+
+
+<!--点赞悬浮->
+<!--PageEndHtml Block Begin-->
+<script type="text/javascript">window['__document_write_ajax_callbacks__']['3']();</script><script type="text/javascript" language="javascript">window['__document_write_ajax_callbacks__']['1']();</script>
+    <div id="profile_block">
+        昵称：
+        <a href="https://home.cnblogs.com/u/chenmh/">
+            pursuer.chen
+        </a>
+        <br>
+        园龄：
+        <a href="https://home.cnblogs.com/u/chenmh/" title="入园时间：2010-05-25">
+            11年10个月
+        </a>
+        <br>
+        粉丝：
+        <a href="https://home.cnblogs.com/u/chenmh/followers/">
+            905
+        </a>
+        <br>
+        关注：
+        <a href="https://home.cnblogs.com/u/chenmh/followees/">
+            23
+        </a>
+        <div id="p_b_follow">
+<a href="javascript:void(0)" onclick="follow('925488b1-a567-df11-ba8f-001cf0cd104b')">+加关注</a></div>
+        <script type="text/javascript">window['__document_write_ajax_callbacks__']['4']();</script><script>window['__document_write_ajax_callbacks__']['2']();</script>
+    </div>
+</div>
+
+</div>
+                        <script type="text/javascript">loadBlogNews();</script>
+                    </div>
+                </div>
+            </div>
+            <script type="text/javascript">
+                var m = window.__blog.aboutRendered;
+                if (m) { m(__$("about")); }
+            </script>
+            <div id="mySearchWrapper">
+                <div id="mySearch">
+                    <input type="image" src="Linux%20atop%E7%9B%91%E6%8E%A7_files/btnsearch.gif" id="btnZzk" class="submit" onclick="zzk_go();return false;">
+                    <label class="lb_search"><input type="text" id="q" onkeydown="return zzk_go_enter(event);" class="keyword"></label>
+                </div>
+            </div>
+            <script type="text/javascript">
+                var m = window.__blog.searchFormRendered;
+                if (m) { m(__$("searchform")); }
+            </script>
+            <div id="sideMain">
+            <div id="side-recent-comments">
+    
+
+<h2>最新评论</h2>
+<ul class="voice">
+        <li>
+            <a href="https://www.cnblogs.com/chenmh/p/5644496.html">Re:MySQL HASH分区</a>
+            <br>
+            <a class="child" href="https://www.cnblogs.com/chenmh/p/5644496.html">
+                @路和人茫茫 执行下analyze table table_name;重新构建下当前表的统计信息就可以了，博主这个用的应该是mysql5.7之上的版本，支持insert语句的explain分析。...
+                -- 一只烤鸭朝北走
+            </a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/chenmh/p/7002711.html">Re:SQLServer  理解copyonly备份操作</a>
+            <br>
+            <a class="child" href="https://www.cnblogs.com/chenmh/p/7002711.html">
+                <p>这种定期备份任务 备份没有copy_only 仅备份复制 这一项的吧</p>
+
+                -- 1213Luo
+            </a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/chenmh/p/3998614.html">Re:SQL Server 事务隔离级别详解</a>
+            <br>
+            <a class="child" href="https://www.cnblogs.com/chenmh/p/3998614.html">
+                <p>看了许多讲解隔离级别的文章，算是在这里很明白了。[赞]</p>
+
+                -- lenya
+            </a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/chenmh/p/5365274.html">Re:Linux 搭建FTP服务器</a>
+            <br>
+            <a class="child" href="https://www.cnblogs.com/chenmh/p/5365274.html">
+                <p>按这个做，没啥问题</p>
+
+                -- UUdd
+            </a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/chenmh/p/5300370.html">Re:MySQL mysqldump数据导出详解</a>
+            <br>
+            <a class="child" href="https://www.cnblogs.com/chenmh/p/5300370.html">
+                <p>兄弟，你这个那个版本的啊？</p>
+
+                -- handsome12345
+            </a>
+        </li>
+</ul>
+
+</div></div>
+            <div id="sideRight">
+            <div id="side-archives">
+            <h2>随笔档案</h2>
+            <ul class="date">
+                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2018/09.html">2018年9月(1)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2018/07.html">2018年7月(1)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2018/06.html">2018年6月(1)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2018/05.html">2018年5月(2)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2018/04.html">2018年4月(3)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2018/03.html">2018年3月(6)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2018/02.html">2018年2月(4)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2018/01.html">2018年1月(5)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2017/12.html">2017年12月(2)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2017/11.html">2017年11月(2)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2017/10.html">2017年10月(1)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2017/09.html">2017年9月(4)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2017/08.html">2017年8月(2)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2017/07.html">2017年7月(4)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2017/06.html">2017年6月(6)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2017/04.html">2017年4月(1)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2017/02.html">2017年2月(1)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2017/01.html">2017年1月(2)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2016/12.html">2016年12月(1)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2016/11.html">2016年11月(7)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2016/10.html">2016年10月(5)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2016/09.html">2016年9月(8)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2016/08.html">2016年8月(10)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2016/07.html">2016年7月(12)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2016/06.html">2016年6月(5)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2016/05.html">2016年5月(9)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2016/04.html">2016年4月(18)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2016/03.html">2016年3月(8)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2016/02.html">2016年2月(3)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2016/01.html">2016年1月(9)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2015/12.html">2015年12月(6)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2015/11.html">2015年11月(5)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2015/10.html">2015年10月(4)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2015/06.html">2015年6月(1)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2015/05.html">2015年5月(5)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2015/04.html">2015年4月(5)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2015/03.html">2015年3月(4)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2014/12.html">2014年12月(2)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2014/11.html">2014年11月(1)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2014/10.html">2014年10月(1)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2014/09.html">2014年9月(2)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2014/08.html">2014年8月(1)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2014/07.html">2014年7月(1)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2014/06.html">2014年6月(3)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2014/05.html">2014年5月(1)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/archive/2014/04.html">2014年4月(2)</a>
+                    </li>                                
+            </ul>
+        </div>
+
+
+
+
+
+
+
+
+
+            
+            
+
+
+
+
+
+    
+
+<div id="side-score-ranks">
+    
+<h2>积分与排名</h2>
+<ul style="word-break:break-all">
+    <li>积分 - 
+491656</li>
+    <li>排名 - 
+1061</li>
+</ul>
+
+</div></div>
+            <div id="sideLeft">
+            <div id="side-categories">
+            <h2>随笔分类</h2>
+            <ul class="folder">
+                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/774310.html">1站内文章列表(4)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/811229.html">Linux shell(22)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/824348.html">Linux 安全(1)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/753042.html">Linux 管理(10)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/827445.html">Linux 监控(2)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/1184353.html">MongoDB 错误处理(1)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/1106632.html">MongoDB 基础(5)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/1167953.html">MongoDB 集群(5)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/799702.html">Mycat(3)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/847597.html">MySQL 安全(2)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/869509.html">MySQL 安装(7)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/753222.html">MySQL 报错处理(3)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/798543.html">MySQL 备份和导入导出(1)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/767087.html">MySQL 存储引擎(5)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/847031.html">MySQL 分区(9)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/759311.html">MySQL 工具(4)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/694839.html">MySQL 基础(18)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/767452.html">MySQL 群集(5)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/762926.html">MySQL 日志(1)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/796235.html">MySQL 优化(3)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/842390.html">nginx和apache(1)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/894391.html">Oracle 管理(2)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/897135.html">Oracle 权限(2)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/863116.html">Percona(1)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/842385.html">Python(11)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/799701.html">Redis(6)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/571041.html">SQLServer alwayson、镜像(16)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/1142898.html">SQLServer Service Broker(1)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/628127.html">SQLServer 安全(6)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/571042.html">SQLServer 备份还原(6)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/611717.html">SQLServer 存储过程、函数、触发器(3)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/586612.html">SQLServer 存储与索引(9)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/1015752.html">SQLServer 错误处理(5)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/1086608.html">SQLServer 分区(1)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/1120755.html">SQLServer 复制(2)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/937172.html">SQLServer 工具(1)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/641191.html">SQLServer 基础(3)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/616209.html">SQLServer 事务、锁(2)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/608254.html">SQLServer 数据库设计(1)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/636157.html">SQLServer 维护(1)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/616335.html">SQLServer 性能调优、内核(5)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/842389.html">tomcat(1)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/595249.html">Windows(6)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/996330.html">Zabbix 监控(2)</a>
+                    </li>                                    <li data-category-list-item-visible="true" style="display: block">
+                        <a href="https://www.cnblogs.com/chenmh/category/920183.html">压测工具(2)</a>
+                    </li>                                
+            </ul>
+        </div><div id="side-top-posts">
+    <h2>阅读排行榜</h2>
+    <div id="TopViewPostsBlock">
+        <ul style="word-break:break-all">
+                    <li><a href="https://www.cnblogs.com/chenmh/p/5300370.html" target="_blank" title="
+                            1. MySQL mysqldump数据导出详解(344612)
+                        ">                      ...(344612)</a></li>
+                    <li><a href="https://www.cnblogs.com/chenmh/p/5096592.html" target="_blank" title="
+                            2. linux 使用fdisk分区扩容(71849)
+                        ">                       ...(71849)</a></li>
+                    <li><a href="https://www.cnblogs.com/chenmh/p/4080420.html" target="_blank" title="
+                            3. SQL Server 权限管理(66049)
+                        ">                       ...(66049)</a></li>
+                    <li><a href="https://www.cnblogs.com/chenmh/p/6001977.html" target="_blank" title="
+                            4. Oracle 权限（grant、revoke）(64341)
+                        ">                       ...(64341)</a></li>
+                    <li><a href="https://www.cnblogs.com/chenmh/p/5365274.html" target="_blank" title="
+                            5. Linux 搭建FTP服务器(58467)
+                        ">                       ...(58467)</a></li>
+                    <li><a href="https://www.cnblogs.com/chenmh/p/5359463.html" target="_blank" title="
+                            6. Linux shell之打印输出(54042)
+                        ">                       ...(54042)</a></li>
+                    <li><a href="https://www.cnblogs.com/chenmh/p/5750726.html" target="_blank" title="
+                            7. python for循环巧妙运用（迭代、列表生成式）(51705)
+                        ">                       ...(51705)</a></li>
+                    <li><a href="https://www.cnblogs.com/chenmh/p/5578376.html" target="_blank" title="
+                            8. Redis 哨兵模式实现主从故障互切换(46337)
+                        ">                       ...(46337)</a></li>
+                    <li><a href="https://www.cnblogs.com/chenmh/p/3998614.html" target="_blank" title="
+                            9. SQL Server 事务隔离级别详解(45114)
+                        ">                       ...(45114)</a></li>
+                    <li><a href="https://www.cnblogs.com/chenmh/p/5097530.html" target="_blank" title="
+                            10. Linux 挂载管理(mount)(42016)
+                        ">                       ...(42016)</a></li>
+                    <li><a href="https://www.cnblogs.com/chenmh/p/5201473.html" target="_blank" title="
+                            11. MySQL 存储过程和函数(40670)
+                        ">                       ...(40670)</a></li>
+                    <li><a href="https://www.cnblogs.com/chenmh/p/5644644.html" target="_blank" title="
+                            12. MySQL 复制表结构(38559)
+                        ">                       ...(38559)</a></li>
+                    <li><a href="https://www.cnblogs.com/chenmh/p/5121849.html" target="_blank" title="
+                            13. Redis 主从配置和参数详解(37180)
+                        ">                       ...(37180)</a></li>
+                    <li><a href="https://www.cnblogs.com/chenmh/p/5872523.html" target="_blank" title="
+                            14. Linux split拆分文件(33934)
+                        ">                       ...(33934)</a></li>
+                    <li><a href="https://www.cnblogs.com/chenmh/p/6972007.html" target="_blank" title="
+                            15. SQL Server Alwayson概念总结(32441)
+                        ">                       ...(32441)</a></li>
+        </ul>
+    </div>
+</div></div>            
+                <div id="sideContainer"></div>
+                <script type="text/javascript">
+                    $.ajax({
+                        url: '/' + currentBlogApp + '/ajax/Minyx2_Lite_SideColumn.aspx',
+                        data: '{}',
+                        type: 'post',
+                        dataType: 'text',
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (data) {
+                            if (data) {
+                                $("#sideContainer").html(data);
+                                $.ajax({
+                                    url: getAjaxBaseUrl() + 'TopLists.aspx',
+                                    type: 'get',
+                                    dataType: 'text',
+                                    success: function (topLists) {
+                                        if (topLists) {
+                                            $("#sideContainer").append(topLists);
+                                        }
+                                        var m = window.__blog.sideContainerRendered;
+                                        if (m) { m(__$("sideContainer")); }
+                                        window.__blog.sidebar.__layout();
+                                    }
+                                });
+                            }
+                        }
+                    });
+
+                </script>
+        </div>
+
+        <script type="text/javascript">
+            var m = window.__blog.sidebarRendered;
+            if (m) { m(__$("sidebar")); }
+        </script>
+
+        <div id="footer">
+            <p id="logoFoot">
+    <a href="http://www.spiga.com.mx/" title="Agencia Interactiva Spiga">www.spiga.com.mx</a>
+</p>
+<div class="footText">
+<p>
+Copyright © 2022 pursuer.chen
+<br><span id="poweredby">Powered by .NET 6 on Kubernetes</span>
+
+</p>
+<p>
+<a href="http://www.cnblogs.com/">博客园</a>
+</p>
+</div>
+
+
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var m = window.__blog.wrapperRendered;
+        if (m) { m(__$("wrapper")); }
+    </script>
+
+</div>
+<script type="text/javascript">
+    var m = window.__blog.containerRendered;
+    if (m) { m(__$("container")); }
+</script>
+
+
+    
+
+    <input type="hidden" id="antiforgery_token" value="CfDJ8AuMt_3FvyxIgNOR82PHE4mj_wEP8-qG00Mokpla7xmQEVlAixE9AJrpQQrVUFVtcDx0hdHwSHc2yf5jepQF2nmZNoC7nuBfNGLjk2XOXbY4ubdzhYNfjlN_YGM_5qd8Z38o7WxNpAaQcX411fbH2qI">
+    <script async="" src="Linux%20atop%E7%9B%91%E6%8E%A7_files/js.js"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    var kv = getGACustom();
+    if (kv) {
+        gtag('set', kv);
+    }
+    gtag('config', 'UA-476124-1');
+    </script>
+    <script defer="defer" src="Linux%20atop%E7%9B%91%E6%8E%A7_files/hm.js"></script>
+
+<script type="text/javascript"> 
+$(document).ready(function () {
+    var header_info_customization_timer_counter = 0;
+    var header_info_customization_timer = setInterval(function ()
+    {
+        if (header_info_customization_timer_counter <= 3) {
+            header_info_customization_timer_counter++;
+        } else {
+            clearInterval(header_info_customization_timer);
+        }
+		
+		var url = location.href;
+		if ((url.indexOf('www.cnblogs.com') != -1) && navigator.userAgent.match(/(iPhone|iPod|Android|ios|iPad)/i)) {
+			if($("#blogTitle").length > 0) {
+				$("#blogTitle").css("display", "none");
+			}
+			if($("#navigator").length > 0) {
+				$("#navigator").css("display", "none");
+			}
+			if($(".blogStats").length > 0) {
+				$(".blogStats").css("display", "none");
+			}
+			if($("#blog_post_info_block").length > 0) {
+				$("#blog_post_info_block").css("display", "none");
+			}
+			clearInterval(header_info_customization_timer);
+		} else {
+			if ($(".blogStats").length > 0)
+			{
+				customize_stats_display();
+				clearInterval(header_info_customization_timer);
+			}
+		}
+    }, 500);
+	
+    var comment_customization_timer_counter = 0;
+    var comment_customization_timer = setInterval(function ()
+    {
+        if (comment_customization_timer_counter <= 3) {
+            comment_customization_timer_counter++;
+        } else {
+            clearInterval(comment_customization_timer);
+        }
+        if ($("#comments_pager_bottom").length > 0)
+        {
+           clearInterval(comment_customization_timer);
+        }
+    }, 500);
+	
+    var digg_customization_timer_counter = 0;
+    var digg_customization_timer = setInterval(function ()
+    {
+        if (digg_customization_timer_counter <= 3) {
+            digg_customization_timer_counter++;
+        } else {
+            clearInterval(digg_customization_timer);
+        }
+		
+		var url = location.href;
+		if ((url.indexOf('www.cnblogs.com') != -1) && navigator.userAgent.match(/(iPhone|iPod|Android|ios|iPad)/i)) {
+			if($("#div_digg").length > 0) {
+				$("#div_digg").css("display", "none");
+			}
+			clearInterval(digg_customization_timer);
+		} else {		
+			if($("#div_digg").length > 0)
+			{
+				$("#div_digg").prepend(
+				  "<div id='follow_me' style='padding-bottom: 5px'>"+
+                     "<a id='follow_me_dennis' onclick='follow_me();' href='javascript:void(0);' style='font-weight: bold; padding-left:5px;'>+加关注</a>" +
+				  "</div>");
+				$('#div_digg').append(
+				  "<div id='goto_page_top' style='padding-top: 5px'>" +
+					"<a onclick='javascript:goto_comment();' href='javascript:void(0);' style='font-weight: bold; padding-left: 5px;'>快速评论</a>" + 
+					"&nbsp;&nbsp;" +
+					"<a href='#top' style='font-weight: bold; padding-left: 10px;'>返回顶部</a>" +
+				  "</div>");
+
+				retrieve_follow_result();
+				clearInterval(digg_customization_timer);
+			}
+		}
+    }, 1000);
+	
+    var sidebar_post_list_customization_timer_counter = 0;
+    var sidebar_post_list_customization_timer = setInterval(function ()
+    {
+        if (sidebar_post_list_customization_timer_counter <= 3) {
+            sidebar_post_list_customization_timer_counter++;
+        } else {
+            clearInterval(sidebar_post_list_customization_timer);
+        }
+        if ($("#TopViewPostsBlock").length > 0 && $("#TopViewPostsBlock ul li").children().size() > 0)
+        {
+            customize_sidebar_post_list_display("#TopViewPostsBlock ul li");
+            clearInterval(sidebar_post_list_customization_timer);
+        }
+    }, 800);
+	
+    //var sidebar_tag_cloud_customization_timer_counter = 0;
+    //var sidebar_tag_cloud_customization_timer = setInterval(function ()
+    //{
+    //    if (sidebar_tag_cloud_customization_timer_counter <= 3) {
+    //        sidebar_tag_cloud_customization_timer_counter++;
+    //    } else {
+    //        clearInterval(sidebar_post_list_customization_timer);
+    //    }
+    //    if ($(".catListTag").length > 0 && $(".catListTag ul li").children().size() > 0)
+    //    {
+    //        customize_sidebar_tag_cloud_display();
+    //        clearInterval(sidebar_tag_cloud_customization_timer);
+    //    }
+    //}, 600);
+});
+
+function retrieve_follow_result() {
+    var retrieve_follow_result_timer_counter = 0;
+    var retrieve_follow_result_timer = setInterval(function ()
+    {
+        if (retrieve_follow_result_timer_counter <= 3) {
+            retrieve_follow_result_timer_counter++;
+        } else {
+            clearInterval(retrieve_follow_result_timer);
+        }
+		
+        var follow_result_text = $('#p_b_follow').text();
+        if(follow_result_text == '关注成功' || follow_result_text == '关注失败' || follow_result_text == '已关注 -取消')
+        {
+            $('#follow_me_dennis').text('感谢您的关注');
+            clearTimeout(retrieve_follow_result_timer);
+        }
+        else if(follow_result_text == '+加关注')
+        {
+            clearTimeout(retrieve_follow_result_timer);
+        }
+    }, 500);
+}
+
+function follow_me() {
+    follow('925488b1-a567-df11-ba8f-001cf0cd104b');
+    //cnblogs.UserManager.FollowBlogger('925488b1-a567-df11-ba8f-001cf0cd104b');
+    //retrieve_follow_result();
+}
+
+function goto_comment() { 
+    if($("#tbCommentBody").length > 0)
+    {
+        document.getElementById("tbCommentBody").focus(); 
+    }
+    else
+    {
+            $('#digg_tips').html('');
+            $('#digg_tips').append("请先<a href='javascript:void(0);' onclick='login()'>登录</a>");
+	    $("#digg_tips").css("color","red").css("display", "block");
+    }
+}
+
+
+function customize_stats_display() {
+    var stats = $(".blogStats").html().toString().replace(/[\n|\t]/g, "");
+    var blogs = /随笔\s*\-\s*(\d+)/;
+    var comments = /评论\s*\-\s*(\d+)/;
+    var blog_count = stats.match(blogs);
+    var comment_count = stats.match(comments);
+    var new_stats = "<font>{ 文章 : " + blog_count[1] + ", 评论 : " + comment_count[1] + " }</font>";
+    $(".blogStats").html(new_stats)
+}
+
+function customize_sidebar_tag_cloud_display() {
+    $(".catListTag .catListTitle").html("标签");
+    $(".catListTag").css("overflow", "hidden");
+		
+
+
+    $(".catListTag ul li").each(function (i, item) {
+        var link = $(item).find('a').attr('href');
+        var tag = $(item).find('a').text();
+        var text = $(item).text();
+        var count = text.match(/.*\((\d+)\).*/);
+        if(count == null) {
+            $(item).remove();
+            return true;
+        }
+        var fontsize = Math.ceil((count[1] / 30) * 100 + 50) + "%";
+        var lineheight = Math.ceil(Math.ceil((count[1] / 45) * 100 + 50) / 100 * 22) + "px";
+        $(item)
+			.html("<a href='" + link + "' target='_blank' title='" + text +"'>" + tag + "</a>")
+			.css("font-size", fontsize)
+			.css("line-height", lineheight);
+    });
+
+    $(".catListTag ul").each(function(){
+        var $ul = $(this);
+        var $items = $ul.children('li');
+        $items.sort( function(a, b){
+            var r = parseInt( Math.random() * 10 );
+            var isOddOrEven = r % 2;
+            var isPosOrNeg = r > 5 ? 1 : -1;
+            return (isOddOrEven * isPosOrNeg);
+        })
+		.appendTo($ul);            
+    }).append('<li><a href="http://www.cnblogs.com/chenmh/tag/">更多...</a></li>');
+}
+
+function customize_sidebar_post_list_display(selectorName) {
+    $(selectorName).each( function (i, item) {
+        var post_link = $(item).find('a').attr('href');
+        var post_title = $(item).find('a').text();
+
+        var regex = /(.+)(\(\d+\))/;
+        var groups = post_title.match(regex);
+        var prefix = groups[1];
+        var number = groups[2];
+		
+        var total_length = 33;
+        var dots = " ";
+        var limit = total_length - number.length;
+        var prefix_length = get_length(prefix);
+        if(prefix_length > limit - dots.length) {
+            dots = "...";
+            prefix = cut_str(prefix, limit - dots.length);            
+        }
+
+        $(item).html("<a href='" + post_link + "' target='_blank' title='" + post_title +"'>" + prefix + dots + number + "</a>");
+    });
+}
+
+function get_length(str) {
+    var l = 0, c = -1;
+    for (var i = 0; i < str.length; i++) {
+        c = str.charCodeAt(i);
+        if (c >= 0 && c <= 128) l += 1;
+        else l += 2;
+    }
+    return l;
+}
+
+function cut_str(str, len) {
+    var str_length = 0, c = -1;
+    var str_cut = new String();
+
+    for (var i = 0; i < str.length; i++) {
+        c = str.charCodeAt(i);
+        if (c >= 0 && c <= 128) str_length += 1;
+        else str_length += 2;
+
+        str_cut = str_cut.concat(String.fromCharCode(c));
+        if (str_length >= len) {
+            return str_cut;
+        }
+    }
+
+    if (str_length < len) {
+        return str;
+    }
+}
+
+
+
+
+
+/*
+    功能：生成博客目录的JS工具
+    测试：IE8，火狐，google测试通过
+    孤傲苍狼
+    2014-5-11
+*/
+var BlogDirectory = {
+    /*
+        获取元素位置，距浏览器左边界的距离（left）和距浏览器上边界的距离（top）
+    */
+    getElementPosition:function (ele) {        
+        var topPosition = 0;
+        var leftPosition = 0;
+        while (ele){              
+            topPosition += ele.offsetTop;
+            leftPosition += ele.offsetLeft;        
+            ele = ele.offsetParent;     
+        }  
+        return {top:topPosition, left:leftPosition}; 
+    },
+
+    /*
+    获取滚动条当前位置
+    */
+    getScrollBarPosition:function () {
+        var scrollBarPosition = document.body.scrollTop || document.documentElement.scrollTop;
+        return  scrollBarPosition;
+    },
+    
+    /*
+    移动滚动条，finalPos 为目的位置，internal 为移动速度
+    */
+    moveScrollBar:function(finalpos, interval) {
+
+        //若不支持此方法，则退出
+        if(!window.scrollTo) {
+            return false;
+        }
+
+        //窗体滚动时，禁用鼠标滚轮
+        window.onmousewheel = function(){
+            return false;
+        };
+          
+        //清除计时
+        if (document.body.movement) { 
+            clearTimeout(document.body.movement); 
+        } 
+
+        var currentpos =BlogDirectory.getScrollBarPosition();//获取滚动条当前位置
+
+        var dist = 0; 
+        if (currentpos == finalpos) {//到达预定位置，则解禁鼠标滚轮，并退出
+            window.onmousewheel = function(){
+                return true;
+            }
+            return true; 
+        } 
+        if (currentpos < finalpos) {//未到达，则计算下一步所要移动的距离
+            dist = Math.ceil((finalpos - currentpos)/10); 
+            currentpos += dist; 
+        } 
+        if (currentpos > finalpos) { 
+            dist = Math.ceil((currentpos - finalpos)/10); 
+            currentpos -= dist; 
+        }
+        
+        var scrTop = BlogDirectory.getScrollBarPosition();//获取滚动条当前位置
+        window.scrollTo(0, currentpos);//移动窗口
+        if(BlogDirectory.getScrollBarPosition() == scrTop)//若已到底部，则解禁鼠标滚轮，并退出
+        {
+            window.onmousewheel = function(){
+                return true;
+            }
+            return true;
+        }
+        
+        //进行下一步移动
+        var repeat = "BlogDirectory.moveScrollBar(" + finalpos + "," + interval + ")"; 
+        document.body.movement = setTimeout(repeat, interval); 
+    },
+    
+    htmlDecode:function (text){
+        var temp = document.createElement("div");
+        temp.innerHTML = text;
+        var output = temp.innerText || temp.textContent;
+        temp = null;
+        return output;
+    },
+
+    /*
+    创建博客目录，
+    id表示包含博文正文的 div 容器的 id，
+    mt 和 st 分别表示主标题和次级标题的标签名称（如 H2、H3，大写或小写都可以！），
+    interval 表示移动的速度
+    */
+    createBlogDirectory:function (id, mt, st, interval){
+         //获取博文正文div容器
+        var elem = document.getElementById(id);
+        if(!elem) return false;
+        //获取div中所有元素结点
+        var nodes = elem.getElementsByTagName("*");
+        //创建博客目录的div容器
+        var divSideBar = document.createElement('DIV');
+        divSideBar.className = 'sideBar';
+        divSideBar.setAttribute('id', 'sideBar');
+        var divSideBarTab = document.createElement('DIV');
+        divSideBarTab.setAttribute('id', 'sideBarTab');
+        divSideBar.appendChild(divSideBarTab);
+        var h2 = document.createElement('H2');
+        divSideBarTab.appendChild(h2);
+        var txt = document.createTextNode('目录导航');
+        h2.appendChild(txt);
+        var divSideBarContents = document.createElement('DIV');
+        divSideBarContents.style.display = 'none';
+        divSideBarContents.setAttribute('id', 'sideBarContents');
+        divSideBar.appendChild(divSideBarContents);
+        //创建自定义列表
+        var dlist = document.createElement("dl");
+        divSideBarContents.appendChild(dlist);
+        var num = 0;//统计找到的mt和st
+        mt = mt.toUpperCase();//转化成大写
+        st = st.toUpperCase();//转化成大写
+        //遍历所有元素结点
+        for(var i=0; i<nodes.length; i++)
+        {
+            if(nodes[i].nodeName == mt|| nodes[i].nodeName == st)    
+            {
+                //获取标题文本
+                var nodetext = nodes[i].innerHTML.replace(/<\/?[^>]+>/g,"");//innerHTML里面的内容可能有HTML标签，所以用正则表达式去除HTML的标签
+                nodetext = nodetext.replace(/&nbsp;/ig, "");//替换掉所有的&nbsp;
+                nodetext = BlogDirectory.htmlDecode(nodetext);
+                //插入锚        
+                nodes[i].setAttribute("id", "blogTitle" + num);
+                var item;
+                switch(nodes[i].nodeName)
+                {
+                    case mt:    //若为主标题 
+                        item = document.createElement("dt");
+                        break;
+                    case st:    //若为子标题
+                        item = document.createElement("dd");
+                        break;
+                }
+                
+                //创建锚链接
+                var itemtext = document.createTextNode(nodetext);
+                item.appendChild(itemtext);
+                item.setAttribute("name", num);
+                item.onclick = function(){        //添加鼠标点击触发函数
+                    var pos = BlogDirectory.getElementPosition(document.getElementById("blogTitle" + this.getAttribute("name")));
+                    if(!BlogDirectory.moveScrollBar(pos.top, interval)) return false;
+                };            
+                
+                //将自定义表项加入自定义列表中
+                dlist.appendChild(item);
+                num++;
+            }
+        }
+        
+        if(num == 0) return false; 
+        /*鼠标进入时的事件处理*/
+        divSideBarTab.onmouseenter = function(){
+            divSideBarContents.style.display = 'block';
+        }
+        /*鼠标离开时的事件处理*/
+        divSideBar.onmouseleave = function() {
+            divSideBarContents.style.display = 'none';
+        }
+
+        document.body.appendChild(divSideBar);
+    }
+    
+};
+
+window.onload=function(){
+    /*页面加载完成之后生成博客目录*/
+    BlogDirectory.createBlogDirectory("cnblogs_post_body","h2","h3",20);
+}
+</script><script type="text/javascript">getFollowStatus('925488b1-a567-df11-ba8f-001cf0cd104b');</script><iframe src="Linux%20atop%E7%9B%91%E6%8E%A7_files/container.html" style="visibility: hidden; display: none;"></iframe><iframe src="https://www.google.com/recaptcha/api2/aframe" style="display: none;" width="0" height="0"></iframe></body></html>
