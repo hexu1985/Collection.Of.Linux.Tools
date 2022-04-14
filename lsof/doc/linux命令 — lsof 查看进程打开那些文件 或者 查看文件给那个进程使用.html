@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><script src="linux%E5%91%BD%E4%BB%A4%20%E2%80%94%20lsof%20%E6%9F%A5%E7%9C%8B%E8%BF%9B%E7%A8%8B%E6%89%93%E5%BC%80%E9%82%A3%E4%BA%9B%E6%96%87%E4%BB%B6%20%E6%88%96%E8%80%85%20%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E7%BB%99%E9%82%A3%E4%B8%AA%E8%BF%9B%E7%A8%8B%E4%BD%BF%E7%94%A8_files/reactive_library_fy2019.js"></script><script src="linux%E5%91%BD%E4%BB%A4%20%E2%80%94%20lsof%20%E6%9F%A5%E7%9C%8B%E8%BF%9B%E7%A8%8B%E6%89%93%E5%BC%80%E9%82%A3%E4%BA%9B%E6%96%87%E4%BB%B6%20%E6%88%96%E8%80%85%20%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E7%BB%99%E9%82%A3%E4%B8%AA%E8%BF%9B%E7%A8%8B%E4%BD%BF%E7%94%A8_files/cookie.js"></script><script src="linux%E5%91%BD%E4%BB%A4%20%E2%80%94%20lsof%20%E6%9F%A5%E7%9C%8B%E8%BF%9B%E7%A8%8B%E6%89%93%E5%BC%80%E9%82%A3%E4%BA%9B%E6%96%87%E4%BB%B6%20%E6%88%96%E8%80%85%20%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E7%BB%99%E9%82%A3%E4%B8%AA%E8%BF%9B%E7%A8%8B%E4%BD%BF%E7%94%A8_files/show_ads_impl_fy2021.js" id="google_shimpl"></script>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+    <title>linux命令 — lsof 查看进程打开那些文件 或者 查看文件给那个进程使用 - 爱码网</title>
+     
+<meta name="keywords" content="linux命令 — lsof 查看进程打开那些文件 或者 查看文件给那个进程使用">
+<meta name="description" content="lsof命令是什么？ 可以列出被进程所打开的文件的信息。被打开的文件可以是 1.普通的文件，2.目录 3.网络文件系统的文件，4.字符设备文件 5.(函数)共享库 6.管道，命名管道&amp;amp;#160;7.符">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="linux%E5%91%BD%E4%BB%A4%20%E2%80%94%20lsof%20%E6%9F%A5%E7%9C%8B%E8%BF%9B%E7%A8%8B%E6%89%93%E5%BC%80%E9%82%A3%E4%BA%9B%E6%96%87%E4%BB%B6%20%E6%88%96%E8%80%85%20%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E7%BB%99%E9%82%A3%E4%B8%AA%E8%BF%9B%E7%A8%8B%E4%BD%BF%E7%94%A8_files/base.css">
+<script src="linux%E5%91%BD%E4%BB%A4%20%E2%80%94%20lsof%20%E6%9F%A5%E7%9C%8B%E8%BF%9B%E7%A8%8B%E6%89%93%E5%BC%80%E9%82%A3%E4%BA%9B%E6%96%87%E4%BB%B6%20%E6%88%96%E8%80%85%20%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E7%BB%99%E9%82%A3%E4%B8%AA%E8%BF%9B%E7%A8%8B%E4%BD%BF%E7%94%A8_files/detail.js"></script>  
+<script data-ad-client="ca-pub-5446233687289962" async="" src="linux%E5%91%BD%E4%BB%A4%20%E2%80%94%20lsof%20%E6%9F%A5%E7%9C%8B%E8%BF%9B%E7%A8%8B%E6%89%93%E5%BC%80%E9%82%A3%E4%BA%9B%E6%96%87%E4%BB%B6%20%E6%88%96%E8%80%85%20%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E7%BB%99%E9%82%A3%E4%B8%AA%E8%BF%9B%E7%A8%8B%E4%BD%BF%E7%94%A8_files/adsbygoogle.js" data-checked-head="true"></script>
+<script>
+   $(document).ready(function () { 
+		$("img").error(function () {
+			$(this).hide();
+		}); 
+	}); 
+</script>
+<script id="LA_CODELESS" src="linux%E5%91%BD%E4%BB%A4%20%E2%80%94%20lsof%20%E6%9F%A5%E7%9C%8B%E8%BF%9B%E7%A8%8B%E6%89%93%E5%BC%80%E9%82%A3%E4%BA%9B%E6%96%87%E4%BB%B6%20%E6%88%96%E8%80%85%20%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E7%BB%99%E9%82%A3%E4%B8%AA%E8%BF%9B%E7%A8%8B%E4%BD%BF%E7%94%A8_files/js-sdk-event.js" data-la-ev="Je3PjbvUssp6BbvY"></script><meta http-equiv="origin-trial" content="AxujKG9INjsZ8/gUq8+dTruNvk7RjZQ1oFhhgQbcTJKDnZfbzSTE81wvC2Hzaf3TW4avA76LTZEMdiedF1vIbA4AAABueyJvcmlnaW4iOiJodHRwczovL2ltYXNkay5nb29nbGVhcGlzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzVGhpcmRQYXJ0eSI6dHJ1ZX0="><meta http-equiv="origin-trial" content="Azuce85ORtSnWe1MZDTv68qpaW3iHyfL9YbLRy0cwcCZwVnePnOmkUJlG8HGikmOwhZU22dElCcfrfX2HhrBPAkAAAB7eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A16nvcdeoOAqrJcmjLRpl1I6f3McDD8EfofAYTt/P/H4/AWwB99nxiPp6kA0fXoiZav908Z8etuL16laFPUdfQsAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="AxBHdr0J44vFBQtZUqX9sjiqf5yWZ/OcHRcRMN3H9TH+t90V/j3ENW6C8+igBZFXMJ7G3Pr8Dd13632aLng42wgAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A88BWHFjcawUfKU3lIejLoryXoyjooBXLgWmGh+hNcqMK44cugvsI5YZbNarYvi3roc1fYbHA1AVbhAtuHZflgEAAAB2eyJvcmlnaW4iOiJodHRwczovL2dvb2dsZS5jb206NDQzIiwiZmVhdHVyZSI6IlRydXN0VG9rZW5zIiwiZXhwaXJ5IjoxNjUyNzc0NDAwLCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A8FHS1NmdCwGqD9DwOicnHHY+y27kdWfxKa0YHSGDfv0CSpDKRHTQdQmZVPDUdaFWUsxdgVxlwAd6o+dhJykPA0AAACWeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjQzMTU1MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><meta http-equiv="origin-trial" content="A8zdXi6dr1hwXEUjQrYiyYQGlU3557y5QWDnN0Lwgj9ePt66XMEvNkVWOEOWPd7TP9sBQ25X0Q15Lr1Nn4oGFQkAAACceyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjQzMTU1MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><meta http-equiv="origin-trial" content="A4/Htern2udN9w3yJK9QgWQxQFruxOXsXL7cW60DyCl0EZFGCSme/J33Q/WzF7bBkVvhEWDlcBiUyZaim5CpFQwAAACceyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjQzMTU1MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><meta http-equiv="origin-trial" content="AxujKG9INjsZ8/gUq8+dTruNvk7RjZQ1oFhhgQbcTJKDnZfbzSTE81wvC2Hzaf3TW4avA76LTZEMdiedF1vIbA4AAABueyJvcmlnaW4iOiJodHRwczovL2ltYXNkay5nb29nbGVhcGlzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzVGhpcmRQYXJ0eSI6dHJ1ZX0="><meta http-equiv="origin-trial" content="Azuce85ORtSnWe1MZDTv68qpaW3iHyfL9YbLRy0cwcCZwVnePnOmkUJlG8HGikmOwhZU22dElCcfrfX2HhrBPAkAAAB7eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A16nvcdeoOAqrJcmjLRpl1I6f3McDD8EfofAYTt/P/H4/AWwB99nxiPp6kA0fXoiZav908Z8etuL16laFPUdfQsAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="AxBHdr0J44vFBQtZUqX9sjiqf5yWZ/OcHRcRMN3H9TH+t90V/j3ENW6C8+igBZFXMJ7G3Pr8Dd13632aLng42wgAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A88BWHFjcawUfKU3lIejLoryXoyjooBXLgWmGh+hNcqMK44cugvsI5YZbNarYvi3roc1fYbHA1AVbhAtuHZflgEAAAB2eyJvcmlnaW4iOiJodHRwczovL2dvb2dsZS5jb206NDQzIiwiZmVhdHVyZSI6IlRydXN0VG9rZW5zIiwiZXhwaXJ5IjoxNjUyNzc0NDAwLCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A8FHS1NmdCwGqD9DwOicnHHY+y27kdWfxKa0YHSGDfv0CSpDKRHTQdQmZVPDUdaFWUsxdgVxlwAd6o+dhJykPA0AAACWeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjQzMTU1MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><meta http-equiv="origin-trial" content="A8zdXi6dr1hwXEUjQrYiyYQGlU3557y5QWDnN0Lwgj9ePt66XMEvNkVWOEOWPd7TP9sBQ25X0Q15Lr1Nn4oGFQkAAACceyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjQzMTU1MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><meta http-equiv="origin-trial" content="A4/Htern2udN9w3yJK9QgWQxQFruxOXsXL7cW60DyCl0EZFGCSme/J33Q/WzF7bBkVvhEWDlcBiUyZaim5CpFQwAAACceyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjQzMTU1MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><link rel="preload" href="linux%E5%91%BD%E4%BB%A4%20%E2%80%94%20lsof%20%E6%9F%A5%E7%9C%8B%E8%BF%9B%E7%A8%8B%E6%89%93%E5%BC%80%E9%82%A3%E4%BA%9B%E6%96%87%E4%BB%B6%20%E6%88%96%E8%80%85%20%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E7%BB%99%E9%82%A3%E4%B8%AA%E8%BF%9B%E7%A8%8B%E4%BD%BF%E7%94%A8_files/integrator.js" as="script"><script type="text/javascript" src="linux%E5%91%BD%E4%BB%A4%20%E2%80%94%20lsof%20%E6%9F%A5%E7%9C%8B%E8%BF%9B%E7%A8%8B%E6%89%93%E5%BC%80%E9%82%A3%E4%BA%9B%E6%96%87%E4%BB%B6%20%E6%88%96%E8%80%85%20%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E7%BB%99%E9%82%A3%E4%B8%AA%E8%BF%9B%E7%A8%8B%E4%BD%BF%E7%94%A8_files/integrator.js"></script><link rel="preload" href="linux%E5%91%BD%E4%BB%A4%20%E2%80%94%20lsof%20%E6%9F%A5%E7%9C%8B%E8%BF%9B%E7%A8%8B%E6%89%93%E5%BC%80%E9%82%A3%E4%BA%9B%E6%96%87%E4%BB%B6%20%E6%88%96%E8%80%85%20%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E7%BB%99%E9%82%A3%E4%B8%AA%E8%BF%9B%E7%A8%8B%E4%BD%BF%E7%94%A8_files/integrator.js" as="script"><script type="text/javascript" src="linux%E5%91%BD%E4%BB%A4%20%E2%80%94%20lsof%20%E6%9F%A5%E7%9C%8B%E8%BF%9B%E7%A8%8B%E6%89%93%E5%BC%80%E9%82%A3%E4%BA%9B%E6%96%87%E4%BB%B6%20%E6%88%96%E8%80%85%20%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E7%BB%99%E9%82%A3%E4%B8%AA%E8%BF%9B%E7%A8%8B%E4%BD%BF%E7%94%A8_files/integrator.js"></script></head>
+<body class="home-template dtpg" style="padding: 0px 0px 154px;">
+<nav class="main-nav clearfix">
+    <div class="inner">
+        <ul class="nav">
+            <li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-886"><a href="https://www.likecs.com/" title="爱码网">首页</a></li>
+                        <li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-886"><a href="https://www.likecs.com/nav/1.html" title="前端技术">前端技术</a></li>
+                        <li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-886"><a href="https://www.likecs.com/nav/9.html" title="编程语言">编程语言</a></li>
+                        <li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-886"><a href="https://www.likecs.com/nav/31.html" title="人工智能">人工智能</a></li>
+                        <li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-886"><a href="https://www.likecs.com/nav/41.html" title="运维知识">运维知识</a></li>
+                        <li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-886"><a href="https://www.likecs.com/nav/52.html" title="资源下载">资源下载</a></li>
+                        <li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-886"><a href="https://www.likecs.com/nav/68.html" title="常用小工具">常用小工具</a></li>
+                        <li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-886"><a href="https://www.likecs.com/nav/72.html" title="技术问答">技术问答</a></li>
+                    </ul>            
+	 
+    </div>
+</nav><div class="site-wrapper">
+ 
+    <header style="height: auto;padding: 10px 0px;" class="main-header">
+        <div style="max-width:910px" class="main-header-content inner">
+                        <h1 class="page-title"><a href="https://www.likecs.com/show-224329.html" title="linux命令 — lsof 查看进程打开那些文件 或者 查看文件给那个进程使用">linux命令 — lsof 查看进程打开那些文件 或者 查看文件给那个进程使用</a></h1>
+            
+        </div>
+
+    </header>
+    <main class="content" role="main" style="height: auto !important;">
+	
+
+        <div class="leftbox" style="height: auto !important;">
+    <article class="post tag-uifont tag-webview" style="height: auto !important;">
+        <header class="post-header">
+            <footer class="tc"> bonelee 
+                <time class="post-date" datetime="2021-12-01">2021-12-01</time>
+            </footer>
+        </header>
+        <section class="post-content" style="height: auto !important;">
+            <div class="contentbef">  
+                                    
+                            <!--likecs_hengxiang_zishiying--><ins class="adsbygoogle" style="display: block; height: 280px;" data-ad-client="ca-pub-5446233687289962" data-ad-slot="2607637140" data-ad-format="auto" data-full-width-responsive="true" data-adsbygoogle-status="done" data-ad-status="filled"><ins id="aswift_1_expand" style="border: medium none; height: 280px; width: 938px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-table;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_1_anchor" style="border: medium none; height: 280px; width: 938px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: block; overflow: visible;"><iframe id="aswift_1" name="aswift_1" style="left:0;position:absolute;top:0;border:0;width:938px;height:280px" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" src="linux%E5%91%BD%E4%BB%A4%20%E2%80%94%20lsof%20%E6%9F%A5%E7%9C%8B%E8%BF%9B%E7%A8%8B%E6%89%93%E5%BC%80%E9%82%A3%E4%BA%9B%E6%96%87%E4%BB%B6%20%E6%88%96%E8%80%85%20%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E7%BB%99%E9%82%A3%E4%B8%AA%E8%BF%9B%E7%A8%8B%E4%BD%BF%E7%94%A8_files/ads.html" data-google-container-id="a!2" data-google-query-id="CJXcpdzIkvcCFUjFvQodwkwGdg" data-load-complete="true" width="938" height="280" frameborder="0"></iframe></ins></ins></ins></div>
+
+                            
+<div class="post" style="height: auto !important;">
+	
+	<div id="likecs_post_body" class="blogpost-body blogpost-body-html" style="height: auto !important;">
+<h1 class="csdn_top"><strong style="font-size: 14px">lsof命令是什么？</strong></h1>
+<div id="article_content" class="article_content csdn-tracking-statistics" data-mod="popu_307" data-dsm="post" style="height: auto !important;">
+<p>可以列出被进程所打开的文件的信息。被打开的文件可以是</p>
+<p>1.普通的文件，2.目录 &nbsp;3.网络文件系统的文件，4.字符设备文件 &nbsp;5.(函数)共享库 &nbsp;6.管道，命名管道&nbsp;7.符号链接</p>
+<p>8.底层的socket字流，网络socket，unix域名socket</p>
+<p>9.在linux里面，大部分的东西都是被当做文件的…..还有其他很多</p>
+<p><strong>怎样使用lsof</strong></p>
+<p>这里主要用案例的形式来介绍lsof 命令的使用</p>
+<p><strong>1.列出所有打开的文件:</strong></p>
+<p>lsof</p>
+<p>备注: 如果不加任何参数，就会打开所有被打开的文件，建议加上一下参数来具体定位</p>
+<p><strong>2. 查看谁正在使用某个文件</strong></p>
+<p>lsof &nbsp; /filepath/file</p>
+<p><strong>3.递归查看某个目录的文件信息</strong></p>
+<p>lsof +D /filepath/filepath2/</p>
+<p>备注: 使用了+D，对应目录下的所有子目录和文件都会被列出</p>
+<p><strong>4. 比使用+D选项，遍历查看某个目录的所有文件信息 的方法</strong></p>
+<p>lsof | grep ‘/filepath/filepath2/’</p>
+<p><strong>5. 列出某个用户打开的文件信息</strong></p>
+<p>lsof &nbsp;-u username</p>
+<p>备注: -u 选项，u其实是user的缩写</p>
+<p><strong>6. 列出某个程序所打开的文件信息</strong></p>
+<p><strong>lsof -c mysql</strong></p>
+<p>备注: -c 选项将会列出所有以mysql开头的程序的文件，其实你也可以写成&nbsp;<strong>lsof | grep mysql,&nbsp;</strong>但是第一种方法明显比第二种方法要少打几个字符了</p>
+<p><strong>7. 列出多个程序多打开的文件信息</strong></p>
+<p>lsof -c mysql -c apache</p>
+<p><strong>8. 列出某个用户以及某个程序所打开的文件信息</strong></p>
+<p>lsof -u test -c mysql</p>
+<p><strong>9. 列出除了某个用户外的被打开的文件信息</strong></p>
+<p>lsof &nbsp; -u ^root</p>
+<p>备注：^这个符号在用户名之前，将会把是root用户打开的进程不让显示</p>
+<p><strong>10. 通过某个进程号显示该进行打开的文件</strong></p>
+<p>lsof -p 1</p>
+<p><strong>11. 列出多个进程号对应的文件信息</strong></p>
+<p>lsof -p 123,456,789</p>
+<p><strong>12. 列出除了某个进程号，其他进程号所打开的文件信息</strong></p>
+<p>lsof -p ^1</p>
+<p><strong>13 . 列出所有的网络连接</strong></p>
+<p><strong>lsof -i</strong></p>
+<p><strong>14. 列出所有tcp 网络连接信息</strong></p>
+<p>lsof &nbsp;-i tcp</p>
+<p><strong>15. 列出所有udp网络连接信息</strong></p>
+<p>lsof &nbsp;-i udp</p><div style="width:100%;height:auto; background-color: #ddd; text-align: center; padding: 0px;"><ins class="adsbygoogle" style="display: block; height: 0px;" data-ad-client="ca-pub-5446233687289962" data-ad-slot="2607637140" data-ad-format="auto" data-full-width-responsive="true" data-adsbygoogle-status="done" data-ad-status="unfilled"><ins id="aswift_2_expand" style="border: medium none; height: 0px; width: 938px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-table;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_2_anchor" style="border: medium none; height: 0px; width: 938px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: block; overflow: hidden; opacity: 0;"><iframe id="aswift_2" name="aswift_2" style="left: 0px; position: absolute; top: 0px; border: 0px none; width: 938px; height: 0px;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" src="linux%E5%91%BD%E4%BB%A4%20%E2%80%94%20lsof%20%E6%9F%A5%E7%9C%8B%E8%BF%9B%E7%A8%8B%E6%89%93%E5%BC%80%E9%82%A3%E4%BA%9B%E6%96%87%E4%BB%B6%20%E6%88%96%E8%80%85%20%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E7%BB%99%E9%82%A3%E4%B8%AA%E8%BF%9B%E7%A8%8B%E4%BD%BF%E7%94%A8_files/ads_002.html" data-google-container-id="a!3" data-load-complete="true" data-google-query-id="CL-QptzIkvcCFUHDfAodsuMJdg" width="938" height="0" frameborder="0"></iframe></ins></ins></ins></div>
+<p><strong>16. 列出谁在使用某个端口</strong></p>
+<p>lsof -i :3306</p>
+<p><strong>17. 列出谁在使用某个特定的udp端口</strong></p>
+<p>lsof -i udp:55</p>
+<p><strong>特定的tcp端口</strong></p>
+<p>lsof -i tcp:80</p>
+<p><strong>18. 列出某个用户的所有活跃的网络端口</strong></p>
+<p>lsof &nbsp;-a -u test -i</p>
+<p><strong>19. 列出所有网络文件系统</strong></p>
+<p>lsof -N</p>
+<p><strong>20.域名socket文件</strong></p>
+<p>lsof -u</p>
+<p><strong>21.某个用户组所打开的文件信息</strong></p>
+<p>lsof -g 5555</p>
+<p><strong>22. 根据文件描述列出对应的文件信息</strong></p>
+<p>lsof -d description(like 2)</p>
+<p><strong>23. 根据文件描述范围列出文件信息</strong></p>
+<p>lsof -d 2-3</p>
+</div>
+</div>
+
+
+	
+</div>
+
+
+
+
+<a name="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    
+    <div id="comment_form_container"></div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="likecs_ch"></div>
+    <div id="opt_under_post"></div>
+    <div id="likecs_c1" class="under-post-card">
+        <div id="div-gpt-ad-1592365906576-0" style="width: 300px; height: 250px;"></div>
+    </div>
+    <div id="under_post_card1"></div>
+        <div id="likecs_c2" class="under-post-card">
+            <a href="https://c.gridsumdissector.com/r/?gid=gad_545_ermn27t4&amp;ck=1057&amp;adk=10647&amp;autorefresh=__AUTOREFRESH__" rel="nofollow" target="_blank">
+                <img src="linux%E5%91%BD%E4%BB%A4%20%E2%80%94%20lsof%20%E6%9F%A5%E7%9C%8B%E8%BF%9B%E7%A8%8B%E6%89%93%E5%BC%80%E9%82%A3%E4%BA%9B%E6%96%87%E4%BB%B6%20%E6%88%96%E8%80%85%20%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E7%BB%99%E9%82%A3%E4%B8%AA%E8%BF%9B%E7%A8%8B%E4%BD%BF%E7%94%A8_files/img.jpeg" alt="" onload="impressC2(\'火山引擎\', \'https://i.gridsumdissector.com/v/?gscmd=impress&amp;gid=gad_545_ermn27t4&amp;ck=1057&amp;adk=10647&amp;autorefresh=__AUTOREFRESH__&amp;ts=__TS__\')">
+            </a>
+        </div>
+    <div id="under_post_card2"></div>
+    <div id="HistoryToday" class="under-post-card"></div>
+    
+</div>
+
+            
+                <div style="margin-top: 10px;">
+                  </div> 
+        <p style="padding: 20px;color: #cacaca;">原文链接：https://www.cnblogs.com/bonelee/p/7735479.html</p></section>
+	 
+        <footer class="post-footer">
+            <section class="author">
+                <p>分类：</p>
+                                <p>技术点：</p>
+                            </section>
+        </footer>
+        <p class="mt10">相关文章：</p>
+        <div style="width: 100%;" class="contentcard">
+      
+            <div style="width: 100%;height: auto;" class="carditem litem clearfix"> 
+                    <ul style="padding-left: 0rem;" class="cardcont">
+                                                    <li>
+                                <a title="Linux 系统管理命令 - lsof - 查看进程打开的文件" href="https://www.likecs.com/show-305630410.html" target="_blank">Linux 系统管理命令 - <em>lsof</em> - <em>查看</em><em>进程</em><em>打开</em>的<em>文件</em></a> 
+                                <span>2021-08-12</span>
+                            </li>
+                                                        <li>
+                                <a title="linux命令 — lsof 查看进程打开那些文件 或者 查看文件给那个进程使用
+    
+
+
+
+
+
+		
+&nbsp;
+—————————————————————————————————————————————————————————————————————————
+LINUX查看进程的4种方法
+
+
+
+进程是在 CPU 及内存中运行的程序代码，而每个进程可以创建一个或多个进程（父子进程）。
+**查看进程方法：**
+第一种：
+
+ps aux
+
+&nbsp;
+ps命令用于报告当前系统的进程状态。可以搭配kill指令随时中断、删" href="https://www.likecs.com/show-224365.html" target="_blank"><em>linux命令</em> — <em>lsof</em> <em>查看</em><em>进程</em><em>打开</em><em>那些</em><em>文件</em> <em>或者</em> <em>查看</em><em>文件</em>给<em>那个</em><em>进程</em><em>使用</em>
+    
+
+
+
+
+
+		
+&nbsp;
+—————————————————————————————————————————————</a> 
+                                <span>2021-08-17</span>
+                            </li>
+                                                        <li>
+                                <a title="lsof恢复进程打开的文件" href="https://www.likecs.com/show-306467132.html" target="_blank"><em>lsof</em>恢复<em>进程</em><em>打开</em>的<em>文件</em></a> 
+                                <span>2021-08-16</span>
+                            </li>
+                                                        <li>
+                                <a title="Linux 查看文件被那个进程写数据 - Jia-Xin" href="https://www.likecs.com/show-55150.html" target="_blank">Linux <em>查看</em><em>文件</em>被<em>那个</em><em>进程</em>写数据 - Jia-Xin</a> 
+                                <span>2021-12-01</span>
+                            </li>
+                                                        <li>
+                                <a title="查看 Linux 中文件打开情况(lsof)" href="https://www.likecs.com/show-297024.html" target="_blank"><em>查看</em> Linux 中<em>文件</em><em>打开</em>情况(<em>lsof</em>)</a> 
+                                <span>2021-09-08</span>
+                            </li>
+                                                        <li>
+                                <a title="linux查看进程的打开文件数" href="https://www.likecs.com/show-305499721.html" target="_blank">linux<em>查看</em><em>进程</em>的<em>打开</em><em>文件</em>数</a> 
+                                <span>2021-09-06</span>
+                            </li>
+                                                        <li>
+                                <a title="Linux命令-查看进程" href="https://www.likecs.com/show-205284471.html" target="_blank"><em>Linux命令</em>-<em>查看</em><em>进程</em></a> 
+                                <span>2022-01-17</span>
+                            </li>
+                                                        <li>
+                                <a title="linux命令查看进程" href="https://www.likecs.com/show-314938.html" target="_blank"><em>linux命令</em><em>查看</em><em>进程</em></a> 
+                                <span>2021-09-12</span>
+                            </li>
+                                                        <li>
+                                <a title="使用lsof查看进程句柄使用情况" href="https://www.likecs.com/show-306904429.html" target="_blank"><em>使用</em><em>lsof</em><em>查看</em><em>进程</em>句柄<em>使用</em>情况</a> 
+                                <span>2021-09-07</span>
+                            </li>
+                                                        <li>
+                                <a title="LSOF查看linux中文件打开情况
+    
+
+
+
+
+如何查看linux中文件打开情况" href="https://www.likecs.com/show-305751913.html" target="_blank"><em>LSOF</em><em>查看</em>linux中<em>文件</em><em>打开</em>情况
+    
+
+
+
+
+如何<em>查看</em>linux中<em>文件</em><em>打开</em>情况</a> 
+                                <span>2021-12-24</span>
+                            </li>
+                                                        <li>
+                                <a title="查看端口被那个进程占用" href="https://www.likecs.com/show-963364.html" target="_blank"><em>查看</em>端口被<em>那个</em><em>进程</em>占用</a> 
+                                <span>2021-12-15</span>
+                            </li>
+                                                </ul>
+               </div>   
+         </div>
+    </article>
+
+  
+
+</div>
+
+<div class="rigthbox contentcard mt10" style="height: auto !important;">
+ 
+          <div style="height: auto;margin-top: 30px;background-color: #ddd;text-align: center;" class="carditem litem"><ins class="adsbygoogle" style="display: block; height: 280px;" data-ad-client="ca-pub-5446233687289962" data-ad-slot="2607637140" data-ad-format="auto" data-full-width-responsive="true" data-adsbygoogle-status="done" data-ad-status="filled"><ins id="aswift_3_expand" style="border: medium none; height: 280px; width: 384px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-table;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_3_anchor" style="border: medium none; height: 280px; width: 384px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: block; overflow: visible;"><iframe id="aswift_3" name="aswift_3" style="left:0;position:absolute;top:0;border:0;width:384px;height:280px" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" src="linux%E5%91%BD%E4%BB%A4%20%E2%80%94%20lsof%20%E6%9F%A5%E7%9C%8B%E8%BF%9B%E7%A8%8B%E6%89%93%E5%BC%80%E9%82%A3%E4%BA%9B%E6%96%87%E4%BB%B6%20%E6%88%96%E8%80%85%20%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E7%BB%99%E9%82%A3%E4%B8%AA%E8%BF%9B%E7%A8%8B%E4%BD%BF%E7%94%A8_files/ads.html" data-google-container-id="a!4" data-google-query-id="CPSiptzIkvcCFd2G6QUdCscIqw" data-load-complete="true" width="384" height="280" frameborder="0"></iframe></ins></ins></ins></div><div style="height: auto;" class="carditem litem">
+    <div class="cardtit">猜你喜欢 </div>
+        <ul class="cardcont">
+                                 <li>
+                    <a title="linux  lsof 查看进程打开那些文件 或者 查看文件给那个进程使用" href="https://www.likecs.com/show-840229.html" target="_blank">linux  <em>lsof</em> <em>查看</em><em>进程</em><em>打开</em><em>那些</em><em>文件</em> <em>或者</em> <em>查看</em><em>文件</em>给<em>那个</em><em>进程</em><em>使用</em></a> 
+                    <span>2021-11-21</span>
+                </li>
+                                     <li>
+                    <a title="s11.1 lsof:查看进程打开的文件" href="https://www.likecs.com/show-306926403.html" target="_blank">s11.1 <em>lsof</em>:<em>查看</em><em>进程</em><em>打开</em>的<em>文件</em></a> 
+                    <span>2022-01-24</span>
+                </li>
+                                     <li>
+                    <a title="查看删除了文件的进程：lsof" href="https://www.likecs.com/show-306541702.html" target="_blank"><em>查看</em>删除了<em>文件</em>的<em>进程</em>：<em>lsof</em></a> 
+                    <span>2021-06-15</span>
+                </li>
+                                     <li>
+                    <a title="lsof 查看文件被哪个进程占用" href="https://www.likecs.com/show-840238.html" target="_blank"><em>lsof</em> <em>查看</em><em>文件</em>被哪个<em>进程</em>占用</a> 
+                    <span>2021-11-21</span>
+                </li>
+                                     <li>
+                    <a title="linux lsof命令查看文件占用进程" href="https://www.likecs.com/show-840225.html" target="_blank">linux <em>lsof</em>命令<em>查看</em><em>文件</em>占用<em>进程</em></a> 
+                    <span>2021-11-21</span>
+                </li>
+                                     <li>
+                    <a title="fuser与lsof -- 查看文件被哪些进程占用" href="https://www.likecs.com/show-840228.html" target="_blank">fuser与<em>lsof</em> -- <em>查看</em><em>文件</em>被哪些<em>进程</em>占用</a> 
+                    <span>2021-11-21</span>
+                </li>
+                                     <li>
+                    <a title="[lsof]lsof查看哪些设备/文件被占用或者打开" href="https://www.likecs.com/show-672403.html" target="_blank">[<em>lsof</em>]<em>lsof</em><em>查看</em>哪些设备/<em>文件</em>被占用<em>或者</em><em>打开</em></a> 
+                    <span>2021-12-22</span>
+                </li>
+                                     <li>
+                    <a title="【转】lsof命令：查看Liunx进程所打开的文件命令" href="https://www.likecs.com/show-306198092.html" target="_blank">【转】<em>lsof</em>命令：<em>查看</em>Liunx<em>进程</em>所<em>打开</em>的<em>文件</em>命令</a> 
+                    <span>2021-06-09</span>
+                </li>
+                                     <li>
+                    <a title="利用lsof去查看Unix/Linux进程打开了哪些文件" href="https://www.likecs.com/show-305499755.html" target="_blank">利用<em>lsof</em>去<em>查看</em>Unix/Linux<em>进程</em><em>打开</em>了哪些<em>文件</em></a> 
+                    <span>2021-07-03</span>
+                </li>
+                                     <li>
+                    <a title="Linux下查看进程打开的文件与打开文件的进程" href="https://www.likecs.com/show-297027.html" target="_blank">Linux下<em>查看</em><em>进程</em><em>打开</em>的<em>文件</em>与<em>打开</em><em>文件</em>的<em>进程</em></a> 
+                    <span>2021-09-08</span>
+                </li>
+                            </ul>
+   </div><div style="height: auto;margin-top: 30px;background-color: #ddd;text-align: center;" class="carditem litem"><ins class="adsbygoogle" style="display: block; height: 280px;" data-ad-client="ca-pub-5446233687289962" data-ad-slot="2607637140" data-ad-format="auto" data-full-width-responsive="true" data-adsbygoogle-status="done" data-ad-status="filled"><ins id="aswift_4_expand" style="border: medium none; height: 280px; width: 384px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-table;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_4_anchor" style="border: medium none; height: 280px; width: 384px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: block; overflow: visible;"><iframe id="aswift_4" name="aswift_4" style="left:0;position:absolute;top:0;border:0;width:384px;height:280px" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" src="linux%E5%91%BD%E4%BB%A4%20%E2%80%94%20lsof%20%E6%9F%A5%E7%9C%8B%E8%BF%9B%E7%A8%8B%E6%89%93%E5%BC%80%E9%82%A3%E4%BA%9B%E6%96%87%E4%BB%B6%20%E6%88%96%E8%80%85%20%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E7%BB%99%E9%82%A3%E4%B8%AA%E8%BF%9B%E7%A8%8B%E4%BD%BF%E7%94%A8_files/ads.html" data-google-container-id="a!5" data-google-query-id="CNTFptzIkvcCFUFUvQodnqkIkw" data-load-complete="true" width="384" height="280" frameborder="0"></iframe></ins></ins></ins></div>
+<div style="height: auto;" class="carditem litem">
+    <div class="cardtit">最近更新的文章/教程 <a class="cardmore" title="最近更新的文章/教程" href="https://www.likecs.com/default/index/morelist">更多</a></div>
+        <ul class="cardcont">
+                                 <li>
+                    <a title="Re:《Unity Shader入门精要》13.3全局雾效--如何从深度纹理重构世界坐标" href="https://www.likecs.com/show-307454269.html" target="_blank">Re:《Unity Shader入门精要》13.3全局雾效--如何从深度纹理重构世界坐标</a> 
+                    <span>2022-03-18</span>
+                </li>
+                                     <li>
+                    <a title="面试官：Redis集群有哪些方式，Leader选举又是什么原理呢？" href="https://www.likecs.com/show-307454268.html" target="_blank">面试官：Redis集群有哪些方式，Leader选举又是什么原理呢？</a> 
+                    <span>2022-03-18</span>
+                </li>
+                                     <li>
+                    <a title="Django基础四之测试环境和ORM查询" href="https://www.likecs.com/show-307454267.html" target="_blank">Django基础四之测试环境和ORM查询</a> 
+                    <span>2022-03-18</span>
+                </li>
+                                     <li>
+                    <a title="隐私计算综述阅读" href="https://www.likecs.com/show-307454250.html" target="_blank">隐私计算综述阅读</a> 
+                    <span>2022-03-18</span>
+                </li>
+                                     <li>
+                    <a title="quartz框架(十)-QuartzShedulerThread" href="https://www.likecs.com/show-307454242.html" target="_blank">quartz框架(十)-QuartzShedulerThread</a> 
+                    <span>2022-03-17</span>
+                </li>
+                                     <li>
+                    <a title=".Net6  设置环境变量" href="https://www.likecs.com/show-307454201.html" target="_blank">.Net6  设置环境变量</a> 
+                    <span>2022-03-17</span>
+                </li>
+                                     <li>
+                    <a title="BBS项目分布搭建四(点赞点踩及评论功能准备)" href="https://www.likecs.com/show-307454183.html" target="_blank">BBS项目分布搭建四(点赞点踩及评论功能准备)</a> 
+                    <span>2022-03-17</span>
+                </li>
+                                     <li>
+                    <a title="9.Flink实时项目之订单宽表" href="https://www.likecs.com/show-307454157.html" target="_blank">9.Flink实时项目之订单宽表</a> 
+                    <span>2022-03-17</span>
+                </li>
+                                     <li>
+                    <a title="网易互娱23届实习笔试_3x3锯齿数独" href="https://www.likecs.com/show-307454156.html" target="_blank">网易互娱23届实习笔试_3x3锯齿数独</a> 
+                    <span>2022-03-17</span>
+                </li>
+                                     <li>
+                    <a title="Vue3+ElementPlus的一套开源前台+后台管理模板" href="https://www.likecs.com/show-307454139.html" target="_blank">Vue3+ElementPlus的一套开源前台+后台管理模板</a> 
+                    <span>2022-03-17</span>
+                </li>
+                            </ul>
+   </div>
+   <div style="height: auto;background-color: #ddd;text-align: center;" class="carditem litem">
+    <ins class="adsbygoogle" style="display: block; height: 280px;" data-ad-client="ca-pub-5446233687289962" data-ad-slot="2607637140" data-ad-format="auto" data-full-width-responsive="true" data-adsbygoogle-status="done" data-ad-status="filled"><ins id="aswift_5_expand" style="border: medium none; height: 280px; width: 384px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-table;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_5_anchor" style="border: medium none; height: 280px; width: 384px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: block; overflow: visible;"><iframe id="aswift_5" name="aswift_5" style="left:0;position:absolute;top:0;border:0;width:384px;height:280px" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" src="linux%E5%91%BD%E4%BB%A4%20%E2%80%94%20lsof%20%E6%9F%A5%E7%9C%8B%E8%BF%9B%E7%A8%8B%E6%89%93%E5%BC%80%E9%82%A3%E4%BA%9B%E6%96%87%E4%BB%B6%20%E6%88%96%E8%80%85%20%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E7%BB%99%E9%82%A3%E4%B8%AA%E8%BF%9B%E7%A8%8B%E4%BD%BF%E7%94%A8_files/ads.html" data-google-container-id="a!6" data-google-query-id="CMvrptzIkvcCFXSG6QUdvEoGxQ" data-load-complete="true" width="384" height="280" frameborder="0"></iframe></ins></ins></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div> 
+   <div style="height: auto;" class="carditem litem mt20">
+    <div class="cardtit">热门标签  </div>
+    <div class="tagbox">
+                    <a target="_blank" title="Java" href="https://www.likecs.com/default/index/tags?cid=164&amp;cname=Java">Java</a>
+                        <a target="_blank" title="Python" href="https://www.likecs.com/default/index/tags?cid=367&amp;cname=Python">Python</a>
+                        <a target="_blank" title="linux" href="https://www.likecs.com/default/index/tags?cid=274&amp;cname=linux">linux</a>
+                        <a target="_blank" title="javascript" href="https://www.likecs.com/default/index/tags?cid=169&amp;cname=javascript">javascript</a>
+                        <a target="_blank" title="Mysql" href="https://www.likecs.com/default/index/tags?cid=237&amp;cname=Mysql">Mysql</a>
+                        <a target="_blank" title="C#" href="https://www.likecs.com/default/index/tags?cid=187&amp;cname=C%23">C#</a>
+                        <a target="_blank" title="Docker" href="https://www.likecs.com/default/index/tags?cid=243&amp;cname=Docker">Docker</a>
+                        <a target="_blank" title="算法" href="https://www.likecs.com/default/index/tags?cid=344&amp;cname=%E7%AE%97%E6%B3%95">算法</a>
+                        <a target="_blank" title="Redis" href="https://www.likecs.com/default/index/tags?cid=227&amp;cname=Redis">Redis</a>
+                        <a target="_blank" title="SpringBoot" href="https://www.likecs.com/default/index/tags?cid=168&amp;cname=SpringBoot">SpringBoot</a>
+                        <a target="_blank" title="前端" href="https://www.likecs.com/default/index/tags?cid=160&amp;cname=%E5%89%8D%E7%AB%AF">前端</a>
+                        <a target="_blank" title="Vue" href="https://www.likecs.com/default/index/tags?cid=236&amp;cname=Vue">Vue</a>
+                        <a target="_blank" title="spring" href="https://www.likecs.com/default/index/tags?cid=696&amp;cname=spring">spring</a>
+                        <a target="_blank" title=".net core" href="https://www.likecs.com/default/index/tags?cid=381&amp;cname=.net+core">.net core</a>
+                        <a target="_blank" title="设计模式" href="https://www.likecs.com/default/index/tags?cid=632&amp;cname=%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F">设计模式</a>
+                        <a target="_blank" title="kubernetes" href="https://www.likecs.com/default/index/tags?cid=2179&amp;cname=kubernetes">kubernetes</a>
+                        <a target="_blank" title="js" href="https://www.likecs.com/default/index/tags?cid=159&amp;cname=js">js</a>
+                        <a target="_blank" title=".net" href="https://www.likecs.com/default/index/tags?cid=300&amp;cname=.net">.net</a>
+                        <a target="_blank" title="数据库" href="https://www.likecs.com/default/index/tags?cid=284&amp;cname=%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+                        <a target="_blank" title="c++" href="https://www.likecs.com/default/index/tags?cid=312&amp;cname=c%2B%2B">c++</a>
+                        <a target="_blank" title="机器学习" href="https://www.likecs.com/default/index/tags?cid=171&amp;cname=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0">机器学习</a>
+                        <a target="_blank" title="Android" href="https://www.likecs.com/default/index/tags?cid=282&amp;cname=Android">Android</a>
+                        <a target="_blank" title="微服务" href="https://www.likecs.com/default/index/tags?cid=832&amp;cname=%E5%BE%AE%E6%9C%8D%E5%8A%A1">微服务</a>
+                        <a target="_blank" title="数据结构" href="https://www.likecs.com/default/index/tags?cid=247&amp;cname=%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84">数据结构</a>
+                        <a target="_blank" title="大数据" href="https://www.likecs.com/default/index/tags?cid=888&amp;cname=%E5%A4%A7%E6%95%B0%E6%8D%AE">大数据</a>
+                        <a target="_blank" title="程序员" href="https://www.likecs.com/default/index/tags?cid=327&amp;cname=%E7%A8%8B%E5%BA%8F%E5%91%98">程序员</a>
+                        <a target="_blank" title="面试" href="https://www.likecs.com/default/index/tags?cid=637&amp;cname=%E9%9D%A2%E8%AF%95">面试</a>
+                        <a target="_blank" title="JVM" href="https://www.likecs.com/default/index/tags?cid=727&amp;cname=JVM">JVM</a>
+                        <a target="_blank" title="PHP" href="https://www.likecs.com/default/index/tags?cid=281&amp;cname=PHP">PHP</a>
+                        <a target="_blank" title="Go" href="https://www.likecs.com/default/index/tags?cid=839&amp;cname=Go">Go</a>
+                        <a target="_blank" title="git" href="https://www.likecs.com/default/index/tags?cid=226&amp;cname=git">git</a>
+                        <a target="_blank" title="ASP.net core" href="https://www.likecs.com/default/index/tags?cid=179&amp;cname=ASP.net+core">ASP.net core</a>
+                        <a target="_blank" title="CSS" href="https://www.likecs.com/default/index/tags?cid=817&amp;cname=CSS">CSS</a>
+                        <a target="_blank" title="mybatis" href="https://www.likecs.com/default/index/tags?cid=720&amp;cname=mybatis">mybatis</a>
+                        <a target="_blank" title="后端" href="https://www.likecs.com/default/index/tags?cid=1089&amp;cname=%E5%90%8E%E7%AB%AF">后端</a>
+                        <a target="_blank" title="k8s" href="https://www.likecs.com/default/index/tags?cid=5067&amp;cname=k8s">k8s</a>
+                        <a target="_blank" title="Nginx" href="https://www.likecs.com/default/index/tags?cid=373&amp;cname=Nginx">Nginx</a>
+                        <a target="_blank" title="爬虫" href="https://www.likecs.com/default/index/tags?cid=905&amp;cname=%E7%88%AC%E8%99%AB">爬虫</a>
+                        <a target="_blank" title="多线程" href="https://www.likecs.com/default/index/tags?cid=986&amp;cname=%E5%A4%9A%E7%BA%BF%E7%A8%8B">多线程</a>
+                        <a target="_blank" title="React" href="https://www.likecs.com/default/index/tags?cid=560&amp;cname=React">React</a>
+                        <a target="_blank" title="Django" href="https://www.likecs.com/default/index/tags?cid=634&amp;cname=Django">Django</a>
+                        <a target="_blank" title="Spring Boot" href="https://www.likecs.com/default/index/tags?cid=201&amp;cname=Spring+Boot">Spring Boot</a>
+                        <a target="_blank" title="golang" href="https://www.likecs.com/default/index/tags?cid=409&amp;cname=golang">golang</a>
+                        <a target="_blank" title="云计算" href="https://www.likecs.com/default/index/tags?cid=361&amp;cname=%E4%BA%91%E8%AE%A1%E7%AE%97">云计算</a>
+                        <a target="_blank" title="容器" href="https://www.likecs.com/default/index/tags?cid=244&amp;cname=%E5%AE%B9%E5%99%A8">容器</a>
+                        <a target="_blank" title="分布式" href="https://www.likecs.com/default/index/tags?cid=205&amp;cname=%E5%88%86%E5%B8%83%E5%BC%8F">分布式</a>
+                        <a target="_blank" title="devops" href="https://www.likecs.com/default/index/tags?cid=2662&amp;cname=devops">devops</a>
+                        <a target="_blank" title="架构" href="https://www.likecs.com/default/index/tags?cid=2070&amp;cname=%E6%9E%B6%E6%9E%84">架构</a>
+                        <a target="_blank" title="云原生" href="https://www.likecs.com/default/index/tags?cid=22056&amp;cname=%E4%BA%91%E5%8E%9F%E7%94%9F">云原生</a>
+                        <a target="_blank" title="hadoop" href="https://www.likecs.com/default/index/tags?cid=461&amp;cname=hadoop">hadoop</a>
+                </div>
+       
+   </div>
+   <div style="height: auto;" class="carditem litem mt20">
+    <div class="cardtit">常用小工具 <a class="cardmore" title="常用小工具" href="">更多</a></div>
+        <ul class="cardcont">
+                                                <li>
+                    <a title="JSON格式美化工具" href="https://www.likecs.com/tools-2.html" target="_blank">JSON格式美化工具</a>
+
+                </li>
+                                                  <li>
+                    <a title="在线XML转JSON/JSON转XML工具" href="https://www.likecs.com/tools-3.html" target="_blank">在线XML转JSON/JSON转XML工具</a>
+
+                </li>
+                                                  <li>
+                    <a title="JSON格式化编辑和美化工具" href="https://www.likecs.com/tools-4.html" target="_blank">JSON格式化编辑和美化工具</a>
+
+                </li>
+                                                  <li>
+                    <a title="密码安全性在线检测" href="https://www.likecs.com/tools-5.html" target="_blank">密码安全性在线检测</a>
+
+                </li>
+                                                  <li>
+                    <a title="在线计算器" href="https://www.likecs.com/tools-6.html" target="_blank">在线计算器</a>
+
+                </li>
+                                                  <li>
+                    <a title="在线高级科学计算器" href="https://www.likecs.com/tools-7.html" target="_blank">在线高级科学计算器</a>
+
+                </li>
+                                                  <li>
+                    <a title="贷款计算器/房贷计算器" href="https://www.likecs.com/tools-8.html" target="_blank">贷款计算器/房贷计算器</a>
+
+                </li>
+                                                  <li>
+                    <a title="在线RGB、HEX颜色代码生成器" href="https://www.likecs.com/tools-9.html" target="_blank">在线RGB、HEX颜色代码生成器</a>
+
+                </li>
+                                                  <li>
+                    <a title="在线WEB安全色查询工具" href="https://www.likecs.com/tools-10.html" target="_blank">在线WEB安全色查询工具</a>
+
+                </li>
+                                                  <li>
+                    <a title="网页颜色搭配表及颜色搭配技巧" href="https://www.likecs.com/tools-11.html" target="_blank">网页颜色搭配表及颜色搭配技巧</a>
+
+                </li>
+                                              </ul>
+   </div> 
+        <div id="rightadbox" style="height: auto !important; background-color: rgb(221, 221, 221); text-align: center;" class="carditem litem">
+            <ins class="adsbygoogle" style="display: block; height: 512px; width: 384px;" data-ad-client="ca-pub-5446233687289962" data-ad-slot="2607637140" data-ad-format="auto" data-full-width-responsive="true" data-adsbygoogle-status="done" data-ad-status="filled"><ins id="aswift_6_expand" style="border: medium none; height: 512px; width: 384px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-table;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_6_anchor" style="border: medium none; height: 512px; width: 384px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: block; overflow: hidden;"><iframe id="aswift_6" name="aswift_6" style="left: 0px; position: absolute; top: 0px; border: 0px none; width: 384px; height: 512px;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" src="linux%E5%91%BD%E4%BB%A4%20%E2%80%94%20lsof%20%E6%9F%A5%E7%9C%8B%E8%BF%9B%E7%A8%8B%E6%89%93%E5%BC%80%E9%82%A3%E4%BA%9B%E6%96%87%E4%BB%B6%20%E6%88%96%E8%80%85%20%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E7%BB%99%E9%82%A3%E4%B8%AA%E8%BF%9B%E7%A8%8B%E4%BD%BF%E7%94%A8_files/ads.html" data-google-container-id="a!7" data-google-query-id="COT4ptzIkvcCFcdWvQod5HAL7g" data-load-complete="true" width="384" height="512" frameborder="0"></iframe></ins></ins></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        </div> 
+</div>
+<div class="clearfix"></div>
+</main>
+    <div class="yllinks">友情链接：<a target="_blank" href="https://www.zhkhfsg.com/">imtoken</a>&nbsp;<a target="_blank" href="http://www.xxpcxx.cn/">微信商城</a>&nbsp;<a target="_blank" href="https://www.bigbigwork.com/">高清设计图库</a>&nbsp;<a target="_blank" href="https://www.sucai999.com/">菜鸟图库</a></div> 
+
+<footer class="site-footer clearfix">
+
+    <section class="copyright">By © 2022 <a href="https://www.likecs.com/" title="www.likecs.com">likecs</a> 版权所有,<br>本站所有数据收集于网络如有侵犯到您的权益请联系zengyin969@gmail.com进行下架处理。 </section>
+    <section class="poweredby">  <a target="_blank" href="https://beian.miit.gov.cn/">粤ICP备12038626号</a>  
+	<script charset="UTF-8" id="LA_COLLECT" src="linux%E5%91%BD%E4%BB%A4%20%E2%80%94%20lsof%20%E6%9F%A5%E7%9C%8B%E8%BF%9B%E7%A8%8B%E6%89%93%E5%BC%80%E9%82%A3%E4%BA%9B%E6%96%87%E4%BB%B6%20%E6%88%96%E8%80%85%20%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E7%BB%99%E9%82%A3%E4%B8%AA%E8%BF%9B%E7%A8%8B%E4%BD%BF%E7%94%A8_files/js-sdk-pro.js"></script><script>LA.init({id: 'Je3PjbvUssp6BbvY',ck: 'Je3PjbvUssp6BbvY'})</script>  Powered By  WordPress </section>
+	
+</footer>  
+</div>
+<script>
+    $(function(){
+        $(".post-content").append('<p style="padding: 20px;color: #cacaca;">原文链接：https://www.cnblogs.com/bonelee/p/7735479.html</p>')  
+    }) 
+</script> 
+
+<ins class="adsbygoogle adsbygoogle-noablate" style="display: none !important;" data-adsbygoogle-status="done" data-ad-status="unfilled"><ins id="aswift_0_expand" style="border: medium none; height: 0px; width: 0px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-table;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_0_anchor" style="border: medium none; height: 0px; width: 0px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: block;"><iframe id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;border:0;width:undefinedpx;height:undefinedpx" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" src="linux%E5%91%BD%E4%BB%A4%20%E2%80%94%20lsof%20%E6%9F%A5%E7%9C%8B%E8%BF%9B%E7%A8%8B%E6%89%93%E5%BC%80%E9%82%A3%E4%BA%9B%E6%96%87%E4%BB%B6%20%E6%88%96%E8%80%85%20%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E7%BB%99%E9%82%A3%E4%B8%AA%E8%BF%9B%E7%A8%8B%E4%BD%BF%E7%94%A8_files/ads_007.html" data-google-container-id="a!1" data-load-complete="true" frameborder="0"></iframe></ins></ins></ins><ins class="adsbygoogle adsbygoogle-noablate" data-adsbygoogle-status="done" style="display: block; width: 100% !important; height: 129px !important; bottom: 0px; clear: none !important; float: none !important; left: 0px; margin: 0px !important; max-height: none !important; max-width: none !important; opacity: 1; overflow: visible !important; padding: 0px !important; position: fixed; right: auto !important; top: auto !important; vertical-align: baseline !important; visibility: visible !important; z-index: 2147483647; background: rgb(250, 250, 250) none repeat scroll 0% 0% !important;" data-anchor-status="displayed" data-ad-status="filled" data-anchor-shown="true"><ins style="inset: auto !important; clear: none !important; display: block !important; float: none !important; height: 5px !important; margin: 0px !important; max-height: none !important; max-width: none !important; opacity: 1 !important; overflow: visible !important; padding: 0px !important; position: relative !important; vertical-align: baseline !important; visibility: visible !important; width: auto !important; z-index: 1 !important; background-color: rgb(250, 250, 250) !important; box-shadow: rgba(0, 0, 0, 0.2) 0px -1px 5px -1px, rgba(0, 0, 0, 0.1) 0px 1px 2px -1px !important;" class="ee"><span style="display: block !important; width: 80px !important; height: 45px !important; bottom: 0px !important; left: 0% !important; pointer-events: none !important;"><svg style="margin: 0px !important; position: absolute !important; bottom: 0px !important; left: 0% !important; display: block !important; width: 80px !important; height: 30px !important; transform: none !important; pointer-events: initial !important;"><defs><filter id="dropShadowTop" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feComponentTransfer in="SourceAlpha" result="TransferredAlpha"><feFuncR type="discrete" tableValues="0.5"></feFuncR><feFuncG type="discrete" tableValues="0.5"></feFuncG><feFuncB type="discrete" tableValues="0.5"></feFuncB></feComponentTransfer><feGaussianBlur in="TransferredAlpha" stdDeviation="2"></feGaussianBlur><feOffset dx="0" dy="0" result="offsetblur"></feOffset><feMerge><feMergeNode></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge></filter></defs><path d="M0,26 L0,6 A6,6 0 0,1 6,1 L50,1 A6,6 0 0,1 56,6 L56,20 A6,6 0 0,0 62,26 Z" stroke="#FAFAFA" stroke-width="1" fill="#FAFAFA" style="filter: url(&quot;#dropShadowTop&quot;);"></path><rect x="0" y="25" width="80" height="5" style="fill: rgb(250, 250, 250);"></rect><g class="down" stroke="#616161" stroke-width="2px" stroke-linecap="square"><line x1="22" y1="12" x2="28" y2="18"></line><line x1="28" y1="18" x2="34" y2="12"></line></g></svg></span></ins><ins id="aswift_7_expand" style="border: medium none !important; height: 124px !important; width: 100% !important; margin: 0px !important; padding: 0px !important; position: relative !important; visibility: visible !important; background-color: transparent !important; display: inline-table !important; inset: auto !important; clear: none !important; float: none !important; max-height: none !important; max-width: none !important; opacity: 1 !important; overflow: visible !important; vertical-align: baseline !important; z-index: auto !important;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_7_anchor" style="border: medium none !important; height: 124px !important; width: 100% !important; margin: 0px !important; padding: 0px !important; position: relative !important; visibility: visible !important; background-color: transparent !important; display: block !important; inset: auto !important; clear: none !important; float: none !important; max-height: none !important; max-width: none !important; opacity: 1 !important; overflow: visible !important; vertical-align: baseline !important; z-index: auto !important;"><iframe id="aswift_7" name="aswift_7" style="width: 1005px !important; height: 124px !important; display: block; margin: 0px auto;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" src="linux%E5%91%BD%E4%BB%A4%20%E2%80%94%20lsof%20%E6%9F%A5%E7%9C%8B%E8%BF%9B%E7%A8%8B%E6%89%93%E5%BC%80%E9%82%A3%E4%BA%9B%E6%96%87%E4%BB%B6%20%E6%88%96%E8%80%85%20%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E7%BB%99%E9%82%A3%E4%B8%AA%E8%BF%9B%E7%A8%8B%E4%BD%BF%E7%94%A8_files/zrt_lookup.html" data-google-container-id="a!8" data-google-query-id="COC9pdzIkvcCFQTEfAod8b4CfQ" data-load-complete="true" width="1005" height="124" frameborder="0"></iframe></ins></ins></ins><iframe src="https://www.google.com/recaptcha/api2/aframe" style="display: none;" width="0" height="0"></iframe></body><iframe id="google_esf" name="google_esf" src="linux%E5%91%BD%E4%BB%A4%20%E2%80%94%20lsof%20%E6%9F%A5%E7%9C%8B%E8%BF%9B%E7%A8%8B%E6%89%93%E5%BC%80%E9%82%A3%E4%BA%9B%E6%96%87%E4%BB%B6%20%E6%88%96%E8%80%85%20%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E7%BB%99%E9%82%A3%E4%B8%AA%E8%BF%9B%E7%A8%8B%E4%BD%BF%E7%94%A8_files/zrt_lookup_002.html" style="display: none;"></iframe></html>

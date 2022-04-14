@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin-when-crossorigin">
+    <meta name="description" content="Linux&amp;#160;查找命令是Linux系统中最重要和最常用的命令之一。查找用于根据与参数匹配的文件指定的条件来搜索和查找文件和目录列表的命令。查找可以在各种条件下使用，您可以通过权限，用户，组，文">
+    <meta property="og:description" content="Linux&amp;#160;查找命令是Linux系统中最重要和最常用的命令之一。查找用于根据与参数匹配的文件指定的条件来搜索和查找文件和目录列表的命令。查找可以在各种条件下使用，您可以通过权限，用户，组，文">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Linux中find命令用法大全 - 许卿一世长安 - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="https://common.cnblogs.com/favicon.svg" type="image/svg+xml">
+    
+    <style>:not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([class*="language-"]):not([highlighted]):not(.hljs):not([class*="brush:"]) {
+        background: rgb(245, 245, 245);
+        padding: 5px;
+        border: 1px solid rgb(204, 204, 204);
+        border-radius: 3px;
+        border-color: transparent;
+        color: rgb(68, 68, 68);
+        font-family: "Courier New", sans-serif;
+    }:not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]):not([class*="brush:"]) code:not(.hljs) {
+            background: rgb(245, 245, 245) !important;
+            border-color: transparent !important;
+        }</style><link rel="stylesheet" href="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/blog-common.css">
+    <link id="MainCss" rel="stylesheet" href="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/bundle-coffee.css">
+    <link id="highlighter-theme-cnblogs" type="text/css" rel="stylesheet" href="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/cnblogs.css">
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/bundle-coffee-mobile.css">
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/Ido-911/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/Ido-911/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/Ido-911/wlwmanifest.xml">
+    <script type="text/javascript" async="" src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/analytics.js"></script><script>
+        var currentBlogId = 460168;
+        var currentBlogApp = 'Ido-911';
+        var cb_enable_mathjax = false;
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'coffee';
+        var visitorUserId = '';
+        var hasCustomScript = false;
+        try {
+            if (hasCustomScript && document.referrer && document.referrer.indexOf('baidu.com') >= 0) {
+                Object.defineProperty(document, 'referrer', { value: '' });
+                Object.defineProperty(Document.prototype, 'referrer', { get: function(){ return ''; } });
+            }
+        } catch(error) { }
+        window.codeHighlightEngine = 1;
+        window.enableCodeLineNumber = false;
+        window.codeHighlightTheme = 'cnblogs';
+    </script>
+        <script>
+            var currentPostDateAdded = '2018-09-13 09:16';
+        </script>
+    <script src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/jquery-2.js"></script>
+    <script src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/blog-common.js"></script><style type="text/css">.medium-zoom-overlay{position:fixed;top:0;right:0;bottom:0;left:0;opacity:0;transition:opacity .3s;will-change:opacity}.medium-zoom--opened .medium-zoom-overlay{cursor:pointer;cursor:zoom-out;opacity:1}.medium-zoom-image{cursor:pointer;cursor:zoom-in;transition:transform .3s cubic-bezier(.2,0,.2,1)!important}.medium-zoom-image--hidden{visibility:hidden}.medium-zoom-image--opened{position:relative;cursor:pointer;cursor:zoom-out;will-change:transform}</style><script id="hljs-script" async="" data-loaded="true" src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/highlight.js"></script>
+    
+    
+    
+<meta http-equiv="origin-trial" content="AxujKG9INjsZ8/gUq8+dTruNvk7RjZQ1oFhhgQbcTJKDnZfbzSTE81wvC2Hzaf3TW4avA76LTZEMdiedF1vIbA4AAABueyJvcmlnaW4iOiJodHRwczovL2ltYXNkay5nb29nbGVhcGlzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzVGhpcmRQYXJ0eSI6dHJ1ZX0="><meta http-equiv="origin-trial" content="Azuce85ORtSnWe1MZDTv68qpaW3iHyfL9YbLRy0cwcCZwVnePnOmkUJlG8HGikmOwhZU22dElCcfrfX2HhrBPAkAAAB7eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A16nvcdeoOAqrJcmjLRpl1I6f3McDD8EfofAYTt/P/H4/AWwB99nxiPp6kA0fXoiZav908Z8etuL16laFPUdfQsAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="AxBHdr0J44vFBQtZUqX9sjiqf5yWZ/OcHRcRMN3H9TH+t90V/j3ENW6C8+igBZFXMJ7G3Pr8Dd13632aLng42wgAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A88BWHFjcawUfKU3lIejLoryXoyjooBXLgWmGh+hNcqMK44cugvsI5YZbNarYvi3roc1fYbHA1AVbhAtuHZflgEAAAB2eyJvcmlnaW4iOiJodHRwczovL2dvb2dsZS5jb206NDQzIiwiZmVhdHVyZSI6IlRydXN0VG9rZW5zIiwiZXhwaXJ5IjoxNjUyNzc0NDAwLCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A8FHS1NmdCwGqD9DwOicnHHY+y27kdWfxKa0YHSGDfv0CSpDKRHTQdQmZVPDUdaFWUsxdgVxlwAd6o+dhJykPA0AAACWeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjQzMTU1MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><meta http-equiv="origin-trial" content="A8zdXi6dr1hwXEUjQrYiyYQGlU3557y5QWDnN0Lwgj9ePt66XMEvNkVWOEOWPd7TP9sBQ25X0Q15Lr1Nn4oGFQkAAACceyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjQzMTU1MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><meta http-equiv="origin-trial" content="A4/Htern2udN9w3yJK9QgWQxQFruxOXsXL7cW60DyCl0EZFGCSme/J33Q/WzF7bBkVvhEWDlcBiUyZaim5CpFQwAAACceyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjQzMTU1MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><script src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/pubads_impl_2022033101.js" async=""></script><link rel="preload" href="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/integrator.js" as="script"><script type="text/javascript" src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/integrator.js"></script></head>
+<body class="skin-coffee has-navbar">
+    <a name="top"></a>
+    <div id="top_nav" class="navbar forpc">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding">
+                    <a href="https://www.cnblogs.com/" title="开发者的网上家园" role="banner">
+                            <img src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/logo.svg" alt="博客园Logo">
+                    </a>
+                </li>
+                <li><a href="https://www.cnblogs.com/" onclick="countClicks('skin-navbar-sitehome')">首页</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="countClicks('nav', 'skin-navbar-news')">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="countClicks('nav', 'skin-navbar-q')">博问</a></li>
+                <li><a id="nav_brandzone" href="https://brands.cnblogs.com/huawei" onclick="countClicks('nav', 'skin-navbar-brands')">专区</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="countClicks('nav', 'skin-navbar-ing')">闪存</a></li>
+                <li><a href="https://edu.cnblogs.com/" onclick="countClicks('nav', 'skin-navbar-edu')">班级</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search" action="https://zzk.cnblogs.com/s" method="get" role="search">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="search" tabindex="3">
+                        <button type="submit" id="zzk_search_button">
+                            <img src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/search.svg" alt="搜索">
+                        </button>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔" style="display: none;">
+                        <img id="new_post_icon" class="navbar-icon" src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/newpost.svg" alt="写随笔">
+                    </a>
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客" style="display: none;">
+                        <img id="myblog_icon" class="navbar-icon" src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/myblog.svg" alt="我的博客">
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息" style="display: none;">
+                        <img id="msg_icon" class="navbar-icon" src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/message.svg" alt="短消息">
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <a id="navbar_lite_mode_indicator" data-current-page="blog" style="display: none" href="javascript:void(0)" alt="简洁模式" title="简洁模式启用，您在访问他人博客时会使用简洁款皮肤展示">
+                        <img class="navbar-icon" src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/lite-mode-on.svg" alt="简洁模式">
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown" style="display: none;">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/avatar-default.svg" alt="用户头像">
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <img id="navbar_lite_mode_on" src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/lite-mode-check.svg" class="hide"><span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+                            <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup" style="display: inline;">注册</a>
+                    <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()" style="display: inline;">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    
+    
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a href="https://www.cnblogs.com/Ido-911/"><img id="blogLogo" src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/logo.gif" alt="返回主页"></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/Ido-911/">许卿一世长安</a>
+</h1>
+<h2></h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="navigator">
+			
+<ul id="navList">
+	<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+	<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/Ido-911/">
+首页</a>
+</li>
+	<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+	<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/%E8%AE%B8%E5%8D%BF%E4%B8%80%E4%B8%96%E9%95%BF%E5%AE%89">
+联系</a></li>
+	<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+	<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/Ido-911/rss/">
+订阅</a>
+	
+<a id="blog_nav_rss_image" href="https://www.cnblogs.com/Ido-911/rss/">
+    <img src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/xml.gif" alt="订阅">
+</a></li>
+</ul>
+
+
+
+			<div class="blogStats">
+				
+				<!--done-->
+随笔- 7&nbsp;
+文章- 0&nbsp;
+评论- 0&nbsp;
+阅读- 
+<span title="总阅读数: 179243">
+17万</span>&nbsp;
+
+
+
+				
+			</div><!--end: blogStats -->
+		</div><!--end: navigator 博客导航栏 -->
+		<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class="post">
+		<h1 class="postTitle">
+			
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/Ido-911/p/9638612.html">
+    <span role="heading" aria-level="2">Linux中find命令用法大全</span>
+    
+</a><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button>
+
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body blogpost-body-html">
+<p style="text-align: left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+Linux&nbsp;查找命令是Linux系统中最重要和最常用的命令之一。查找用于根据与参数匹配的文件指定的条件来搜索和查找文件和目录列表的命
+令。查找可以在各种条件下使用，您可以通过权限，用户，组，文件类型，日期，大小等可能的条件查找文件。本文将分为五个部分，从基本到提前使用find命
+令。</p>
+<p style="text-align: left">&nbsp;</p>
+<hr>
+<p style="text-align: left">&nbsp;</p>
+<ul class="list-paddingleft-2">
+<li>
+<p>第一部分：查找名称查找文件的基本查找命令</p>
+</li>
+<li>
+<p>第二部分：根据他们的权限查找文件</p>
+</li>
+<li>
+<p>第三部分：基于所有者和组的搜索文件</p>
+</li>
+<li>
+<p>第四部分：根据日期和时间查找文件和目录</p>
+</li>
+<li>
+<p>第五部分：根据大小查找文件和目录</p>
+</li>
+</ul>
+<hr>
+<h2><strong>第一部分 - 查找名称查找文件的基本查找命令</strong><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h2>
+<h3>1.使用当前目录中的名称查找文件<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h3>
+<p>在当前工作目录中查找名称为test.c的所有文件。</p>
+<p><img src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/1489138-20180913085843285-2058369615.jpg" alt=""></p>
+<h4>2.在主目录下查找文件<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>查找/ home目录下的所有文件，名称为test。&nbsp;<br>&nbsp;<img src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/1489138-20180913090529466-232740672.jpg" alt="" class="medium-zoom-image"><br>(上文中的前面两个find没有权限)</p>
+<hr>
+<h4>3.使用名称和忽略案例查找文件<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>找到名称为test的所有文件，并在/ home目录中同时包含大写和小写字母。&nbsp;<br><img src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/1489138-20180913090537830-1257864295.jpg" alt="" class="medium-zoom-image"></p>
+<hr>
+<h4>4.使用名称查找目录<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>在/目录中查找名称为test的所有目录。&nbsp;<br><img src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/1489138-20180913090546731-1939642860.jpg" alt="" class="medium-zoom-image"></p>
+<hr>
+<h4>5.使用名称查找PHP文件<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>在当前工作目录中查找名为test.PHP的所有PHP文件。&nbsp;<br><img src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/1489138-20180913090557342-325424489.jpg" alt="" class="medium-zoom-image"></p>
+<hr>
+<h4>6.查找目录中的所有PHP文件<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>查找目录中的所有php文件。&nbsp;<br><img src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/1489138-20180913090607759-1487694854.jpg" alt="" class="medium-zoom-image"></p>
+<hr>
+<blockquote>
+<h2><strong>第二部分 - 根据他们的权限查找文件</strong><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h2>
+
+
+</blockquote>
+<hr>
+<h4>7.查找777个权限的文件<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>查找权限为777的所有文件&nbsp;<br><img src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/1489138-20180913090618824-1344184580.jpg" alt="" class="medium-zoom-image"></p>
+<hr>
+<h4>8.查找没有777权限的文件<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>查找所有文件未经许可777。&nbsp;<br><img src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/1489138-20180913090628004-702327678.jpg" alt="" class="medium-zoom-image"></p>
+<hr>
+<h4>9.查找具有644个权限的SGID文件<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>查找权限设置为644的所有SGID位文件。&nbsp;<br><img src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/1489138-20180913090638379-60418747.jpg" alt="" class="medium-zoom-image"></p>
+<hr>
+<h4>10.找到具有551权限的粘滞位文件<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>查找权限为551的所有Sticky Bit设置文件。&nbsp;<br><img src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/1489138-20180913090648508-998612242.jpg" alt="" class="medium-zoom-image"></p>
+<hr>
+<h4>11.查找SUID文件<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>查找所有SUID集文件。&nbsp;<br><img src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/1489138-20180913090658387-1999083725.jpg" alt="" class="medium-zoom-image"></p>
+<hr>
+<h4>12.查找SGID文件<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>查找所有SGID设置文件&nbsp;<br><img src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/1489138-20180913090708733-1116709114.jpg" alt="" class="medium-zoom-image"></p>
+<hr>
+<h4>13.查找只读文件<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>查找所有只读文件。&nbsp;<br><img src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/1489138-20180913090740057-1162507130.jpg" alt="" class="medium-zoom-image"></p>
+<hr>
+<h4>14.查找可执行文件<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>查找所有可执行文件。&nbsp;<br><img src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/1489138-20180913090753054-1384946003.jpg" alt="" class="medium-zoom-image"></p>
+<hr>
+<h4>15.找到777个权限和Chmod到644的文件<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>查找所有777个权限文件，并使用chmod命令将权限设置为644&nbsp;<br><img src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/1489138-20180913090806738-1274997182.jpg" alt="" class="medium-zoom-image"></p>
+<hr>
+<h4>16.找到具有777个权限的目录和Chmod到755<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>查找所有777个权限目录，并使用chmod命令将权限设置为755。&nbsp;<br><img src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/1489138-20180913090818408-1761291065.jpg" alt="" class="medium-zoom-image"></p>
+<hr>
+<h4>17.查找并删除单个文件<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>找到一个名为test.c的文件并将其删除&nbsp;<br><img src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/1489138-20180913090829809-535458841.jpg" alt="" class="medium-zoom-image"></p>
+<hr>
+<h4>18.查找并删除多个文件<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>查找和删除多个文件，如.mp3或.txt，然后使用。&nbsp;<br><img src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/1489138-20180913090842555-588248217.jpg" alt="" class="medium-zoom-image"></p>
+<hr>
+<h4>19.查找所有空文件<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>在特定路径下查找所有空文件。&nbsp;<br><img src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/1489138-20180913090853485-1962551346.jpg" alt="" class="medium-zoom-image"></p>
+<hr>
+<h4>20.查找所有空目录<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>将特定路径下的所有空目录归档。&nbsp;<br><img src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/1489138-20180913090907611-920668137.jpg" alt="" class="medium-zoom-image"></p>
+<hr>
+<h4>21.文件所有隐藏文件<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>要查找所有隐藏的文件，请使用以下命令。&nbsp;<br><img src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/1489138-20180913090918663-2023535912.jpg" alt="" class="medium-zoom-image"></p>
+<hr>
+<blockquote>
+<p><strong>第三部分 - 基于所有者和组的搜索文件</strong></p>
+
+
+</blockquote>
+<hr>
+<h4>22.查找基于用户的单个文件<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>在所有者root的/ root目录下查找名为test.c的所有或单个文件。&nbsp;<br><img src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/1489138-20180913090932536-2087719445.jpg" alt="" class="medium-zoom-image"></p>
+<hr>
+<h4>23.查找基于用户的所有文件<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>查找~目录下属于用户neil的所有文件。&nbsp;<br><img src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/1489138-20180913090941283-479684534.jpg" alt="" class="medium-zoom-image"></p>
+<hr>
+<h4>24.查找基于组的所有文件<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>查找/ home目录下属于Group Developer的所有文件。&nbsp;<br><img src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/1489138-20180913090950826-81403242.jpg" alt="" class="medium-zoom-image"></p>
+<hr>
+<h4>25.查找用户的特定文件<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>查找~目录下的用户neil的所有.txt文件&nbsp;<br><img src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/1489138-20180913090959789-1077313366.jpg" alt="" class="medium-zoom-image"></p>
+<hr>
+<blockquote>
+<h2><strong>第四部分 - 根据日期和时间查找文件和目录</strong><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h2>
+
+
+</blockquote>
+<hr>
+<h4>26.查找最近50天修改的文件<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>查找50天后修改的所有文件。&nbsp;<br><img src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/1489138-20180913091029155-606687727.jpg" alt="" class="medium-zoom-image"></p>
+<hr>
+<h4>27.查找最近50天访问的文件<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>查找50天后访问的所有文件。&nbsp;<br><img src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/1489138-20180913091038183-1371177250.jpg" alt="" class="medium-zoom-image"></p>
+<hr>
+<h4>28.查找最后50-100天修改的文件<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>查找所有被修改超过50天以及少于100天的文件。&nbsp;<br><img src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/1489138-20180913091047038-120103060.jpg" alt="" class="medium-zoom-image"></p>
+<hr>
+<h4>29.在过去1小时内查找更改的文件<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>查找最近1小时内更改的所有文件&nbsp;<br><img src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/1489138-20180913091056252-1290879913.jpg" alt="" class="medium-zoom-image"></p>
+<hr>
+<h4>30.在最近1小时内查找修改的文件<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>查找最近1小时内修改的所有文件。&nbsp;<br><img src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/1489138-20180913091105556-374195770.jpg" alt="" class="medium-zoom-image"><img src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/1489138-20180913091113895-609011430.jpg" alt="" class="medium-zoom-image"></p>
+<hr>
+<h4>31.查找最近1小时内访问的文件<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>查找最近1小时内访问的所有文件。&nbsp;<br><img src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/1489138-20180913091124094-1091572894.jpg" alt="" class="medium-zoom-image"></p>
+<hr>
+<blockquote>
+<h2><strong>第五部分 - 根据大小查找文件和目录</strong><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h2>
+
+
+</blockquote>
+<hr>
+<h4>32.找到50MB的文件<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>要找到所有50MB的文件，请使用。&nbsp;<br><img src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/1489138-20180913091140762-1304132530.jpg" alt="" class="medium-zoom-image"></p>
+<hr>
+<h4>33.查找大小在50MB到100MB之间<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>找到大于50MB且小于100MB的所有文件。&nbsp;<br><img src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/1489138-20180913091155374-1656579995.jpg" alt="" class="medium-zoom-image"></p>
+<hr>
+<h4>34.查找并删除100MB的文件<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>查找所有100MB文件并使用一个命令删除它们。&nbsp;<br><img src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/1489138-20180913091203819-1252870283.jpg" alt="" class="medium-zoom-image"></p>
+<hr>
+<h4>35.查找特定文件并删除<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>查找超过10MB的所有.mp3文件，并使用一个命令删除它们&nbsp;<br><img src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/1489138-20180913091212828-1548137115.jpg" alt="" class="medium-zoom-image"></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>以上就是35个linux下find命令大全，希望对大家有用，另外，欢迎大家指出错误及补充。</p>
+<p>&nbsp;</p>
+<p style="text-align: left">&nbsp;&nbsp;</p>
+</div>
+<div class="clear"></div>
+<div id="blog_post_info_block" role="contentinfo">
+<div id="EntryTag">
+    标签: 
+            <a href="https://www.cnblogs.com/Ido-911/tag/Linux/">Linux</a></div>
+
+    <div id="blog_post_info">
+<div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(9638612,cb_blogId,1);green_channel_success(this,'谢谢推荐！');">好文要顶</a>
+        <a id="green_channel_follow" onclick="follow('fc77bd3b-bf90-4fef-9c76-08d618736a99');" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/Ido-911/" target="_blank"><img src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/20180912224410.png" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/Ido-911/">许卿一世长安</a><br>
+            <a href="https://home.cnblogs.com/u/Ido-911/followees/">关注 - 1</a><br>
+            <a href="https://home.cnblogs.com/u/Ido-911/followers/">粉丝 - 6</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow">
+                <a href="javascript:void(0);" onclick="follow('fc77bd3b-bf90-4fef-9c76-08d618736a99');return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(9638612,'Digg')">
+        <span class="diggnum" id="digg_count">10</span>
+    </div>
+    <div class="buryit" onclick="votePost(9638612,'Bury')">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+    <div class="clear"></div>
+    <div id="post_next_prev">
+
+    <br>
+    <a href="https://www.cnblogs.com/Ido-911/p/9638731.html" class="p_n_p_prefix">» </a> 下一篇：    <a href="https://www.cnblogs.com/Ido-911/p/9638731.html" data-featured-image="" title="发布于 2018-09-13 09:45">Docker从入门到实践</a>
+
+</div>
+</div>
+		</div>
+		<div class="postDesc">posted @ 
+<span id="post-date">2018-09-13 09:16</span>&nbsp;
+<a href="https://www.cnblogs.com/Ido-911/">许卿一世长安</a>&nbsp;
+阅读(<span id="post_view_count">174375</span>)&nbsp;
+评论(<span id="post_comment_count">0</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=9638612" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(9638612);return false;">收藏</a>&nbsp;
+<a href="javascript:void(0)" onclick="reportManager.report({ currentUserId: '', targetType: 'blogPost', targetId: '9638612', targetLink: 'https://www.cnblogs.com/Ido-911/p/9638612.html', title: 'Linux中find命令用法大全' })">举报</a></div>
+	</div>
+	
+	
+</div><!--end: topics 文章、评论容器-->
+
+<script>
+    var cb_entryId = 9638612, cb_entryCreatedDate = '2018-09-13 09:16', cb_postType = 1, cb_postTitle = 'Linux中find命令用法大全';
+    var allowComments = true, cb_blogId = 460168, cb_blogApp = 'Ido-911', cb_blogUserGuid = 'fc77bd3b-bf90-4fef-9c76-08d618736a99';
+    mermaidRender.render()
+    markdown_highlight()
+    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");
+    updatePostStats(
+            [cb_entryId],
+            function(id, count) { $("#post_view_count").text(count) },
+            function(id, count) { $("#post_comment_count").text(count) })
+</script>
+<a id="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="#" onclick="return RefreshPage();">刷新页面</a><a href="#top">返回顶部</a></div>
+    <div id="comment_form_container" style="visibility: visible;"><div class="login_tips">
+    登录后才能查看或发表评论，立即 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return account.login('!comments');">登录</a> 或者
+    <a href="https://www.cnblogs.com/">逛逛</a> 博客园首页
+</div>
+</div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="cnblogs_ch"><a href="https://cloud.baidu.com/campaign/2022developer/index.html?track=18708feb6fc4c4db36171b5d7d99f1509444b5c535f8dfc7#person" target="_blank" onclick="gtag('event', 'click', {'event_category': 'ad', 'event_label': 'T2-百度智能云-开发者赋能计划'})">【推荐】百度智能云开发者赋能计划，云服务器4元起，域名1元起</a><br><a href="https://brands.cnblogs.com/huawei" target="_blank" onclick="gtag('event', 'click', {'event_category': 'ad', 'event_label': 'T2-华为专区'})">【推荐】华为开发者专区，与开发者一起构建万物互联的智能世界</a><br></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="under-post-card" style="display: none;">
+            <div id="div-gpt-ad-1592365906576-0" style="width: 300px; height: 250px; display: none;" data-google-query-id="CIir9Ie9gfcCFQY4vQod_I8Lqg"><div id="google_ads_iframe_/1090369/C1_0__container__" style="border: 0pt none; width: 300px; height: 0px;"></div></div>
+    </div>
+    <div id="under_post_card1"><div class="under-post-card">
+<b>编辑推荐：</b>
+<br>
+
+· <a href="https://www.cnblogs.com/InCerry/p/dotnet-compare-two-byte-arrays.html" target="_blank">.NET如何快速比较两个byte数组是否相等</a>
+    <br>
+· <a href="https://www.cnblogs.com/lesliexin/p/16073879.html" target="_blank">[C#] 自定义拖拽时的鼠标效果：基本原理及基本实现</a>
+    <br>
+· <a href="https://www.cnblogs.com/baoruizhe/p/16091325.html" target="_blank">带研发团队后的日常思考：初级管理者的困惑</a>
+    <br>
+· <a href="https://www.cnblogs.com/dragonir/p/16085083.html" target="_blank">Three.js 实现3D开放世界小游戏：阿狸的多元宇宙</a>
+    <br>
+· <a href="https://www.cnblogs.com/huangxincheng/p/16085461.html" target="_blank">一个高频问题：异步操作会创建线程吗？</a>
+    <br>
+</div></div>
+    <div id="under_post_card2"><div class="itnews under-post-card">
+    <b>最新新闻</b>：
+    <br>
+ ·          <a href="https://news.cnblogs.com/n/718301/" target="_blank">全球最小人工心脏在华中科大完成植入：58岁患者术后精神状态良好</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/718300/" target="_blank">“假一赔十”的4k 120Hz电视能买吗？研究完我服了，水是真的深</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/718299/" target="_blank">真刑啊！蔚来员工用公司服务器挖矿，已供认不讳</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/718298/" target="_blank">Google最新《高效Transformers》2022综述大全，39页pdf阐述九大类提升Transformers效率方式</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/718291/" target="_blank">每日 7000 步能救命</a>
+        <br>
+    » <a href="https://news.cnblogs.com/" title="IT 新闻" target="_blank">更多新闻...</a>
+</div></div>
+    <div id="HistoryToday" class="under-post-card"></div>
+    <script type="text/javascript">
+        var commentManager = new blogCommentManager();
+        commentManager.renderComments(0);
+        fixPostBody();
+
+                        window.tocManager.displayDisableTocTips = false;
+                        window.tocManager.generateToc();
+            setTimeout(function() { incrementViewCount(cb_entryId); }, 50);        deliverT2();
+        deliverC1C2();
+        loadNewsAndKb();
+LoadPostCategoriesTags(cb_blogId, cb_entryId);        LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+        GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+        loadOptUnderPost();
+        GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    </script>
+</div>
+
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			<div id="sidebar_news" class="newsItem"><!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	
+<div id="blog-news">
+    
+    <div id="profile_block">
+        昵称：
+        <a href="https://home.cnblogs.com/u/Ido-911/">
+            许卿一世长安
+        </a>
+        <br>
+        园龄：
+        <a href="https://home.cnblogs.com/u/Ido-911/" title="入园时间：2018-09-12">
+            3年6个月
+        </a>
+        <br>
+        粉丝：
+        <a href="https://home.cnblogs.com/u/Ido-911/followers/">
+            6
+        </a>
+        <br>
+        关注：
+        <a href="https://home.cnblogs.com/u/Ido-911/followees/">
+            1
+        </a>
+        <div id="p_b_follow">
+<a href="javascript:void(0)" onclick="follow('fc77bd3b-bf90-4fef-9c76-08d618736a99')">+加关注</a></div>
+        <script>getFollowStatus('fc77bd3b-bf90-4fef-9c76-08d618736a99');</script>
+    </div>
+</div>
+</div>
+
+</div>
+<div id="sidebar_c3"></div>
+			<div id="calendar"><div id="blog-calendar" style="">
+
+<table id="blogCalendar" class="Cal" title="Calendar" cellspacing="0" cellpadding="0" border="0">
+    <tbody>
+        <tr>
+            <td colspan="7">
+                <table class="CalTitle" cellspacing="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar('2022/03/07'); return false;">&lt;</a>
+                            </td>
+                            <td align="center">2022年4月</td>
+                            <td class="CalNextPrev" align="right">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar('2022/05/07'); return false;">&gt;</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    <tr>
+        <th class="CalDayHeader" abbr="日" scope="col" align="center">日</th>
+        <th class="CalDayHeader" abbr="一" scope="col" align="center">一</th>
+        <th class="CalDayHeader" abbr="二" scope="col" align="center">二</th>
+        <th class="CalDayHeader" abbr="三" scope="col" align="center">三</th>
+        <th class="CalDayHeader" abbr="四" scope="col" align="center">四</th>
+        <th class="CalDayHeader" abbr="五" scope="col" align="center">五</th>
+        <th class="CalDayHeader" abbr="六" scope="col" align="center">六</th>
+    </tr>
+            <tr>
+                            <td class="CalOtherMonthDay" align="center">27</td>
+                            <td class="CalOtherMonthDay" align="center">28</td>
+                            <td class="CalOtherMonthDay" align="center">29</td>
+                            <td class="CalOtherMonthDay" align="center">30</td>
+                            <td class="CalOtherMonthDay" align="center">31</td>
+                        <td class="" align="center">
+                            1
+                        </td>
+                    <td class="CalWeekendDay" align="center">
+                        2
+                    </td>
+            </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            3
+                        </td>
+                            <td class="" align="center">
+                                4
+                            </td>
+                            <td class="" align="center">
+                                5
+                            </td>
+                            <td class="" align="center">
+                                6
+                            </td>
+                            <td class="CalTodayDay" align="center">
+                                7
+                            </td>
+                            <td class="" align="center">
+                                8
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            9
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            10
+                        </td>
+                            <td class="" align="center">
+                                11
+                            </td>
+                            <td class="" align="center">
+                                12
+                            </td>
+                            <td class="" align="center">
+                                13
+                            </td>
+                            <td class="" align="center">
+                                14
+                            </td>
+                            <td class="" align="center">
+                                15
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            16
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            17
+                        </td>
+                            <td class="" align="center">
+                                18
+                            </td>
+                            <td class="" align="center">
+                                19
+                            </td>
+                            <td class="" align="center">
+                                20
+                            </td>
+                            <td class="" align="center">
+                                21
+                            </td>
+                            <td class="" align="center">
+                                22
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            23
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            24
+                        </td>
+                            <td class="" align="center">
+                                25
+                            </td>
+                            <td class="" align="center">
+                                26
+                            </td>
+                            <td class="" align="center">
+                                27
+                            </td>
+                            <td class="" align="center">
+                                28
+                            </td>
+                            <td class="" align="center">
+                                29
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            30
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalOtherMonthDay" align="center">
+                            1
+                        </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                2
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                3
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                4
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                5
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                6
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            7
+                        </td>
+                </tr>
+    </tbody>
+</table></div><script>loadBlogDefaultCalendar();</script></div>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"><!-- 搜索 -->
+<div id="sidebar_search" class="sidebar-block">
+    <div id="sidebar_search" class="mySearch">
+        <h3 class="catListTitle">搜索</h3>
+        <div id="sidebar_search_box">
+            <div id="widget_my_zzk" class="div_my_zzk">
+                <input type="text" id="q" onkeydown="return zzk_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="zzk_go()" type="button" value="找找看" id="btnZzk" class="btn_my_zzk">
+            </div>
+            <div id="widget_my_google" class="div_my_zzk">
+                <input type="text" name="google_q" id="google_q" onkeydown="return google_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="google_go()" type="button" value="谷歌搜索" class="btn_my_zzk">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 常用链接 -->
+<div id="sidebar_shortcut" class="sidebar-block"><div class="catListLink">
+<h3 class="catListTitle">
+常用链接
+</h3>
+<ul>
+    
+<li><a href="https://www.cnblogs.com/Ido-911/p/" title="我的博客的随笔列表">我的随笔</a></li>
+<li><a href="https://www.cnblogs.com/Ido-911/MyComments.html" title="我的发表过的评论列表">我的评论</a></li>
+<li><a href="https://www.cnblogs.com/Ido-911/OtherPosts.html" title="我评论过的随笔列表">我的参与</a></li>
+<li><a href="https://www.cnblogs.com/Ido-911/RecentComments.html" title="我的博客的评论列表">最新评论</a></li>
+<li><a href="https://www.cnblogs.com/Ido-911/tag/" title="我的博客的标签列表">我的标签</a></li>
+
+    <li><a id="itemListLink" onclick="this.blur();WarpClass('itemListLink', 'itemListLin_con');return false;" href="#">更多链接</a></li>
+</ul>
+</div>
+
+</div>
+
+<!-- 最新随笔 -->
+
+
+<!-- 我的标签 -->
+<div id="sidebar_toptags" class="sidebar-block"><div class="catListTag">
+<h3 class="catListTitle">我的标签</h3>
+<ul>
+        <li>
+            <a href="https://www.cnblogs.com/Ido-911/tag/PAT%28Advance%29/">PAT(Advance)<span class="tag-count">(2)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/Ido-911/tag/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">动态规划<span class="tag-count">(1)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/Ido-911/tag/%E6%8E%92%E5%BA%8F/">排序<span class="tag-count">(1)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/Ido-911/tag/%E5%88%97%E8%A1%A8/">列表<span class="tag-count">(1)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/Ido-911/tag/dlib/">dlib<span class="tag-count">(1)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/Ido-911/tag/anaconda/">anaconda<span class="tag-count">(1)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/Ido-911/tag/pycharm/">pycharm<span class="tag-count">(1)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/Ido-911/tag/MFC/">MFC<span class="tag-count">(1)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/Ido-911/tag/Docker/">Docker<span class="tag-count">(1)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/Ido-911/tag/Linux/">Linux<span class="tag-count">(1)</span></a>
+        </li>
+    
+
+</ul>
+</div>
+
+</div>
+
+<!-- 积分与排名 -->
+
+
+<!-- 随笔分类、随笔档案、文章分类、新闻分类、相册、链接 -->
+<div id="sidebar_categories">
+
+    <div class="catListPostArchive">
+        <h3 class="catListTitle">
+            
+随笔档案
+
+
+
+        </h3>
+
+        <ul>
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Ido-911/archive/2019/04.html" class="category-item-link" rel="" target="">2019年4月(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Ido-911/archive/2018/11.html" class="category-item-link" rel="" target="">2018年11月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Ido-911/archive/2018/09.html" class="category-item-link" rel="" target="">2018年9月(2)</a>
+ 
+                </li>                
+            
+        </ul>
+    </div>    
+</div>
+
+<!-- 最新评论 -->
+<!-- 阅读排行榜 -->
+<div id="sidebar_topviewedposts" class="sidebar-block"><div class="catListView">
+<h3 class="catListTitle">阅读排行榜</h3>
+	<div id="TopViewPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/Ido-911/p/9638612.html">
+                            1. Linux中find命令用法大全(174321)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/Ido-911/p/9921852.html">
+                            2. MFC 多行文本显示心得(1873)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/Ido-911/p/10704735.html">
+                            3. Pycharm Anaconda 安装dlib(1628)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/Ido-911/p/9638731.html">
+                            4. Docker从入门到实践(583)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/Ido-911/p/10732504.html">
+                            5. 灯塔  (数据结构）(536)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div>
+
+</div>
+
+<!-- 评论排行榜 -->
+<div id="sidebar_topcommentedposts" class="sidebar-block"></div>
+
+<!-- 推荐排行榜 -->
+<div id="sidebar_topdiggedposts" class="sidebar-block"><div id="topdigg_posts_wrap">
+    <div class="catListView">
+        <h3 class="catListTitle">推荐排行榜</h3>
+        <div id="TopDiggPostsBlock">
+            <ul style="word-break: break-all">
+                        <li>
+                            <a href="https://www.cnblogs.com/Ido-911/p/9638612.html">
+                                1. Linux中find命令用法大全(10)
+                            </a>
+                        </li>
+            </ul>
+        </div>
+    </div>
+</div></div><div id="sidebar_recentcomments" class="sidebar-block"></div>
+
+
+</div>
+                    <script>loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright © 2022 许卿一世长安
+<br><span id="poweredby">Powered by .NET 6 on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+    
+
+    <input type="hidden" id="antiforgery_token" value="CfDJ8AuMt_3FvyxIgNOR82PHE4m5MlhEO8HXvO1wtj0w4ZwZOCYzQqPW9OzDeySE3UKYkW_XyHxhJ9SB47YifDBItXbpGB_V2dTI72i0rW90G0pyWc3t2Pf7HC3Bf-rBY09xlwI9avk0_CcWdjUKMste_uQ">
+        <script async="" src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/js.js"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        var kv = getGACustom();
+        if (kv) {
+            gtag('set', kv);
+        }
+        gtag('config', 'UA-476124-1');
+    </script>
+<script defer="defer" src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/hm.js"></script><iframe src="Linux%E4%B8%ADfind%E5%91%BD%E4%BB%A4%E7%94%A8%E6%B3%95%E5%A4%A7%E5%85%A8_files/container.html" style="visibility: hidden; display: none;"></iframe>
+
+<iframe src="https://www.google.com/recaptcha/api2/aframe" style="display: none;" width="0" height="0"></iframe></body></html>
