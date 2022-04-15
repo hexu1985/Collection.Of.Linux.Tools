@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+	<title>
+		git submodule命令 -
+		Git教程™</title>
+	<meta name="keywords" content="">
+	<meta name="description" content="git submodule命令用于初始化，更新或检查子模块。
+使用语法
+git submodule [--quiet] add [&lt;options&gt;] [--] &lt;repository&gt; [&lt;path&gt;]
+git submodule [--quiet] status [--">
+	<link rel="stylesheet" href="git%20submodule%E5%91%BD%E4%BB%A4%20-%20Git%E6%95%99%E7%A8%8B_files/font-awesome.css" media="all">
+	<link rel="stylesheet" href="git%20submodule%E5%91%BD%E4%BB%A4%20-%20Git%E6%95%99%E7%A8%8B_files/layui.css">
+	<link rel="stylesheet" href="git%20submodule%E5%91%BD%E4%BB%A4%20-%20Git%E6%95%99%E7%A8%8B_files/all.css" media="all">
+	<link rel="stylesheet" href="git%20submodule%E5%91%BD%E4%BB%A4%20-%20Git%E6%95%99%E7%A8%8B_files/prism.css" media="all">
+	
+	<!--[if lt IE 9]>
+		<script src="http://apps.bdimg.com/libs/html5shiv/3.7/html5shiv.min.js"></script>
+		<![endif]-->
+<link rel="stylesheet" href="git%20submodule%E5%91%BD%E4%BB%A4%20-%20Git%E6%95%99%E7%A8%8B_files/layer.css" id="layuicss-layer"><meta http-equiv="origin-trial" content="AxujKG9INjsZ8/gUq8+dTruNvk7RjZQ1oFhhgQbcTJKDnZfbzSTE81wvC2Hzaf3TW4avA76LTZEMdiedF1vIbA4AAABueyJvcmlnaW4iOiJodHRwczovL2ltYXNkay5nb29nbGVhcGlzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzVGhpcmRQYXJ0eSI6dHJ1ZX0="><meta http-equiv="origin-trial" content="Azuce85ORtSnWe1MZDTv68qpaW3iHyfL9YbLRy0cwcCZwVnePnOmkUJlG8HGikmOwhZU22dElCcfrfX2HhrBPAkAAAB7eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A16nvcdeoOAqrJcmjLRpl1I6f3McDD8EfofAYTt/P/H4/AWwB99nxiPp6kA0fXoiZav908Z8etuL16laFPUdfQsAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="AxBHdr0J44vFBQtZUqX9sjiqf5yWZ/OcHRcRMN3H9TH+t90V/j3ENW6C8+igBZFXMJ7G3Pr8Dd13632aLng42wgAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A88BWHFjcawUfKU3lIejLoryXoyjooBXLgWmGh+hNcqMK44cugvsI5YZbNarYvi3roc1fYbHA1AVbhAtuHZflgEAAAB2eyJvcmlnaW4iOiJodHRwczovL2dvb2dsZS5jb206NDQzIiwiZmVhdHVyZSI6IlRydXN0VG9rZW5zIiwiZXhwaXJ5IjoxNjUyNzc0NDAwLCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A8FHS1NmdCwGqD9DwOicnHHY+y27kdWfxKa0YHSGDfv0CSpDKRHTQdQmZVPDUdaFWUsxdgVxlwAd6o+dhJykPA0AAACWeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjQzMTU1MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><meta http-equiv="origin-trial" content="A8zdXi6dr1hwXEUjQrYiyYQGlU3557y5QWDnN0Lwgj9ePt66XMEvNkVWOEOWPd7TP9sBQ25X0Q15Lr1Nn4oGFQkAAACceyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjQzMTU1MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><meta http-equiv="origin-trial" content="A4/Htern2udN9w3yJK9QgWQxQFruxOXsXL7cW60DyCl0EZFGCSme/J33Q/WzF7bBkVvhEWDlcBiUyZaim5CpFQwAAACceyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjQzMTU1MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><meta http-equiv="origin-trial" content="AxujKG9INjsZ8/gUq8+dTruNvk7RjZQ1oFhhgQbcTJKDnZfbzSTE81wvC2Hzaf3TW4avA76LTZEMdiedF1vIbA4AAABueyJvcmlnaW4iOiJodHRwczovL2ltYXNkay5nb29nbGVhcGlzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzVGhpcmRQYXJ0eSI6dHJ1ZX0="><meta http-equiv="origin-trial" content="Azuce85ORtSnWe1MZDTv68qpaW3iHyfL9YbLRy0cwcCZwVnePnOmkUJlG8HGikmOwhZU22dElCcfrfX2HhrBPAkAAAB7eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A16nvcdeoOAqrJcmjLRpl1I6f3McDD8EfofAYTt/P/H4/AWwB99nxiPp6kA0fXoiZav908Z8etuL16laFPUdfQsAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="AxBHdr0J44vFBQtZUqX9sjiqf5yWZ/OcHRcRMN3H9TH+t90V/j3ENW6C8+igBZFXMJ7G3Pr8Dd13632aLng42wgAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A88BWHFjcawUfKU3lIejLoryXoyjooBXLgWmGh+hNcqMK44cugvsI5YZbNarYvi3roc1fYbHA1AVbhAtuHZflgEAAAB2eyJvcmlnaW4iOiJodHRwczovL2dvb2dsZS5jb206NDQzIiwiZmVhdHVyZSI6IlRydXN0VG9rZW5zIiwiZXhwaXJ5IjoxNjUyNzc0NDAwLCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A8FHS1NmdCwGqD9DwOicnHHY+y27kdWfxKa0YHSGDfv0CSpDKRHTQdQmZVPDUdaFWUsxdgVxlwAd6o+dhJykPA0AAACWeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjQzMTU1MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><meta http-equiv="origin-trial" content="A8zdXi6dr1hwXEUjQrYiyYQGlU3557y5QWDnN0Lwgj9ePt66XMEvNkVWOEOWPd7TP9sBQ25X0Q15Lr1Nn4oGFQkAAACceyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjQzMTU1MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><meta http-equiv="origin-trial" content="A4/Htern2udN9w3yJK9QgWQxQFruxOXsXL7cW60DyCl0EZFGCSme/J33Q/WzF7bBkVvhEWDlcBiUyZaim5CpFQwAAACceyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjQzMTU1MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><meta http-equiv="origin-trial" content="AxujKG9INjsZ8/gUq8+dTruNvk7RjZQ1oFhhgQbcTJKDnZfbzSTE81wvC2Hzaf3TW4avA76LTZEMdiedF1vIbA4AAABueyJvcmlnaW4iOiJodHRwczovL2ltYXNkay5nb29nbGVhcGlzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzVGhpcmRQYXJ0eSI6dHJ1ZX0="><meta http-equiv="origin-trial" content="Azuce85ORtSnWe1MZDTv68qpaW3iHyfL9YbLRy0cwcCZwVnePnOmkUJlG8HGikmOwhZU22dElCcfrfX2HhrBPAkAAAB7eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A16nvcdeoOAqrJcmjLRpl1I6f3McDD8EfofAYTt/P/H4/AWwB99nxiPp6kA0fXoiZav908Z8etuL16laFPUdfQsAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="AxBHdr0J44vFBQtZUqX9sjiqf5yWZ/OcHRcRMN3H9TH+t90V/j3ENW6C8+igBZFXMJ7G3Pr8Dd13632aLng42wgAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A88BWHFjcawUfKU3lIejLoryXoyjooBXLgWmGh+hNcqMK44cugvsI5YZbNarYvi3roc1fYbHA1AVbhAtuHZflgEAAAB2eyJvcmlnaW4iOiJodHRwczovL2dvb2dsZS5jb206NDQzIiwiZmVhdHVyZSI6IlRydXN0VG9rZW5zIiwiZXhwaXJ5IjoxNjUyNzc0NDAwLCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A8FHS1NmdCwGqD9DwOicnHHY+y27kdWfxKa0YHSGDfv0CSpDKRHTQdQmZVPDUdaFWUsxdgVxlwAd6o+dhJykPA0AAACWeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjQzMTU1MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><meta http-equiv="origin-trial" content="A8zdXi6dr1hwXEUjQrYiyYQGlU3557y5QWDnN0Lwgj9ePt66XMEvNkVWOEOWPd7TP9sBQ25X0Q15Lr1Nn4oGFQkAAACceyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjQzMTU1MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><meta http-equiv="origin-trial" content="A4/Htern2udN9w3yJK9QgWQxQFruxOXsXL7cW60DyCl0EZFGCSme/J33Q/WzF7bBkVvhEWDlcBiUyZaim5CpFQwAAACceyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjQzMTU1MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><meta http-equiv="origin-trial" content="AxujKG9INjsZ8/gUq8+dTruNvk7RjZQ1oFhhgQbcTJKDnZfbzSTE81wvC2Hzaf3TW4avA76LTZEMdiedF1vIbA4AAABueyJvcmlnaW4iOiJodHRwczovL2ltYXNkay5nb29nbGVhcGlzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzVGhpcmRQYXJ0eSI6dHJ1ZX0="><meta http-equiv="origin-trial" content="Azuce85ORtSnWe1MZDTv68qpaW3iHyfL9YbLRy0cwcCZwVnePnOmkUJlG8HGikmOwhZU22dElCcfrfX2HhrBPAkAAAB7eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A16nvcdeoOAqrJcmjLRpl1I6f3McDD8EfofAYTt/P/H4/AWwB99nxiPp6kA0fXoiZav908Z8etuL16laFPUdfQsAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="AxBHdr0J44vFBQtZUqX9sjiqf5yWZ/OcHRcRMN3H9TH+t90V/j3ENW6C8+igBZFXMJ7G3Pr8Dd13632aLng42wgAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A88BWHFjcawUfKU3lIejLoryXoyjooBXLgWmGh+hNcqMK44cugvsI5YZbNarYvi3roc1fYbHA1AVbhAtuHZflgEAAAB2eyJvcmlnaW4iOiJodHRwczovL2dvb2dsZS5jb206NDQzIiwiZmVhdHVyZSI6IlRydXN0VG9rZW5zIiwiZXhwaXJ5IjoxNjUyNzc0NDAwLCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A8FHS1NmdCwGqD9DwOicnHHY+y27kdWfxKa0YHSGDfv0CSpDKRHTQdQmZVPDUdaFWUsxdgVxlwAd6o+dhJykPA0AAACWeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjQzMTU1MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><meta http-equiv="origin-trial" content="A8zdXi6dr1hwXEUjQrYiyYQGlU3557y5QWDnN0Lwgj9ePt66XMEvNkVWOEOWPd7TP9sBQ25X0Q15Lr1Nn4oGFQkAAACceyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjQzMTU1MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><meta http-equiv="origin-trial" content="A4/Htern2udN9w3yJK9QgWQxQFruxOXsXL7cW60DyCl0EZFGCSme/J33Q/WzF7bBkVvhEWDlcBiUyZaim5CpFQwAAACceyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjQzMTU1MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><meta http-equiv="origin-trial" content="AxujKG9INjsZ8/gUq8+dTruNvk7RjZQ1oFhhgQbcTJKDnZfbzSTE81wvC2Hzaf3TW4avA76LTZEMdiedF1vIbA4AAABueyJvcmlnaW4iOiJodHRwczovL2ltYXNkay5nb29nbGVhcGlzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzVGhpcmRQYXJ0eSI6dHJ1ZX0="><meta http-equiv="origin-trial" content="Azuce85ORtSnWe1MZDTv68qpaW3iHyfL9YbLRy0cwcCZwVnePnOmkUJlG8HGikmOwhZU22dElCcfrfX2HhrBPAkAAAB7eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A16nvcdeoOAqrJcmjLRpl1I6f3McDD8EfofAYTt/P/H4/AWwB99nxiPp6kA0fXoiZav908Z8etuL16laFPUdfQsAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="AxBHdr0J44vFBQtZUqX9sjiqf5yWZ/OcHRcRMN3H9TH+t90V/j3ENW6C8+igBZFXMJ7G3Pr8Dd13632aLng42wgAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A88BWHFjcawUfKU3lIejLoryXoyjooBXLgWmGh+hNcqMK44cugvsI5YZbNarYvi3roc1fYbHA1AVbhAtuHZflgEAAAB2eyJvcmlnaW4iOiJodHRwczovL2dvb2dsZS5jb206NDQzIiwiZmVhdHVyZSI6IlRydXN0VG9rZW5zIiwiZXhwaXJ5IjoxNjUyNzc0NDAwLCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A8FHS1NmdCwGqD9DwOicnHHY+y27kdWfxKa0YHSGDfv0CSpDKRHTQdQmZVPDUdaFWUsxdgVxlwAd6o+dhJykPA0AAACWeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjQzMTU1MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><meta http-equiv="origin-trial" content="A8zdXi6dr1hwXEUjQrYiyYQGlU3557y5QWDnN0Lwgj9ePt66XMEvNkVWOEOWPd7TP9sBQ25X0Q15Lr1Nn4oGFQkAAACceyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjQzMTU1MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><meta http-equiv="origin-trial" content="A4/Htern2udN9w3yJK9QgWQxQFruxOXsXL7cW60DyCl0EZFGCSme/J33Q/WzF7bBkVvhEWDlcBiUyZaim5CpFQwAAACceyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjQzMTU1MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><link rel="preload" href="git%20submodule%E5%91%BD%E4%BB%A4%20-%20Git%E6%95%99%E7%A8%8B_files/integrator.js" as="script"><script src="git%20submodule%E5%91%BD%E4%BB%A4%20-%20Git%E6%95%99%E7%A8%8B_files/reactive_library_fy2019.js"></script><script type="text/javascript" src="git%20submodule%E5%91%BD%E4%BB%A4%20-%20Git%E6%95%99%E7%A8%8B_files/integrator.js"></script><link rel="preload" href="git%20submodule%E5%91%BD%E4%BB%A4%20-%20Git%E6%95%99%E7%A8%8B_files/integrator.js" as="script"><script type="text/javascript" src="git%20submodule%E5%91%BD%E4%BB%A4%20-%20Git%E6%95%99%E7%A8%8B_files/integrator.js"></script></head>
+<body class="page-home" aria-hidden="false" style="padding: 0px 0px 154px;">
+	
+<header class="header">
+	<div class="container">
+		<h1 class="logo">
+			<a href="https://www.yiibai.com/" title="易百教程"><i class="fa"></i>易百教程</a>
+				<a id="backTop" name="backTop" style="display:none;"></a>
+		</h1>
+		<div class="site-navbar">
+			<ul>
+				<li class="has-sub-menu"><a href="#">所有教程</a>
+					<div class="sub-menu">
+						<ul>
+							<li><a href="https://www.yiibai.com/html/java/">Java技术</a></li>
+							<li><a href="https://www.yiibai.com/web/">Web技术</a></li>
+							<li><a href="https://www.yiibai.com/html/script/">脚本语言</a></li>
+							<li><a href="https://www.yiibai.com/html/database/">数据库</a></li>
+							<li><a href="https://www.yiibai.com/hightlang/">高级语言</a></li>
+							<li><a href="https://www.yiibai.com/html/misc/">其它技术</a></li>
+							<li><a href="https://www.yiibai.com/?app=all" style="font-weight:bold;color: #61B3E6;">查看所有教程</a></li>
+						</ul>
+					</div>
+				</li>
+				<li class="has-sub-menu"><a href="javascript:void(0);">Java技术</a>
+					<div class="sub-menu">
+						<ul>
+								<li>
+									<a href="https://www.yiibai.com/java/" target="_blank">Java教程</a>
+								</li>
+								
+								<li>
+									<a href="https://www.yiibai.com/design_pattern/" target="_blank">Java设计模式</a>
+								</li>
+								<li>
+									<a href="https://www.yiibai.com/jsp/" target="_blank">JSP教程</a>
+								</li>
+
+								<li>
+									<a href="https://www.yiibai.com/jdbc/" target="_blank">JDBC教程</a>
+								</li>																																				
+							
+								<li>
+									<a href="https://www.yiibai.com/struts_2/" target="_blank">Struts2教程</a>
+								</li>
+							
+								<li>
+									<a href="https://www.yiibai.com/maven/" target="_blank">Maven教程</a>
+								</li>
+							
+							
+								<li>
+									<a href="https://www.yiibai.com/javaexamples/" target="_blank">java实例教程</a>
+								</li>
+
+								<li>
+									<a href="https://www.yiibai.com/mybatis/" target="_blank">MyBatis教程</a>
+								</li>
+
+								
+								<li>
+									<a href="https://www.yiibai.com/spring/" target="_blank">Spring教程</a>
+								</li>
+								<li>
+									<a href="https://www.yiibai.com/spring_mvc/" target="_blank">Spring MVC教程</a>
+								</li>
+							
+								
+						</ul>
+					</div></li>
+				<li class="has-sub-menu"><a href="javascript:;">数据库</a>
+					<div class="sub-menu">
+						<ul>
+							
+								<li>
+									<a href="https://www.yiibai.com/mysql/" target="_blank" title="MySQL教程">MySQL教程</a>
+								</li>
+								<li>
+									<a href="https://www.yiibai.com/postgresql/" target="_blank" title="PostgreSQL教程">PostgreSQL教程</a>
+								</li>
+							
+						</ul>
+					</div></li>
+					<li class="active"><a href="https://www.yiibai.com/geek/">极客文章</a></li>
+					<li class="active"><a href="https://www.yiibai.com/code/">示例代码</a></li>
+			</ul>
+		</div>
+		<div style="padding-top:4px;padding-bottom:4px;width:220px;float:left;margin-left:64px;line-height:22px;" id="search-form">
+		    <form action="/search" method="get">
+				<input type="text" id="kw" name="kw" style="border-radius:0px;float:left;width:134px;padding-left:6px; height: 28px;">
+				<input type="submit" id="head-sumbit" style="float:left;font-size:14px;width:48px; height: 28px;" value="搜索">
+			</form>
+		</div>
+
+		<div id="login-state" style="float:left;margin-top: 4px;"><div class="wel-login">					
+					<a href="https://www.yiibai.com/login" class="btn btn-primary">登录</a>
+				</div></div>
+		<div class="m-navbar-start">
+			<i class="fa"></i>
+		</div>
+		<div class="m-wel-start">
+			<i class="fa"></i>
+		</div>
+		<div class="m-mask"></div>
+	</div>
+</header>
+<nav id="header-nav" style="float:left;width:100%;display:none;"></nav>
+
+	<section class="container container-page clearfix" style="margin-top: 24px;">
+		<div class="pageside">
+			<div class="pagemenus">
+				<ul class="pagemenu">
+					<li class="navto-ads active">
+							
+							<a href="https://www.yiibai.com/git" style="float:left;line-height:32px;font-weight:bold;padding-bottom: 32px;padding-top: 12px;width: 100%;">
+
+							<i class="fa fa-list"></i>&nbsp;&nbsp;
+							Git教程
+							</a>						
+					</li>
+					<!--// 默认左侧文章 -->
+															<li style="">
+						<a href="https://www.yiibai.com/git/git_basic_concepts.html" title="Git基础概念" style="">
+							Git基础概念</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/getting-started-a-short-history-of-git.html" title="Git历史（简史）" style="">
+							Git历史（简史）</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/getting-started-git-basics.html" title="Git基础和原理" style="">
+							Git基础和原理</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_environment.html" title="Git安装设置" style="">
+							Git安装设置</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/getting-started-first-time-git-setup.html" title="Git使用前配置" style="">
+							Git使用前配置</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git-quick-start.html" title="Git快速入门" style="">
+							Git快速入门</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_life_cycle.html" title="Git工作流程" style="">
+							Git工作流程</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_create_repository.html" title="Git创建存储库" style="">
+							Git创建存储库</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_clone_operation.html" title="Git克隆操作" style="">
+							Git克隆操作</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_perform_changes.html" title="Git执行变更操作" style="">
+							Git执行变更操作</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_review_changes.html" title="Git查看更改" style="">
+							Git查看更改</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_commit_changes.html" title="Git提交更改" style="">
+							Git提交更改</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_push_operation.html" title="Git推送（push）操作" style="">
+							Git推送（push）操作</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_update_operation.html" title="Git更新操作" style="">
+							Git更新操作</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_stash_operation.html" title="Git隐藏(Stash)操作" style="">
+							Git隐藏(Stash)操作</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_move_operation.html" title="Git移动操作" style="">
+							Git移动操作</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_rename_operation.html" title="Git重命名操作" style="">
+							Git重命名操作</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_delete_operation.html" title="Git删除操作" style="">
+							Git删除操作</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_fix_mistakes.html" title="Git修正错误" style="">
+							Git修正错误</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_tag_operation.html" title="Git标签操作" style="">
+							Git标签操作</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_patch_operation.html" title="Git补丁操作" style="">
+							Git补丁操作</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_managing_branches.html" title="Git管理分支" style="">
+							Git管理分支</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_handling_conflicts.html" title="Git处理冲突" style="">
+							Git处理冲突</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_different_platforms.html" title="Git不同平台换行符问题" style="">
+							Git不同平台换行符问题</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_remote_operate.html" title="Git远程操作详解" style="">
+							Git远程操作详解</a>
+					</li>
+										
+
+					<!--// 有标签的文章 -->
+										<li style="font-size:16px;font-weight:bold;color:#666;"><a style="background-color: #f8f9f9;cursor:text;font-size:16px;color: #666;">Git常用命令</a></li>
+															<li style="">
+						<a href="https://www.yiibai.com/git/git_config.html" title="git config命令" style="">
+							git config命令</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_help.html" title="git help命令" style="">
+							git help命令</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_init.html" title="git init命令" style="">
+							git init命令</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_add.html" title="git add命令" style="">
+							git add命令</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_clone.html" title="git clone命令" style="">
+							git clone命令</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_status.html" title="git status命令" style="">
+							git status命令</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_diff.html" title="git diff命令" style="">
+							git diff命令</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_commit.html" title="git commit命令" style="">
+							git commit命令</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_reset.html" title="git reset命令" style="">
+							git reset命令</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_rm.html" title="git rm命令" style="">
+							git rm命令</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_mv.html" title="git mv命令" style="">
+							git mv命令</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_branch.html" title="git branch命令" style="">
+							git branch命令</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_checkout.html" title="git checkout命令" style="">
+							git checkout命令</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_merge.html" title="git merge命令" style="">
+							git merge命令</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_mergetool.html" title="git mergetool命令" style="">
+							git mergetool命令</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_log.html" title="git log命令" style="">
+							git log命令</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_stash.html" title="git stash命令" style="">
+							git stash命令</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_tag.html" title="git tag命令" style="">
+							git tag命令</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_fetch.html" title="git fetch命令" style="">
+							git fetch命令</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_pull.html" title="git pull命令" style="">
+							git pull命令</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_push.html" title="git push命令" style="">
+							git push命令</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_remote.html" title="git remote命令" style="">
+							git remote命令</a>
+					</li>
+																				<li style="border-left: 6px solid #2e82ff;font-weight: bold;">
+						<a href="#" title="当前阅读的文章" style="cursor:text;background-color: #f5f2f0;">
+							git submodule命令</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_show.html" title="git show命令" style="">
+							git show命令</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_shortlog.html" title="git shortlog命令" style="">
+							git shortlog命令</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_describe.html" title="git describe命令" style="">
+							git describe命令</a>
+					</li>
+																				<li style="">
+						<a href="https://www.yiibai.com/git/git_rebase.html" title="git rebase命令" style="">
+							git rebase命令</a>
+					</li>
+										
+					
+				</ul>
+
+			</div>
+		</div>
+
+		<div class="content" id="navs">
+
+			<header class="article-header">
+				<h1 class="article-title" style="text-align:center;">
+					git submodule命令
+				</h1>
+				<div class="article-meta" style="margin-top:20px;font-size:14px;">
+
+					<span class="item" style="margin-left:20px;">作者：
+						初生不惑</span>
+					<span style="font-weight:bold;margin-left:24px;" id="qq-group">Java技术QQ群：227270512 / Linux QQ群：479429477</span>
+				</div>
+			</header>
+			<!--// article body -->
+			<article>
+				<a name="article-start" id="article-start"></a>
+
+				<div style="padding-top: 6px;padding-bottom: 4px;float:left;width:100%;">
+					<script src="git%20submodule%E5%91%BD%E4%BB%A4%20-%20Git%E6%95%99%E7%A8%8B_files/cookie.js"></script><script src="git%20submodule%E5%91%BD%E4%BB%A4%20-%20Git%E6%95%99%E7%A8%8B_files/show_ads_impl_fy2019.js" id="google_shimpl"></script><script src="git%20submodule%E5%91%BD%E4%BB%A4%20-%20Git%E6%95%99%E7%A8%8B_files/hm.js"></script><script async="" src="git%20submodule%E5%91%BD%E4%BB%A4%20-%20Git%E6%95%99%E7%A8%8B_files/adsbygoogle.js"></script>
+					<!-- 顶部_720x90 -->
+					<ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px" data-ad-client="ca-pub-1090193214637198" data-ad-slot="9805510053" data-adsbygoogle-status="done" data-ad-status="filled"><ins id="aswift_0_expand" style="border: medium none; height: 90px; width: 728px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-table;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_0_anchor" style="border: medium none; height: 90px; width: 728px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: block;"><iframe id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;border:0;width:728px;height:90px" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" src="git%20submodule%E5%91%BD%E4%BB%A4%20-%20Git%E6%95%99%E7%A8%8B_files/ads.html" data-google-container-id="a!1" data-load-complete="true" data-google-query-id="COmpqYHllfcCFYTEFgUdhPwCLg" width="728" height="90" frameborder="0"></iframe></ins></ins></ins>
+					<script>
+						( adsbygoogle = window.adsbygoogle || []).push({});
+						</script>
+				</div>
+
+				<div style="float:left;width:100%;heigh:30px;padding-bottom:10px;padding-top:3px;display:none;" id="adv_730x80"></div>
+
+				<div style="width:100%;float:left;" class="article-content">
+
+					<input type="hidden" name="article_id" id="article_id" value="10961">
+					<input type="hidden" name="catid" id="catid" value="0">
+
+					<p><code>git submodule</code>命令用于初始化，更新或检查子模块。</p>
+<p><strong>使用语法</strong></p>
+<pre class="language-shell code-toolbar"><code class=" language-shell">git submodule [--quiet] add [&lt;options&gt;] [--] &lt;repository&gt; [&lt;path&gt;]
+git submodule [--quiet] status [--cached] [--recursive] [--] [&lt;path&gt;…​]
+git submodule [--quiet] init [--] [&lt;path&gt;…​]
+git submodule [--quiet] deinit [-f|--force] (--all|[--] &lt;path&gt;…​)
+git submodule [--quiet] update [&lt;options&gt;] [--] [&lt;path&gt;…​]
+git submodule [--quiet] summary [&lt;options&gt;] [--] [&lt;path&gt;…​]
+git submodule [--quiet] foreach [--recursive] &lt;command&gt;
+git submodule [--quiet] sync [--recursive] [--] [&lt;path&gt;…​]
+git submodule [--quiet] absorbgitdirs [--] [&lt;path&gt;…​]
+</code><div class="toolbar"><div class="toolbar-item"><span>Shell</span></div></div></pre>
+<h2 id="h2-u4F7Fu7528u573Au666F"><a name="使用场景" class="reference-link"></a><span class="header-link octicon octicon-link"></span>使用场景</h2><p>基于公司的项目会越来越多，常常需要提取一个公共的类库提供给多个项目使用，但是这个library怎么和git在一起方便管理呢？</p>
+<p>我们需要解决下面几个问题：</p>
+<ul>
+<li>如何在git项目中导入library库?</li><li>library库在其他的项目中被修改了可以更新到远程的代码库中?</li><li>其他项目如何获取到library库最新的提交?</li><li>如何在clone的时候能够自动导入library库?</li></ul>
+<p>解决以上问题，可以考虑使用git的 submodule 来解决。</p>
+<h2 id="h2-submodule-"><a name="submodule是什么?" class="reference-link"></a><span class="header-link octicon octicon-link"></span>submodule是什么?</h2><p><code>git submodule</code> 是一个很好的多项目使用共同类库的工具，它允许类库项目做为repository,子项目做为一个单独的git项目存在父项目中，子项目可以有自己的独立的<code>commit</code>，<code>push</code>，<code>pull</code>。而父项目以Submodule的形式包含子项目，父项目可以指定子项目header，父项目中会的提交信息包含Submodule的信息，再clone父项目的时候可以把Submodule初始化。</p>
+<h2 id="h2-u793Au4F8B"><a name="示例" class="reference-link"></a><span class="header-link octicon octicon-link"></span>示例</h2><p>以下是一些示例 -</p>
+<p><strong>1.添加子模块</strong></p>
+<p>在本例中，我们将会添加一个名为 “DbConnector” 的库。</p>
+<pre class="language-shell code-toolbar"><code class=" language-shell">$ git submodule add http://github.com/chaconinc/DbConnector
+Cloning into 'DbConnector'...
+remote: Counting objects: 11, done.
+remote: Compressing objects: 100% (10/10), done.
+remote: Total 11 (delta 0), reused 11 (delta 0)
+Unpacking objects: 100% (11/11), done.
+Checking connectivity... done.
+</code><div class="toolbar"><div class="toolbar-item"><span>Shell</span></div></div></pre>
+<p>默认情况下，子模块会将子项目放到一个与仓库同名的目录中，本例中是 “DbConnector”。 如果你想要放到其他地方，那么可以在命令结尾添加一个不同的路径。</p>
+<p>如果这时运行 <code>git status</code>，你会注意到几个东西。</p>
+<pre class="language-shell code-toolbar"><code class=" language-shell">$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD &lt;file&gt;..." to unstage)
+
+    new file:   .gitmodules
+    new file:   DbConnector
+</code><div class="toolbar"><div class="toolbar-item"><span>Shell</span></div></div></pre>
+<p>首先应当注意到新的 <code>.gitmodules</code> 文件。 该置文件保存了项目 URL 与已经拉取的本地目录之间的映射：</p>
+<pre class="language-shell code-toolbar"><code class=" language-shell">$ cat .gitmodules
+[submodule "DbConnector"]
+    path = DbConnector
+    url = http://github.com/chaconinc/DbConnector
+</code><div class="toolbar"><div class="toolbar-item"><span>Shell</span></div></div></pre>
+<p>如果有多个子模块，该文件中就会有多条记录。 要重点注意的是，该文件也像 <code>.gitignore</code> 文件一样受到(通过)版本控制。 它会和该项目的其他部分一同被拉取推送。 这就是克隆该项目的人知道去哪获得子模块的原因。</p>
+<p>在 <code>git status</code> 输出中列出的另一个是项目文件夹记录。 如果你运行 <code>git diff</code>，会看到类似下面的信息：</p>
+<pre class="language-shell code-toolbar"><code class=" language-shell">$ git diff --cached DbConnector
+diff --git a/DbConnector b/DbConnector
+new file mode 160000
+index 0000000..c3f01dc
+--- /dev/null
++++ b/DbConnector
+@@ -0,0 +1 @@
++Subproject commit c3f01dc8862123d317dd46284b05b6892c7b29bc
+</code><div class="toolbar"><div class="toolbar-item"><span>Shell</span></div></div></pre>
+<p>虽然 <em>DbConnector</em> 是工作目录中的一个子目录，但 Git 还是会将它视作一个子模块。当你不在那个目录中时，Git 并不会跟踪它的内容， 而是将它看作该仓库中的一个特殊提交。</p>
+<p>如果你想看到更漂亮的差异输出，可以给 <code>git diff</code> 传递 <code>--submodule</code> 选项。</p>
+<pre class="language-shell code-toolbar"><code class=" language-shell">$ git diff --cached --submodule
+diff --git a/.gitmodules b/.gitmodules
+new file mode 100644
+index 0000000..71fc376
+--- /dev/null
++++ b/.gitmodules
+@@ -0,0 +1,3 @@
++[submodule "DbConnector"]
++       path = DbConnector
++       url = http://github.com/chaconinc/DbConnector
+Submodule DbConnector 0000000...c3f01dc (new submodule)
+</code><div class="toolbar"><div class="toolbar-item"><span>Shell</span></div></div></pre>
+<p><strong>2.克隆含有子模块的项目</strong></p>
+<p>接下来我们将会克隆一个含有子模块的项目。 当你在克隆这样的项目时，默认会包含该子模块目录，但其中还没有任何文件：</p>
+<pre class="language-shell code-toolbar"><code class=" language-shell">$ git clone http://github.com/chaconinc/MainProject
+Cloning into 'MainProject'...
+remote: Counting objects: 14, done.
+remote: Compressing objects: 100% (13/13), done.
+remote: Total 14 (delta 1), reused 13 (delta 0)
+Unpacking objects: 100% (14/14), done.
+Checking connectivity... done.
+$ cd MainProject
+$ ls -la
+total 16
+drwxr-xr-x   9 schacon  staff  306 Sep 17 15:21 .
+drwxr-xr-x   7 schacon  staff  238 Sep 17 15:21 ..
+drwxr-xr-x  13 schacon  staff  442 Sep 17 15:21 .git
+-rw-r--r--   1 schacon  staff   92 Sep 17 15:21 .gitmodules
+drwxr-xr-x   2 schacon  staff   68 Sep 17 15:21 DbConnector
+-rw-r--r--   1 schacon  staff  756 Sep 17 15:21 Makefile
+drwxr-xr-x   3 schacon  staff  102 Sep 17 15:21 includes
+drwxr-xr-x   4 schacon  staff  136 Sep 17 15:21 scripts
+drwxr-xr-x   4 schacon  staff  136 Sep 17 15:21 src
+$ cd DbConnector/
+$ ls
+$
+</code><div class="toolbar"><div class="toolbar-item"><span>Shell</span></div></div></pre>
+<p>其中有 DbConnector 目录，不过是空的。 你必须运行两个命令：git submodule init 用来初始化本地配置文件，而 <code>git submodule update</code> 则从该项目中抓取所有数据并检出父项目中列出的合适的提交。</p>
+<pre class="language-shell code-toolbar"><code class=" language-shell">$ git submodule init
+Submodule 'DbConnector' (http://github.com/chaconinc/DbConnector) registered for path 'DbConnector'
+$ git submodule update
+Cloning into 'DbConnector'...
+remote: Counting objects: 11, done.
+remote: Compressing objects: 100% (10/10), done.
+remote: Total 11 (delta 0), reused 11 (delta 0)
+Unpacking objects: 100% (11/11), done.
+Checking connectivity... done.
+Submodule path 'DbConnector': checked out 'c3f01dc8862123d317dd46284b05b6892c7b29bc'
+</code><div class="toolbar"><div class="toolbar-item"><span>Shell</span></div></div></pre>
+<p>现在 <em>DbConnector</em> 子目录是处在和之前提交时相同的状态了。</p>
+<p>不过还有更简单一点的方式。 如果给 <code>git clone</code> 命令传递 <code>--recursive</code> 选项，它就会自动初始化并更新仓库中的每一个子模块。</p>
+<pre class="language-shell code-toolbar"><code class=" language-shell">$ git clone --recursive http://github.com/chaconinc/MainProject
+Cloning into 'MainProject'...
+remote: Counting objects: 14, done.
+remote: Compressing objects: 100% (13/13), done.
+remote: Total 14 (delta 1), reused 13 (delta 0)
+Unpacking objects: 100% (14/14), done.
+Checking connectivity... done.
+Submodule 'DbConnector' (http://github.com/chaconinc/DbConnector) registered for path 'DbConnector'
+Cloning into 'DbConnector'...
+remote: Counting objects: 11, done.
+remote: Compressing objects: 100% (10/10), done.
+remote: Total 11 (delta 0), reused 11 (delta 0)
+Unpacking objects: 100% (11/11), done.
+Checking connectivity... done.
+Submodule path 'DbConnector': checked out 'c3f01dc8862123d317dd46284b05b6892c7b29bc'
+</code><div class="toolbar"><div class="toolbar-item"><span>Shell</span></div></div></pre>
+<p><strong>3. 删除Submodule</strong></p>
+<p>git 并不支持直接删除Submodule需要手动删除对应的文件:</p>
+<pre class="language-shell code-toolbar"><code class=" language-shell">cd pod-project
+
+git rm --cached pod-library
+rm -rf pod-library
+rm .gitmodules
+更改git的配置文件config:
+vim .git/config
+</code><div class="toolbar"><div class="toolbar-item"><span>Shell</span></div></div></pre>
+<p>可以看到Submodule的配置信息：</p>
+<pre class="language-shell code-toolbar"><code class=" language-shell">[submodule "pod-library"]
+  url = git@github.com:jjz/pod-library.git
+</code><div class="toolbar"><div class="toolbar-item"><span>Shell</span></div></div></pre>
+<p>删除submodule相关的内容,然后提交到远程服务器:</p>
+<pre class="language-shell code-toolbar"><code class=" language-shell">git commit -a -m 'remove pod-library submodule'
+</code><div class="toolbar"><div class="toolbar-item"><span>Shell</span></div></div></pre>
+
+					<br>
+										<p style="text-align:center;float:left;width:100%;margin-top:24px;margin-bottom:18px;">
+							<button class="layui-btn layui-btn-danger" id="btn-reward"> ¥ 我要打赏 </button>&nbsp;&nbsp;
+							<button class="layui-btn" id="article-perfect">
+								<i class="layui-icon layui-icon-edit"></i>纠错/补充
+							</button>
+							<button class="layui-btn layui-btn-normal" id="action-collection">
+								<i class="layui-icon layui-icon-rate"></i>收藏
+							</button>
+					</p>
+					
+					<div style="width:100%;margin-bottom: 16px; min-height: 180px;margin-top:18px;float:left;">
+
+						<span style="float:left;">上一篇：<a href="https://www.yiibai.com/git/git_remote.html#article-start" title="git remote命令"><i class="layui-icon"></i>
+								git remote命令</a></span>
+												<span style="float:right;">下一篇：<a href="https://www.yiibai.com/git/git_show.html#article-start" style="float:right;" title="下一篇：git show命令"><i class="layui-icon"></i>
+								git show命令</a></span>
+												<div id="googlead" style="float:left;margin-top:8px;">
+							<script async="" src="git%20submodule%E5%91%BD%E4%BB%A4%20-%20Git%E6%95%99%E7%A8%8B_files/adsbygoogle.js"></script>
+							<!-- yiibai下方 -->
+							<ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px" data-ad-client="ca-pub-1090193214637198" data-ad-slot="6494738921" data-adsbygoogle-status="done"><ins id="aswift_1_expand" style="border: medium none; height: 90px; width: 728px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-table;"><ins id="aswift_1_anchor" style="border: medium none; height: 90px; width: 728px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: block;"></ins></ins></ins>
+							<script>
+								(adsbygoogle = window.adsbygoogle || []).push({});
+							</script>
+						</div>
+						
+						
+					</div>
+					
+
+					<div style="width:100%;margin-top:18px;float:left;">
+
+	<h4 style="color: #f57e42;padding-top:6px;padding-bottom: 4px;float: left;width: 100%;margin-bottom:12px;">加QQ群啦，易百教程官方技术学习群</h4>
+	<blockquote style="width:100%;float:left;margin-bottom:6px;padding-bottom:4px;">
+		注意：建议每个人选自己的技术方向加群，同一个QQ最多限加 3 个群。
+	</blockquote>
+	<ul style="width:100%;float:left;" id="qqgroup-list"><li><b>Java技术群：</b> 227270512 （人数：<span style="color:red;">3000</span>）</li><li><b>Go开发者群（新）：</b> 851549018 （人数：2000）</li><li><b>PHP开发者群：</b> 460153241 （人数：2000）</li><li><b>MySQL/SQL群：</b> 418407075 （人数：2000）</li><li><b>大数据开发群：</b> 655154550 （人数：2000）</li><li><b>Python技术群：</b> 287904175 （人数：2000）</li><li><b>人工智能深度学习：</b> 456236082 （人数：2000）</li><li><b>测试工程师群：</b> 415553199 （人数：2000）</li><li><b>前端开发者群：</b> 410430016 （人数：2000）</li><li><b>C/C++技术群(新)：</b> 629264796 （人数：2000）</li><li><b>Node.js技术群(新)：</b> 621549808 （人数：2000）</li><li><b>PostgreSQL数据库群：</b> 539504187 （人数：2000）</li><li><b>Linux运维技术群：</b> 479429477 （人数：2000）</li><li><b>Oracle数据库：</b> 175248146 （人数：2000）</li><li><b>C#/ASP.Net开发者：</b> 630493968 （免费，人数：2000）</li><li><b>数据分析师群：</b> 397883996 （人数：2000）</li></ul>
+</div>
+				</div>
+
+				<!--// google adv -->
+				<div style="width:100%;float:left;">
+					<script async="" src="git%20submodule%E5%91%BD%E4%BB%A4%20-%20Git%E6%95%99%E7%A8%8B_files/adsbygoogle.js"></script>
+					<ins class="adsbygoogle" style="display: block; height: 430px;" data-ad-format="autorelaxed" data-ad-client="ca-pub-1090193214637198" data-ad-slot="1254304051" data-adsbygoogle-status="done"><ins id="aswift_2_expand" style="border: medium none; height: 430px; width: 718px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-table;"><ins id="aswift_2_anchor" style="border: medium none; height: 430px; width: 718px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: block;"></ins></ins></ins>
+					<script>
+						(adsbygoogle = window.adsbygoogle || []).push({});
+					</script>
+				</div>
+
+			</article>
+		</div>
+		<!--//end content-->
+
+		<div class="page-right">
+
+			<div class="item" style="height:260px;">
+
+				<script async="" src="git%20submodule%E5%91%BD%E4%BB%A4%20-%20Git%E6%95%99%E7%A8%8B_files/adsbygoogle.js"></script>
+				<!-- GoogleAdv-300x250 -->
+				<ins class="adsbygoogle" style="display:inline-block;width:300px;height:250px" data-ad-client="ca-pub-1090193214637198" data-ad-slot="9485766451" data-adsbygoogle-status="done" data-ad-status="filled"><ins id="aswift_3_expand" style="border: medium none; height: 250px; width: 300px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-table;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_3_anchor" style="border: medium none; height: 250px; width: 300px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: block;"><iframe id="aswift_3" name="aswift_3" style="left:0;position:absolute;top:0;border:0;width:300px;height:250px" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" src="git%20submodule%E5%91%BD%E4%BB%A4%20-%20Git%E6%95%99%E7%A8%8B_files/ads.html" data-google-container-id="a!4" data-load-complete="true" data-google-query-id="CLnUqYHllfcCFYGylgodtwsNnQ" width="300" height="250" frameborder="0"></iframe></ins></ins></ins>
+				<script>
+					(adsbygoogle = window.adsbygoogle || []).push({});
+				</script>
+			</div>
+
+			<div class="item" id="adv-c2" style="display:none;">
+				<!--// Adv C2 -->
+			</div>
+
+			<div class="item" style="height:610px;">
+
+				<script async="" src="git%20submodule%E5%91%BD%E4%BB%A4%20-%20Git%E6%95%99%E7%A8%8B_files/adsbygoogle.js"></script>
+				<!-- Right-300x600 -->
+				<ins class="adsbygoogle" style="display:inline-block;width:300px;height:600px" data-ad-client="ca-pub-1090193214637198" data-ad-slot="9448740452" data-adsbygoogle-status="done" data-ad-status="filled"><ins id="aswift_4_expand" style="border: medium none; height: 600px; width: 300px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-table;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_4_anchor" style="border: medium none; height: 600px; width: 300px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: block;"><iframe id="aswift_4" name="aswift_4" style="left:0;position:absolute;top:0;border:0;width:300px;height:600px" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" src="git%20submodule%E5%91%BD%E4%BB%A4%20-%20Git%E6%95%99%E7%A8%8B_files/ads.html" data-google-container-id="a!5" data-load-complete="true" data-google-query-id="CK35qYHllfcCFcTDlgodtSMNvQ" width="300" height="600" frameborder="0"></iframe></ins></ins></ins>
+				<script>
+					(adsbygoogle = window.adsbygoogle || []).push({});
+				</script>
+			</div>
+			
+		</div>
+		<!--//end page-right -->
+
+	</section>
+
+	<style>
+
+</style>
+<footer class="footer" style="width:100%;float:left;width: 100%;margin-top: 30px;">
+	<div class="container" id="yiiba-bottom">
+		<div class="ybm-block">
+			<div class="ybm cf">
+				<dl>
+					<dt>
+						推荐/最新教程
+					</dt>
+										<dd>
+						·<a href="https://www.yiibai.com/bash/" title="Bash Shell教程" target="_blank">Bash Shell教程</a>
+					</dd>
+										<dd>
+						·<a href="https://www.yiibai.com/elt/" title="ELT测试教程" target="_blank">ELT测试教程</a>
+					</dd>
+										<dd>
+						·<a href="https://www.yiibai.com/tableau/" title="Tableau教程" target="_blank">Tableau教程</a>
+					</dd>
+										<dd>
+						·<a href="https://www.yiibai.com/jira/" title="JIRA教程" target="_blank">JIRA教程</a>
+					</dd>
+										<dd>
+						·<a href="https://www.yiibai.com/agile/" title="敏捷开发（Agile）教程" target="_blank">敏捷开发（Agile）教程...</a>
+					</dd>
+										<dd>
+						·<a href="https://www.yiibai.com/ajax/" title="Ajax教程" target="_blank">Ajax教程</a>
+					</dd>
+										<dd>
+						·<a href="https://www.yiibai.com/ethical_hacking/" title="渗透测试(道德黑客)教程" target="_blank">渗透测试(道德黑客)教程...</a>
+					</dd>
+										<dd>
+						·<a href="https://www.yiibai.com/security_testing/" title="安全测试教程" target="_blank">安全测试教程</a>
+					</dd>
+					
+				</dl>
+				<dl>
+					<dt>
+						最新更新
+					</dt>
+										<dd>
+						·<a target="_blank" href="https://www.yiibai.com/bash/bash-sleep.html" title="Bash休眠（sleep命令）">Bash休眠（sleep命令）...</a>
+					</dd>
+										<dd>
+						·<a target="_blank" href="https://www.yiibai.com/bash/bash-date-format.html" title="Bash日期格式化">Bash日期格式化</a>
+					</dd>
+										<dd>
+						·<a target="_blank" href="https://www.yiibai.com/bash/bash-read-user-input.html" title="Bash读取用户输入">Bash读取用户输入...</a>
+					</dd>
+										<dd>
+						·<a target="_blank" href="https://www.yiibai.com/bash/bash-variables.html" title="Bash变量">Bash变量</a>
+					</dd>
+										<dd>
+						·<a target="_blank" href="https://www.yiibai.com/bash/quotes-in-bash.html" title="Bash引号">Bash引号</a>
+					</dd>
+										<dd>
+						·<a target="_blank" href="https://www.yiibai.com/bash/bash-comments.html" title="Bash注释">Bash注释</a>
+					</dd>
+										<dd>
+						·<a target="_blank" href="https://www.yiibai.com/bash/bash-relative-vs-absolute-path.html" title="相对路径与绝对路径">相对路径与绝对路径...</a>
+					</dd>
+										<dd>
+						·<a target="_blank" href="https://www.yiibai.com/bash/hello-world-bash-script.html" title="Bash入门程序">Bash入门程序</a>
+					</dd>
+					
+				</dl>
+
+				<dl>
+
+					<dt>
+						站点信息
+					</dt>
+					<dd>
+						· <a target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&amp;email=IBcWGRcSGBYYE2BRUQ5DT00" rel="external nofollow">意见反馈</a>
+					</dd>
+					<dd>
+						· <a target="_blank" href="https://www.yiibai.com/disclaimer.html">免责声明</a>
+					</dd>
+					<dd>
+						· <a target="_blank" href="https://www.yiibai.com/about_us.html">关于我们</a>
+					</dd>
+					<dd>
+						· <a target="_blank" href="https://www.yiibai.com/reward.html#to-qcode">关于捐助</a>
+					</dd>
+					<dd>
+						· <a target="_blank" href="https://www.yiibai.com/siteinfo/download.html" style="color:#e74851;">所有实例代码下载</a>
+					</dd>
+				</dl>
+
+				<dl>
+					<dt>
+						易百教程官方QQ群
+					</dt>
+					<dd>
+						JAVA技术：227270512
+					</dd>
+					<dd>
+						MySQL数据库：418407075
+					</dd>
+					<dd>
+						Python技术： 287904175
+					</dd>
+					<dd>
+						大数据开发： 655154550
+					</dd>
+					<dd>
+						Linux技术： 479429477
+					</dd>
+					<dd>
+						PHP/Web技术： 460153241
+					</dd>
+
+				</dl>
+
+				<div class="search-share">
+					<div class="app-download">
+						<div>
+							<strong>关注微信公众号</strong>
+						</div>
+					</div>
+					<div class="share">
+						<img src="git%20submodule%E5%91%BD%E4%BB%A4%20-%20Git%E6%95%99%E7%A8%8B_files/qrcode.jpg" width="150" height="150">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
+
+<div id="footer-copyright" style="width: 100%;float:left;text-align: center;">
+	Copyright © 2012-2019<strong><a href="https://www.yiibai.com/" target="_blank">易百教程</a></strong>&nbsp; <strong> 
+		<a href="https://www.yiibai.com/" target="_blank">yiibai.com</a></strong> All Rights Reserved. 备案号：<a href="http://www.miitbeian.gov.cn/">琼ICP备13001417号-3</a>  联系QQ：769728683 &nbsp;&nbsp;
+
+	<script>
+		var _hmt = _hmt || [];
+		(function() {
+			var hm = document.createElement("script");
+			hm.src = "https://hm.baidu.com/hm.js?424e222704e2274e37a8169110e6e00a";
+			var s = document.getElementsByTagName("script")[0];
+			s.parentNode.insertBefore(hm, s);
+		})();
+	</script>
+
+</div>
+
+<div class="fixed-btn">
+	<a class="to-top" onclick="backTop();" href="#backTop" title="返回顶部"> <i class="fa fa-angle-up"></i></a>
+
+	<a class="qrcode" href="javascript:;" title="关注我们"><i class="fa fa-qrcode"></i></a>
+
+	<a class="writer" target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&amp;email=IBcWGRcSGBYYE2BRUQ5DT00" style="font-size: 12px;" title="问题反馈"><i class="fa fa-envelope-o" style="font-size: 20px;"></i></a>
+	<!-- qrcode modal -->
+
+	<div id="bottom-qrcode" class="modal fade in" style="display: none;">
+		<h4>微信关注</h4>
+		<div class="panel-body">
+			<img alt="微信关注" src="git%20submodule%E5%91%BD%E4%BB%A4%20-%20Git%E6%95%99%E7%A8%8B_files/qrcode.jpg" width="128" height="128">
+		</div>
+	</div>
+</div>
+
+<script src="git%20submodule%E5%91%BD%E4%BB%A4%20-%20Git%E6%95%99%E7%A8%8B_files/jquery.js"></script>
+<script src="git%20submodule%E5%91%BD%E4%BB%A4%20-%20Git%E6%95%99%E7%A8%8B_files/prism.js"></script>
+<script src="git%20submodule%E5%91%BD%E4%BB%A4%20-%20Git%E6%95%99%E7%A8%8B_files/layer.js"></script>
+<script src="git%20submodule%E5%91%BD%E4%BB%A4%20-%20Git%E6%95%99%E7%A8%8B_files/main.js"></script>
+<script>
+	$("#btn-reward").on('click', function() {
+		layer.open({
+			type : 2,
+			title : "请扫描以下二维码支付打赏",
+			area : ['56%', '70%'],
+			shade : 0.4,
+			closeBtn : 1,
+			shadeClose : true,
+			content : '/static/images/reward.png'
+		});
+
+	});
+	
+	
+	</script>
+	
+
+<script>
+
+	function Strlen(str){
+		var len = 0;
+		for (var i=0; i<str.length; i++) { 
+		 var c = str.charCodeAt(i); 
+		//单字节加1 
+		 if ((c >= 0x0001 && c <= 0x007e) || (0xff60<=c && c<=0xff9f)) { 
+		   len++; 
+		 } 
+		 else { 
+		  len+=2; 
+		 } 
+		} 
+		return len;
+	}
+
+    /**/
+    function setClipboardText(event){
+        event.preventDefault();
+        var node = document.createElement('div');
+        node.appendChild(window.getSelection().getRangeAt(0).cloneContents());
+		var url = document.location.href;
+		var htmlData = node.innerHTML;
+        var textData = window.getSelection().getRangeAt(0);
+
+		if(Strlen(node.innerHTML)>120){
+			htmlData = '<div>'+ node.innerHTML
+            + '//原文出自【易百教程】，商业转载请联系作者获得授权，非商业转载请保留原文链接：'+url+'\n\n<br /><br /></div>';
+
+			textData = window.getSelection().getRangeAt(0) + '//原文出自【易百教程】，商业转载请联系作者获得授权，非商业请保留原文链接：'+url+'\n\n';
+		}
+        
+        if(event.clipboardData){
+            event.clipboardData.setData("text/html", htmlData);
+            //setData(剪贴板格式, 数据) 给剪贴板赋予指定格式的数据。返回 true 表示操作成功。
+            event.clipboardData.setData("text/plain",textData);
+        }else if(window.clipboardData){ //
+            return window.clipboardData.setData("text", textData);
+        }
+    };
+ 
+    document.addEventListener('copy',function(e){
+        setClipboardText(e);
+    });
+
+	$("#article-perfect").click(function(){
+		var aid = $('#article_id').val();
+		layer.open({
+			title : '修改报名表单项',
+			type : 2,
+			area : ['80%', '620px'],
+			fixed : true, // 不固定
+			maxmin : true,
+			skin : 'layui-layer-rim',
+			content : '/article/perfect/'+aid
+		});
+	})
+</script>
+
+
+<ins class="adsbygoogle adsbygoogle-noablate" style="display: none !important;" data-adsbygoogle-status="done" data-ad-status="unfilled"><ins id="aswift_5_expand" style="border: medium none; height: 0px; width: 0px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-table;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_5_anchor" style="border: medium none; height: 0px; width: 0px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: block;"><iframe id="aswift_5" name="aswift_5" style="left:0;position:absolute;top:0;border:0;width:undefinedpx;height:undefinedpx" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" src="git%20submodule%E5%91%BD%E4%BB%A4%20-%20Git%E6%95%99%E7%A8%8B_files/ads_004.html" data-google-container-id="a!6" data-load-complete="true" frameborder="0"></iframe></ins></ins></ins><ins class="adsbygoogle adsbygoogle-noablate" data-adsbygoogle-status="done" style="display: block; width: 1281px !important; height: 129px !important; bottom: 0px; clear: none !important; float: none !important; left: 0px; margin: 0px !important; max-height: none !important; max-width: none !important; opacity: 1; overflow: visible !important; padding: 0px !important; position: fixed; right: auto !important; top: auto !important; vertical-align: baseline !important; visibility: visible !important; z-index: 2147483647; background: rgb(250, 250, 250) none repeat scroll 0% 0% !important;" data-anchor-status="displayed" data-ad-status="filled" data-anchor-shown="true"><ins style="inset: auto !important; clear: none !important; display: block !important; float: none !important; height: 5px !important; margin: 0px !important; max-height: none !important; max-width: none !important; opacity: 1 !important; overflow: visible !important; padding: 0px !important; position: relative !important; vertical-align: baseline !important; visibility: visible !important; width: auto !important; z-index: 1 !important; background-color: rgb(250, 250, 250) !important; box-shadow: rgba(0, 0, 0, 0.2) 0px -1px 5px -1px, rgba(0, 0, 0, 0.1) 0px 1px 2px -1px !important;" class="ee"><span style="display: block !important; width: 80px !important; height: 45px !important; bottom: 0px !important; left: 0% !important; pointer-events: none !important;"><svg style="margin: 0px !important; position: absolute !important; bottom: 0px !important; left: 0% !important; display: block !important; width: 80px !important; height: 30px !important; transform: none !important; pointer-events: initial !important;"><defs><filter id="dropShadowTop" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feComponentTransfer in="SourceAlpha" result="TransferredAlpha"><feFuncR type="discrete" tableValues="0.5"></feFuncR><feFuncG type="discrete" tableValues="0.5"></feFuncG><feFuncB type="discrete" tableValues="0.5"></feFuncB></feComponentTransfer><feGaussianBlur in="TransferredAlpha" stdDeviation="2"></feGaussianBlur><feOffset dx="0" dy="0" result="offsetblur"></feOffset><feMerge><feMergeNode></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge></filter></defs><path d="M0,26 L0,6 A6,6 0 0,1 6,1 L50,1 A6,6 0 0,1 56,6 L56,20 A6,6 0 0,0 62,26 Z" stroke="#FAFAFA" stroke-width="1" fill="#FAFAFA" style="filter: url(&quot;#dropShadowTop&quot;);"></path><rect x="0" y="25" width="80" height="5" style="fill: rgb(250, 250, 250);"></rect><g class="down" stroke="#616161" stroke-width="2px" stroke-linecap="square"><line x1="22" y1="12" x2="28" y2="18"></line><line x1="28" y1="18" x2="34" y2="12"></line></g></svg></span></ins><ins id="aswift_7_expand" style="border: medium none !important; height: 124px !important; width: 100% !important; margin: 0px !important; padding: 0px !important; position: relative !important; visibility: visible !important; background-color: transparent !important; display: inline-table !important; inset: auto !important; clear: none !important; float: none !important; max-height: none !important; max-width: none !important; opacity: 1 !important; overflow: visible !important; vertical-align: baseline !important; z-index: auto !important;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_7_anchor" style="border: medium none !important; height: 124px !important; width: 100% !important; margin: 0px !important; padding: 0px !important; position: relative !important; visibility: visible !important; background-color: transparent !important; display: block !important; inset: auto !important; clear: none !important; float: none !important; max-height: none !important; max-width: none !important; opacity: 1 !important; overflow: visible !important; vertical-align: baseline !important; z-index: auto !important;"><iframe id="aswift_7" name="aswift_7" style="width: 1005px !important; height: 124px !important; display: block; margin: 0px auto;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" src="git%20submodule%E5%91%BD%E4%BB%A4%20-%20Git%E6%95%99%E7%A8%8B_files/zrt_lookup.html" data-google-container-id="a!8" data-load-complete="true" data-google-query-id="CJ6AqoHllfcCFYfDFgUd68cLRw" width="1005" height="124" frameborder="0"></iframe></ins></ins></ins><iframe src="https://www.google.com/recaptcha/api2/aframe" style="display: none;" width="0" height="0"></iframe></body><iframe id="google_esf" name="google_esf" src="git%20submodule%E5%91%BD%E4%BB%A4%20-%20Git%E6%95%99%E7%A8%8B_files/zrt_lookup_002.html" style="display: none;"></iframe><ins class="adsbygoogle adsbygoogle-noablate" style="display: none !important; width: 100vw !important; height: 100vh !important; inset: 0px auto auto 0px !important; clear: none !important; float: none !important; margin: 0px !important; max-height: none !important; max-width: none !important; opacity: 1 !important; overflow: visible !important; padding: 0px !important; position: fixed !important; vertical-align: baseline !important; visibility: visible !important; z-index: 2147483647 !important; background: transparent none repeat scroll 0% 0% !important;" data-adsbygoogle-status="done" aria-hidden="true" data-ad-status="filled" data-vignette-loaded="true"><ins id="aswift_6_expand" style="border: medium none !important; height: 100vh !important; width: 100vw !important; margin: 0px !important; padding: 0px !important; position: relative !important; visibility: visible !important; background-color: transparent !important; display: inline-table !important; inset: auto !important; clear: none !important; float: none !important; max-height: none !important; max-width: none !important; opacity: 1 !important; overflow: visible !important; vertical-align: baseline !important; z-index: auto !important;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_6_anchor" style="border: medium none !important; height: 100vh !important; width: 100vw !important; margin: 0px !important; padding: 0px !important; position: relative !important; visibility: visible !important; background-color: transparent !important; display: block !important; inset: auto !important; clear: none !important; float: none !important; max-height: none !important; max-width: none !important; opacity: 1 !important; overflow: visible !important; vertical-align: baseline !important; z-index: auto !important;"><iframe id="aswift_6" name="aswift_6" style="width: 100vw !important; height: 100vh !important; inset: 0px auto auto 0px !important; position: absolute !important; clear: none !important; display: inline !important; float: none !important; margin: 0px !important; max-height: none !important; max-width: none !important; opacity: 1 !important; overflow: visible !important; padding: 0px !important; vertical-align: baseline !important; visibility: visible !important; z-index: auto !important;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" src="git%20submodule%E5%91%BD%E4%BB%A4%20-%20Git%E6%95%99%E7%A8%8B_files/zrt_lookup_003.html" data-google-container-id="a!7" data-load-complete="true" data-google-query-id="CJ2AqoHllfcCFYfDFgUd68cLRw" width="" height="" frameborder="0"></iframe></ins></ins></ins></html>
