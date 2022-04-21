@@ -1,0 +1,31 @@
+#home {
+    margin: 0 auto;
+    width: 90%;
+    min-width: 950px;
+    background-color: #fff;
+    padding: 30px;
+    margin-top: 30px;
+    margin-bottom: 50px;
+    box-shadow: 0 2px 6px rgba(100, 100, 100, 0.3);
+}
+#blogTitle h1 {
+    font-size: 40px;
+    font-weight: bold;
+    line-height: 1.5em;
+    margin-top: 5px;
+}
+#header {
+    padding-bottom: 5px;
+    margin-top: 5px;
+}
+
+.catListTitle {
+    font-size: 2.5em;
+    margin-top: 20px;
+    margin-bottom: 10.5px;
+    border-left:10px solid #CCCC33;
+    padding: 10px 0 10px 14px;
+    background-color: #f2f2f2;
+}
+
+body{background-image:url('https://github.com/zhanwen/wms/blob/master/crazy.jpg')}
