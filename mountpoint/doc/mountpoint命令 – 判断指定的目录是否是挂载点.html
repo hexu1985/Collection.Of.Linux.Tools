@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="format-detection" content="telephone=no">
+<meta name="keywords"  content="linuxcool,Linux,Linux系统,Linux命令,Linux命令大全,Linux常用命令,shell，shell脚本,shell脚本学习,Linux命令查询,Linux命令用法详解,Linux命令实例。">
+<title>mountpoint命令 – 判断指定的目录是否是挂载点 – Linux命令大全(手册)</title>
+<meta name="robots" content="max-image-preview:large">
+<meta name="description" content="mountpoint命令用来判断指定的目录是否是加载点，如果是挂载点返回0，如果不是就返回非0。设备总是挂载在某个指定的目录下，所以就可以使用mountpoint这条命令来确认某个目录是否“临时性”的被文件系统占用。语法格式">
+<link rel="dns-prefetch" href="https://fonts.googleapis.com/">
+<link rel="dns-prefetch" href="https://s.w.org/">
+<link rel="alternate" type="application/rss+xml" title="Linux命令大全(手册) » Feed" href="https://www.linuxcool.com/feed">
+<link rel="alternate" type="application/rss+xml" title="Linux命令大全(手册) » 评论Feed" href="https://www.linuxcool.com/comments/feed">
+<script src="mountpoint%E5%91%BD%E4%BB%A4%20%E2%80%93%20%E5%88%A4%E6%96%AD%E6%8C%87%E5%AE%9A%E7%9A%84%E7%9B%AE%E5%BD%95%E6%98%AF%E5%90%A6%E6%98%AF%E6%8C%82%E8%BD%BD%E7%82%B9_files/push.js"></script><script src="mountpoint%E5%91%BD%E4%BB%A4%20%E2%80%93%20%E5%88%A4%E6%96%AD%E6%8C%87%E5%AE%9A%E7%9A%84%E7%9B%AE%E5%BD%95%E6%98%AF%E5%90%A6%E6%98%AF%E6%8C%82%E8%BD%BD%E7%82%B9_files/hm.js"></script><script type="text/javascript">
+window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/13.1.0\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/13.1.0\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/www.linuxcool.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=5.9.3"}};
+/*! This file is auto-generated */
+!function(e,a,t){var n,r,o,i=a.createElement("canvas"),p=i.getContext&&i.getContext("2d");function s(e,t){var a=String.fromCharCode;p.clearRect(0,0,i.width,i.height),p.fillText(a.apply(this,e),0,0);e=i.toDataURL();return p.clearRect(0,0,i.width,i.height),p.fillText(a.apply(this,t),0,0),e===i.toDataURL()}function c(e){var t=a.createElement("script");t.src=e,t.defer=t.type="text/javascript",a.getElementsByTagName("head")[0].appendChild(t)}for(o=Array("flag","emoji"),t.supports={everything:!0,everythingExceptFlag:!0},r=0;r<o.length;r++)t.supports[o[r]]=function(e){if(!p||!p.fillText)return!1;switch(p.textBaseline="top",p.font="600 32px Arial",e){case"flag":return s([127987,65039,8205,9895,65039],[127987,65039,8203,9895,65039])?!1:!s([55356,56826,55356,56819],[55356,56826,8203,55356,56819])&&!s([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]);case"emoji":return!s([10084,65039,8205,55357,56613],[10084,65039,8203,55357,56613])}return!1}(o[r]),t.supports.everything=t.supports.everything&&t.supports[o[r]],"flag"!==o[r]&&(t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&t.supports[o[r]]);t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&!t.supports.flag,t.DOMReady=!1,t.readyCallback=function(){t.DOMReady=!0},t.supports.everything||(n=function(){t.readyCallback()},a.addEventListener?(a.addEventListener("DOMContentLoaded",n,!1),e.addEventListener("load",n,!1)):(e.attachEvent("onload",n),a.attachEvent("onreadystatechange",function(){"complete"===a.readyState&&t.readyCallback()})),(n=t.source||{}).concatemoji?c(n.concatemoji):n.wpemoji&&n.twemoji&&(c(n.twemoji),c(n.wpemoji)))}(window,document,window._wpemojiSettings);
+</script><script src="mountpoint%E5%91%BD%E4%BB%A4%20%E2%80%93%20%E5%88%A4%E6%96%AD%E6%8C%87%E5%AE%9A%E7%9A%84%E7%9B%AE%E5%BD%95%E6%98%AF%E5%90%A6%E6%98%AF%E6%8C%82%E8%BD%BD%E7%82%B9_files/wp-emoji-release.js" type="text/javascript" defer="defer"></script>
+<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 0.07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel="stylesheet" id="wp-block-library-css" href="mountpoint%E5%91%BD%E4%BB%A4%20%E2%80%93%20%E5%88%A4%E6%96%AD%E6%8C%87%E5%AE%9A%E7%9A%84%E7%9B%AE%E5%BD%95%E6%98%AF%E5%90%A6%E6%98%AF%E6%8C%82%E8%BD%BD%E7%82%B9_files/style_005.css" type="text/css" media="all">
+<link rel="stylesheet" id="wp-components-css" href="mountpoint%E5%91%BD%E4%BB%A4%20%E2%80%93%20%E5%88%A4%E6%96%AD%E6%8C%87%E5%AE%9A%E7%9A%84%E7%9B%AE%E5%BD%95%E6%98%AF%E5%90%A6%E6%98%AF%E6%8C%82%E8%BD%BD%E7%82%B9_files/style.css" type="text/css" media="all">
+<link rel="stylesheet" id="wp-block-editor-css" href="mountpoint%E5%91%BD%E4%BB%A4%20%E2%80%93%20%E5%88%A4%E6%96%AD%E6%8C%87%E5%AE%9A%E7%9A%84%E7%9B%AE%E5%BD%95%E6%98%AF%E5%90%A6%E6%98%AF%E6%8C%82%E8%BD%BD%E7%82%B9_files/style_002.css" type="text/css" media="all">
+<link rel="stylesheet" id="wp-nux-css" href="mountpoint%E5%91%BD%E4%BB%A4%20%E2%80%93%20%E5%88%A4%E6%96%AD%E6%8C%87%E5%AE%9A%E7%9A%84%E7%9B%AE%E5%BD%95%E6%98%AF%E5%90%A6%E6%98%AF%E6%8C%82%E8%BD%BD%E7%82%B9_files/style_007.css" type="text/css" media="all">
+<link rel="stylesheet" id="wp-reusable-blocks-css" href="mountpoint%E5%91%BD%E4%BB%A4%20%E2%80%93%20%E5%88%A4%E6%96%AD%E6%8C%87%E5%AE%9A%E7%9A%84%E7%9B%AE%E5%BD%95%E6%98%AF%E5%90%A6%E6%98%AF%E6%8C%82%E8%BD%BD%E7%82%B9_files/style_004.css" type="text/css" media="all">
+<link rel="stylesheet" id="wp-editor-css" href="mountpoint%E5%91%BD%E4%BB%A4%20%E2%80%93%20%E5%88%A4%E6%96%AD%E6%8C%87%E5%AE%9A%E7%9A%84%E7%9B%AE%E5%BD%95%E6%98%AF%E5%90%A6%E6%98%AF%E6%8C%82%E8%BD%BD%E7%82%B9_files/style_006.css" type="text/css" media="all">
+<link rel="stylesheet" id="htgb-style-css-css" href="mountpoint%E5%91%BD%E4%BB%A4%20%E2%80%93%20%E5%88%A4%E6%96%AD%E6%8C%87%E5%AE%9A%E7%9A%84%E7%9B%AE%E5%BD%95%E6%98%AF%E5%90%A6%E6%98%AF%E6%8C%82%E8%BD%BD%E7%82%B9_files/blocks.css" type="text/css" media="all">
+<link rel="stylesheet" id="ht_toc-style-css-css" href="mountpoint%E5%91%BD%E4%BB%A4%20%E2%80%93%20%E5%88%A4%E6%96%AD%E6%8C%87%E5%AE%9A%E7%9A%84%E7%9B%AE%E5%BD%95%E6%98%AF%E5%90%A6%E6%98%AF%E6%8C%82%E8%BD%BD%E7%82%B9_files/blocks_002.css" type="text/css" media="all">
+<style id="global-styles-inline-css" type="text/css">
+body{--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--duotone--dark-grayscale: url('#wp-duotone-dark-grayscale');--wp--preset--duotone--grayscale: url('#wp-duotone-grayscale');--wp--preset--duotone--purple-yellow: url('#wp-duotone-purple-yellow');--wp--preset--duotone--blue-red: url('#wp-duotone-blue-red');--wp--preset--duotone--midnight: url('#wp-duotone-midnight');--wp--preset--duotone--magenta-yellow: url('#wp-duotone-magenta-yellow');--wp--preset--duotone--purple-green: url('#wp-duotone-purple-green');--wp--preset--duotone--blue-orange: url('#wp-duotone-blue-orange');--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+</style>
+<link rel="stylesheet" id="shortcodes-css-css" href="mountpoint%E5%91%BD%E4%BB%A4%20%E2%80%93%20%E5%88%A4%E6%96%AD%E6%8C%87%E5%AE%9A%E7%9A%84%E7%9B%AE%E5%BD%95%E6%98%AF%E5%90%A6%E6%98%AF%E6%8C%82%E8%BD%BD%E7%82%B9_files/shortcodes.css" type="text/css" media="all">
+<link rel="stylesheet" id="theme-style-css" href="mountpoint%E5%91%BD%E4%BB%A4%20%E2%80%93%20%E5%88%A4%E6%96%AD%E6%8C%87%E5%AE%9A%E7%9A%84%E7%9B%AE%E5%BD%95%E6%98%AF%E5%90%A6%E6%98%AF%E6%8C%82%E8%BD%BD%E7%82%B9_files/style_003.css" type="text/css" media="all">
+<style id="theme-style-inline-css" type="text/css">
+ 
+				/* Links */
+				a, 
+				a:visited { color:#a03717; }
+				a:hover, 
+				.widget a:hover,
+				#primary-nav ul a:hover,
+				#footer-nav a:hover,
+				#breadcrumbs a:hover { color:#a03717; }
+				
+				/* Theme Color */
+				#commentform #submit, 
+				.st_faq h2.active .action, 
+				.widget_categories ul span, 
+				.pagination .current, 
+				.tags a, 
+				.page-links span,
+				#comments .comment-meta .author-badge,
+				input[type="reset"],
+				input[type="submit"],
+				input[type="button"] { background: #a03717; }
+				#live-search #searchsubmit, input[type="submit"] { background-color: #a03717; }
+				.tags a:before { border-color: transparent #a03717 transparent transparent; }
+
+				
+				
+				
+</style>
+<link rel="stylesheet" id="theme-font-css" href="mountpoint%E5%91%BD%E4%BB%A4%20%E2%80%93%20%E5%88%A4%E6%96%AD%E6%8C%87%E5%AE%9A%E7%9A%84%E7%9B%AE%E5%BD%95%E6%98%AF%E5%90%A6%E6%98%AF%E6%8C%82%E8%BD%BD%E7%82%B9_files/css.css" type="text/css" media="all">
+<link rel="stylesheet" id="font-awesome-css" href="mountpoint%E5%91%BD%E4%BB%A4%20%E2%80%93%20%E5%88%A4%E6%96%AD%E6%8C%87%E5%AE%9A%E7%9A%84%E7%9B%AE%E5%BD%95%E6%98%AF%E5%90%A6%E6%98%AF%E6%8C%82%E8%BD%BD%E7%82%B9_files/font-awesome_002.css" type="text/css" media="all">
+<script type="text/javascript" src="mountpoint%E5%91%BD%E4%BB%A4%20%E2%80%93%20%E5%88%A4%E6%96%AD%E6%8C%87%E5%AE%9A%E7%9A%84%E7%9B%AE%E5%BD%95%E6%98%AF%E5%90%A6%E6%98%AF%E6%8C%82%E8%BD%BD%E7%82%B9_files/jquery.js" id="jquery-core-js"></script>
+<script type="text/javascript" src="mountpoint%E5%91%BD%E4%BB%A4%20%E2%80%93%20%E5%88%A4%E6%96%AD%E6%8C%87%E5%AE%9A%E7%9A%84%E7%9B%AE%E5%BD%95%E6%98%AF%E5%90%A6%E6%98%AF%E6%8C%82%E8%BD%BD%E7%82%B9_files/jquery-migrate.js" id="jquery-migrate-js"></script>
+<link rel="https://api.w.org/" href="https://www.linuxcool.com/wp-json/"><link rel="alternate" type="application/json" href="https://www.linuxcool.com/wp-json/wp/v2/posts/3366"><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://www.linuxcool.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://www.linuxcool.com/wp-includes/wlwmanifest.xml">
+<meta name="generator" content="WordPress 5.9.3">
+<link rel="canonical" href="https://www.linuxcool.com/mountpoint">
+<link rel="shortlink" href="https://www.linuxcool.com/?p=3366">
+<link rel="alternate" type="application/json+oembed" href="https://www.linuxcool.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.linuxcool.com%2Fmountpoint">
+<link rel="alternate" type="text/xml+oembed" href="https://www.linuxcool.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.linuxcool.com%2Fmountpoint&amp;format=xml">
+<!--[if lt IE 9]><script src="https://www.linuxcool.com/wp-content/themes/knowhow/js/html5.js"></script><![endif]--><!--[if (gte IE 6)&(lte IE 8)]><script src="https://www.linuxcool.com/wp-content/themes/knowhow/js/selectivizr-min.js"></script><![endif]--><link rel="icon" href="https://www.linuxcool.com/wp-content/uploads/2019/03/cropped-redhat-32x32.png" sizes="32x32">
+<link rel="icon" href="https://www.linuxcool.com/wp-content/uploads/2019/03/cropped-redhat-192x192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="https://www.linuxcool.com/wp-content/uploads/2019/03/cropped-redhat-180x180.png">
+<meta name="msapplication-TileImage" content="https://www.linuxcool.com/wp-content/uploads/2019/03/cropped-redhat-270x270.png">
+</head>
+<body class="post-template-default single single-post postid-3366 single-format-standard wp-embed-responsive">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0" width="0" height="0" focusable="false" role="none" style="visibility: hidden; position: absolute; left: -9999px; overflow: hidden;"><defs><filter id="wp-duotone-dark-grayscale"><feColorMatrix color-interpolation-filters="sRGB" type="matrix" values=" .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 "></feColorMatrix><feComponentTransfer color-interpolation-filters="sRGB"><feFuncR type="table" tableValues="0 0.49803921568627"></feFuncR><feFuncG type="table" tableValues="0 0.49803921568627"></feFuncG><feFuncB type="table" tableValues="0 0.49803921568627"></feFuncB><feFuncA type="table" tableValues="1 1"></feFuncA></feComponentTransfer><feComposite in2="SourceGraphic" operator="in"></feComposite></filter></defs></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0" width="0" height="0" focusable="false" role="none" style="visibility: hidden; position: absolute; left: -9999px; overflow: hidden;"><defs><filter id="wp-duotone-grayscale"><feColorMatrix color-interpolation-filters="sRGB" type="matrix" values=" .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 "></feColorMatrix><feComponentTransfer color-interpolation-filters="sRGB"><feFuncR type="table" tableValues="0 1"></feFuncR><feFuncG type="table" tableValues="0 1"></feFuncG><feFuncB type="table" tableValues="0 1"></feFuncB><feFuncA type="table" tableValues="1 1"></feFuncA></feComponentTransfer><feComposite in2="SourceGraphic" operator="in"></feComposite></filter></defs></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0" width="0" height="0" focusable="false" role="none" style="visibility: hidden; position: absolute; left: -9999px; overflow: hidden;"><defs><filter id="wp-duotone-purple-yellow"><feColorMatrix color-interpolation-filters="sRGB" type="matrix" values=" .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 "></feColorMatrix><feComponentTransfer color-interpolation-filters="sRGB"><feFuncR type="table" tableValues="0.54901960784314 0.98823529411765"></feFuncR><feFuncG type="table" tableValues="0 1"></feFuncG><feFuncB type="table" tableValues="0.71764705882353 0.25490196078431"></feFuncB><feFuncA type="table" tableValues="1 1"></feFuncA></feComponentTransfer><feComposite in2="SourceGraphic" operator="in"></feComposite></filter></defs></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0" width="0" height="0" focusable="false" role="none" style="visibility: hidden; position: absolute; left: -9999px; overflow: hidden;"><defs><filter id="wp-duotone-blue-red"><feColorMatrix color-interpolation-filters="sRGB" type="matrix" values=" .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 "></feColorMatrix><feComponentTransfer color-interpolation-filters="sRGB"><feFuncR type="table" tableValues="0 1"></feFuncR><feFuncG type="table" tableValues="0 0.27843137254902"></feFuncG><feFuncB type="table" tableValues="0.5921568627451 0.27843137254902"></feFuncB><feFuncA type="table" tableValues="1 1"></feFuncA></feComponentTransfer><feComposite in2="SourceGraphic" operator="in"></feComposite></filter></defs></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0" width="0" height="0" focusable="false" role="none" style="visibility: hidden; position: absolute; left: -9999px; overflow: hidden;"><defs><filter id="wp-duotone-midnight"><feColorMatrix color-interpolation-filters="sRGB" type="matrix" values=" .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 "></feColorMatrix><feComponentTransfer color-interpolation-filters="sRGB"><feFuncR type="table" tableValues="0 0"></feFuncR><feFuncG type="table" tableValues="0 0.64705882352941"></feFuncG><feFuncB type="table" tableValues="0 1"></feFuncB><feFuncA type="table" tableValues="1 1"></feFuncA></feComponentTransfer><feComposite in2="SourceGraphic" operator="in"></feComposite></filter></defs></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0" width="0" height="0" focusable="false" role="none" style="visibility: hidden; position: absolute; left: -9999px; overflow: hidden;"><defs><filter id="wp-duotone-magenta-yellow"><feColorMatrix color-interpolation-filters="sRGB" type="matrix" values=" .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 "></feColorMatrix><feComponentTransfer color-interpolation-filters="sRGB"><feFuncR type="table" tableValues="0.78039215686275 1"></feFuncR><feFuncG type="table" tableValues="0 0.94901960784314"></feFuncG><feFuncB type="table" tableValues="0.35294117647059 0.47058823529412"></feFuncB><feFuncA type="table" tableValues="1 1"></feFuncA></feComponentTransfer><feComposite in2="SourceGraphic" operator="in"></feComposite></filter></defs></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0" width="0" height="0" focusable="false" role="none" style="visibility: hidden; position: absolute; left: -9999px; overflow: hidden;"><defs><filter id="wp-duotone-purple-green"><feColorMatrix color-interpolation-filters="sRGB" type="matrix" values=" .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 "></feColorMatrix><feComponentTransfer color-interpolation-filters="sRGB"><feFuncR type="table" tableValues="0.65098039215686 0.40392156862745"></feFuncR><feFuncG type="table" tableValues="0 1"></feFuncG><feFuncB type="table" tableValues="0.44705882352941 0.4"></feFuncB><feFuncA type="table" tableValues="1 1"></feFuncA></feComponentTransfer><feComposite in2="SourceGraphic" operator="in"></feComposite></filter></defs></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0" width="0" height="0" focusable="false" role="none" style="visibility: hidden; position: absolute; left: -9999px; overflow: hidden;"><defs><filter id="wp-duotone-blue-orange"><feColorMatrix color-interpolation-filters="sRGB" type="matrix" values=" .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 "></feColorMatrix><feComponentTransfer color-interpolation-filters="sRGB"><feFuncR type="table" tableValues="0.098039215686275 1"></feFuncR><feFuncG type="table" tableValues="0 0.66274509803922"></feFuncG><feFuncB type="table" tableValues="0.84705882352941 0.41960784313725"></feFuncB><feFuncA type="table" tableValues="1 1"></feFuncA></feComponentTransfer><feComposite in2="SourceGraphic" operator="in"></feComposite></filter></defs></svg>
+<div id="site-container" class="clearfix">
+<header id="site-header" class="clearfix" role="banner">
+<div class="ht-container">
+<div id="logo">
+<a title="Linux命令大全(手册)" href="https://www.linuxcool.com/">
+Linux命令大全(手册) </a>
+</div>
+<br>
+<p>准确，丰富，稳定，在技术之路上为您护航！</p>
+</div>
+</header>
+<div id="live-search">
+<div class="ht-container">
+<div id="search-wrap">
+<form role="search" method="get" id="searchform" class="clearfix" action="https://www.linuxcool.com/">
+<input type="text" onfocus="if (this.value == '请输入一个命令或相关功能') {this.value = '';}" onblur="if (this.value == '')  {this.value = '请输入一个命令或相关功能';}" value="请输入一个命令或相关功能" name="s" id="s" autocapitalize="none" autocorrect="off" autocomplete="off">
+<i class="live-search-loading fa fa-spinner fa-spin"></i>
+<button type="submit" id="searchsubmit">
+<i class="fa fa-search"></i><span>查询</span>
+</button>
+</form>
+</div>
+</div>
+</div>
+<div id="primary" class="sidebar-right clearfix">
+<div class="ht-container">
+<section id="content" role="main">
+<header id="page-header" class="clearfix">
+<h1 class="page-title">mountpoint命令 – 判断指定的目录是否是挂载点</h1>
+<link rel="stylesheet" href="mountpoint%E5%91%BD%E4%BB%A4%20%E2%80%93%20%E5%88%A4%E6%96%AD%E6%8C%87%E5%AE%9A%E7%9A%84%E7%9B%AE%E5%BD%95%E6%98%AF%E5%90%A6%E6%98%AF%E6%8C%82%E8%BD%BD%E7%82%B9_files/font-awesome.css">
+<script src="mountpoint%E5%91%BD%E4%BB%A4%20%E2%80%93%20%E5%88%A4%E6%96%AD%E6%8C%87%E5%AE%9A%E7%9A%84%E7%9B%AE%E5%BD%95%E6%98%AF%E5%90%A6%E6%98%AF%E6%8C%82%E8%BD%BD%E7%82%B9_files/jquery-2.js" type="text/javascript"></script>
+<script src="mountpoint%E5%91%BD%E4%BB%A4%20%E2%80%93%20%E5%88%A4%E6%96%AD%E6%8C%87%E5%AE%9A%E7%9A%84%E7%9B%AE%E5%BD%95%E6%98%AF%E5%90%A6%E6%98%AF%E6%8C%82%E8%BD%BD%E7%82%B9_files/jquery_002.js"></script>
+<section class="section" id="examples">
+<div class="wrapper">
+<section>
+<script type="text/javascript">
+			  $(function(){
+				 $('.oneShotMonophonic-trigger-click').easyAudioEffects({
+					mp3 : "https://www.linuxcool.com/sounds/mountpoint.m4a",
+					eventType : 'click',
+					playType : 'oneShotMonophonic'
+				 });
+			  });
+		   </script>
+</section>
+</div>
+</section>
+<style type="text/css">
+.div-inline{ display:inline} 
+</style>
+<div class="center" style="margin-top: 0px;">
+<div id="breadcrumbs"><a href="https://www.linuxcool.com/"><icon class="fa fa-home"></icon></a><span class="sep">/</span>真正好用的Linux命令在线查询手册<span class="sep">/</span>
+<div class="div-inline oneShotMonophonic-trigger-click sound-trigger sound-trigger--type-default sound-trigger--type-click">
+<div class="div-inline sound-trigger__inner"><i class="fa fa-volume-up fa-lg"></i> </div>
+</div>
+<div class="div-inline">：播放正确发音</div>
+</div>
+</div></header>
+<style type="text/css">
+	
+.text1 {
+	border:1px dashed #BBBBBB; 
+	background-color:#F9F9F9;
+	}
+a {
+    text-decoration: none;
+}
+#ad-arc-top {
+    line-height: 23px;
+}
+#ad-arc-top p {
+    padding: 8px 10px;
+    margin-top: 10px;
+    line-height: 23px;
+    border: 1px dashed #bbb;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+}
+p {
+	   margin-bottom: 0;
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+   </style>
+<div class="text1">
+<p><a href="https://www.linuxprobe.com/chapter-00.html" target="_blank" style="color: #D33428;">《Linux就该这么学》是一本基于最新Linux系统编写的入门必读书籍，内容面向零基础读者，由浅入深渐进式教学，销量保持国内第一，年销售量超过10万余本。<span style="color:#08c;">点此免费在线阅读。</span></a></p>
+</div>
+<article id="post-3366" class="clearfix post-3366 post type-post status-publish format-standard hentry category-system">
+<header class="entry-header">
+</header>
+<div class="entry-content">
+<p>mountpoint命令用来判断指定的目录是否是加载点，如果是挂载点返回0，如果不是就返回非0。设备总是挂载在某个指定的目录下，所以就可以使用mountpoint这条命令来确认某个目录是否“临时性”的被文件系统占用。</p>
+<p><strong>语法格式：</strong>mountpoint [参数] [目录]</p>
+<p><strong>常用参数：</strong></p>
+<table class="wp-block-table has-fixed-layout"><tbody><tr><td>-q</td><td>不打印任何信息</td></tr><tr><td>-d</td><td>打印文件系统的主设备号和次设备号</td></tr><tr><td>-x</td><td>打印块数设备的主设备号和次设备号</td></tr></tbody></table>
+<p><strong>参考实例</strong></p>
+<p>查看/mnt目录是不是挂载点：</p>
+<pre class="wp-block-preformatted">[root@linuxcool ~]# mountpoint /mnt
+/mnt is a mountpoint</pre>
+<p>查看/usr/local是不是挂载点：</p>
+<pre class="wp-block-preformatted">[root@linuxcool ~]# mountpoint /usr/local
+/usr/local is not a mountpoint </pre>
+<p>查看挂载的/media/cdrom的主/次设备号码：</p>
+<pre class="wp-block-preformatted">[root@linuxcool ~]# mountpoint -d /media/cdrom
+ 11:0</pre>
+<p>查看一个设备的主/次设备号：</p>
+<pre class="wp-block-preformatted">[root@linuxcool ~]# mountpoint -x /dev/sda
+ 8:0</pre>
+<div id="dxseo-related-posts" style="clear:both;"><h3 style="margin:20px 0 10px;padding:0;font-weight:bold;font-size:14px;">与该功能相关的Linux命令：</h3><ul class="dxseo-rl-items"><li style="list-style-type: disc;" class="dxseo-rl-item"><a href="https://www.linuxcool.com/screen" target="_blank" title="screen命令 – 多重视窗管理程序">screen命令 – 多重视窗管理程序</a></li><li style="list-style-type: disc;" class="dxseo-rl-item"><a href="https://www.linuxcool.com/auditstat%e5%91%bd%e4%bb%a4-%e6%98%be%e7%a4%ba%e5%86%85%e6%a0%b8%e5%ae%a1%e8%ae%a1%e7%bb%9f%e8%ae%a1" target="_blank" title="auditstat命令 -显示内核审计统计">auditstat命令 -显示内核审计统计</a></li><li style="list-style-type: disc;" class="dxseo-rl-item"><a href="https://www.linuxcool.com/hostnamectl" target="_blank" title="hostnamectl命令 – 修改主机名称">hostnamectl命令 – 修改主机名称</a></li><li style="list-style-type: disc;" class="dxseo-rl-item"><a href="https://www.linuxcool.com/sliplogin" target="_blank" title="sliplogin命令 – 将SLIP接口加入标准输入">sliplogin命令 – 将SLIP接口加入标准输入</a></li><li style="list-style-type: disc;" class="dxseo-rl-item"><a href="https://www.linuxcool.com/svgatextmode" target="_blank" title="SVGATextMode命令 – 加强文字模式的显示画面">SVGATextMode命令 – 加强文字模式的显示画面</a></li><li style="list-style-type: disc;" class="dxseo-rl-item"><a href="https://www.linuxcool.com/yum-complete-transaction" target="_blank" title="yum-complete-transaction 命令 – 尝试完成系统上不完整或中止的yum事务进程">yum-complete-transaction 命令 – 尝试完成系统上不完整或中止的yum事务进程</a></li><li style="list-style-type: disc;" class="dxseo-rl-item"><a href="https://www.linuxcool.com/yum-debug-restore" target="_blank" title="yum-debug-restore命令 – 重播在调试转储文件中捕获的yum事务">yum-debug-restore命令 – 重播在调试转储文件中捕获的yum事务</a></li><li style="list-style-type: disc;" class="dxseo-rl-item"><a href="https://www.linuxcool.com/procinfo" target="_blank" title="procinfo命令 – 显示系统状态">procinfo命令 – 显示系统状态</a></li><li style="list-style-type: disc;" class="dxseo-rl-item"><a href="https://www.linuxcool.com/esxcfg-advcfg" target="_blank" title="esxcfg-advcfg命令 – 配置主机">esxcfg-advcfg命令 – 配置主机</a></li><li style="list-style-type: disc;" class="dxseo-rl-item"><a href="https://www.linuxcool.com/nohup" target="_blank" title="nohup命令 – 后端运行程序">nohup命令 – 后端运行程序</a></li></ul></div> </div>
+</article>
+<section id="entry-author" class="clearfix">
+<div class="wp-block-image"><figure class="aligncenter is-resized"><img src="mountpoint%E5%91%BD%E4%BB%A4%20%E2%80%93%20%E5%88%A4%E6%96%AD%E6%8C%87%E5%AE%9A%E7%9A%84%E7%9B%AE%E5%BD%95%E6%98%AF%E5%90%A6%E6%98%AF%E6%8C%82%E8%BD%BD%E7%82%B9_files/author.png" alt="Author" class="wp-image-32" width="300" height="35"></figure></div>
+<p style="text-align:center"><strong>这篇优质的内容由TA贡献而来</strong></p>
+<p style="text-align:center">刘遄 </p>
+<p style="text-align:center"> 《Linux就该这么学》书籍作者，RHCA认证架构师，教育学（计算机专业硕士）。</p>
+</section>
+</section>
+<aside id="sidebar" role="complementary">
+<div id="st_popular_articles_widget-2" class="widget st_popular_articles_widget clearfix">
+<h4 class="widget-title"><span>最热命令</span></h4>
+<ul class="clearfix">
+<li class="clearfix format-standard">
+<a href="https://www.linuxcool.com/rhel-download" rel="bookmark">Red Hat Enterprise Linux 8/7/6/5/4 合集下载地址</a>
+</li>
+<li class="clearfix format-standard">
+<a href="https://www.linuxcool.com/ls" rel="bookmark">ls命令 – 显示指定工作目录下的内容及属性信息</a>
+</li>
+<li class="clearfix format-standard">
+<a href="https://www.linuxcool.com/pronunciation" rel="bookmark">中国程序员最容易读错的单词汇总（带正确发音示范）</a>
+</li>
+<li class="clearfix format-standard">
+<a href="https://www.linuxcool.com/cat" rel="bookmark">cat命令 – 在终端设备上显示文件内容</a>
+</li>
+<li class="clearfix format-standard">
+<a href="https://www.linuxcool.com/cp" rel="bookmark">cp命令 – 复制文件或目录</a>
+</li>
+<li class="clearfix format-standard">
+<a href="https://www.linuxcool.com/mkdir" rel="bookmark">mkdir命令 – 创建目录</a>
+</li>
+<li class="clearfix format-standard">
+<a href="https://www.linuxcool.com/echo" rel="bookmark">echo命令 – 输出字符串或提取Shell变量的值</a>
+</li>
+<li class="clearfix format-standard">
+<a href="https://www.linuxcool.com/mv" rel="bookmark">mv命令 – 移动或改名文件</a>
+</li>
+<li class="clearfix format-standard">
+<a href="https://www.linuxcool.com/rm" rel="bookmark">rm命令 – 移除文件或目录</a>
+</li>
+<li class="clearfix format-standard">
+<a href="https://www.linuxcool.com/df" rel="bookmark">df命令 – 显示磁盘空间使用情况</a>
+</li>
+<li class="clearfix format-standard">
+<a href="https://www.linuxcool.com/pwd" rel="bookmark">pwd命令 – 显示当前路径</a>
+</li>
+<li class="clearfix format-standard">
+<a href="https://www.linuxcool.com/ssh" rel="bookmark">ssh命令 – 安全连接客户端</a>
+</li>
+<li class="clearfix format-standard">
+<a href="https://www.linuxcool.com/rpm" rel="bookmark">rpm命令 – RPM软件包管理器</a>
+</li>
+<li class="clearfix format-standard">
+<a href="https://www.linuxcool.com/find" rel="bookmark">find命令 – 查找和搜索文件</a>
+</li>
+<li class="clearfix format-standard">
+<a href="https://www.linuxcool.com/tail" rel="bookmark">tail命令 – 查看文件尾部内容</a>
+</li>
+<li class="clearfix format-standard">
+<a href="https://www.linuxcool.com/grep" rel="bookmark">grep命令 – 强大的文本搜索工具</a>
+</li>
+<li class="clearfix format-standard">
+<a href="https://www.linuxcool.com/mount" rel="bookmark">mount命令 – 文件系统挂载</a>
+</li>
+<li class="clearfix format-standard">
+<a href="https://www.linuxcool.com/tftp" rel="bookmark">tftp命令 – 上传及下载文件</a>
+</li>
+<li class="clearfix format-standard">
+<a href="https://www.linuxcool.com/netstat" rel="bookmark">netstat命令 – 显示网络状态</a>
+</li>
+<li class="clearfix format-standard">
+<a href="https://www.linuxcool.com/rmdir" rel="bookmark">rmdir命令 – 删除空目录</a>
+</li>
+<li class="clearfix format-standard">
+<a href="https://www.linuxcool.com/fdisk" rel="bookmark">fdisk命令 – 磁盘分区</a>
+</li>
+<li class="clearfix format-standard">
+<a href="https://www.linuxcool.com/curl" rel="bookmark">curl命令 – 文件传输工具</a>
+</li>
+<li class="clearfix format-standard">
+<a href="https://www.linuxcool.com/startx" rel="bookmark">startx命令 – 初始化X-windows</a>
+</li>
+<li class="clearfix format-standard">
+<a href="https://www.linuxcool.com/dhclient" rel="bookmark">dhclient命令 – 动态获取或释放IP地址</a>
+</li>
+<li class="clearfix format-standard">
+<a href="https://www.linuxcool.com/ping" rel="bookmark">ping命令 – 测试主机间网络连通性</a>
+</li>
+</ul>
+</div><div id="block-2" class="widget widget_block widget_media_image clearfix">
+<figure class="wp-block-image size-full is-style-default"><img loading="lazy" src="mountpoint%E5%91%BD%E4%BB%A4%20%E2%80%93%20%E5%88%A4%E6%96%AD%E6%8C%87%E5%AE%9A%E7%9A%84%E7%9B%AE%E5%BD%95%E6%98%AF%E5%90%A6%E6%98%AF%E6%8C%82%E8%BD%BD%E7%82%B9_files/cover.png" alt="" class="wp-image-8965" srcset="mountpoint%E5%91%BD%E4%BB%A4%20%E2%80%93%20%E5%88%A4%E6%96%AD%E6%8C%87%E5%AE%9A%E7%9A%84%E7%9B%AE%E5%BD%95%E6%98%AF%E5%90%A6%E6%98%AF%E6%8C%82%E8%BD%BD%E7%82%B9_files/cover.png 300w, mountpoint%E5%91%BD%E4%BB%A4%20%E2%80%93%20%E5%88%A4%E6%96%AD%E6%8C%87%E5%AE%9A%E7%9A%84%E7%9B%AE%E5%BD%95%E6%98%AF%E5%90%A6%E6%98%AF%E6%8C%82%E8%BD%BD%E7%82%B9_files/cover-214x300.png 214w, mountpoint%E5%91%BD%E4%BB%A4%20%E2%80%93%20%E5%88%A4%E6%96%AD%E6%8C%87%E5%AE%9A%E7%9A%84%E7%9B%AE%E5%BD%95%E6%98%AF%E5%90%A6%E6%98%AF%E6%8C%82%E8%BD%BD%E7%82%B9_files/cover-43x60.png 43w, mountpoint%E5%91%BD%E4%BB%A4%20%E2%80%93%20%E5%88%A4%E6%96%AD%E6%8C%87%E5%AE%9A%E7%9A%84%E7%9B%AE%E5%BD%95%E6%98%AF%E5%90%A6%E6%98%AF%E6%8C%82%E8%BD%BD%E7%82%B9_files/cover-107x150.png 107w" sizes="(max-width: 300px) 100vw, 300px" width="300" height="421"><figcaption><strong>在线阅读：<a href="https://www.linuxprobe.com/" target="_blank" rel="noreferrer noopener">https://www.linuxprobe.com</a></strong></figcaption></figure>
+</div> 
+</aside>
+</div>
+</div>
+<footer id="site-footer" class="clearfix" role="contentinfo">
+<div class="ht-container">
+<p><img style="float: left" src="mountpoint%E5%91%BD%E4%BB%A4%20%E2%80%93%20%E5%88%A4%E6%96%AD%E6%8C%87%E5%AE%9A%E7%9A%84%E7%9B%AE%E5%BD%95%E6%98%AF%E5%90%A6%E6%98%AF%E6%8C%82%E8%BD%BD%E7%82%B9_files/Linux.jpg" alt="Linux命令大全"></p>
+<small id="copyright">
+<p style="text-align: center;"><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">京ICP备16058923号-1</a></p>
+<p style="text-align: center;">推荐用书：《<a href="https://www.linuxprobe.com/" target="_blank" rel="noreferrer noopener" aria-label="Linux就该这么学（在新窗口打开）">Linux就该这么学</a>》</p>
+<p style="text-align: center;"><strong>真正好用的Linux命令在线查询手册</strong></p> </small>
+</div>
+</footer>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?688c8b862521ebd236ee2271bdd52cff";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+</div>
+<script type="text/javascript">
+	jQuery(document).ready(function() {
+	jQuery('#live-search #s').liveSearch({url: 'https://www.linuxcool.com/index.php?ajax=1&s='});
+	});
+	</script>
+<script type="text/javascript" src="mountpoint%E5%91%BD%E4%BB%A4%20%E2%80%93%20%E5%88%A4%E6%96%AD%E6%8C%87%E5%AE%9A%E7%9A%84%E7%9B%AE%E5%BD%95%E6%98%AF%E5%90%A6%E6%98%AF%E6%8C%82%E8%BD%BD%E7%82%B9_files/ht-glossary-frontend.js" id="htgb-custom-js-js"></script>
+<script type="text/javascript" src="mountpoint%E5%91%BD%E4%BB%A4%20%E2%80%93%20%E5%88%A4%E6%96%AD%E6%8C%87%E5%AE%9A%E7%9A%84%E7%9B%AE%E5%BD%95%E6%98%AF%E5%90%A6%E6%98%AF%E6%8C%82%E8%BD%BD%E7%82%B9_files/script.js" id="ht_toc-script-js-js"></script>
+<script type="text/javascript" src="mountpoint%E5%91%BD%E4%BB%A4%20%E2%80%93%20%E5%88%A4%E6%96%AD%E6%8C%87%E5%AE%9A%E7%9A%84%E7%9B%AE%E5%BD%95%E6%98%AF%E5%90%A6%E6%98%AF%E6%8C%82%E8%BD%BD%E7%82%B9_files/shortcodes.js" id="shortcodes-js-js"></script>
+<script type="text/javascript" src="mountpoint%E5%91%BD%E4%BB%A4%20%E2%80%93%20%E5%88%A4%E6%96%AD%E6%8C%87%E5%AE%9A%E7%9A%84%E7%9B%AE%E5%BD%95%E6%98%AF%E5%90%A6%E6%98%AF%E6%8C%82%E8%BD%BD%E7%82%B9_files/functions.js" id="st_theme_custom-js"></script>
+<script type="text/javascript" id="q2w3_fixed_widget-js-extra">
+/* <![CDATA[ */
+var q2w3_sidebar_options = [{"use_sticky_position":false,"margin_top":10,"margin_bottom":200,"stop_elements_selectors":"","screen_max_width":0,"screen_max_height":0,"widgets":[]}];
+/* ]]> */
+</script>
+<script type="text/javascript" src="mountpoint%E5%91%BD%E4%BB%A4%20%E2%80%93%20%E5%88%A4%E6%96%AD%E6%8C%87%E5%AE%9A%E7%9A%84%E7%9B%AE%E5%BD%95%E6%98%AF%E5%90%A6%E6%98%AF%E6%8C%82%E8%BD%BD%E7%82%B9_files/frontend.js" id="q2w3_fixed_widget-js"></script>
+<script type="text/javascript" src="mountpoint%E5%91%BD%E4%BB%A4%20%E2%80%93%20%E5%88%A4%E6%96%AD%E6%8C%87%E5%AE%9A%E7%9A%84%E7%9B%AE%E5%BD%95%E6%98%AF%E5%90%A6%E6%98%AF%E6%8C%82%E8%BD%BD%E7%82%B9_files/jquery_003.js" id="st_live_search-js"></script>
+
+
+<div id="jquery-live-search" style="display: none;"></div></body></html>
