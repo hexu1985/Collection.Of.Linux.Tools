@@ -35,3 +35,9 @@ $ git clone --recursive https://github.com/hexu1985/qt_code.git
 $ git rm -r github  # 删除一个目录
 $ git rm github/Cpp.GUI.Programming.with.Qt # 删除某一个子仓库
 ```
+
+#### 更新子模块到最新提交
+
+```
+$ git submodule update --remote
+```
