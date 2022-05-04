@@ -247,11 +247,11 @@ jQuery(document).ready(function ($){
 	
 	// 侧栏
 	$(".sidebar-tree > ul > li").hover(function(){
-		$(this).addClass("selected");
+		//$(this).addClass("selected");
 		$(this).children("a:eq(0)").addClass("h2-tit");
 		$(this).children("ul").show();
 	},function(){
-		$(this).removeClass("selected");
+		//$(this).removeClass("selected");
 		$(this).children(".tit").removeClass("h2-tit");
 		$(this).children("ul").hide();
 	})
@@ -327,11 +327,22 @@ jQuery(document).ready(function ($){
   	});
 	$("#cate0").click(function() {
 		$(".codelist-desktop").show();
+		_scrollFLag = true;
+		$('html,body').animate({ scrollTop: 0 }, 'fast');
+		$(".home-left-column").css({"width":"16%"}); 
 	})
 	$(".design").click(function() {
 		id = $(this).prop("id");
 		$("." + id).show();
 		$("." + id).siblings().hide();
+		_scrollFLag = false;
+		if($(".left-column").hasClass('site-fix')) {
+			$(".left-column").removeClass('site-fix');
+			$(".home-left-column").css({"width":"16%"}); 
+			$(".middle-column-home").css({"float":""});
+		
+			$('html,body').animate({ scrollTop: 0 }, 'fast');
+		}
 	})
 	//移动设备点击链接	
 	$('a').on('click touchend', function(e) {
@@ -387,7 +398,20 @@ jQuery(document).ready(function ($){
 		}
 	} 
 
+	if($("#main-left-cloumn").length) {
+		var _scrollFLag = true;
+		$(window).on('resize', function(){
+			var win = $(this); //this = window
+			if (win.width() <= 1025) { 
+				if($(".left-column").hasClass('site-fix')) {
+					$(".left-column").removeClass('site-fix');
+					$(".home-left-column").css({"width":"16%"}); 
+					$(".middle-column-home").css({"float":""});
+				}
 
+			 }
+		});
+	}
 	
 	$(window).scroll(function () {
 		var _stop = $(window).scrollTop();
@@ -406,8 +430,14 @@ jQuery(document).ready(function ($){
 			_mobileFlag = true;
 		}
 		 //左侧滚动部分代码
-		if($("#leftcolumn").length && !_mobileFlag) {
-			var _wtop = $(".middle-column").offset().top + $(".middle-column").height();
+		if(( $("#leftcolumn").length || $("#main-left-cloumn").length) && !_mobileFlag) {
+			
+			if( $("#main-left-cloumn").length) {
+				_wtop = $(".middle-column-home").offset().top + $(".middle-column-home").height(); 
+			} else {
+				_wtop = $(".middle-column").offset().top + $(".middle-column").height();
+			}
+			
 			var _footerHeight = $("#footer").offset().top;
 			if(_leftaTop>=_endArticle) {
 				_wtop = _wtop - _stop ;
@@ -418,28 +448,37 @@ jQuery(document).ready(function ($){
 			}
 			
 			if(_scrollFLag &&  _stop>=120 && $(window).width() > 768) {
-				
+				if($("#main-left-cloumn").length) {
+					$(".middle-column-home").css({"float":"right"});
+					//$(".home-left-column").css({"width":"14%"});  
+					
+				}
+					
 				if(!$(".left-column").hasClass("site-fix")) {
-					_widthFix = $(".runoob-col-md2").width();
-					$(".left-column").addClass("site-fix");
-					$(".left-column").css({"width": _widthFix + "px"});
+						_widthFix = $(".runoob-col-md2").width();
+						if($("#main-left-cloumn").length) {
+							_widthFix = $(".home-left-column").width();
+							
+						}
+						$(".left-column").addClass("site-fix");
+						$(".left-column").css({"width": _widthFix + "px"});
+					}
+				} else if(_scrollFLag){
+					_scrollFLag = true;
+					if($(".left-column").hasClass("site-fix")) {
+						$(".left-column").removeClass("site-fix");
+						$(".left-column").css("width","");
+					}
 				}
-			} else if(_scrollFLag){
-				_scrollFLag = true;
-				if($(".left-column").hasClass("site-fix")) {
-					$(".left-column").removeClass("site-fix");
-					$(".left-column").css("width","");
+				if ((bottom_of_screen > top_of_element) && (top_of_screen < bottom_of_element)){
+					
+						_bottom = bottom_of_screen - top_of_element;
+						$(".left-column").css({"bottom": _bottom + "px"});
+				} else {
+						$(".left-column").css({"bottom": ""});
 				}
-			}
-			if ((bottom_of_screen > top_of_element) && (top_of_screen < bottom_of_element)){
 				
-					_bottom = bottom_of_screen - top_of_element;
-					$(".left-column").css({"bottom": _bottom + "px"});
-			} else {
-					$(".left-column").css({"bottom": ""});
 			}
-			
-		}
 		
 	    if(_stop>=100) {
 	        $(".go-top").fadeIn();
@@ -739,7 +778,7 @@ jQuery(document).ready(function($){
 	$("#moon").click(function() {
 		$(this).hide();
 		$("#sun").show();
-		$(".example_code").css({"background-color":"#2e3033"});
+		$(".example_code").css({"background-color":"#1d1e20"});
 		$(".example_code").css({"color":"#fff"});
 		$(".example_result").css({"background-color":"#2e3033"});
 		$(".example_result").css({"color":"#fff"});
@@ -749,7 +788,7 @@ jQuery(document).ready(function($){
 		$("div.code").css({"background-color":"#2e3033"});
 		$("div.code").css({"color":"#fff"});
 		$("h2.example").css({"color":"#fff"});
-		$(".hl-main").css({"background-color":"#2e3033"});
+		$(".hl-main").css({"background-color":"#1d1e20"});
 		$(".article").css({"background-color":"#2e3033"});
 		$(".reference tr:nth-child(even)" ).css( "background-color", "#2e3033" );
 		$(".simditor-wrapper" ).css( "background-color", "#2e3033" );
@@ -777,6 +816,20 @@ jQuery(document).ready(function($){
 		$(".simditor-toolbar").css({"background-color":"#2e3033"});
 		$(".simditor-toolbar").find("a").css({"color":"#fff"});
 		$(".comt-meta").css({"background-color":"#000"});
+
+		$("div.navigation").css({"background-color":"#1f2223"});
+		$("div.sidebar-box").css({"background-color":"#000"});
+		$("ul.double-li").css({"background-color":"#1f2223"});
+		$("div.recommend-here").css({"background-color":"#1f2223"});
+		$("div.re-box").css({"background-color":"#1f2223"});
+		$("div.recommend-here a").css({"background-color":"#1f2223"});
+		$("div.sidebar-tree a").css({"color":"#fff"});
+		$("li.selected").css({"background-color":"#000"}); 
+		$("div.left-column .tab").css({"background-color":"#1f2223"});
+		$("#leftcolumn a").css({"background-color":"#1f1b12"});
+		$("#leftcolumn a").css({"color":"#fff"});
+		$("div.sidebar-tree li").css({"background-color":"#1f1b12"});
+		$("body").css({"background":"#000"});
 		$("#respond .comment-signarea").css({"background-color":"#000"});
 		$("<link/>", {
 			rel: "stylesheet",
@@ -829,6 +882,21 @@ jQuery(document).ready(function($){
 		$(".simditor-toolbar").find("a").css({"color":"#000"});
 		$(".comt-meta").css({"background-color":"#ececec"});
 		$("#respond .comment-signarea").css({"background-color":"#F6F6F6"});
+		$("body").css({"background":"#f6f6f6"});
+		$('link[href*="sons-of-obsidian.css"]').remove();
+
+		$("div.navigation").css({"background-color":"#96b97d"});
+		$("div.sidebar-box").css({"background-color":"#fff"});
+		$("ul.double-li").css({"background-color":"#f6f4f0"});
+		$("div.recommend-here").css({"background-color":"#e9e9e9"});
+		$("div.re-box").css({"background-color":"#fff"});
+		$("div.recommend-here a").css({"background-color":"#efefef"});
+		$("div.sidebar-tree a").css({"color":"#000"});
+		$("div.sidebar-tree li").css({"background-color":"#f5f2ee"});
+		$("div.left-column .tab").css({"background-color":"#f2f2f2"});
+		$("#leftcolumn a").css({"background-color":"#f6f4f0"});
+		$("#leftcolumn a").css({"color":"#000"});
+
 		eraseCookie("moon" + cateID) ;
 	});
 	if(cateID && cookieMoon) {
