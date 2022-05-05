@@ -1,0 +1,1640 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin-when-crossorigin">
+    <meta name="description" content="/etc/crontab文件和crontab -e命令区别1、格式不同前者# For details see man 4 crontabs# Example of job definition:# .">
+    <meta property="og:description" content="/etc/crontab文件和crontab -e命令区别1、格式不同前者# For details see man 4 crontabs# Example of job definition:# .">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>/etc/crontab文件和crontab -e命令区别 - 茄子_2008 - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="https://common.cnblogs.com/favicon.svg" type="image/svg+xml">
+    
+    <style>:not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([class*="language-"]):not([highlighted]):not(.hljs):not([class*="brush:"]) {
+        background: rgb(245, 245, 245);
+        padding: 5px;
+        border: 1px solid rgb(204, 204, 204);
+        border-radius: 3px;
+        border-color: transparent;
+        color: rgb(68, 68, 68);
+        font-family: "Courier New", sans-serif;
+    }:not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]):not([class*="brush:"]) code:not(.hljs) {
+            background: rgb(245, 245, 245) !important;
+            border-color: transparent !important;
+        }</style><link rel="stylesheet" href="_etc_crontab%E6%96%87%E4%BB%B6%E5%92%8Ccrontab%20-e%E5%91%BD%E4%BB%A4%E5%8C%BA%E5%88%AB_files/blog-common.css">
+    <link id="MainCss" rel="stylesheet" href="_etc_crontab%E6%96%87%E4%BB%B6%E5%92%8Ccrontab%20-e%E5%91%BD%E4%BB%A4%E5%8C%BA%E5%88%AB_files/bundle-stylepink.css">
+    <link id="highlighter-theme-cnblogs" type="text/css" rel="stylesheet" href="_etc_crontab%E6%96%87%E4%BB%B6%E5%92%8Ccrontab%20-e%E5%91%BD%E4%BB%A4%E5%8C%BA%E5%88%AB_files/cnblogs.css">
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="_etc_crontab%E6%96%87%E4%BB%B6%E5%92%8Ccrontab%20-e%E5%91%BD%E4%BB%A4%E5%8C%BA%E5%88%AB_files/bundle-stylepink-mobile.css">
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/xd502djj/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/xd502djj/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/xd502djj/wlwmanifest.xml">
+    <script type="text/javascript" async="" src="_etc_crontab%E6%96%87%E4%BB%B6%E5%92%8Ccrontab%20-e%E5%91%BD%E4%BB%A4%E5%8C%BA%E5%88%AB_files/analytics.js"></script><script type="text/javascript" src="_etc_crontab%E6%96%87%E4%BB%B6%E5%92%8Ccrontab%20-e%E5%91%BD%E4%BB%A4%E5%8C%BA%E5%88%AB_files/encoder.js"></script><script>
+        var currentBlogId = 48738;
+        var currentBlogApp = 'xd502djj';
+        var cb_enable_mathjax = false;
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'StylePink';
+        var visitorUserId = '';
+        var hasCustomScript = false;
+        try {
+            if (hasCustomScript && document.referrer && document.referrer.indexOf('baidu.com') >= 0) {
+                Object.defineProperty(document, 'referrer', { value: '' });
+                Object.defineProperty(Document.prototype, 'referrer', { get: function(){ return ''; } });
+            }
+        } catch(error) { }
+        window.codeHighlightEngine = 1;
+        window.enableCodeLineNumber = false;
+        window.codeHighlightTheme = 'cnblogs';
+    </script>
+        <script>
+            var currentPostDateAdded = '2015-02-15 13:13';
+        </script>
+    <script src="_etc_crontab%E6%96%87%E4%BB%B6%E5%92%8Ccrontab%20-e%E5%91%BD%E4%BB%A4%E5%8C%BA%E5%88%AB_files/jquery-2.js"></script>
+    <script src="_etc_crontab%E6%96%87%E4%BB%B6%E5%92%8Ccrontab%20-e%E5%91%BD%E4%BB%A4%E5%8C%BA%E5%88%AB_files/blog-common.js"></script><style type="text/css">.medium-zoom-overlay{position:fixed;top:0;right:0;bottom:0;left:0;opacity:0;transition:opacity .3s;will-change:opacity}.medium-zoom--opened .medium-zoom-overlay{cursor:pointer;cursor:zoom-out;opacity:1}.medium-zoom-image{cursor:pointer;cursor:zoom-in;transition:transform .3s cubic-bezier(.2,0,.2,1)!important}.medium-zoom-image--hidden{visibility:hidden}.medium-zoom-image--opened{position:relative;cursor:pointer;cursor:zoom-out;will-change:transform}</style><script id="hljs-script" async="" data-loaded="true" src="_etc_crontab%E6%96%87%E4%BB%B6%E5%92%8Ccrontab%20-e%E5%91%BD%E4%BB%A4%E5%8C%BA%E5%88%AB_files/highlight.js"></script>
+    
+    
+    
+<meta http-equiv="origin-trial" content="AxujKG9INjsZ8/gUq8+dTruNvk7RjZQ1oFhhgQbcTJKDnZfbzSTE81wvC2Hzaf3TW4avA76LTZEMdiedF1vIbA4AAABueyJvcmlnaW4iOiJodHRwczovL2ltYXNkay5nb29nbGVhcGlzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzVGhpcmRQYXJ0eSI6dHJ1ZX0="><meta http-equiv="origin-trial" content="Azuce85ORtSnWe1MZDTv68qpaW3iHyfL9YbLRy0cwcCZwVnePnOmkUJlG8HGikmOwhZU22dElCcfrfX2HhrBPAkAAAB7eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A16nvcdeoOAqrJcmjLRpl1I6f3McDD8EfofAYTt/P/H4/AWwB99nxiPp6kA0fXoiZav908Z8etuL16laFPUdfQsAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="AxBHdr0J44vFBQtZUqX9sjiqf5yWZ/OcHRcRMN3H9TH+t90V/j3ENW6C8+igBZFXMJ7G3Pr8Dd13632aLng42wgAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A88BWHFjcawUfKU3lIejLoryXoyjooBXLgWmGh+hNcqMK44cugvsI5YZbNarYvi3roc1fYbHA1AVbhAtuHZflgEAAAB2eyJvcmlnaW4iOiJodHRwczovL2dvb2dsZS5jb206NDQzIiwiZmVhdHVyZSI6IlRydXN0VG9rZW5zIiwiZXhwaXJ5IjoxNjUyNzc0NDAwLCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="AzoawhTRDevLR66Y6MROu167EDncFPBvcKOaQispTo9ouEt5LvcBjnRFqiAByRT+2cDHG1Yj4dXwpLeIhc98/gIAAACFeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjYxMjk5MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A6+nc62kbJgC46ypOwRsNW6RkDn2x7tgRh0wp7jb3DtFF7oEhu1hhm4rdZHZ6zXvnKZLlYcBlQUImC4d3kKihAcAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjYxMjk5MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A/9La288e7MDEU2ifusFnMg1C2Ij6uoa/Z/ylwJIXSsWfK37oESIPbxbt4IU86OGqDEPnNVruUiMjfKo65H/CQwAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjYxMjk5MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><script src="_etc_crontab%E6%96%87%E4%BB%B6%E5%92%8Ccrontab%20-e%E5%91%BD%E4%BB%A4%E5%8C%BA%E5%88%AB_files/pubads_impl_2022042801.js" async=""></script><link rel="preload" href="_etc_crontab%E6%96%87%E4%BB%B6%E5%92%8Ccrontab%20-e%E5%91%BD%E4%BB%A4%E5%8C%BA%E5%88%AB_files/integrator.js" as="script"><script type="text/javascript" src="_etc_crontab%E6%96%87%E4%BB%B6%E5%92%8Ccrontab%20-e%E5%91%BD%E4%BB%A4%E5%8C%BA%E5%88%AB_files/integrator.js"></script></head>
+<body class="skin-stylepink has-navbar">
+    <a name="top"></a>
+    <div id="top_nav" class="navbar forpc">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding">
+                    <a href="https://www.cnblogs.com/" title="开发者的网上家园" role="banner">
+                        <img src="_etc_crontab%E6%96%87%E4%BB%B6%E5%92%8Ccrontab%20-e%E5%91%BD%E4%BB%A4%E5%8C%BA%E5%88%AB_files/logo.svg" alt="博客园Logo">
+                    </a>
+                </li>
+                <li><a href="https://www.cnblogs.com/" onclick="countClicks('skin-navbar-sitehome')">首页</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="countClicks('nav', 'skin-navbar-news')">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="countClicks('nav', 'skin-navbar-q')">博问</a></li>
+                <li><a id="nav_brandzone" href="https://brands.cnblogs.com/huawei" onclick="countClicks('nav', 'skin-navbar-brands')">专区</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="countClicks('nav', 'skin-navbar-ing')">闪存</a></li>
+                <li><a href="https://edu.cnblogs.com/" onclick="countClicks('nav', 'skin-navbar-edu')">班级</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search" action="https://zzk.cnblogs.com/s" method="get" role="search">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="search" tabindex="3">
+                        <button type="submit" id="zzk_search_button">
+                            <img src="_etc_crontab%E6%96%87%E4%BB%B6%E5%92%8Ccrontab%20-e%E5%91%BD%E4%BB%A4%E5%8C%BA%E5%88%AB_files/search.svg" alt="搜索">
+                        </button>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔" style="display: none;">
+                        <img id="new_post_icon" class="navbar-icon" src="_etc_crontab%E6%96%87%E4%BB%B6%E5%92%8Ccrontab%20-e%E5%91%BD%E4%BB%A4%E5%8C%BA%E5%88%AB_files/newpost.svg" alt="写随笔">
+                    </a>
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客" style="display: none;">
+                        <img id="myblog_icon" class="navbar-icon" src="_etc_crontab%E6%96%87%E4%BB%B6%E5%92%8Ccrontab%20-e%E5%91%BD%E4%BB%A4%E5%8C%BA%E5%88%AB_files/myblog.svg" alt="我的博客">
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息" style="display: none;">
+                        <img id="msg_icon" class="navbar-icon" src="_etc_crontab%E6%96%87%E4%BB%B6%E5%92%8Ccrontab%20-e%E5%91%BD%E4%BB%A4%E5%8C%BA%E5%88%AB_files/message.svg" alt="短消息">
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <a id="navbar_lite_mode_indicator" data-current-page="blog" style="display: none" href="javascript:void(0)" alt="简洁模式" title="简洁模式启用，您在访问他人博客时会使用简洁款皮肤展示">
+                        <img class="navbar-icon" src="_etc_crontab%E6%96%87%E4%BB%B6%E5%92%8Ccrontab%20-e%E5%91%BD%E4%BB%A4%E5%8C%BA%E5%88%AB_files/lite-mode-on.svg" alt="简洁模式">
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown" style="display: none;">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="_etc_crontab%E6%96%87%E4%BB%B6%E5%92%8Ccrontab%20-e%E5%91%BD%E4%BB%A4%E5%8C%BA%E5%88%AB_files/avatar-default.svg" alt="用户头像">
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <img id="navbar_lite_mode_on" src="_etc_crontab%E6%96%87%E4%BB%B6%E5%92%8Ccrontab%20-e%E5%91%BD%E4%BB%A4%E5%8C%BA%E5%88%AB_files/lite-mode-check.svg" class="hide"><span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+                            <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup" style="display: inline;">注册</a>
+                    <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()" style="display: inline;">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div id="page_begin_html">
+        <b>声明：现大部分文章为寻找问题时在网上相互转载，在此博客中做个记录，方便自己也方便有类似问题的朋友，故原出处已不好查到，如有侵权，请发邮件表明文章和原出处地址，我一定在文章中注明。谢谢。</b>
+    </div>
+    <!--done-->
+<div id="banner">
+<!--done-->
+<div class="header">
+	<div class="headerText">
+		<a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/xd502djj/">董俊杰</a>
+<br>
+		<div class="headerDis">xd502djj@163.com---识大势，懂取舍！分主次，懂先后！
+<br><div>开放、透明、反思。<br>业务思维、结果导向、成本意识。</div></div>
+	</div>
+</div>
+
+</div>
+<div id="main">
+	<!-- right starts -->
+	<div id="right">
+		<div id="right_content">
+			<div id="mystats">
+				
+					<!--done-->
+<div class="blogStats">
+随笔- 603&nbsp;
+文章- 0&nbsp;
+评论- 143&nbsp;
+阅读- 
+<span title="总阅读数: 8278979">
+827万</span>&nbsp;
+</div>
+
+
+				
+			</div>
+			<div id="mylinks">
+
+<a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+&nbsp;&nbsp;
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/xd502djj/">
+首页</a>
+&nbsp;&nbsp;
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+&nbsp;&nbsp;
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/%E8%8C%84%E5%AD%90_2008">
+联系</a>&nbsp;&nbsp;
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+&nbsp;&nbsp;
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/xd502djj/rss/">
+订阅</a>&nbsp;
+<a id="blog_nav_rss_image" href="https://www.cnblogs.com/xd502djj/rss/">
+    <img src="_etc_crontab%E6%96%87%E4%BB%B6%E5%92%8Ccrontab%20-e%E5%91%BD%E4%BB%A4%E5%8C%BA%E5%88%AB_files/xml.gif" alt="订阅">
+</a>
+
+</div>
+			<div id="topics">
+				<div id="post_detail">
+<!--done-->
+<div class="post">
+	<div class="postTitle">
+		
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/xd502djj/p/4292781.html">
+    <span role="heading" aria-level="2">/etc/crontab文件和crontab -e命令区别</span>
+    
+</a><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button>
+
+	</div>
+	<div id="cnblogs_post_body" class="blogpost-body blogpost-body-html">
+<p>/etc/crontab文件和crontab -e命令区别</p>
+<p>1、格式不同</p>
+<p>前者</p>
+<p># For details see man 4 crontabs</p>
+<p># Example of job definition:<br># .---------------- minute (0 - 59)<br># |&nbsp; .------------- hour (0 - 23)<br># |&nbsp; |&nbsp; .---------- day of month (1 - 31)<br># |&nbsp; |&nbsp; |&nbsp; .------- month (1 - 12) OR jan,feb,mar,apr ...<br># |&nbsp; |&nbsp; |&nbsp; |&nbsp; .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat<br># |&nbsp; |&nbsp; |&nbsp; |&nbsp; |<br># *&nbsp; *&nbsp; *&nbsp; *&nbsp; * user-name command to be executed</p>
+<p>后者</p>
+<p>#50 1 * * *&nbsp; command</p>
+<p>2、使用范围</p>
+<pre class="best-text mb-10">修改/etc/crontab这种方法只有root用户能用，这种方法更加方便与直接直接给其他用户设置计划任务，而且还可以指定执行shell等等，<br>crontab -e这种所有用户都可以使用，普通用户也只能为自己设置计划任务。然后自动写入/var/spool/cron/usename</pre>
+<div>3.服务重启</div>
+<div>&nbsp;1 /etc/init.d/crond restart</div>
+<div>&nbsp;2 service crond restart</div>
+<pre class="best-text mb-10"><br>
+</pre>
+<div>
+<p><span style="color: rgba(237, 28, 36, 1)">1</span>、crontab 会进行语法检查，vi 不会<br><br>2、听说有些 os 的 crond 不会重读配置，所以用 service 重启</p>
+<p>crontab -e是某个用户的周期计划任务；/etc/crontab是系统的周期任务</p>
+<p>1. crontab -e 与 /etc/crontab 修改语法格式不一样，后者多一个 user 指定<br><br>2. 不管用 crontab -e or 改 /etc/crontab 都不需要重新启动 crond 服务</p>
+<p>01 22 * * * /sbin/shutdown -h now<br>执行的结果都是一样, 一般LINUX 都用shutdown -h now 也可以init 0<br>init 0在UNIX用得比较多,</p>
+<p>关机需要root的身份在可以执行,<br>lz可以选取方法操作<br>方法1<br>换到root 的身份<br>su - root<br>crontab -e (按a增加下)<br>01 22 * * * /sbin/shutdown -h now&nbsp;&nbsp; (或01 22 * * * /sbin/init 0)<br>保存退出即可以<br><br>方法2 vi /etc/crontab 在里面插入<br>01 22 * * * root&nbsp;&nbsp; /sbin/shutdown -h now<br>或 01 22 * * * root&nbsp;&nbsp; /sbin/init 0</p>
+<p><a href="http://blog.sina.com.cn/s/blog_4f925fc301018688.html" rel="noopener">http://blog.sina.com.cn/s/blog_4f925fc301018688.html</a>&nbsp;</p>
+</div>
+<p>&nbsp;</p>
+<p>crontab&nbsp;&nbsp; -e&nbsp;&nbsp; 
+是针对用户的cron来设计的，如果是系统的例行性任务，该怎么办？是否还是需要以crontab 
+-e来管理例行性命令？当然不需要，您只需要编辑/etc/crontab文件就可以了。需要注意的是：crontab 
+-e的作用其实是/usr/bin/crontab这个执行文件，但是/etc/crontab是个纯文本文件，可以root的身份编辑这个文件。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ 
+基本上，cron服务的最低检测时间单位是分钟，所以cron会每分钟读取一次/etc/crontab与/var/spool/cron中的数据内容，
+因此，只要您编辑完/etc/crontab文件并且保存之后，crontab时设定就会自动执行。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+注意：在linux下的crontab会自动帮我们每分钟重新读取一次/etc/crontab的例行工作事项，但是某些原因或在其他的unix系统中，
+由于crontab是读到内存中，所以在您修改完/etc/crontab之后可能并不会马上执行，这时请重新启动crond服务。<br>/etc/rc.d/init.d/crond&nbsp;&nbsp; restart</p>
+<p>好了，下面看看/etc/crontab文件的内容：<br>vi&nbsp;&nbsp; /etc/crontab</p>
+<p>SHELL=/bin/bash<br>PATH=/sbin:/bin:/usr/sbin:/usr/bin<br>MAILTO=root<br>HOME=/</p>
+<p>#&nbsp;&nbsp; run-parts<br>01 * * * * root&nbsp;&nbsp; nice&nbsp;&nbsp; -n&nbsp;&nbsp; 19&nbsp;&nbsp;&nbsp;&nbsp; run-parts&nbsp;&nbsp; /etc/cron.hourly<br>02 4 * * * root&nbsp;&nbsp; nice&nbsp;&nbsp; -n&nbsp;&nbsp; 19&nbsp;&nbsp;&nbsp; run-parts&nbsp;&nbsp; /etc/cron.daily<br>22 4 * * * root&nbsp;&nbsp;&nbsp; nice&nbsp;&nbsp; -n&nbsp;&nbsp; 19&nbsp;&nbsp; run-parts&nbsp;&nbsp; /etc/cron.weekly<br>42 4 1 * * root&nbsp;&nbsp; nice&nbsp;&nbsp; -n&nbsp;&nbsp;&nbsp; 19&nbsp; run-parts&nbsp;&nbsp; /etc/cron.monthly</p>
+<p>分时日月周&nbsp;&nbsp; 用户&nbsp;&nbsp; 参数设定值&nbsp;&nbsp; 参数设定值&nbsp;&nbsp; 指令段</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 从这个文件的内容可以看出，这个文件与输入crontab -e后的内容几乎完全相同，只是下面几个地方有所区别：</p>
+<p><br>MAILTO=root：这个字段说明了当/etc/crontab文件中的例行性命令发生错误时，会将错误信息或屏幕显示的信息传递给谁？由于root无法在客户端收信，因此，可以将这个email改成自己普通用户帐号。 <br>&nbsp;01
+ * * * * root&nbsp;&nbsp; nice&nbsp;&nbsp; -n&nbsp;&nbsp; 
+19&nbsp;&nbsp;&nbsp;&nbsp; run-parts&nbsp;&nbsp; 
+/etc/cron.hourly：在#run-parts这一行以后的命令，我们可以发现，5个数字后面接的是root，这代表执行的层级为root身
+份。当然，您也可以root改成其他身份，而run-parts表示后面接的是/etc/cron.hourly是一个目录内（/etc
+/cron.hourly)的所有可执行文件，也就是说每个小时的01分，系统会以root的身份到/etc/cron.hourly目录下执行所有可以
+执行的文件。系统本来就默认了这4个目录，您可以将每天需要执行的命令直接写到/etc/cron.daily中，还不需要用到crontab 
+-e程序，很方便。 </p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 注意：基本上，/etc/crontab支持两种输入指令的方式，一种是直接以指令形式输入，一种则是以目录形式输入。</p>
+<p>指令形式</p>
+<p>01&nbsp;&nbsp; * * * * test&nbsp;&nbsp; mail&nbsp;&nbsp; 
+-s&nbsp;&nbsp; test&nbsp;&nbsp; test&nbsp;&nbsp; &lt;&nbsp;&nbsp; 
+/home/test/test/test.txt<br>用户是test，且每小时执行一次指令mail……</p>
+<p>目录形式</p>
+<p>*/5&nbsp;&nbsp; *&nbsp; *&nbsp; *&nbsp; * root run-parts&nbsp;&nbsp; /root/runcron<br>建立一个/root/runcron目录，将每隔5分钟执行一次的可执行文件都写到该目录下，就可以让系统每5分钟执行一次该目录下的所有可执行文件。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ 这样就知道run-parts的作用了吧！此外，与crontab 
+-e规划中不同的是，多了一个用户层级的概念。通常，我们都是以root的角度来规划例行命令的，但是总有不需要root的场合，因此可以使用这个层级来
+规范该程序的用户所属。 </p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 如果每个流程都在同一时间启动，那么在某个时段，系统会非常的繁忙，所以这时必须分别设定。可以这样做：<br>1,6,11,16,21,26,31,36,41,46,51,56 * * * * root …………&nbsp;&nbsp; // 省略号代表命令<br>2,7,12,17,22,27,32,37,42,47,52,57 * * * * root ………… <br>3,8,13,18,23,28,33,38,43,48,53,58 * * * * root ………… <br>4,9,14,19,24,29,34,39,44,49,54,59 * * * * root ………… <br>&nbsp;注意，要用","分隔时，不要带有空格。如此一来，则可以将每5分钟工作的流程分别安排在不同的时刻进行。<br>文章出处：<a href="http://www.diybl.com/course/6_system/linux/Linuxjs/2008626/128554.html" rel="noopener">http://www.diybl.com/course/6_system/linux/Linuxjs/2008626/128554.html</a></p>
+<p>&nbsp;</p>
+<p>crontab是Unix和Linux用于设置周期性被执行的指令，是互联网很常用的技术，很多任务都会设置在crontab循环执行，如果不使用
+crontab，那么任务就是常驻程序，这对你的程序要求比较高，一个要求你的程序是24X7小时不宕机，一个是要求你的调度程序比较可靠，实际工作
+中，90%的程序都没有必要花这么多时间和精力去解决上面的两个问题的，只需要写好自己的业务逻辑，通过crond这个工业级程序去调度就行
+了，crond的可靠性，健壮性，大家应该是毫无疑问的。</p>
+<h2><strong>crontab简易入门</strong><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h2>
+<p>假设我要设置一个任务，每分钟就要做一个数据同步，这个同步脚本的路径是/home/blue/do/rsyncfile.sh，那么我可以在这么配置，使用blue用户，在终端输入</p>
+<div class="cnblogs_code">
+<pre>crontab -e
+# 此时会进入 vi 的编辑画面让您编辑工作！注意到，每项工作都是一行。
+#分 时 日  月 周      |&lt;==============任务的完整命令行
+ *  *  *  *  *       /home/blue/do/rsyncfile.sh</pre>
+</div>
+<p>默认情况下，任何使用者只要不被列入 /etc/cron.deny 当中，那么他就可以直接下达『 crontab -e 
+』去编辑自己的例行性命令了！整个过程就如同上面提到的，会进入 vi 的编辑画面， 然后以一个工作一行来编辑，编辑完毕之后输入『 :wq 
+』储存后离开 vi 就可以了！&nbsp;</p>
+<p>&nbsp;假如我们需要修改为每5分钟运行数据同步的脚本，那么同样使用 crontab -e 进入编辑：</p>
+<div class="cnblogs_code">
+<pre>*/5 * * * *  /home/blue/do/rsyncfile.sh</pre>
+</div>
+<p>假如服务器出了问题，有一天的数据没有同步，于是我们就需要补数据了，假设这个补数据的脚本是/home/blue/do
+/rsyncfile_day.sh,但是白天是高峰期，晚上用户不多，是低峰期，我们补数据会占用大量带宽，尤其是白天，会影响正常业务，所以一般我们
+可以让补数据任务在凌晨2点开始跑，那么同样使用crontab -e 进入编辑：</p>
+<div class="cnblogs_code">
+<pre>0 2 1 4 *  /home/blue/do/rsyncfile_day.sh</pre>
+</div>
+<p>这样，在4月1号凌晨2点0分就会开始启动我们的补数据的脚本了。</p>
+<p>同步数据，在互联网公司是再平常不过的任务了，这里大家可以看到crontab的魅力所在了，只需要写最简单的业务逻辑，把调度交给crond做，就完成了一个可靠性很高的一项任务了，如果要自己去额外写这种调度程序，不知道要花多少精力才能做到可靠稳定。</p>
+<h2><strong>crontab的语法</strong><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h2>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="_etc_crontab%E6%96%87%E4%BB%B6%E5%92%8Ccrontab%20-e%E5%91%BD%E4%BB%A4%E5%8C%BA%E5%88%AB_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre>crontab [-u username] [-l|-e|-r]
+选项与参数：
+-u  ：只有 root 才能进行这个任务，亦即帮其他使用者创建/移除 crontab 工作排程；
+-e  ：编辑 crontab 的工作内容
+-l  ：查阅 crontab 的工作内容
+-r  ：移除所有的 crontab 的工作内容，若仅要移除一项，请用 -e 去编辑</pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="_etc_crontab%E6%96%87%E4%BB%B6%E5%92%8Ccrontab%20-e%E5%91%BD%E4%BB%A4%E5%8C%BA%E5%88%AB_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p>查询使用者目前的 crontab 内容:</p>
+<div class="cnblogs_code">
+<pre>crontab -l
+*/5 * * * *  /home/blue/do/rsyncfile.sh
+0 2 1 4 *  /home/blue/do/rsyncfile_day.sh</pre>
+</div>
+<p>清空使用者目前的 crontab:</p>
+<div class="cnblogs_code">
+<pre>crontab -r
+crontab -l
+no crontab for blue</pre>
+</div>
+<p>如果你想删除当前用户的某一个crontab任务，那么使用crontab -e进入编辑器，再删除对应的任务。</p>
+<h2><strong>crontab的限制</strong><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h2>
+<p>　　<span class="text_import2">/etc/cron.allow：将可以使用 crontab 的帐号写入其中，若不在这个文件内的使用者则不可使用 crontab；</span></p>
+<p><span class="text_import2">　　/etc/cron.deny：将不可以使用 crontab 的帐号写入其中，若未记录到这个文件当中的使用者，就可以使用 crontab 。</span></p>
+<p>以优先顺序来说， /etc/cron.allow 比 /etc/cron.deny 要优先， 
+而判断上面，这两个文件只选择一个来限制而已，因此，建议你只要保留一个即可， 免得影响自己在配置上面的判断！一般来说，系统默认是保留 
+/etc/cron.deny ， 你可以将不想让他运行 crontab 的那个使用者写入 /etc/cron.deny 当中，一个帐号一行！</p>
+<h2><strong>&nbsp;/etc/crontab配置文件讲解</strong><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h2>
+<p>『 crontab -e 』是针对使用者的 cron 来设计的，如果是『系统的例行性任务』时，就要编辑&nbsp;<span class="text_import2">/etc/crontab&nbsp;这个文件。</span></p>
+<p>那就是 crontab -e 这个 crontab 其实是 /usr/bin/crontab 这个运行档，但是 /etc/crontab 可是一个『纯文字档』,必须用&nbsp;root 的身份编辑一下这个文件。</p>
+<p>首先我们要来看看crontab的文件内容</p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="_etc_crontab%E6%96%87%E4%BB%B6%E5%92%8Ccrontab%20-e%E5%91%BD%E4%BB%A4%E5%8C%BA%E5%88%AB_files/copycode.gif" alt="复制代码"></a></span></div>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a title="复制代码" rel="noopener"><img src="_etc_crontab%E6%96%87%E4%BB%B6%E5%92%8Ccrontab%20-e%E5%91%BD%E4%BB%A4%E5%8C%BA%E5%88%AB_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre>cat /etc/crontab
+
+# /etc/crontab: system-wide crontab
+# Unlike any other crontab you don't have to run the `crontab'
+# command to install the new version when you edit this file
+# and files in /etc/cron.d. These files also have username fields,
+# that none of the other crontabs do.
+
+SHELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+# m h dom mon dow user  command
+17 *    * * *   root    cd / &amp;&amp; run-parts --report /etc/cron.hourly
+25 6    * * *   root    test -x /usr/sbin/anacron || ( cd / &amp;&amp; run-parts --report /etc/cron.daily )
+47 6    * * 7   root    test -x /usr/sbin/anacron || ( cd / &amp;&amp; run-parts --report /etc/cron.weekly )
+52 6    1 * *   root    test -x /usr/sbin/anacron || ( cd / &amp;&amp; run-parts --report /etc/cron.monthly )</pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a title="复制代码" rel="noopener"><img src="_etc_crontab%E6%96%87%E4%BB%B6%E5%92%8Ccrontab%20-e%E5%91%BD%E4%BB%A4%E5%8C%BA%E5%88%AB_files/copycode.gif" alt="复制代码"></a></span></div>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="_etc_crontab%E6%96%87%E4%BB%B6%E5%92%8Ccrontab%20-e%E5%91%BD%E4%BB%A4%E5%8C%BA%E5%88%AB_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p>这个文件与将刚刚我们下达 crontab -e 的内容几乎完全一模一样！只是有几个地方不太相同</p>
+<p><span class="text_import1">PATH=....：<br><br>这里就是输入运行档的搜寻路径！使用默认的路径配置就已经很足够了！<br><br></span></p>
+<p>17 * &nbsp; &nbsp;* * * &nbsp; root &nbsp; &nbsp;cd / &amp;&amp; run-parts --report /etc/cron.hourly：<br><br>这个 /etc/crontab 里面预配置义出四项工作任务，分别是每小时、每天、每周及每个月分别进行一次的工作！ 但是在五个栏位后面接的并不是命令，而是一个新的栏位，那就是『<span class="text_import2">运行后面那串命令的身份』为何！这与使用者的 crontab -e 不相同。由於使用者自己的 crontab 并不需要指定身份，但 /etc/crontab 里面当然要指定身份啦！以上表的内容来说，系统默认的例行性工作是以 root 的身份来进行的。<br><br>那么后面那串命令是什么呢？你可以使用『&nbsp;<a href="http://vbird.dic.ksu.edu.tw/linux_basic/0220filemanager.php#file_find_cmd" rel="noopener">which</a>&nbsp;run-parts 』搜寻看看，其实那是一个 bash script 啦！如果你直接进入 /usr/bin/run-parts 去看看， 会发现这支命令会将后面接的『目录』内的所有文件捉出来运行！这也就是说『<span class="text_import2">&nbsp;如果你想让系统每小时主动帮你运行某个命令，将该命令写成 script，并将该文件放置到 /etc/cron.hourly/ 目录下即可』的意思！<br><br>现在你知道系统是如何进行他默认的一堆例行性工作排程了吗？如果你下达『 ll /etc/cron.daily 』就可以看到一堆文件， 那些文件就是系统提供的 script ，而这堆 scripts 将会在每天的凌晨 6:25 开始运行！</span></span></p>
+<p>假设你现在要作一个目录，让系统可以每 2 分钟去运行这个目录下的所有可以运行的文件，你可以写下如下的这一行在 /etc/crontab 中：</p>
+<div class="cnblogs_code">
+<pre>*/2 * * * * root run-parts /etc/cron.min</pre>
+</div>
+<p>当然罗， /etc/cron.min 这个目录是需要存在的喔！那如果我需要运行的是一个『程序』而已， 不需要用到一个目录呢？该如何是好？例如在侦测网络流量时，我们希望每五分钟侦测分析一次， 可以这样写：</p>
+<div class="cnblogs_code">
+<pre>*/5 * * * * root /bin/mrtg /etc/mrtg/mrtg.cfg</pre>
+</div>
+<p>如何！创建例行性命令很简单吧！如果你是系统管理员而且你的工作又是系统维护方面的例行任务时， 直接修改 /etc/crontab 这个文件即可喔！又便利，又方便管理呢！</p>
+<h2><strong>crontab的原理</strong><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h2>
+<p><span class="text_import2">当使用者使用 crontab 这个命令来创建工作排程之后，该项工作就会被纪录到 
+/var/spool/cron/ 里面去了，而且是以帐号来作为判别的喔！举例来说， blue 使用 crontab 后， 他的工作会被纪录到 
+/var/spool/cron/blue 里头去！但请注意，<span class="text_import2">不要使用 vi 
+直接编辑该文件， 因为可能由於输入语法错误，会导致无法运行 cron 喔！另外， cron 运行的每一项工作都会被纪录到 
+/var/log/cron 这个登录档中，所以罗，如果你的 Linux 不知道有否被植入木马时，也可以搜寻一下 /var/log/cron 
+这个登录档呢！</span></span></p>
+<p><span class="text_import2">&nbsp;crond服务的最低侦测限制是『分钟』，所以『 cron 
+会每分钟去读取一次 /etc/crontab 与 /var/spool/cron 里面的数据内容&nbsp;』，因此，只要你编辑完 
+/etc/crontab 这个文件，并且将他储存之后，那么 cron 的配置就自动的会来运行了！</span></p>
+<p>备注：在 Linux 底下的 crontab 会自动的帮我们每分钟重新读取一次 /etc/crontab 
+的例行工作事项，但是某些原因或者是其他的 Unix 系统中，由於 crontab 是读到内存当中的，所以在你修改完 /etc/crontab 
+之后，可能并不会马上运行， 这个时候请重新启动 crond 这个服务吧！『/etc/init.d/crond restart』&nbsp;</p>
+<h2><strong>crontab的格式讲解</strong><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h2>
+<p>每项工作 (每行) 的格式都是具有六个栏位，这六个栏位的意义为：</p>
+<div class="table-wrapper"><table cellspacing="0" cellpadding="3" border="1" bgcolor="lightyellow">
+<tbody>
+<tr bgcolor="#182448" align="center">
+<td>代表意义</td>
+<td>分钟</td>
+<td>小时</td>
+<td>日期</td>
+<td>月份</td>
+<td>周</td>
+<td>命令</td>
+</tr>
+<tr align="center">
+<td bgcolor="#182448">数字范围</td>
+<td>0-59</td>
+<td>0-23</td>
+<td>1-31</td>
+<td>1-12</td>
+<td>0-7</td>
+<td>呀就命令啊</td>
+</tr>
+</tbody>
+</table></div>
+<p>&nbsp;</p>
+<p>比较有趣的是那个『周』喔！周的数字为 0 或 7 时，都代表『星期天』的意思！另外， 还有一些辅助的字符，大概有底下这些：</p>
+<div class="table-wrapper"><table cellspacing="0" cellpadding="3" border="1" bgcolor="lightyellow">
+<tbody>
+<tr bgcolor="#182448" align="center">
+<td width="70">特殊字符</td>
+<td>代表意义</td>
+</tr>
+<tr>
+<td align="center">*(星号)</td>
+<td>代表任何时刻都接受的意思！举例来说，范例一内那个日、月、周都是 * ， 就代表著『不论何月、何日的礼拜几的 12:00 都运行后续命令』的意思！</td>
+</tr>
+<tr>
+<td align="center">,(逗号)</td>
+<td>代表分隔时段的意思。举例来说，如果要下达的工作是 3:00 与 6:00 时，就会是：
+<blockquote class="text_import2">0 3,6 * * * command</blockquote>
+时间参数还是有五栏，不过第二栏是 3,6 ，代表 3 与 6 都适用！</td>
+</tr>
+<tr>
+<td align="center">-(减号)</td>
+<td>代表一段时间范围内，举例来说， 8 点到 12 点之间的每小时的 20 分都进行一项工作：
+<blockquote class="text_import2">20 8-12 * * * command</blockquote>
+仔细看到第二栏变成 8-12 喔！代表 8,9,10,11,12 都适用的意思！</td>
+</tr>
+<tr>
+<td align="center">/n(斜线)</td>
+<td>那个 n 代表数字，亦即是『每隔 n 单位间隔』的意思，例如每五分钟进行一次，则：<br>
+<blockquote class="text_import2">*/5 * * * * command</blockquote>
+很简单吧！用 * 与 /5 来搭配，也可以写成 0-59/5 ，相同意思！<br><br></td>
+</tr>
+</tbody>
+</table></div>
+<p>&nbsp;</p>
+<h2 class="text_import1"><strong>周与日月不可同时并存</strong><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h2>
+<p>另一个需要注意的地方在於：『你可以分别以周或者是日月为单位作为循环，但你不可使用「几月几号且为星期几」的模式工作』。 这个意思是说，你不可以这样编写一个工作排程：</p>
+<div class="cnblogs_code">
+<pre>30 12 11 9 5 root echo "just test"   &lt;==这是错误的写法</pre>
+</div>
+<p>&nbsp;本来你以为九月十一号且为星期五才会进行这项工作，无奈的是，系统可能会判定每个星期五作一次，或每年的 9 月 11 号分别进行，如此一来与你当初的规划就不一样了～所以罗，得要注意这个地方！上述的写法是不对的！</p>
+<p>&nbsp;</p>
+<p>参考资料:<a href="http://vbird.dic.ksu.edu.tw/linux_basic/0430cron_3.php" rel="noopener">http://vbird.dic.ksu.edu.tw/linux_basic/0430cron_3.php</a></p>
+<p>　　　　&nbsp;<a href="http://baike.baidu.com/view/1229061.htm" rel="noopener">http://baike.baidu.com/view/1229061.htm</a></p>
+<p><a href="http://www.cnblogs.com/ggjucheng/archive/2012/08/19/2646763.html" rel="noopener">http://www.cnblogs.com/ggjucheng/archive/2012/08/19/2646763.html</a></p>
+<pre class="best-text mb-10"><br>
+
+
+</pre>
+</div>
+<div class="clear"></div>
+<div id="blog_post_info_block" role="contentinfo">
+<div id="EntryTag">
+    标签: 
+            <a href="https://www.cnblogs.com/xd502djj/tag/Linux/">Linux</a></div>
+
+    <div id="blog_post_info">
+<div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(4292781,cb_blogId,1);green_channel_success(this,'谢谢推荐！');">好文要顶</a>
+        <a id="green_channel_follow" onclick="follow('0a05470b-63cf-dd11-9e4d-001cf0cd104b');" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="_etc_crontab%E6%96%87%E4%BB%B6%E5%92%8Ccrontab%20-e%E5%91%BD%E4%BB%A4%E5%8C%BA%E5%88%AB_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="_etc_crontab%E6%96%87%E4%BB%B6%E5%92%8Ccrontab%20-e%E5%91%BD%E4%BB%A4%E5%8C%BA%E5%88%AB_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/xd502djj/" target="_blank"><img src="_etc_crontab%E6%96%87%E4%BB%B6%E5%92%8Ccrontab%20-e%E5%91%BD%E4%BB%A4%E5%8C%BA%E5%88%AB_files/sample_face.gif" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/xd502djj/">茄子_2008</a><br>
+            <a href="https://home.cnblogs.com/u/xd502djj/followees/">关注 - 12</a><br>
+            <a href="https://home.cnblogs.com/u/xd502djj/followers/">粉丝 - 574</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow">
+                <a href="javascript:void(0);" onclick="follow('0a05470b-63cf-dd11-9e4d-001cf0cd104b');return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(4292781,'Digg')">
+        <span class="diggnum" id="digg_count">4</span>
+    </div>
+    <div class="buryit" onclick="votePost(4292781,'Bury')">
+        <span class="burynum" id="bury_count">2</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+    <div class="clear"></div>
+    <div id="post_next_prev">
+
+    <a href="https://www.cnblogs.com/xd502djj/p/4290773.html" class="p_n_p_prefix">« </a> 上一篇：    <a href="https://www.cnblogs.com/xd502djj/p/4290773.html" data-featured-image="" title="发布于 2015-02-13 18:09">Sublime Text</a>
+    <br>
+    <a href="https://www.cnblogs.com/xd502djj/p/4293180.html" class="p_n_p_prefix">» </a> 下一篇：    <a href="https://www.cnblogs.com/xd502djj/p/4293180.html" data-featured-image="" title="发布于 2015-02-15 16:56">php提示Fatal error: Call to undefined function imagecreate()</a>
+
+</div>
+</div>
+	<div class="postDesc">posted on 
+<span id="post-date">2015-02-15 13:13</span>&nbsp;
+<a href="https://www.cnblogs.com/xd502djj/">茄子_2008</a>&nbsp;
+阅读(<span id="post_view_count">114207</span>)&nbsp;
+评论(<span id="post_comment_count">4</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=4292781" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(4292781);return false;">收藏</a>&nbsp;
+<a href="javascript:void(0)" onclick="reportManager.report({ currentUserId: '', targetType: 'blogPost', targetId: '4292781', targetLink: 'https://www.cnblogs.com/xd502djj/p/4292781.html', title: '/etc/crontab文件和crontab -e命令区别' })">举报</a></div>
+</div>
+
+
+
+<script>
+    var cb_entryId = 4292781, cb_entryCreatedDate = '2015-02-15 13:13', cb_postType = 1, cb_postTitle = '/etc/crontab文件和crontab -e命令区别';
+    var allowComments = true, cb_blogId = 48738, cb_blogApp = 'xd502djj', cb_blogUserGuid = '0a05470b-63cf-dd11-9e4d-001cf0cd104b';
+    mermaidRender.render()
+    markdown_highlight()
+    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");
+    updatePostStats(
+            [cb_entryId],
+            function(id, count) { $("#post_view_count").text(count) },
+            function(id, count) { $("#post_comment_count").text(count) })
+</script>
+<a id="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="#" onclick="return RefreshPage();">刷新页面</a><a href="#top">返回顶部</a></div>
+    <div id="comment_form_container" style="visibility: visible;"><div class="login_tips">
+    登录后才能查看或发表评论，立即 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return account.login('!comments');">登录</a> 或者
+    <a href="https://www.cnblogs.com/">逛逛</a> 博客园首页
+</div>
+</div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="cnblogs_ch"><a href="https://developer.huawei.com/consumer/cn/forum/topic/0203864577326150380?fid=0102767778349500527&amp;ha_source=bokeyuan" target="_blank" onclick="gtag('event', 'click', {'event_category': 'ad', 'event_label': 'T2-华为专区-千元开发板免费试用'})">【推荐】华为 OpenHarmony 千元开发板免费试用，盖楼赢取福利</a><br><a href="https://brands.cnblogs.com/huawei" target="_blank" onclick="gtag('event', 'click', {'event_category': 'ad', 'event_label': 'T2-华为专区'})">【推荐】华为开发者专区，与开发者一起构建万物互联的智能世界</a><br></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="under-post-card" style="display: none;">
+            <div id="div-gpt-ad-1592365906576-0" style="width: 300px; height: 250px; display: none;" data-google-query-id="COCw3bbex_cCFRONlgodgRwEQg"><div id="google_ads_iframe_/1090369/C1_0__container__" style="border: 0pt none; width: 300px; height: 0px;"></div></div>
+    </div>
+    <div id="under_post_card1"><div class="under-post-card">
+<b>编辑推荐：</b>
+<br>
+
+· <a href="https://www.cnblogs.com/tanshaoshenghao/p/16217608.html" target="_blank">通过代码解释什么是API，什么是SDK？</a>
+    <br>
+· <a href="https://www.cnblogs.com/wangpenghui522/p/16218816.html" target="_blank">记一次生产问题的排查，让我领略了算法的重要性</a>
+    <br>
+· <a href="https://www.cnblogs.com/coco1s/p/16201937.html" target="_blank">阴影进阶，实现更加的立体的阴影效果！</a>
+    <br>
+· <a href="https://www.cnblogs.com/tangshiye/p/16197792.html" target="_blank">如何写好B端产品的技术方案？</a>
+    <br>
+· <a href="https://www.cnblogs.com/panshenlian/p/16202533.html" target="_blank">[架构视角] 一篇文章带你彻底吃透Spring</a>
+    <br>
+</div></div>
+        <div id="cnblogs_c2" class="under-post-card">
+            <a href="https://developer.huawei.com/consumer/cn/forum/topic/0203864577326150380?fid=0102767778349500527&amp;ha_source=bokeyuan" rel="nofollow" target="_blank" onclick="countCreativeClicks('C2-华为专区-OpenHarmony开发板免费试用')">
+                <img src="_etc_crontab%E6%96%87%E4%BB%B6%E5%92%8Ccrontab%20-e%E5%91%BD%E4%BB%A4%E5%8C%BA%E5%88%AB_files/35695-20220429114503771-252983719.jpg" alt="" onload="countCreativeImpressions('C2-华为专区-OpenHarmony开发板免费试用')">
+            </a>
+        </div>
+    <div id="under_post_card2"><div class="itnews under-post-card">
+    <b>最新新闻</b>：
+    <br>
+ ·          <a href="https://news.cnblogs.com/n/720060/" target="_blank">Twitter去中心化开源分支Bluesky发布ADX早期测试版</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/720059/" target="_blank">科学家们担心NASA带回地球的火星样本可能存在外星病菌</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/720058/" target="_blank">Apple Watch SE 2将可能涨价并拥有更好的配置</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/720057/" target="_blank">研究发现中风的严重程度与某些肠道细菌菌株有关</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/720056/" target="_blank">Google去年共移除34亿条广告 停用超560万个广告商账户</a>
+        <br>
+    » <a href="https://news.cnblogs.com/" title="IT 新闻" target="_blank">更多新闻...</a>
+</div></div>
+    <div id="HistoryToday" class="under-post-card"></div>
+    <script type="text/javascript">
+        var commentManager = new blogCommentManager();
+        commentManager.renderComments(0);
+        fixPostBody();
+
+                        window.tocManager.displayDisableTocTips = false;
+                        window.tocManager.generateToc();
+            setTimeout(function() { incrementViewCount(cb_entryId); }, 50);        deliverT2();
+        deliverC1C2();
+        loadNewsAndKb();
+LoadPostCategoriesTags(cb_blogId, cb_entryId);        LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+        GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+        loadOptUnderPost();
+        GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    </script>
+</div>
+
+</div>
+
+
+			</div>
+		</div>
+	</div>
+	<!-- right ends -->
+	<!-- left starts -->
+	<div id="left">
+		<!-- 左侧工具部分 -->
+		<div id="left_content">
+			<div id="calendar"><div id="calendar"><div id="blog-calendar" style="">
+
+<table id="blogCalendar" class="Cal" title="Calendar" cellspacing="0" cellpadding="0" border="0">
+    <tbody>
+        <tr>
+            <td colspan="7">
+                <table class="CalTitle" cellspacing="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar('2022/04/05'); return false;">&lt;</a>
+                            </td>
+                            <td align="center">2022年5月</td>
+                            <td class="CalNextPrev" align="right">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar('2022/06/05'); return false;">&gt;</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    <tr>
+        <th class="CalDayHeader" abbr="日" scope="col" align="center">日</th>
+        <th class="CalDayHeader" abbr="一" scope="col" align="center">一</th>
+        <th class="CalDayHeader" abbr="二" scope="col" align="center">二</th>
+        <th class="CalDayHeader" abbr="三" scope="col" align="center">三</th>
+        <th class="CalDayHeader" abbr="四" scope="col" align="center">四</th>
+        <th class="CalDayHeader" abbr="五" scope="col" align="center">五</th>
+        <th class="CalDayHeader" abbr="六" scope="col" align="center">六</th>
+    </tr>
+            <tr>
+                        <td class="CalWeekendDay" align="center">
+                            1
+                        </td>
+                        <td class="" align="center">
+                            2
+                        </td>
+                        <td class="" align="center">
+                            3
+                        </td>
+                        <td class="" align="center">
+                            4
+                        </td>
+                        <td class="CalTodayDay" align="center">
+                            5
+                        </td>
+                        <td class="" align="center">
+                            6
+                        </td>
+                    <td class="CalWeekendDay" align="center">
+                        7
+                    </td>
+            </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            8
+                        </td>
+                            <td class="" align="center">
+                                9
+                            </td>
+                            <td class="" align="center">
+                                10
+                            </td>
+                            <td class="" align="center">
+                                11
+                            </td>
+                            <td class="" align="center">
+                                12
+                            </td>
+                            <td class="" align="center">
+                                13
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            14
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            15
+                        </td>
+                            <td class="" align="center">
+                                16
+                            </td>
+                            <td class="" align="center">
+                                17
+                            </td>
+                            <td class="" align="center">
+                                18
+                            </td>
+                            <td class="" align="center">
+                                19
+                            </td>
+                            <td class="" align="center">
+                                20
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            21
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            22
+                        </td>
+                            <td class="" align="center">
+                                23
+                            </td>
+                            <td class="" align="center">
+                                24
+                            </td>
+                            <td class="" align="center">
+                                25
+                            </td>
+                            <td class="" align="center">
+                                26
+                            </td>
+                            <td class="" align="center">
+                                27
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            28
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            29
+                        </td>
+                            <td class="" align="center">
+                                30
+                            </td>
+                            <td class="" align="center">
+                                31
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                1
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                2
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                3
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            4
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalOtherMonthDay" align="center">
+                            5
+                        </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                6
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                7
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                8
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                9
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                10
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            11
+                        </td>
+                </tr>
+    </tbody>
+</table></div></div>                
+                    <script>loadBlogDefaultCalendar();</script></div>
+			<div id="sidebar_news" class="newsItem"><!--done-->
+<!-- <h1 class="listtitle">公告</h1> -->
+<div class="newsItem">
+	
+<div id="blog-news">
+    <ul>
+<li>如果一件事情你觉得难的完不成，你可以把它分为若干步,并不断寻找合适的方法。最后你会发现你是个超人。不要给自己找麻烦，但遇到麻烦绝不怕，更不要退缩。</li>
+<li>电工查找电路不通点的最快方法是：分段诊断排除，快速定位。你有什么启示吗?</li>
+<li>求知若饥，虚心若愚。</li>
+<li>当你对一个事情掌控不足的时候，你需要做的就是“梳理”，并制定相应的规章制度，并使资源各司其职。</li>
+<li>官网永远是获得第一时间获得第一手资料的最佳通道。</li>
+<li>去繁归简:作为一个程序员，最痛恨的代码就是如老婆的裹脚布又臭又长一样的代码；最崇尚的就是清晰、简洁、模块化的代码。</li>
+<li>忌犹豫，宜果断。左右为难作不出决定是一个最坏的决定。</li>
+</ul>
+    <div id="profile_block">
+        昵称：
+        <a href="https://home.cnblogs.com/u/xd502djj/">
+            茄子_2008
+        </a>
+        <br>
+        园龄：
+        <a href="https://home.cnblogs.com/u/xd502djj/" title="入园时间：2008-12-02">
+            13年5个月
+        </a>
+        <br>
+        粉丝：
+        <a href="https://home.cnblogs.com/u/xd502djj/followers/">
+            574
+        </a>
+        <br>
+        关注：
+        <a href="https://home.cnblogs.com/u/xd502djj/followees/">
+            12
+        </a>
+        <div id="p_b_follow">
+<a href="javascript:void(0)" onclick="follow('0a05470b-63cf-dd11-9e4d-001cf0cd104b')">+加关注</a></div>
+        <script>getFollowStatus('0a05470b-63cf-dd11-9e4d-001cf0cd104b');</script>
+    </div>
+</div>
+</div>
+
+</div>
+<div id="sidebar_c3"></div>
+			
+				<div id="leftcontentcontainer">
+					<div id="blog-sidecolumn"><!-- 搜索 -->
+<div id="sidebar_search" class="sidebar-block">
+    <div id="sidebar_search" class="mySearch">
+        <h3 class="catListTitle">搜索</h3>
+        <div id="sidebar_search_box">
+            <div id="widget_my_zzk" class="div_my_zzk">
+                <input type="text" id="q" onkeydown="return zzk_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="zzk_go()" type="button" value="找找看" id="btnZzk" class="btn_my_zzk">
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<!-- 常用链接 -->
+<div id="sidebar_shortcut" class="sidebar-block">
+<h3 class="catListTitle">
+常用链接
+</h3>
+<ul>
+    
+<li><a href="https://www.cnblogs.com/xd502djj/p/" title="我的博客的随笔列表">我的随笔</a></li>
+<li><a href="https://www.cnblogs.com/xd502djj/MyComments.html" title="我的发表过的评论列表">我的评论</a></li>
+<li><a href="https://www.cnblogs.com/xd502djj/OtherPosts.html" title="我评论过的随笔列表">我的参与</a></li>
+<li><a href="https://www.cnblogs.com/xd502djj/RecentComments.html" title="我的博客的评论列表">最新评论</a></li>
+<li><a href="https://www.cnblogs.com/xd502djj/tag/" title="我的博客的标签列表">我的标签</a></li>
+
+</ul>
+</div>
+
+<!-- 最新随笔 -->
+
+
+<!-- 我的标签 -->
+<div id="sidebar_toptags" class="sidebar-block">
+<h3>我的标签</h3>
+<div id="MyTag">
+    <ul>
+                <li>
+            <a href="https://www.cnblogs.com/xd502djj/tag/Linux/">Linux<span class="tag-count">(110)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/xd502djj/tag/Java/">Java<span class="tag-count">(92)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/xd502djj/tag/Road/">Road<span class="tag-count">(59)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/xd502djj/tag/Oracle/">Oracle<span class="tag-count">(42)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/xd502djj/tag/Mysql/">Mysql<span class="tag-count">(40)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/xd502djj/tag/Tools/">Tools<span class="tag-count">(27)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/xd502djj/tag/C%2B%2B/">C++<span class="tag-count">(25)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/xd502djj/tag/hadoop/">hadoop<span class="tag-count">(21)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/xd502djj/tag/hive/">hive<span class="tag-count">(19)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/xd502djj/tag/PHP/">PHP<span class="tag-count">(18)</span></a>
+        </li>
+    <li>
+        <a href="https://www.cnblogs.com/xd502djj/tag/">更多</a>
+    </li>
+
+    </ul>
+</div>
+</div>
+
+<!-- 积分与排名 -->
+
+
+<!-- 随笔分类、随笔档案、文章分类、新闻分类、相册、链接 -->
+<div id="sidebar_categories">
+
+    <h1 class="catListTitle">
+        
+随笔档案
+
+
+
+    </h1>
+    <ul class="catList">
+            <li class="catListItem" data-category-list-item-visible="true" style="display: block">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2022/04.html" class="category-item-link" rel="" target="">2022年4月(1)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="true" style="display: block">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2022/03.html" class="category-item-link" rel="" target="">2022年3月(3)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="true" style="display: block">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2022/02.html" class="category-item-link" rel="" target="">2022年2月(1)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="true" style="display: block">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2022/01.html" class="category-item-link" rel="" target="">2022年1月(1)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="true" style="display: block">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2021/09.html" class="category-item-link" rel="" target="">2021年9月(1)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="true" style="display: block">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2021/08.html" class="category-item-link" rel="" target="">2021年8月(1)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="true" style="display: block">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2021/07.html" class="category-item-link" rel="" target="">2021年7月(2)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="true" style="display: block">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2021/06.html" class="category-item-link" rel="" target="">2021年6月(3)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="true" style="display: block">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2021/05.html" class="category-item-link" rel="" target="">2021年5月(1)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="true" style="display: block">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2021/04.html" class="category-item-link" rel="" target="">2021年4月(1)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="true" style="display: block">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2021/03.html" class="category-item-link" rel="" target="">2021年3月(1)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="true" style="display: block">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2021/02.html" class="category-item-link" rel="" target="">2021年2月(2)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="true" style="display: block">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2021/01.html" class="category-item-link" rel="" target="">2021年1月(2)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="true" style="display: block">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2020/12.html" class="category-item-link" rel="" target="">2020年12月(1)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="true" style="display: block">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2020/11.html" class="category-item-link" rel="" target="">2020年11月(1)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2020/10.html" class="category-item-link" rel="" target="">2020年10月(3)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2020/09.html" class="category-item-link" rel="" target="">2020年9月(2)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2020/08.html" class="category-item-link" rel="" target="">2020年8月(2)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2020/07.html" class="category-item-link" rel="" target="">2020年7月(10)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2020/06.html" class="category-item-link" rel="" target="">2020年6月(8)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2020/04.html" class="category-item-link" rel="" target="">2020年4月(3)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2020/03.html" class="category-item-link" rel="" target="">2020年3月(1)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2020/02.html" class="category-item-link" rel="" target="">2020年2月(1)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2020/01.html" class="category-item-link" rel="" target="">2020年1月(4)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2019/12.html" class="category-item-link" rel="" target="">2019年12月(1)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2019/11.html" class="category-item-link" rel="" target="">2019年11月(1)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2019/10.html" class="category-item-link" rel="" target="">2019年10月(2)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2019/09.html" class="category-item-link" rel="" target="">2019年9月(2)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2019/08.html" class="category-item-link" rel="" target="">2019年8月(4)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2019/07.html" class="category-item-link" rel="" target="">2019年7月(4)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2019/06.html" class="category-item-link" rel="" target="">2019年6月(5)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2019/05.html" class="category-item-link" rel="" target="">2019年5月(3)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2019/04.html" class="category-item-link" rel="" target="">2019年4月(1)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2019/03.html" class="category-item-link" rel="" target="">2019年3月(4)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2019/02.html" class="category-item-link" rel="" target="">2019年2月(4)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2019/01.html" class="category-item-link" rel="" target="">2019年1月(4)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2018/12.html" class="category-item-link" rel="" target="">2018年12月(1)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2018/11.html" class="category-item-link" rel="" target="">2018年11月(1)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2018/10.html" class="category-item-link" rel="" target="">2018年10月(2)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2018/09.html" class="category-item-link" rel="" target="">2018年9月(2)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2018/08.html" class="category-item-link" rel="" target="">2018年8月(5)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2018/07.html" class="category-item-link" rel="" target="">2018年7月(9)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2018/06.html" class="category-item-link" rel="" target="">2018年6月(3)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2018/05.html" class="category-item-link" rel="" target="">2018年5月(2)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2018/04.html" class="category-item-link" rel="" target="">2018年4月(5)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2018/03.html" class="category-item-link" rel="" target="">2018年3月(2)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2018/01.html" class="category-item-link" rel="" target="">2018年1月(4)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2017/12.html" class="category-item-link" rel="" target="">2017年12月(3)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2017/11.html" class="category-item-link" rel="" target="">2017年11月(5)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2017/10.html" class="category-item-link" rel="" target="">2017年10月(2)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2017/09.html" class="category-item-link" rel="" target="">2017年9月(4)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2017/08.html" class="category-item-link" rel="" target="">2017年8月(6)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2017/07.html" class="category-item-link" rel="" target="">2017年7月(6)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2017/06.html" class="category-item-link" rel="" target="">2017年6月(13)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2017/05.html" class="category-item-link" rel="" target="">2017年5月(3)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2017/04.html" class="category-item-link" rel="" target="">2017年4月(6)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2017/03.html" class="category-item-link" rel="" target="">2017年3月(9)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2017/02.html" class="category-item-link" rel="" target="">2017年2月(6)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2017/01.html" class="category-item-link" rel="" target="">2017年1月(4)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2016/12.html" class="category-item-link" rel="" target="">2016年12月(2)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2016/11.html" class="category-item-link" rel="" target="">2016年11月(7)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2016/10.html" class="category-item-link" rel="" target="">2016年10月(4)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2016/09.html" class="category-item-link" rel="" target="">2016年9月(1)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2016/08.html" class="category-item-link" rel="" target="">2016年8月(1)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2016/07.html" class="category-item-link" rel="" target="">2016年7月(1)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2016/06.html" class="category-item-link" rel="" target="">2016年6月(5)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2016/05.html" class="category-item-link" rel="" target="">2016年5月(2)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2016/03.html" class="category-item-link" rel="" target="">2016年3月(1)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2016/02.html" class="category-item-link" rel="" target="">2016年2月(1)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2016/01.html" class="category-item-link" rel="" target="">2016年1月(1)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2015/12.html" class="category-item-link" rel="" target="">2015年12月(3)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2015/11.html" class="category-item-link" rel="" target="">2015年11月(1)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2015/10.html" class="category-item-link" rel="" target="">2015年10月(3)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2015/09.html" class="category-item-link" rel="" target="">2015年9月(6)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2015/08.html" class="category-item-link" rel="" target="">2015年8月(2)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2015/07.html" class="category-item-link" rel="" target="">2015年7月(19)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2015/06.html" class="category-item-link" rel="" target="">2015年6月(2)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2015/05.html" class="category-item-link" rel="" target="">2015年5月(3)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2015/04.html" class="category-item-link" rel="" target="">2015年4月(8)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2015/03.html" class="category-item-link" rel="" target="">2015年3月(7)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2015/02.html" class="category-item-link" rel="" target="">2015年2月(8)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2015/01.html" class="category-item-link" rel="" target="">2015年1月(6)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2014/12.html" class="category-item-link" rel="" target="">2014年12月(6)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2014/11.html" class="category-item-link" rel="" target="">2014年11月(18)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2014/10.html" class="category-item-link" rel="" target="">2014年10月(1)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2014/09.html" class="category-item-link" rel="" target="">2014年9月(3)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2014/08.html" class="category-item-link" rel="" target="">2014年8月(8)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2014/07.html" class="category-item-link" rel="" target="">2014年7月(1)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2014/06.html" class="category-item-link" rel="" target="">2014年6月(3)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2014/05.html" class="category-item-link" rel="" target="">2014年5月(2)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2014/04.html" class="category-item-link" rel="" target="">2014年4月(1)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2014/03.html" class="category-item-link" rel="" target="">2014年3月(3)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2014/02.html" class="category-item-link" rel="" target="">2014年2月(3)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2014/01.html" class="category-item-link" rel="" target="">2014年1月(3)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2013/12.html" class="category-item-link" rel="" target="">2013年12月(7)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2013/11.html" class="category-item-link" rel="" target="">2013年11月(4)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2013/10.html" class="category-item-link" rel="" target="">2013年10月(2)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2013/09.html" class="category-item-link" rel="" target="">2013年9月(8)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2013/08.html" class="category-item-link" rel="" target="">2013年8月(10)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2013/07.html" class="category-item-link" rel="" target="">2013年7月(5)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2013/05.html" class="category-item-link" rel="" target="">2013年5月(6)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2013/04.html" class="category-item-link" rel="" target="">2013年4月(2)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2013/03.html" class="category-item-link" rel="" target="">2013年3月(4)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2013/02.html" class="category-item-link" rel="" target="">2013年2月(6)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2013/01.html" class="category-item-link" rel="" target="">2013年1月(8)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2012/12.html" class="category-item-link" rel="" target="">2012年12月(1)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2012/11.html" class="category-item-link" rel="" target="">2012年11月(5)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2012/10.html" class="category-item-link" rel="" target="">2012年10月(2)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2012/09.html" class="category-item-link" rel="" target="">2012年9月(5)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2012/08.html" class="category-item-link" rel="" target="">2012年8月(1)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2012/07.html" class="category-item-link" rel="" target="">2012年7月(4)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2012/06.html" class="category-item-link" rel="" target="">2012年6月(7)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2012/05.html" class="category-item-link" rel="" target="">2012年5月(1)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2012/04.html" class="category-item-link" rel="" target="">2012年4月(2)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2012/03.html" class="category-item-link" rel="" target="">2012年3月(5)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2012/01.html" class="category-item-link" rel="" target="">2012年1月(1)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2011/12.html" class="category-item-link" rel="" target="">2011年12月(3)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2011/11.html" class="category-item-link" rel="" target="">2011年11月(8)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2011/10.html" class="category-item-link" rel="" target="">2011年10月(1)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2011/09.html" class="category-item-link" rel="" target="">2011年9月(2)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2011/08.html" class="category-item-link" rel="" target="">2011年8月(4)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2011/07.html" class="category-item-link" rel="" target="">2011年7月(10)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2011/06.html" class="category-item-link" rel="" target="">2011年6月(3)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2011/05.html" class="category-item-link" rel="" target="">2011年5月(2)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2011/04.html" class="category-item-link" rel="" target="">2011年4月(2)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2011/03.html" class="category-item-link" rel="" target="">2011年3月(13)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2011/02.html" class="category-item-link" rel="" target="">2011年2月(4)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2011/01.html" class="category-item-link" rel="" target="">2011年1月(4)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2010/12.html" class="category-item-link" rel="" target="">2010年12月(4)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2010/11.html" class="category-item-link" rel="" target="">2010年11月(8)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2010/10.html" class="category-item-link" rel="" target="">2010年10月(2)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2010/09.html" class="category-item-link" rel="" target="">2010年9月(42)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2010/08.html" class="category-item-link" rel="" target="">2010年8月(18)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2010/07.html" class="category-item-link" rel="" target="">2010年7月(5)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2010/06.html" class="category-item-link" rel="" target="">2010年6月(5)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2010/05.html" class="category-item-link" rel="" target="">2010年5月(1)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2010/04.html" class="category-item-link" rel="" target="">2010年4月(3)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2010/03.html" class="category-item-link" rel="" target="">2010年3月(2)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2009/10.html" class="category-item-link" rel="" target="">2009年10月(1)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2009/07.html" class="category-item-link" rel="" target="">2009年7月(2)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2009/06.html" class="category-item-link" rel="" target="">2009年6月(6)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2009/03.html" class="category-item-link" rel="" target="">2009年3月(5)</a>
+
+            </li>                    <li class="catListItem" data-category-list-item-visible="false" style="display: none">
+                
+<a href="https://www.cnblogs.com/xd502djj/archive/2009/02.html" class="category-item-link" rel="" target="">2009年2月(7)</a>
+
+            </li>                <li class="catListItem"><a href="javascript:void(0)" onclick="sideColumnManager.loadMore(this)">更多</a></li>
+    </ul>
+</div>
+
+<!-- 最新评论 -->
+<!-- 阅读排行榜 -->
+<div id="sidebar_topviewedposts" class="sidebar-block">
+<div id="topview_posts_wrap">
+    <h3 class="catListTitle">阅读排行榜</h3>
+    <div id="TopViewPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/xd502djj/archive/2011/03/01/1968041.html">
+                            1. Linux查看CPU和内存使用情况(1283140)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/xd502djj/archive/2011/11/23/2260094.html">
+                            2. Linux添加/删除用户和用户组(643100)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/xd502djj/archive/2011/11/25/2263562.html">
+                            3. Linux 的cp命令(609596)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/xd502djj/archive/2011/07/21/2112683.html">
+                            4. java取整和java四舍五入方法(235070)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/xd502djj/p/3612131.html">
+                            5. linux shell 中的sleep命令(232846)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div></div>
+
+<!-- 评论排行榜 -->
+<div id="sidebar_topcommentedposts" class="sidebar-block"><div id="topfeedback_posts_wrap">
+    <h3 class="catListTitle">评论排行榜</h3>
+    <div id="TopFeedbackPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/xd502djj/archive/2011/03/01/1968041.html">
+                            1. Linux查看CPU和内存使用情况(12)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/xd502djj/p/9873067.html">
+                            2. volatile关键字的作用(10)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/xd502djj/archive/2011/11/23/2260094.html">
+                            3. Linux添加/删除用户和用户组(9)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/xd502djj/archive/2011/05/03/2035599.html">
+                            4. Linux下如何查看系统启动时间和运行时间(8)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/xd502djj/archive/2010/09/22/1832912.html">
+                            5. C++ Virtual详解(5)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div></div>
+
+<!-- 推荐排行榜 -->
+<div id="sidebar_topdiggedposts" class="sidebar-block">
+<div id="topdigg_posts_wrap">
+    <div class="catListView">
+        <h3 class="catListTitle">推荐排行榜</h3>
+        <div id="TopDiggPostsBlock">
+            <ul style="word-break: break-all">
+                        <li>
+                            <a href="https://www.cnblogs.com/xd502djj/archive/2011/03/01/1968041.html">
+                                1. Linux查看CPU和内存使用情况(31)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/xd502djj/archive/2011/11/23/2260094.html">
+                                2. Linux添加/删除用户和用户组(21)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/xd502djj/p/9873067.html">
+                                3. volatile关键字的作用(20)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/xd502djj/p/10940627.html">
+                                4. 透彻的掌握 Spring 中@transactional 的使用(13)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/xd502djj/archive/2011/11/25/2263562.html">
+                                5. Linux 的cp命令(12)
+                            </a>
+                        </li>
+            </ul>
+        </div>
+    </div>
+</div></div><div id="sidebar_recentcomments" class="sidebar-block"><div id="recent_comments_wrap" class="RecentComment">
+    <h3 class="catListTitle">最新评论</h3>
+    <div class="RecentCommentBlock">
+        <ul>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/xd502djj/p/9873172.html">1. Re:@ControllerAdvice + @ExceptionHandler 全局处理 Controller 层异常</a></li>
+                    <li class="recent_comment_body"><p>写的极为详细，很强。</p>
+</li>
+                    <li class="recent_comment_author">--Yao靠自己</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/xd502djj/p/12162335.html">2. Re:Maven3种打包方式之一maven-assembly-plugin的使用</a></li>
+                    <li class="recent_comment_body"><p>不明觉厉</p>
+</li>
+                    <li class="recent_comment_author">--nes_gnaw</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/xd502djj/p/4293180.html">3. Re:php提示Fatal error: Call to undefined function imagecreate()</a></li>
+                    <li class="recent_comment_body"><p>最上面图挂了。而且下面的函数列表不要空一行，浪费很多空间。特别是手机要滑很久。</p>
+</li>
+                    <li class="recent_comment_author">--sishenzaixian</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/xd502djj/p/10940627.html">4. Re:透彻的掌握 Spring 中@transactional 的使用</a></li>
+                    <li class="recent_comment_body"><p>博主，图片看不了了。</p>
+</li>
+                    <li class="recent_comment_author">--鹿鹿脖子长</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/xd502djj/p/7755639.html">5. Re:设备指纹(Device Fingerprinting)是什么？</a></li>
+                    <li class="recent_comment_body"><p>这种对克隆系统是否可行</p>
+</li>
+                    <li class="recent_comment_author">--秋色宜人</li>
+        </ul>
+    </div>
+</div></div>
+
+
+</div>
+                    <script>loadBlogSideColumn();</script>
+				</div>
+			
+		</div>
+		<!-- //右侧工具部分 -->
+	</div>
+	<!-- left ends -->	
+	<div class="clear"></div>
+</div>
+<div id="footer">
+	<!--done-->
+Copyright © 2022 茄子_2008
+<br><span id="poweredby">Powered by .NET 6 on Kubernetes</span>
+
+
+
+</div>
+
+
+    <div id="page_end_html">
+        <b>声明：现大部分文章为寻找问题时在网上相互转载，在此博客中做个记录，方便自己也方便有类似问题的朋友，故原出处已不好查到，如有侵权，请发邮件表明文章和原出处地址，我一定在文章中注明。谢谢。</b>
+    </div>
+
+    <input type="hidden" id="antiforgery_token" value="CfDJ8AuMt_3FvyxIgNOR82PHE4k8T1wH-uLf7KN4y_6NyxH32W8kZAnEF0C1YM3q75jsTJSd-ODk0BXT_lkhfuocw-TylC0WwqP2z8vMg0EEIlAOFO7ryWp7FQ9IR4lLHg1M-8AjEDeTlfv1K7HZ5Fb5-L8">
+        <script async="" src="_etc_crontab%E6%96%87%E4%BB%B6%E5%92%8Ccrontab%20-e%E5%91%BD%E4%BB%A4%E5%8C%BA%E5%88%AB_files/js.js"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        var kv = getGACustom();
+        if (kv) {
+            gtag('set', kv);
+        }
+        gtag('config', 'UA-476124-1');
+    </script>
+<script defer="defer" src="_etc_crontab%E6%96%87%E4%BB%B6%E5%92%8Ccrontab%20-e%E5%91%BD%E4%BB%A4%E5%8C%BA%E5%88%AB_files/hm.js"></script><iframe src="_etc_crontab%E6%96%87%E4%BB%B6%E5%92%8Ccrontab%20-e%E5%91%BD%E4%BB%A4%E5%8C%BA%E5%88%AB_files/container.html" style="visibility: hidden; display: none;"></iframe>
+
+<iframe src="https://www.google.com/recaptcha/api2/aframe" style="display: none;" width="0" height="0"></iframe></body></html>
