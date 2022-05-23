@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<!-- saved from url=(0039)https://www.jb51.net/article/135122.htm -->
+<html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script type="text/javascript" async="" src="./rsync指定ssh端口进行文件同步的方法_files/auto_dup"></script><script src="./rsync指定ssh端口进行文件同步的方法_files/f(6).txt"></script><script src="./rsync指定ssh端口进行文件同步的方法_files/f(7).txt"></script><script src="./rsync指定ssh端口进行文件同步的方法_files/f(8).txt" id="google_shimpl"></script><script type="text/javascript" async="" src="./rsync指定ssh端口进行文件同步的方法_files/dcsm"></script>
+
+
+<meta http-equiv="x-dns-prefetch-control" content="on">
+<link rel="dns-prefetch" href="https://img.jbzj.com/">
+<link rel="dns-prefetch" href="https://icws.jb51.net/">
+<link rel="dns-prefetch" href="https://files.jb51.net/">
+<meta name="applicable-device" content="pc">
+<meta name="renderer" content="webkit">
+<meta name="force-rendering" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+<meta http-equiv="Cache-Control" content="no-transform">
+<title>rsync指定ssh端口进行文件同步的方法_服务器其它_脚本之家</title>
+<meta name="keywords" content="rsync,ssh端口">
+<meta name="description" content="这篇文章主要介绍了rsync指定ssh端口进行文件同步的方法,需要的朋友可以参考下">
+<link rel="alternate" media="only screen and(max-width: 640px)" href="https://m.jb51.net/article/135122.htm">
+<meta http-equiv="mobile-agent" content="format=html5; url=https://m.jb51.net/article/135122.htm">
+<meta http-equiv="mobile-agent" content="format=xhtml; url=https://m.jb51.net/article/135122.htm">
+<script src="./rsync指定ssh端口进行文件同步的方法_files/hm.js"></script><script src="./rsync指定ssh端口进行文件同步的方法_files/push.js"></script><script type="text/javascript">
+    var tougao = "mdxy-dxy",
+        lmname = "服务器",
+        suoyin = "no";
+    (function() {
+        if (/Android|webOS|iPhone|iPad|Windows Phone|iPod|BlackBerry|SymbianOS|Nokia|Mobile|Opera Mini/i.test(navigator.userAgent)) {
+            var siteName = window.location.pathname,
+                url = window.location.href;
+            if (url.indexOf("?pc") < 0) {
+                try {
+                    if (typeof siteName !== "undefined") {
+                        window.location.href = "https://m.jb51.net" + siteName
+                    }
+                } catch (e) {}
+            }
+        }
+    })();
+</script>
+<meta name="referrer" content="always">
+<link type="text/css" href="./rsync指定ssh端口进行文件同步的方法_files/base.css" rel="stylesheet">
+<link type="text/css" href="./rsync指定ssh端口进行文件同步的方法_files/common.css" rel="stylesheet">
+<link type="text/css" href="./rsync指定ssh端口进行文件同步的方法_files/viewer.min.css" rel="stylesheet">
+<script type="text/javascript" src="./rsync指定ssh端口进行文件同步的方法_files/jquery.min.js"></script>
+<script type="text/javascript">
+    if (typeof jQuery == 'undefined') {
+        document.write(unescape("%3Cscript src='/skin/js/jquery.js' type='text/javascript'%3E%3C/script%3E"));
+    }
+</script>
+<script type="text/javascript" src="./rsync指定ssh端口进行文件同步的方法_files/functionutf.js"></script>
+<meta http-equiv="origin-trial" content="AxujKG9INjsZ8/gUq8+dTruNvk7RjZQ1oFhhgQbcTJKDnZfbzSTE81wvC2Hzaf3TW4avA76LTZEMdiedF1vIbA4AAABueyJvcmlnaW4iOiJodHRwczovL2ltYXNkay5nb29nbGVhcGlzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzVGhpcmRQYXJ0eSI6dHJ1ZX0="><meta http-equiv="origin-trial" content="Azuce85ORtSnWe1MZDTv68qpaW3iHyfL9YbLRy0cwcCZwVnePnOmkUJlG8HGikmOwhZU22dElCcfrfX2HhrBPAkAAAB7eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A16nvcdeoOAqrJcmjLRpl1I6f3McDD8EfofAYTt/P/H4/AWwB99nxiPp6kA0fXoiZav908Z8etuL16laFPUdfQsAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="AxBHdr0J44vFBQtZUqX9sjiqf5yWZ/OcHRcRMN3H9TH+t90V/j3ENW6C8+igBZFXMJ7G3Pr8Dd13632aLng42wgAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A88BWHFjcawUfKU3lIejLoryXoyjooBXLgWmGh+hNcqMK44cugvsI5YZbNarYvi3roc1fYbHA1AVbhAtuHZflgEAAAB2eyJvcmlnaW4iOiJodHRwczovL2dvb2dsZS5jb206NDQzIiwiZmVhdHVyZSI6IlRydXN0VG9rZW5zIiwiZXhwaXJ5IjoxNjUyNzc0NDAwLCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="AzoawhTRDevLR66Y6MROu167EDncFPBvcKOaQispTo9ouEt5LvcBjnRFqiAByRT+2cDHG1Yj4dXwpLeIhc98/gIAAACFeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjYxMjk5MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A6+nc62kbJgC46ypOwRsNW6RkDn2x7tgRh0wp7jb3DtFF7oEhu1hhm4rdZHZ6zXvnKZLlYcBlQUImC4d3kKihAcAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjYxMjk5MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A/9La288e7MDEU2ifusFnMg1C2Ij6uoa/Z/ylwJIXSsWfK37oESIPbxbt4IU86OGqDEPnNVruUiMjfKo65H/CQwAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjYxMjk5MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="AxujKG9INjsZ8/gUq8+dTruNvk7RjZQ1oFhhgQbcTJKDnZfbzSTE81wvC2Hzaf3TW4avA76LTZEMdiedF1vIbA4AAABueyJvcmlnaW4iOiJodHRwczovL2ltYXNkay5nb29nbGVhcGlzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzVGhpcmRQYXJ0eSI6dHJ1ZX0="><meta http-equiv="origin-trial" content="Azuce85ORtSnWe1MZDTv68qpaW3iHyfL9YbLRy0cwcCZwVnePnOmkUJlG8HGikmOwhZU22dElCcfrfX2HhrBPAkAAAB7eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A16nvcdeoOAqrJcmjLRpl1I6f3McDD8EfofAYTt/P/H4/AWwB99nxiPp6kA0fXoiZav908Z8etuL16laFPUdfQsAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="AxBHdr0J44vFBQtZUqX9sjiqf5yWZ/OcHRcRMN3H9TH+t90V/j3ENW6C8+igBZFXMJ7G3Pr8Dd13632aLng42wgAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A88BWHFjcawUfKU3lIejLoryXoyjooBXLgWmGh+hNcqMK44cugvsI5YZbNarYvi3roc1fYbHA1AVbhAtuHZflgEAAAB2eyJvcmlnaW4iOiJodHRwczovL2dvb2dsZS5jb206NDQzIiwiZmVhdHVyZSI6IlRydXN0VG9rZW5zIiwiZXhwaXJ5IjoxNjUyNzc0NDAwLCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="AzoawhTRDevLR66Y6MROu167EDncFPBvcKOaQispTo9ouEt5LvcBjnRFqiAByRT+2cDHG1Yj4dXwpLeIhc98/gIAAACFeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjYxMjk5MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A6+nc62kbJgC46ypOwRsNW6RkDn2x7tgRh0wp7jb3DtFF7oEhu1hhm4rdZHZ6zXvnKZLlYcBlQUImC4d3kKihAcAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjYxMjk5MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A/9La288e7MDEU2ifusFnMg1C2Ij6uoa/Z/ylwJIXSsWfK37oESIPbxbt4IU86OGqDEPnNVruUiMjfKo65H/CQwAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjYxMjk5MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><link rel="preload" href="./rsync指定ssh端口进行文件同步的方法_files/f(9).txt" as="script"><script type="text/javascript" src="./rsync指定ssh端口进行文件同步的方法_files/f(9).txt"></script><meta http-equiv="origin-trial" content="AxujKG9INjsZ8/gUq8+dTruNvk7RjZQ1oFhhgQbcTJKDnZfbzSTE81wvC2Hzaf3TW4avA76LTZEMdiedF1vIbA4AAABueyJvcmlnaW4iOiJodHRwczovL2ltYXNkay5nb29nbGVhcGlzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzVGhpcmRQYXJ0eSI6dHJ1ZX0="><meta http-equiv="origin-trial" content="Azuce85ORtSnWe1MZDTv68qpaW3iHyfL9YbLRy0cwcCZwVnePnOmkUJlG8HGikmOwhZU22dElCcfrfX2HhrBPAkAAAB7eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A16nvcdeoOAqrJcmjLRpl1I6f3McDD8EfofAYTt/P/H4/AWwB99nxiPp6kA0fXoiZav908Z8etuL16laFPUdfQsAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="AxBHdr0J44vFBQtZUqX9sjiqf5yWZ/OcHRcRMN3H9TH+t90V/j3ENW6C8+igBZFXMJ7G3Pr8Dd13632aLng42wgAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2NTI3NzQ0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A88BWHFjcawUfKU3lIejLoryXoyjooBXLgWmGh+hNcqMK44cugvsI5YZbNarYvi3roc1fYbHA1AVbhAtuHZflgEAAAB2eyJvcmlnaW4iOiJodHRwczovL2dvb2dsZS5jb206NDQzIiwiZmVhdHVyZSI6IlRydXN0VG9rZW5zIiwiZXhwaXJ5IjoxNjUyNzc0NDAwLCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="AzoawhTRDevLR66Y6MROu167EDncFPBvcKOaQispTo9ouEt5LvcBjnRFqiAByRT+2cDHG1Yj4dXwpLeIhc98/gIAAACFeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjYxMjk5MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A6+nc62kbJgC46ypOwRsNW6RkDn2x7tgRh0wp7jb3DtFF7oEhu1hhm4rdZHZ6zXvnKZLlYcBlQUImC4d3kKihAcAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjYxMjk5MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A/9La288e7MDEU2ifusFnMg1C2Ij6uoa/Z/ylwJIXSsWfK37oESIPbxbt4IU86OGqDEPnNVruUiMjfKo65H/CQwAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjYxMjk5MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><link rel="preload" href="./rsync指定ssh端口进行文件同步的方法_files/f(9).txt" as="script"><script type="text/javascript" src="./rsync指定ssh端口进行文件同步的方法_files/f(9).txt"></script><link rel="preload" href="./rsync指定ssh端口进行文件同步的方法_files/f(9).txt" as="script"><script type="text/javascript" src="./rsync指定ssh端口进行文件同步的方法_files/f(9).txt"></script></head>
+
+<body aria-hidden="false">
+    <!--topTools Start -->
+    <div id="topbar">
+        <div id="wrap">
+            <div class="topbarleft">
+                <a href="https://shequ.jb51.net/" target="_blank">脚本之家社区</a>
+                <a href="http://s.jb51.net/" target="_blank" rel="nofollow">服务器常用软件</a>
+            <a href="https://www.yuanshichang.com/" target="_blank" style="color:red">源码商城</a></div>
+            <div class="fr">
+                <ul>
+                    <li><i class="ico-mobile"></i><a target="_blank" href="https://m.jb51.net/" rel="nofollow">手机版</a></li>
+                    <li><i class="ico-contribute"></i><a href="http://tougao.jb51.net/" rel="nofollow" target="_blank">投稿中心</a></li>
+                    <li id="wxHide"><i class="ico-wechat"></i><a href="javascript:void(0)" target="_blank">关注微信</a>
+                        <div id="wxShow" class="wxHide_box"><img src="./rsync指定ssh端口进行文件同步的方法_files/erwm.jpg" alt="扫一扫" width="84" hight="84" data-baiduimageplus-ignore=""></div>
+                    </li>
+                </ul>
+                <!--快捷导航 开始 -->
+                <div class="text_d right" id="navHide">
+                    <a rel="nofollow" href="javascript:void(0);">快捷导航 <i class="arrowright"></i></a>
+                    <div id="navBox" class="nwebnav">
+                        <div class="ndeallist clear_fix">
+                            <h4><a rel="nofollow" href="https://www.jb51.net/softs/" target="_blank">软件下载</a></h4>
+                            <dl>
+                                <dd>
+                                    <a rel="nofollow" href="https://www.jb51.net/softs/android.html" target="_blank">android</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/softs/mac.html" target="_blank">MAC</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/qudong/" target="_blank">驱动下载</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/fonts/" target="_blank">字体下载</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/dll/" target="_blank">DLL</a>
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="ndeallist clear_fix">
+                            <h4><a rel="nofollow" href="https://www.jb51.net/codes/" target="_blank">源码下载</a></h4>
+                            <dl>
+                                <dd>
+                                    <a rel="nofollow" href="https://www.jb51.net/codes/php.html" target="_blank">PHP</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/codes/aspnet.html" target="_blank">ASP.NET</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/codes/asp.html" target="_blank">ASP</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/codes/jsp.html" target="_blank">JSP</a>
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="ndeallist clear_fix">
+                            <h4><a rel="nofollow" href="https://www.jb51.net/list/index_84.htm" target="_blank">软件编程</a></h4>
+                            <dl>
+                                <dd>
+                                    <a rel="nofollow" href="https://www.jb51.net/list/list_85_1.htm" target="_blank">C#</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/list/list_134_1.htm" target="_blank">JAVA</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/list/list_159_1.htm" target="_blank">C 语言</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/list/list_206_1.htm" target="_blank">Delphi</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/list/list_233_1.htm" target="_blank">Android</a>
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="ndeallist clear_fix">
+                            <h4><a rel="nofollow" href="https://www.jb51.net/list/index_1.htm" target="_blank">网络编程</a></h4>
+                            <dl>
+                                <dd>
+                                    <a rel="nofollow" href="https://www.jb51.net/list/list_15_1.htm" target="_blank">PHP</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/list/list_21_1.htm" target="_blank">ASP.NET</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/list/list_2_1.htm" target="_blank">ASP</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/list/list_3_1.htm" target="_blank">JavaScript</a>
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="ndeallist clear_fix">
+                            <h4><a rel="nofollow" href="http://tools.jb51.net/" target="_blank">在线工具</a></h4>
+                            <dl>
+                                <dd>
+                                    <a rel="nofollow" href="https://www.jb51.net/tools/cssyasuo.shtml" target="_blank">CSS格式化</a>
+                                    <a rel="nofollow" href="http://tools.jb51.net/tools/js_geshihua.asp" target="_blank">JS格式化</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/tools/html-js.htm" target="_blank">Html转化为Js</a>
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="ndeallist clear_fix">
+                            <h4><a rel="nofollow" href="https://www.jb51.net/list/index_104.htm" target="_blank">数据库</a></h4>
+                            <dl>
+                                <dd>
+                                    <a rel="nofollow" href="https://www.jb51.net/list/list_112_1.htm" target="_blank">MYSQL</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/list/list_113_1.htm" target="_blank">MSSQL</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/list/list_154_1.htm" target="_blank">oracle</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/list/list_155_1.htm" target="_blank">DB2</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/list/list_252_1.htm" target="_blank">MARIADB</a>
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="ndeallist clear_fix">
+                            <h4><a rel="nofollow" href="https://www.jb51.net/cms/" target="_blank">CMS</a></h4>
+                            <dl>
+                                <dd>
+                                    <a rel="nofollow" href="https://www.jb51.net/cms/list411_1.html" target="_blank">PHPCMS</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/cms/list408_1.html" target="_blank">DEDECMS</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/cms/list578_1.html" target="_blank">帝国CMS</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/cms/list419_1.html" target="_blank">WordPress</a>
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="ndeallist clear_fix">
+                            <h4><a rel="nofollow" href="javascript:0;" target="_blank">常用工具</a></h4>
+                            <dl>
+                                <dd>
+                                    <a rel="nofollow" href="https://www.jb51.net/zt/phphuanjing.html" target="_blank">PHP开发工具</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/zt/python.html" target="_blank">python</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/zt/photoshopxz.html" target="_blank">Photoshop</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/bibei/win/index.html" target="_blank">必备软件</a>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+                <!--快捷导航 结束 -->
+            </div>
+        </div>
+    </div>
+    <!--topTools end -->
+
+    <div id="header">
+        <!-- Logo start -->
+        <div id="logo"><a href="https://www.jb51.net/"><img src="./rsync指定ssh端口进行文件同步的方法_files/logo.gif" title="脚本之家" alt="脚本之家"></a></div>
+        <div class="logom fl"><a href="tencent://message/?uin=3522365&amp;Site=//www.jb51.net" target="_blank"><img src="./rsync指定ssh端口进行文件同步的方法_files/zhaozu430.jpg" width="430" height="60"></a></div>
+        <div class="logor fr"><a href="https://ziyuan.jb51.net/" target="_blank"><img src="./rsync指定ssh端口进行文件同步的方法_files/ziyuan430.png" width="430" height="60"></a></div>
+        <!--Logo end -->
+    </div>
+    <!--Logo end -->
+
+    <!-- 导航开始 -->
+    <div id="nav">
+        <ul>
+            <li><a href="https://www.jb51.net/">网站首页</a></li>
+            <li><a href="https://www.jb51.net/web/">网页制作</a></li>
+            <li><a href="https://www.jb51.net/list/index_1.htm">网络编程</a></li>
+            <li><a href="https://www.jb51.net/list/index_96.htm">脚本专栏</a></li>
+            <li><a href="https://www.jb51.net/jiaoben/">脚本下载</a></li>
+            <li><a href="https://www.jb51.net/list/index_104.htm">数据库</a></li>
+            <li><a href="https://www.jb51.net/list/list_82_1.htm">服务器</a></li>
+            <li><a href="https://www.jb51.net/books/">电子书籍</a></li>
+            <li><a href="https://www.jb51.net/os/">操作系统</a></li>
+            <li><a href="https://www.jb51.net/yunying/">网站运营</a></li>
+            <li><a href="https://www.jb51.net/pingmian/">平面设计</a></li>
+            <li>
+                <p><i>其它</i><span>
+                        <a href="https://www.jb51.net/media/">媒体动画</a>
+                        <a href="https://www.jb51.net/diannaojichu/">电脑基础</a>
+                        <a href="https://www.jb51.net/hardware/">硬件教程</a>
+                        <a href="https://www.jb51.net/hack/">网络安全</a>
+                    </span></p>
+            </li>
+        </ul>
+    </div>
+    <!--导航结束-->
+
+    <!-- 二级菜单开始 -->
+    <div id="submenu">
+        <div class="subnav clearfix">
+            <ul><li><a href="https://www.jb51.net/list/list_192_1.htm" title="星外虚拟主机">星外虚拟主机</a></li>
+<li><a href="https://www.jb51.net/list/list_193_1.htm" title="华众虚拟主机">华众虚拟主机</a></li>
+<li><a href="https://www.jb51.net/list/list_203_1.htm" title="Linux">Linux</a></li>
+<li><a href="https://www.jb51.net/list/list_204_1.htm" title="win服务器">win服务器</a></li>
+<li><a href="https://www.jb51.net/list/list_218_1.htm" title="FTP服务器">FTP服务器</a></li>
+<li><a href="https://www.jb51.net/list/list_219_1.htm" title="DNS服务器">DNS服务器</a></li>
+<li><a href="https://www.jb51.net/list/list_223_1.htm" title="Tomcat ">Tomcat </a></li>
+<li><a href="https://www.jb51.net/list/list_226_1.htm" title="nginx">nginx</a></li>
+<li><a href="https://www.jb51.net/list/list_247_1.htm" title="zabbix">zabbix</a></li>
+<li><a href="https://www.jb51.net/list/list_255_1.htm" title="云和虚拟化">云和虚拟化</a></li>
+<li><a href="https://www.jb51.net/list/list_220_1.htm" title="服务器其它">服务器其它</a></li>
+</ul>
+        </div>
+    </div>
+    <!-- 二级菜单结束 -->
+
+    <!--content Star -->
+    <div id="wrapper" style="height: auto !important;">
+        <div id="container" style="height: auto !important;">
+            <div class="pt10 clearfix">
+                <div class="clearfix"><div class="mainlr"><a href="https://www.yundun.com/ddos?jihua=%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6&amp;zu=%E9%95%BF%E5%9B%BE&amp;guanjianci=%E4%BA%A7%E5%93%81%E7%BD%97%E5%88%97&amp;e_creative={creative}&amp;e_pagenum={pagenum}&amp;e_keywordid={keywordid}" target="_blank"><img src="./rsync指定ssh端口进行文件同步的方法_files/yundun1200.png" alt="" width="1200" height="50"><span><img src="./rsync指定ssh端口进行文件同步的方法_files/tu.jpg" width="29" height="16" alt=""></span></a></div><div class="blank5"></div><div class="topimg"><ul><li><a href="http://www.uuh5.com/?jb51" target="_blank"><img alt="" src="./rsync指定ssh端口进行文件同步的方法_files/uuh5235.gif" width="235" height="50"></a></li><li><a href="http://www.cnzlapp.com/" target="_blank"><img alt="" src="./rsync指定ssh端口进行文件同步的方法_files/cnzlapp210.gif" width="235" height="50"></a></li><li><a href="http://github.crmeb.net/u/jiaobenzhijia" target="_blank"><img alt="" src="./rsync指定ssh端口进行文件同步的方法_files/crmeb235.gif" width="235" height="50"></a></li><li><a href="http://www.ku86.com/" target="_blank"><img alt="" src="./rsync指定ssh端口进行文件同步的方法_files/jieidc_237.gif" width="235" height="50"></a></li><li><a href="https://www.8a.hk/server/" target="_blank"><img alt="" src="./rsync指定ssh端口进行文件同步的方法_files/8a210.gif" width="235" height="50"></a></li></ul></div><div class="blank5"></div><div id="txtlink"><ul><li><a href="https://www.redidc.net/" target="_blank"><span style="color: red;">公网kali镜像VPS 红队云为安全从业者服务</span></a></li><li><a href="http://www.uuwaf.com/" target="_blank"><span style="color: red;">网站全球加速和超级防御[优优加速]</span></a></li><li><a href="http://go.yitanyun.com/url/51jbwz/" target="_blank"><span style="color: red;">▍易探云 ▍香港云主机=9元</span></a></li><li><a href="http://www.zoneidc.com/" target="_blank"><span style="color: red;">香港/美国/韩国等十五国云服务器9.9元/月起</span></a></li><li><a href="http://www.boluoyun.com/" target="_blank"><span style="color: blue;">【菠萝云】来了,【正规商家】香港4G内存99元</span></a></li><li><a href="http://wpa.qq.com/msgrd?v=3&amp;uin=1006456867&amp;site=qq&amp;menu=yes" target="_blank"><span style="color: blue;">██机房大带宽机柜Q:1006456867██</span></a></li><li><a href="tencent://message/?uin=3522365&amp;Site=//www.jb51.net" target="_blank"><span style="color: blue;">广告联系QQ3522365</span></a></li><li><a href="tencent://message/?uin=3522365&amp;Site=//www.jb51.net" target="_blank"><span style="color: blue;">广告联系QQ3522365</span></a></li><li><a href="tencent://message/?uin=3522365&amp;Site=//www.jb51.net" target="_blank"><span style="color: red;">广告联系QQ3522365</span></a></li><li><a href="https://s.jb51.net/" target="_blank"><span style="color: red;">服务器常用软件</span></a></li><li><a href="http://www.hostspaceidc.com/front/products/datacenter?from=jb51-pic" target="_blank"><span style="color: red;">海外大带宽 站群 高防服务器</span></a></li><li><a href="http://www.centcc.com/" target="_blank"><span style="color: red;">北京闪迅 机架3900元 BGP带宽</span></a></li><li><a href="https://www.wsisp.com/cloud.html" target="_blank"><span style="color: blue;">香港CN2云主机★29元/月</span></a></li><li><a href="http://www.qy.com.cn/" target="_blank"><span style="color: blue;">群英云服务器送10M带宽30G防御,49元起</span></a></li><li><a href="http://www.tuidc.com/" target="_blank"><span style="color: blue;">服务器租用/托管-域名空间/认准腾佑科技</span></a></li><li><a href="http://www.vzidc.com/cloud/" target="_blank"><span style="color: blue;">华为云4核8g限时免费送另有代金券免费送</span></a></li><li><a href="http://www.ushk.net/server.html" target="_blank"><span style="color: red;">██美港数据██高端香港服务器租用</span></a></li><li><a href="http://vps.zzidc.com/tongji/jb51w.html" target="_blank"><span style="color: red;">★☆云服务器5折，天天抽红包抵扣☆★</span></a></li><li><a href="https://s.jb51.net/" target="_blank"><span style="color: red;">服务器常用软件</span></a></li><li><a href="https://www.dzisp.cn/" target="_blank"><span style="color: red;">成都|德阳|电信100G高防24核物理机500元</span></a></li><li><a href="http://www.pppoevps.com/" target="_blank"><span style="color: blue;">█动态拨号IP云主机，电信ADSL独享20M█ </span></a></li><li><a href="http://www.360jq.com/hkshuang.htm" target="_blank"><span style="color: blue;">[香港双高防]无视CC★DDOS/堪比广东！</span></a></li><li><a href="http://www.cyidc.cc/" target="_blank"><span style="color: blue;">畅游网络 百独服务器 包跑满 998元</span></a></li><li><a href="http://www.wdw6.com/" target="_blank"><span style="color: blue;">bgp多线机房、大带宽</span></a></li><li><a href="http://www.ssf.cc/" target="_blank"><span style="color: red;">免备vps20/百独799/双线350/45互联</span></a></li><li><a href="http://www.zitian.cn/" target="_blank"><span style="color: red;">中原地区核心数据中心，月付299元起</span></a></li><li><a href="http://www.qy.cn/gfhd.html" target="_blank"><span style="color: red;">██群英网络██◆◆◆300G高防仅需599元◆◆◆</span></a></li><li><a href="https://www.zj-idc.com/" target="_blank"><span style="color: red;">上云就选华晨云，每天最低仅需1.2元</span></a></li><li><a href="http://www.gwidc.com/rent/home/index.html" target="_blank"><span style="color: blue;">港湾网络徐州百独800/月,100G高防云150</span></a></li><li><a href="http://www.hkcn2.com/51.htm" target="_blank"><span style="color: blue;">**香港高防10m大带宽独服，低至999元**</span></a></li><li><a href="http://www.xiaozhiyun.com/2016/" target="_blank"><span style="color: blue;">韩国香港美国站群服务器 巨牛网络</span></a></li><li><a href="http://tianyi.jb51.net/" target="_blank"><span style="color: blue;">天翼云，云主机，云存储，云安全</span></a></li></ul><div class="clearfix"></div></div><div class="blank5"></div><div class="topimg"><ul><li><a href="https://www.hncloud.com/activity_register.html?p=jb51&amp;register" target="_blank"><img alt="" src="./rsync指定ssh端口进行文件同步的方法_files/huana235_331.gif" width="235" height="50"></a></li><li><a href="http://51.jhfcec.com/" target="_blank"><img alt="" src="./rsync指定ssh端口进行文件同步的方法_files/gkcnvnj235.gif" width="235" height="50"></a></li><li><a href="https://ke.qq.com/course/3548735?tuin=a8309c08" target="_blank"><img alt="" src="./rsync指定ssh端口进行文件同步的方法_files/zimeiti.gif" width="235" height="50"></a></li><li><a href="https://www.henghost.com/coupons.shtml?s=zz&amp;jb51" target="_blank"><img alt="" src="./rsync指定ssh端口进行文件同步的方法_files/hc2352.gif" width="235" height="50"></a></li><li><a href="https://www.zndata.com/dedicatedserver/" target="_blank"><img alt="" src="./rsync指定ssh端口进行文件同步的方法_files/zoneidc235.gif" width="235" height="50"></a></li></ul></div><div class="blank5"></div></div>
+            </div>
+
+            <div class="clearfix">
+                <div class="breadcrumb">
+                    <i class="ico-path"></i>您的位置：<a href="https://www.jb51.net/">首页</a> → <a href="https://www.jb51.net/list/index_27.htm" title="网站技巧">网站技巧</a> → <a href="https://www.jb51.net/list/list_82_1.htm" title="服务器">服务器</a> → <a href="https://www.jb51.net/list/list_220_1.htm" title="服务器其它">服务器其它</a> → rsync指定ssh端口
+                </div>
+                <div class="search">
+                    <form action="https://www.jb51.net/do/search.php" target="_blank">
+                        <input type="hidden" name="s" value="10520733385329581432">
+                        <input type="hidden" name="ie" value="utf-8">
+                        <input type="text" name="q" class="searchinput" placeholder="请输入关键词">
+                        <input type="submit" value=" " class="search-button">
+                    </form>
+                </div>
+            </div>
+
+            <div id="main" class="clearfix" style="height: auto !important;">
+                <div class="main-left" style="height: auto !important;">
+                    <div id="article" style="height: auto !important;">
+                        <h1 class="title">rsync指定ssh端口进行文件同步的方法</h1>
+                        <div class="info"> &nbsp;更新时间：2018年02月17日 14:35:18 &nbsp; 投稿：mdxy-dxy &nbsp; </div>
+                        <div class="lbd clearfix"></div>
+                        <div class="summary">这篇文章主要介绍了rsync指定ssh端口进行文件同步的方法,需要的朋友可以参考下</div>
+                        <div class="lbd clearfix"><script async="" src="./rsync指定ssh端口进行文件同步的方法_files/f(10).txt"></script><ins class="adsbygoogle" style="display: block; height: 280px;" data-ad-client="ca-pub-6384567588307613" data-ad-slot="3921475131" data-ad-format="auto" data-adsbygoogle-status="done" data-ad-status="filled"><ins id="aswift_1_expand" tabindex="0" title="Advertisement" aria-label="Advertisement" style="border: none; height: 280px; width: 820px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-table;"><ins id="aswift_1_anchor" style="border: none; height: 280px; width: 820px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: block; overflow: visible;"><iframe id="aswift_1" name="aswift_1" style="left:0;position:absolute;top:0;border:0;width:820px;height:280px" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" width="820" height="280" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" src="./rsync指定ssh端口进行文件同步的方法_files/ads.html" data-google-container-id="a!2" data-google-query-id="CJy1q_2i9fcCFTmI6QUdHywBmA" data-load-complete="true"></iframe></ins></ins></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+                        <div id="content" style="height: auto !important;">
+                            <p>有台服务器因为安全性需要，修改了默认的ssh端口为34778端口。<br>
+因此rsync使用ssh同步的时候需要指定ssh的端口</p>
+<p>rsync提供了一个-e参数</p>
+<p>-e参数的作用是可以使用户自由选择想使用的shell程序来连接远端服务器，因此也可以设置成使用默认的ssh来连接，这样我们就可以加入ssh的参数了</p>
+<p>具体语句写法如下：</p>
+<blockquote>
+<p>rsync -e 'ssh -p 34778' username@hostname:SourceFile DestFile</p>
+</blockquote>
+<p>单引号，目的是为了使引号内的参数为引号内的命令所用</p>
+<p>实例：</p>
+<blockquote>
+<p>rsync -auz -e 'ssh -p 43378' /data/svn/ root@192.168.1.254:/data/backup</p>
+</blockquote>
+<p>详解：<br>
+通过rsync，并使用auz参数，结合-e修改ssh的端口，将本地的/data/svn作为源数据，用root用户推到远端服务器192.168.1.254的/data/backup目录下。</p><div class="google-auto-placed ap_container" style="width: 100%; height: auto; clear: both; text-align: center;"><ins data-ad-format="auto" class="adsbygoogle adsbygoogle-noablate" data-ad-client="ca-pub-6384567588307613" data-adsbygoogle-status="done" style="display: block; margin: auto; background-color: transparent; height: 280px;" data-ad-status="filled"><ins id="aswift_4_expand" tabindex="0" title="Advertisement" aria-label="Advertisement" style="border: none; height: 280px; width: 820px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-table;"><ins id="aswift_4_anchor" style="border: none; height: 280px; width: 820px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: block; overflow: visible;"><iframe id="aswift_4" name="aswift_4" style="left:0;position:absolute;top:0;border:0;width:820px;height:280px" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" width="820" height="280" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" src="./rsync指定ssh端口进行文件同步的方法_files/ads(1).html" data-google-container-id="a!5" data-google-query-id="CJvNv_2i9fcCFbyG6QUdcKcAjQ" data-load-complete="true"></iframe></ins></ins></ins></div>
+<p>需要注意的是源目录和目标目录是否带"/"结尾是有很大区别的<br>
+源目录带"/"结尾而目标目录不带，表示将源目录里面的所有文件（/data/svn/*）都同步到目标目录下（/data/backup/*）。<br>
+源目录带"/"结尾而目标目录也带“/”结尾，则表示将源目录作为文件夹，同步到目标目录下（/data/backup/svn/*）。</p>
+<p><strong>端口攻击之873端口rsync默认口令漏洞</strong></p>
+<p>1、简介：</p>
+<p>rsync是Unix下的一款应用软件，它能同步更新两处计算机的文件与目录，并适当利用差分编码以减少数据传输。</p>
+<p>2、Rsync使用教程：</p>
+<p>用途：</p>
+<p>当成镜像备份功能。</p>
+<p>优点：</p>
+<p>速度快，可对比本地文件，差异备份。</p>
+<p>用法：</p>
+<p>1、将/etc/内复制到/tmp/etc</p>
+<p>rsync –av /etc /tmp<br>
+2、将rsh.server的/etc 复制到本地 /tmp</p>
+<p>rsync –av –e ssh user@rsh.server:/etc /tmp<br>
+3、通过rsync提供的服务（daemon），rsync使用873端口</p>
+<p>Server:启动rsync，看：</p>
+<p>/etc/xinetd.d/rsync<br>
+编辑：</p>
+<p>/etc/rsyncd.conf<br>
+设置client端连接账号密码</p>
+<p>Client:rsync –av –user@hostname::/dir/path /local/path<br>
+三种模式差异在几个分号 :</p>
+<p>命令：</p>
+<p>Rsync [-avrlptgoD] [-e ssh] [user@hostIP:/dir] [/local/path]</p>
+<p>-v 观察模式，输出更多资讯</p>
+<p>-q 与 –v 相反，仅显示错误信息</p>
+<p>-r 递归复制，针对目录</p>
+<p>-u 仅更新较新的文件</p>
+<p>-l 复制连接的属性</p>
+<p>-p 复制时保持属性不变</p>
+<p>-g 保存原有群组</p>
+<p>-o 保存原有拥有人</p>
+<p>-D 保存原有装置属性</p>
+<p>-t 保存原有时间属性</p>
+<p>-I 忽略更新时间属性，档案比对较快</p>
+<p>-z 加上压缩参数</p>
+<p>-e 使用协议通道，例如ssh，-e ssh</p>
+<p>-a 相对于-rlptgoD，所以-a最常用<br>
+3、安全问题：</p>
+<p>rsync默认的端口是873，可以使用nmap扫描IP是否开放该端口。</p>
+<p>nmap -n --open -p 873 x.x.x.x/24<br>
+找到开放端口后，查看时候可默认口令登陆。使用命令查看：</p>
+<p>rsync -av x.x.x.x::<br>
+</p>
+<p>既然是同步文件，自然有选择查看、上传或者下载的能力，这要视权限设定。</p>
+<p>运气好的情况下秒杀站点。</p>
+<p>4、安全配置注意事项</p>
+<p>注意两种方式防御，一是限定访问的IP，另一个是不允许匿名访问，添加用户口令。</p>
+<p>限定IP的两种方式</p>
+<p>IPTables防火墙</p>
+<p>给rsync的端口添加一个iptables。</p>
+<p>只希望能够从内部网络（192.168.101.0/24）访问：</p>
+<p>iptables -A INPUT -i eth0 -p tcp -s 192.168.101.0/24 --dport 873 -m state --state NEW,ESTABLISHED -j ACCEPT</p>
+<p>iptables -A OUTPUT -o eth0 -p tcp --sport 873 -m state --state ESTABLISHED -j ACCEPT<br>
+除此之外rsyncd.conf中的hosts allow也可以设置只允许来源ip。</p>
+<p>hosts allow = X.X.X.X #允许访问的IP<br>
+添加用户口令</p>
+<p>添加rsync用户权限访问，注意配置的是rsyncd.conf中的：</p>
+<p>secrets file = /etc/rsyncd.secrets #密码文件位置，认证文件设置，设置用户名和密码</p>
+<p>auth users = rsync #授权帐号,认证的用户名，如果没有这行则表明是匿名，多个用户用,分隔。</p>
+                            
+                            <div class="art_xg">
+                                <b>您可能感兴趣的文章:</b><ul><li><a href="https://www.jb51.net/article/43592.htm" title="Rsync 服务器文件同步的搭建以及使用" target="_blank">Rsync 服务器文件同步的搭建以及使用</a></li><li><a href="https://www.jb51.net/article/234391.htm" title="基于rsync写脚本实现多节点多服务器文件一键同步的方法" target="_blank">基于rsync写脚本实现多节点多服务器文件一键同步的方法</a></li></ul>
+                            </div>
+
+                        </div>
+                        <!--endmain-->
+                        <div class="lbd_bot clearfix"><script async="" src="./rsync指定ssh端口进行文件同步的方法_files/f(10).txt"></script><ins class="adsbygoogle" style="display: block; height: 211px; width: 820px;" data-ad-client="ca-pub-6384567588307613" data-ad-slot="6445926239" data-ad-format="auto" data-full-width-responsive="true" data-adsbygoogle-status="done" data-ad-status="filled"><ins id="aswift_2_expand" tabindex="0" title="Advertisement" aria-label="Advertisement" style="border: none; height: 211px; width: 820px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-table;"><ins id="aswift_2_anchor" style="border: none; height: 211px; width: 820px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: block; overflow: hidden;"><iframe id="aswift_2" name="aswift_2" style="left: 0px; position: absolute; top: 0px; border: 0px; width: 820px; height: 211px;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" width="820" height="211" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" src="./rsync指定ssh端口进行文件同步的方法_files/ads(2).html" data-google-container-id="a!3" data-google-query-id="CJeKkf6i9fcCFYKH6QUdiQsHiA" data-load-complete="true"></iframe></ins></ins></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div><div id="ewm"><div class="jb51ewm"><div class="fl"><img src="./rsync指定ssh端口进行文件同步的方法_files/jb51ewm.png"></div><div class="fr"><p>微信公众号搜索 “ <span>脚本之家</span> ” ，选择关注</p><p>程序猿的那些事、送书等活动等着你</p></div></div></div><p>原文链接：http://www.netkou.com/?post=165</p>
+                        <div class="tags clearfix">
+                            <i class="icon-tag"></i>
+                            <ul class="meta-tags">
+                                <li class="tag item"><a href="http://common.jb51.net/tag/rsync/1.htm" target="_blank" title="搜索关于rsync的文章" rel="nofollow">rsync</a></li>
+<li class="tag item"><a href="http://common.jb51.net/tag/ssh%E7%AB%AF%E5%8F%A3/1.htm" target="_blank" title="搜索关于ssh端口的文章" rel="nofollow">ssh端口</a></li>
+
+                            </ul>
+                        </div>
+                        <div class="lbd clearfix">
+                            <span id="art_down" class="jbTestPos"><div class="_02v3sjhafzv8"><iframe id="iframeu4846790_0" name="iframeu4846790_0" src="./rsync指定ssh端口进行文件同步的方法_files/dcsm.html" width="820" height="250" scrolling="no" frameborder="0"></iframe></div></span>
+                        </div>
+                        <div id="shoucang"></div>
+                        <div class="xgcomm clearfix">
+                            <h2>相关文章</h2>
+                            <ul><li class="lbd clearfix"><span id="art_xg" class="jbTestPos"><div class="_i1xkwk9w4"><iframe id="iframeu4806172_0" name="iframeu4806172_0" src="./rsync指定ssh端口进行文件同步的方法_files/dcsm(1).html" width="820" height="120" scrolling="no" frameborder="0"></iframe></div></span></li><li><div class="item-inner"><a href="https://www.jb51.net/article/29699.htm" title="htaccess 防盗链，防止目录浏览等10大技巧" class="img-wrap" target="_blank"> <img alt="htaccess 防盗链，防止目录浏览等10大技巧" src="./rsync指定ssh端口进行文件同步的方法_files/bcimg0.png"> </a><div class="rbox"><div class="rbox-inner"><p><a class="link title" target="_blank" href="https://www.jb51.net/article/29699.htm" title="htaccess 防盗链，防止目录浏览等10大技巧">htaccess 防盗链，防止目录浏览等10大技巧</a></p><div class="item-info"><div class="js">htaccess 防盗链，防止目录浏览等10大技巧，使用apache服务器的朋友可以参考下</div><span class="lbtn" style="float:right"> 2012-02-02 </span></div></div></div></div></li>
+<li><div class="item-inner"><a href="https://www.jb51.net/article/134653.htm" title="HTTP与HTTPS对访问速度、性能等的影响" class="img-wrap" target="_blank"> <img alt="HTTP与HTTPS对访问速度、性能等的影响" src="./rsync指定ssh端口进行文件同步的方法_files/bcimg1.png"> </a><div class="rbox"><div class="rbox-inner"><p><a class="link title" target="_blank" href="https://www.jb51.net/article/134653.htm" title="HTTP与HTTPS对访问速度、性能等的影响">HTTP与HTTPS对访问速度、性能等的影响</a></p><div class="item-info"><div class="js">HTTPS 在保护用户隐私，防止流量劫持方面发挥着非常关键的作用，但与此同时，HTTPS 也会降低用户访问速度，增加网站服务器的计算资源消耗，这里就为大家简单介绍一下，需要的朋友可以参考下</div><span class="lbtn" style="float:right"> 2018-02-02 </span></div></div></div></div></li>
+<li><div class="item-inner"><a href="https://www.jb51.net/article/36891.htm" title="RSync实现文件同步备份配置详解" class="img-wrap" target="_blank"> <img alt="RSync实现文件同步备份配置详解" src="./rsync指定ssh端口进行文件同步的方法_files/bcimg2.png"> </a><div class="rbox"><div class="rbox-inner"><p><a class="link title" target="_blank" href="https://www.jb51.net/article/36891.htm" title="RSync实现文件同步备份配置详解">RSync实现文件同步备份配置详解</a></p><div class="item-info"><div class="js">rsync实现网站的备份，文件的同步，不同系统的文件的同步，如果是windows的话，需要windows版本cwrsync</div><span class="lbtn" style="float:right"> 2013-05-05 </span></div></div></div></div></li>
+<li><div class="item-inner"><a href="https://www.jb51.net/article/26850.htm" title="服务器重启不能启动的几种常见的解决方法" class="img-wrap" target="_blank"> <img alt="服务器重启不能启动的几种常见的解决方法" src="./rsync指定ssh端口进行文件同步的方法_files/bcimg3.png"> </a><div class="rbox"><div class="rbox-inner"><p><a class="link title" target="_blank" href="https://www.jb51.net/article/26850.htm" title="服务器重启不能启动的几种常见的解决方法">服务器重启不能启动的几种常见的解决方法</a></p><div class="item-info"><div class="js">服务器重启不能启动的几种常见的解决方法，碰到此问题的朋友可以参考下。</div><span class="lbtn" style="float:right"> 2011-04-04 </span></div></div></div></div></li>
+<li><div class="item-inner"><a href="https://www.jb51.net/article/98686.htm" title="HTTP 错误 403.1禁止访问:禁止执行访问的完美解决方法" class="img-wrap" target="_blank"> <img alt="HTTP 错误 403.1禁止访问:禁止执行访问的完美解决方法" src="./rsync指定ssh端口进行文件同步的方法_files/bcimg4.png"> </a><div class="rbox"><div class="rbox-inner"><p><a class="link title" target="_blank" href="https://www.jb51.net/article/98686.htm" title="HTTP 错误 403.1禁止访问:禁止执行访问的完美解决方法">HTTP 错误 403.1禁止访问:禁止执行访问的完美解决方法</a></p><div class="item-info"><div class="js">这篇文章主要介绍了HTTP 错误 403.1禁止访问:禁止执行访问的完美解决方法,需要的朋友可以参考下</div><span class="lbtn" style="float:right"> 2016-11-11 </span></div></div></div></div></li>
+<li><div class="item-inner"><a href="https://www.jb51.net/article/118229.htm" title="Git安装和使用图文教程(分享)" class="img-wrap" target="_blank"> <img alt="Git安装和使用图文教程(分享)" src="./rsync指定ssh端口进行文件同步的方法_files/bcimg5.png"> </a><div class="rbox"><div class="rbox-inner"><p><a class="link title" target="_blank" href="https://www.jb51.net/article/118229.htm" title="Git安装和使用图文教程(分享)">Git安装和使用图文教程(分享)</a></p><div class="item-info"><div class="js">下面小编就为大家带来一篇Git安装和使用图文教程(分享)。小编觉得挺不错的，现在就分享给大家，也给大家做个参考。一起跟随小编过来看看吧</div><span class="lbtn" style="float:right"> 2017-07-07 </span></div></div></div></div></li>
+<li><div class="item-inner"><a href="https://www.jb51.net/article/129315.htm" title="将下载到本地的JAR包手动添加到Maven仓库的方法" class="img-wrap" target="_blank"> <img alt="将下载到本地的JAR包手动添加到Maven仓库的方法" src="./rsync指定ssh端口进行文件同步的方法_files/bcimg6.png"> </a><div class="rbox"><div class="rbox-inner"><p><a class="link title" target="_blank" href="https://www.jb51.net/article/129315.htm" title="将下载到本地的JAR包手动添加到Maven仓库的方法">将下载到本地的JAR包手动添加到Maven仓库的方法</a></p><div class="item-info"><div class="js">下面小编就为大家分享一篇将下载到本地的JAR包手动添加到Maven仓库的方法，具有很好的参考价值，希望对大家有所帮助</div><span class="lbtn" style="float:right"> 2017-11-11 </span></div></div></div></div></li>
+<li><div class="item-inner"><a href="https://www.jb51.net/article/34017.htm" title="Cache-control使用Cache-control:private学习笔记" class="img-wrap" target="_blank"> <img alt="Cache-control使用Cache-control:private学习笔记" src="./rsync指定ssh端口进行文件同步的方法_files/bcimg7.png"> </a><div class="rbox"><div class="rbox-inner"><p><a class="link title" target="_blank" href="https://www.jb51.net/article/34017.htm" title="Cache-control使用Cache-control:private学习笔记">Cache-control使用Cache-control:private学习笔记</a></p><div class="item-info"><div class="js">网页缓存由 HTTP消息头中的Cache-control控制，常见取值有private、no-cache、max-age、must- revalidate等，默认为private</div><span class="lbtn" style="float:right"> 2013-02-02 </span></div></div></div></div></li>
+<li><div class="item-inner"><a href="https://www.jb51.net/article/19506.htm" title="MSXML2.XMLHTTP 800401F3 错误的解决方法" class="img-wrap" target="_blank"> <img alt="MSXML2.XMLHTTP 800401F3 错误的解决方法" src="./rsync指定ssh端口进行文件同步的方法_files/bcimg8.png"> </a><div class="rbox"><div class="rbox-inner"><p><a class="link title" target="_blank" href="https://www.jb51.net/article/19506.htm" title="MSXML2.XMLHTTP 800401F3 错误的解决方法">MSXML2.XMLHTTP 800401F3 错误的解决方法</a></p><div class="item-info"><div class="js">今天ASP调用Web Service报错，错误代码为800401F3，错误提示为:Server.CreateObject失败。
+</div><span class="lbtn" style="float:right"> 2009-08-08 </span></div></div></div></div></li>
+<li><div class="item-inner"><a href="https://www.jb51.net/article/76551.htm" title="阿里云存储服务OSS基本概念" class="img-wrap" target="_blank"> <img alt="阿里云存储服务OSS基本概念" src="./rsync指定ssh端口进行文件同步的方法_files/bcimg9.png"> </a><div class="rbox"><div class="rbox-inner"><p><a class="link title" target="_blank" href="https://www.jb51.net/article/76551.htm" title="阿里云存储服务OSS基本概念">阿里云存储服务OSS基本概念</a></p><div class="item-info"><div class="js">对象存储（Object Storage Service，简称OSS），是阿里云提供的海量、安全和高可靠的云存储服务。存储容量和处理能力的弹性扩展，按量付费真正使您专注于核心业务</div><span class="lbtn" style="float:right"> 2015-12-12 </span></div></div></div></div></li>
+</ul>
+                        </div>
+                        <div class="lbd clearfix mt5">
+                            <span id="art_down2" class="jbTestPos"><div class="_8t0uju9ncb5"><iframe id="iframeu5010600_0" name="iframeu5010600_0" src="./rsync指定ssh端口进行文件同步的方法_files/dcsm(2).html" width="820" height="120" scrolling="no" frameborder="0"></iframe></div></span>
+                        </div>
+                        <a href="https://www.jb51.net/article/135122.htm#comments"></a>
+                        <div id="comments">
+                            <h2>最新评论</h2>
+                            <div class="pd5">
+                                <div id="SOHUCS" sid="art_135122"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--endborder-->
+                </div>
+                <!--end fl-->
+
+                <div class="main-right" style="height: auto !important;">
+                    <div id="sidebar-right" style="height: auto !important;">
+                        <div class="r300 clearfix"><span id="side_up" class="jbTestPos"><div class="_oukwufqacs"><iframe id="iframeu6561626_0" name="iframeu6561626_0" src="./rsync指定ssh端口进行文件同步的方法_files/dcsm(3).html" width="300" height="250" scrolling="no" frameborder="0"></iframe></div></span></div>
+                        <div class="sidebox-recomm"></div>
+                        <div class="r300 clearfix"><div class="blank10"></div><a href="https://www.hncloud.com/activity_2022_618.html?p=jb51&amp;2022_618" target="_blank"><img src="./rsync指定ssh端口进行文件同步的方法_files/hn300X100.png" alt="" width="300" height="100"></a></div>
+                        <div class="google-auto-placed" style="width: 100%; height: auto; clear: none; text-align: center;"><ins data-ad-format="auto" class="adsbygoogle adsbygoogle-noablate" data-ad-client="ca-pub-6384567588307613" data-adsbygoogle-status="done" style="display: block; margin: 10px auto; background-color: transparent; height: 250px;" data-ad-status="filled"><ins id="aswift_5_expand" tabindex="0" title="Advertisement" aria-label="Advertisement" style="border: none; height: 250px; width: 330px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-table;"><ins id="aswift_5_anchor" style="border: none; height: 250px; width: 330px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: block; overflow: visible;"><iframe id="aswift_5" name="aswift_5" style="left:0;position:absolute;top:0;border:0;width:330px;height:250px" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" width="330" height="250" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" src="./rsync指定ssh端口进行文件同步的方法_files/ads(3).html" data-google-container-id="a!6" data-google-query-id="CK3lv_2i9fcCFVCH6QUd-x8LjA" data-load-complete="true"></iframe></ins></ins></ins></div><div class="sidebox bor-blue" style="height: auto !important;">
+                            <div class="bor-default pb10">
+                                <h4 class="blue">大家感兴趣的内容</h4>
+                                <ul class="newsList newList-in">
+                                    <li><em class="no1">1</em><a href="https://www.jb51.net/article/31920.htm" title="rsync 常见错误与解决方法整理" target="_blank">rsync 常见错误与解决方法整理</a></li><li><em class="no2">2</em><a href="https://www.jb51.net/article/39265.htm" title="Raid教程 全程图解手把手教你做RAID" target="_blank">Raid教程 全程图解手把手教你做RAID</a></li><li><em class="no3">3</em><a href="https://www.jb51.net/article/55442.htm" title="Git 常用命令速查表(图文+表格)" target="_blank">Git 常用命令速查表(图文+表格)</a></li><li><em class="no4">4</em><a href="https://www.jb51.net/article/55440.htm" title="Git客户端TortoiseGit（Windows系统）的使用方法" target="_blank">Git客户端TortoiseGit（Windows系统）的使</a></li><li><em class="no5">5</em><a href="https://www.jb51.net/article/50365.htm" title="用两块硬盘组建RAID0磁盘阵列简单教程(图文详解)" target="_blank">用两块硬盘组建RAID0磁盘阵列简单教程(图文详解)</a></li><li><em class="no6">6</em><a href="https://www.jb51.net/article/76265.htm" title="服务器共享文件夹设置软件、文件共享服务器软件和共享文件夹加密工具的选择" target="_blank">服务器共享文件夹设置软件、文件共享服务器软件和共享文件夹加密</a></li><li><em class="no7">7</em><a href="https://www.jb51.net/article/80473.htm" title="NAS（synology 群晖）首次使用教程" target="_blank">NAS（synology 群晖）首次使用教程</a></li><li><em class="no8">8</em><a href="https://www.jb51.net/article/26413.htm" title="正确开启Win2008远程桌面的方法" target="_blank">正确开启Win2008远程桌面的方法</a></li><li><em class="no9">9</em><a href="https://www.jb51.net/article/34932.htm" title="502 bad gateway是什么意思 502 bad gateway错误解决方法" target="_blank">502 bad gateway是什么意思 502 bad g</a></li><li><em class="no10">10</em><a href="https://www.jb51.net/article/34026.htm" title="HP ILO2 使用详细教程[图文]" target="_blank">HP ILO2 使用详细教程[图文]</a></li>
+                                </ul>
+                            </div><div class="google-auto-placed" style="width: 100%; height: auto; clear: none; text-align: center;"><ins data-ad-format="auto" class="adsbygoogle adsbygoogle-noablate" data-ad-client="ca-pub-6384567588307613" data-adsbygoogle-status="done" style="display: block; margin: 10px auto; background-color: transparent; height: 600px;" data-ad-status="filled"><ins id="aswift_6_expand" tabindex="0" title="Advertisement" aria-label="Advertisement" style="border: none; height: 600px; width: 300px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-table;"><ins id="aswift_6_anchor" style="border: none; height: 600px; width: 300px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: block; overflow: visible;"><iframe id="aswift_6" name="aswift_6" style="left:0;position:absolute;top:0;border:0;width:300px;height:600px" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" width="300" height="600" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" src="./rsync指定ssh端口进行文件同步的方法_files/ads(4).html" data-google-container-id="a!7" data-google-query-id="CK71v_2i9fcCFbqG6QUdRIMPcA" data-load-complete="true"></iframe></ins></ins></ins></div>
+                        </div>
+                        <div class="r300 clearfix mt10"><span id="idctu" class="jbTestPos"><div class="_cvt3j16w0vh"><iframe id="iframeu6390620_0" name="iframeu6390620_0" src="./rsync指定ssh端口进行文件同步的方法_files/dcsm(4).html" width="300" height="250" scrolling="no" frameborder="0"></iframe></div><a href="https://www.henghost.com/act/2021newyear.html?jbzj" target="_blank"><img alt="" src="./rsync指定ssh端口进行文件同步的方法_files/henghost300.png" width="300" height="100"></a><div class="blank10"></div><a href="https://www.50vm.com/server.html?pg=34" target="_blank"><img alt="" src="./rsync指定ssh端口进行文件同步的方法_files/99idc300.jpg" width="300" height="100"></a></span></div>
+                        <div class="sidebox bor-blue">
+                            <div class="bor-default pb10">
+                                <h4 class="blue">最近更新的内容</h4>
+                                <ul class="newsListA">
+                                    <li><a href="https://www.jb51.net/article/20328.htm" title="PHP 木马攻击的防御设置方法" target="_blank">PHP 木马攻击的防御设置方法</a></li><li><a href="https://www.jb51.net/article/23239.htm" title="网站数据自动备份方法" target="_blank">网站数据自动备份方法</a></li><li><a href="https://www.jb51.net/article/34868.htm" title="rsync 安装使用详解" target="_blank">rsync 安装使用详解</a></li><li><a href="https://www.jb51.net/article/21447.htm" title="网站下载文件时 地址加jdfwkey=的说明" target="_blank">网站下载文件时 地址加jdfwkey=的说明</a></li><li><a href="https://www.jb51.net/article/121177.htm" title="SVN使用教程_动力节点Java学院整理" target="_blank">SVN使用教程_动力节点Java学院整理</a></li><li><a href="https://www.jb51.net/article/60330.htm" title="ipvs模块的管理工具ipvsadm介绍" target="_blank">ipvs模块的管理工具ipvsadm介绍</a></li><li><a href="https://www.jb51.net/article/134653.htm" title="HTTP与HTTPS对访问速度、性能等的影响" target="_blank">HTTP与HTTPS对访问速度、性能等的影响</a></li><li><a href="https://www.jb51.net/article/72681.htm" title="4种VPS主机技术原理及优缺点(VPS独享主机技术原理)" target="_blank">4种VPS主机技术原理及优缺点(VPS独享主机技术原理)</a></li><li><a href="https://www.jb51.net/article/73542.htm" title="Kloxo面板无法登录出现500错误的解决方法" target="_blank">Kloxo面板无法登录出现500错误的解决方法</a></li><li><a href="https://www.jb51.net/article/139571.htm" title="联想服务器X3650 M2 配置RAID5与热备盘图文方法" target="_blank">联想服务器X3650 M2 配置RAID5与热备盘图文方法</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="r300 clearfix mt10"><div class="idc3"><a href="http://tools.jb51.net/" target="_blank"><h1>在线工具</h1><span>代码格式化等</span> </a><a href="https://www.jb51.net/s/idc/" target="_blank"><h1>高防主机</h1><span>600G 防护</span> </a><a href="http://www.33ip.com/" target="_blank"><h1>枫信科技</h1><span>IDC服务商</span> </a></div></div>
+                        <div class="sidebox bor-blue">
+                            <div class="bor-default pb10">
+                                <h4 class="blue">常用在线小工具</h4>
+                                <ul class="newsListA"><li><a href="http://tools.jb51.net/code/css" target="_blank"><font color="red">CSS代码工具</font></a></li><li><a href="http://tools.jb51.net/code/js" target="_blank"><font color="red">JavaScript代码格式化工具</font></a></li><li><a href="http://tools.jb51.net/code/xmlformat" target="_blank">在线XML格式化/压缩工具</a></li><li><a href="http://tools.jb51.net/code/phpformat" target="_blank"><font color="red">php代码在线格式化美化工具</font></a></li><li><a href="http://tools.jb51.net/code/sqlcodeformat" target="_blank">sql代码在线格式化美化工具</a></li><li><a href="http://tools.jb51.net/transcoding/html_transcode" target="_blank">在线HTML转义/反转义工具</a></li><li><a href="http://tools.jb51.net/code/json" target="_blank">在线JSON代码检验/检验/美化/格式化</a></li><li><a href="http://tools.jb51.net/regex/javascript" target="_blank">JavaScript正则在线测试工具</a></li><li><a href="http://tools.jb51.net/transcoding/jb51qrcode" target="_blank">在线生成二维码工具(加强版)</a></li><li><a href="http://tools.jb51.net/" target="_blank">更多在线工具</a></li></ul>
+                            </div>
+                        </div>
+                        <div class="r300 clearfix mt10"><a href="http://www.tuidc.com/indexhd.html" target="_blank"><img src="./rsync指定ssh端口进行文件同步的方法_files/tengyou300.gif" width="300" height="100"></a><div class="blank10"></div><a href="https://www.yiyangidc.com/" target="_blank"><img src="./rsync指定ssh端口进行文件同步的方法_files/yyqz300.gif" alt="服务器" width="300" height="100"></a><div class="blank10"></div><a href="http://www.boluoyun.com/" target="_blank"><img src="./rsync指定ssh端口进行文件同步的方法_files/bly300.jpg" alt="云服务器" width="300" height="100"></a></div>
+                        <div class="mt10 rFixedBox" style="position: static; top: 0px;">
+                            <div class="r300 clearfix"><script async="" src="./rsync指定ssh端口进行文件同步的方法_files/f(11).txt" crossorigin="anonymous" data-checked-head="true"></script><ins class="adsbygoogle" style="display:inline-block;width:300px;height:250px" data-ad-client="ca-pub-6384567588307613" data-ad-slot="6500564943" data-adsbygoogle-status="done" data-ad-status="filled"><ins id="aswift_3_expand" tabindex="0" title="Advertisement" aria-label="Advertisement" style="border: none; height: 250px; width: 300px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-table;"><ins id="aswift_3_anchor" style="border: none; height: 250px; width: 300px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: block;"><iframe id="aswift_3" name="aswift_3" style="left:0;position:absolute;top:0;border:0;width:300px;height:250px" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" width="300" height="250" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" src="./rsync指定ssh端口进行文件同步的方法_files/ads(5).html" data-google-container-id="a!4" data-google-query-id="CJ7gq_2i9fcCFQTKfAodKbkFRQ" data-load-complete="true"></iframe></ins></ins></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+                            <div class="r300 clearfix mt10">
+                                <span id="rbbd" class="jbTestPos"><div class="_7q9hbh5udhf"><iframe id="iframeu4519613_0" name="iframeu4519613_0" src="./rsync指定ssh端口进行文件同步的方法_files/dcsm(5).html" width="300" height="250" scrolling="no" frameborder="0"></iframe></div></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--end fr-->
+            </div>
+        </div>
+        <!--share start-->
+        <div id="right-share" class="lefts" style="display: block;">
+            <div class="right-share jb-share" id="jb-share">
+                <a class="rshare-weixin" title="">微信</a>
+                <a rel="nofollow" class="rshare-qzone" target="_blank" href="http://tougao.jb51.net/" title="投稿">投稿</a>
+                <a rel="nofollow" class="rshare-sqq" target="_blank" href="https://task.jb51.net/" title="脚本任务">脚本任务</a>
+                <a rel="nofollow" class="rshare-tsina" target="_blank" href="http://tools.jb51.net/" title="在线工具">在线工具</a>
+            </div>
+            <a class="rshare-top" onclick="javascript:;"></a>
+            <div id="weixin-code" class="hide">
+                <div class="popup_weixin_head">
+                    <p>关注微信公众号</p>
+                    <div id="code"><img src="./rsync指定ssh端口进行文件同步的方法_files/erwm.jpg" alt="扫一扫" width="100" height="100"></div>
+                </div>
+            </div>
+        </div>
+        <!--share end-->
+        <!-- 目录容器 -->
+        <div class="AutoCatelog">
+            <div class="AutoCatelogLlist" id="CatelogList" style="display:none"></div>
+        </div>
+    </div>
+    <!--end content-->
+    <div id="footer">
+        <div class="footer-bottom">
+            <p>
+                <a rel="nofollow" href="https://www.jb51.net/about.htm" target="_blank">关于我们</a> -
+                <a rel="nofollow" href="https://www.jb51.net/support.htm" target="_blank">广告合作</a> -
+                <a rel="nofollow" href="https://www.jb51.net/linkus.htm" target="_blank">联系我们</a> -
+                <a rel="nofollow" href="https://www.jb51.net/sm.htm" target="_blank">免责声明</a> -
+                <a rel="nofollow" href="https://www.jb51.net/sitemap.htm" target="_blank">网站地图</a> -
+                <a rel="nofollow" href="tencent://message/?uin=461478385&amp;Site=https://www.jb51.net" target="_blank">投诉建议</a> -
+                <a rel="nofollow" href="https://www.jb51.net/up.htm" target="_blank">在线投稿</a>
+            </p>
+            <p>©CopyRight 2006-2021 JB51.Net Inc All Rights Reserved. 脚本之家 版权所有</p>
+        </div>
+    </div>
+    <!--end footer-->
+    <script type="text/javascript">
+        var ourl = "http://www.netkou.com/?post=165";
+    </script>
+        <link type="text/css" rel="stylesheet" href="./rsync指定ssh端口进行文件同步的方法_files/shCore.css">
+    <link type="text/css" rel="Stylesheet" href="./rsync指定ssh端口进行文件同步的方法_files/shThemeDefault.css">
+    <script type="text/javascript" src="./rsync指定ssh端口进行文件同步的方法_files/shHighlighter.js"></script>
+    <script type="text/javascript">
+        /*更多导航*/
+        $("#nav p").hover(function() {
+            $(this).addClass("hover")
+        }, function() {
+            $(this).removeClass("hover")
+        });
+        if (top.location != self.location) top.location = self.location;
+        var varwindow = $(window);
+        $('#content').find('img').each(function() {
+            var img = this;
+            if (img.width >= 800 && !$(this).hasClass("nohref")) {
+                img.style.width = "800px";
+                img.style.height = "auto";
+            }
+        });
+
+        function sideFixed() {
+            var scrolltop = document.body.scrollTop || document.documentElement.scrollTop;
+            if (ww > 440) {
+                if (550 <= scrolltop){
+                    $('#right-share').slideDown();
+                } else {
+                    $('#right-share').slideUp();
+                }
+                if(suoyin=='ok'&&typeof cataloguetop=='number'){
+                    if (cataloguetop <= scrolltop){
+                        //$('#navCategory').css('visibility','hidden');
+                        $('#CatelogList').fadeIn();
+                    } else {
+                        //$('#navCategory').css('visibility','visible');
+                        $('#CatelogList').fadeOut();
+                    }
+                }
+            }
+        }
+        var ww = varwindow.width();
+        
+        $('#right-share').addClass('lefts');
+        if(suoyin=='ok'){
+            $(window).resize(function() {
+                show_suoyin();
+            });
+            var cataloguetop=$('#navCategory').offset().top+$('#navCategory').outerHeight();
+            show_suoyin();
+            $(function(){
+                cataloguetop=$('#navCategory').offset().top+$('#navCategory').outerHeight();
+            })
+        }
+        
+        $(window).scroll(function() {
+            //rFixedBox跟随滚动
+            var h = varwindow.height();
+            var top = varwindow.scrollTop();
+            var rFixedBox = $('.rFixedBox').prev().offset();
+            var fixedTop = rFixedBox.top;
+
+            if (top >= fixedTop + 330) {
+                var h1 = parseInt($('#content').children('.main').height());
+                $('.rFixedBox').css({
+                    'position': 'fixed',
+                    'top': 0
+                });
+            } else {
+                $('.rFixedBox').css({
+                    'position': 'static',
+                    'top': 0
+                });
+            }
+            /* return true;*/
+
+            /*右侧快捷菜单*/
+            sideFixed();
+        });
+        $(window).scroll();
+        
+        $('.rshare-weixin').hover(function() {
+            $('#weixin-code').removeClass('hide');
+        }, function() {
+            $('#weixin-code').addClass('hide');
+        });
+        /*二维码*/
+        $('#right-share .rshare-top').on('click', function() {
+            $('html,body').animate({
+                'scrollTop': 0
+            }, 500);
+        });
+        
+
+        function show_suoyin() {
+            var vww = 0;
+            vww = varwindow.width();
+            
+            if (suoyin == "ok") {
+                if (vww > 1600) {
+                    var catell = document.getElementById("CatelogList");
+                    
+                    if (vww < 1920) {
+                        catell.style.width = (((vww - 1200) / 2) - 20) + "px";
+                    } else {
+                        catell.style.width = "340px";
+                    }
+
+                    if (!window.suoyinobj) {
+                        window.suoyinobj = new katelog({
+                            contentEl: 'content',
+                            catelogEl: 'CatelogList',
+                            linkClass: 'AutoCatelogLink',
+                            linkActiveClass: 'CatelogActive',
+                            supplyTop: 20,
+                            selector: ['h2', 'h3', 'h4'],
+                            active: function(el) {
+                                //console.log(el);
+                            }
+                        });
+                    }
+                } else {
+                    window.suoyinobj = null;
+                    //GenerateContentList();
+                }
+            }
+        }
+
+        SyntaxHighlighter.autoloader(
+            'applescript            /jslib/syntaxhighlighter/scripts2022/shBrushAppleScript.js',
+            'actionscript3 as3      /jslib/syntaxhighlighter/scripts2022/shBrushAS3.js',
+            'bash shell             /jslib/syntaxhighlighter/scripts2022/shBrushBash.js',
+            'coldfusion cf          /jslib/syntaxhighlighter/scripts2022/shBrushColdFusion.js',
+            'cpp c                  /jslib/syntaxhighlighter/scripts2022/shBrushCpp.js',
+            'obj-c objc             /jslib/syntaxhighlighter/scripts2022/shBrushObjC.js',
+            'c# c-sharp csharp      /jslib/syntaxhighlighter/scripts2022/shBrushCSharp.js',
+            'css                    /jslib/syntaxhighlighter/scripts2022/shBrushCss.js',
+            'delphi pascal          /jslib/syntaxhighlighter/scripts2022/shBrushDelphi.js',
+            'diff patch pas         /jslib/syntaxhighlighter/scripts2022/shBrushDiff.js',
+            'erl erlang             /jslib/syntaxhighlighter/scripts2022/shBrushErlang.js',
+            'groovy                 /jslib/syntaxhighlighter/scripts2022/shBrushGroovy.js',
+            'haxe hx                /jslib/syntaxhighlighter/scripts2022/shBrushHaxe.js',
+            'java                   /jslib/syntaxhighlighter/scripts2022/shBrushJava.js',
+            'jfx javafx             /jslib/syntaxhighlighter/scripts2022/shBrushJavaFX.js',
+            'js jscript javascript  /jslib/syntaxhighlighter/scripts2022/shBrushJScript.js',
+            'perl pl                /jslib/syntaxhighlighter/scripts2022/shBrushPerl.js',
+            'php                    /jslib/syntaxhighlighter/scripts2022/shBrushPhp.js',
+            'text plain             /jslib/syntaxhighlighter/scripts2022/shBrushPlain.js',
+            'py python              /jslib/syntaxhighlighter/scripts2022/shBrushPython.js',
+            'ruby rails ror rb      /jslib/syntaxhighlighter/scripts2022/shBrushRuby.js',
+            'scala                  /jslib/syntaxhighlighter/scripts2022/shBrushScala.js',
+            'sql                    /jslib/syntaxhighlighter/scripts2022/shBrushSql.js',
+            'vb vbnet               /jslib/syntaxhighlighter/scripts2022/shBrushVb.js',
+            'ps powershell          /jslib/syntaxhighlighter/scripts2022/shBrushPowerShell.js',
+            'xml xhtml xslt html    /jslib/syntaxhighlighter/scripts2022/shBrushXml.js',
+			'go golang				/jslib/syntaxhighlighter/scripts2022/shBrushGo.js'
+        );
+        SyntaxHighlighter.all();
+        (function() {
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            } else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+
+    </script>
+<script type="text/javascript" src="./rsync指定ssh端口进行文件同步的方法_files/arc2019.js"></script>
+<div id="tongji">
+<script type="text/javascript" src="./rsync指定ssh端口进行文件同步的方法_files/tongji.js"></script><script src="./rsync指定ssh端口进行文件同步的方法_files/stat.php" language="JavaScript"></script><script src="./rsync指定ssh端口进行文件同步的方法_files/core.php" charset="utf-8" type="text/javascript"></script><a href="https://www.cnzz.com/stat/website.php?web_id=1585378" target="_blank" title="站长统计">站长统计</a><script src="./rsync指定ssh端口进行文件同步的方法_files/stat(1).php" language="JavaScript"></script><script src="./rsync指定ssh端口进行文件同步的方法_files/core(1).php" charset="utf-8" type="text/javascript"></script><a href="https://www.cnzz.com/stat/website.php?web_id=5488963" target="_blank" title="站长统计">站长统计</a>
+</div>
+<script type="text/javascript" src="./rsync指定ssh端口进行文件同步的方法_files/viewer.min.js"></script>
+<script type="text/javascript">
+if ('undefined' == typeof(window.Viewer)) {
+        document.write(unescape("%3Cscr"+"ipt src='/skin/js/viewer.min.js' type='text/javascript'%3E%3C/scr"+"ipt%3E"));
+    }
+var viewer = new Viewer(document.getElementById('content'));
+(function(){
+var src = (document.location.protocol == "http:") ? "http://js.passport.qihucdn.com/11.0.1.js?d182b3f28525f2db83acfaaf6e696dba":"https://jspassport.ssl.qhimg.com/11.0.1.js?d182b3f28525f2db83acfaaf6e696dba";
+document.write('<scr'+'ipt src="' + src + '" id="sozz"><\/scr'+'ipt>');
+})();
+</script><script src="./rsync指定ssh端口进行文件同步的方法_files/11.0.1.js" id="sozz"></script><script charset="utf-8" src="./rsync指定ssh端口进行文件同步的方法_files/ab77b6ea7f3fbf79.js"></script>
+    <script type="text/javascript" src="./rsync指定ssh端口进行文件同步的方法_files/pl.asp"></script>
+    <script type="application/ld+json">
+        {
+            "@context": "https://ziyuan.baidu.com/contexts/cambrian.jsonld",
+            "@id": "https://www.jb51.net/article/135122.htm",
+            "appid": "1549322409310619",
+            "title": "rsync指定ssh端口进行文件同步的方法",
+            "description": "这篇文章主要介绍了rsync指定ssh端口进行文件同步的方法,需要的朋友可以参考下",
+            "pubDate": "2018-02-17T14:35:18",
+            "upDate": "2018-02-17T14:35:18"
+        }
+
+    </script>
+
+
+
+<script id="bs-cm" src="./rsync指定ssh端口进行文件同步的方法_files/cm.js" async="async" defer="defer"></script><ins class="adsbygoogle adsbygoogle-noablate" data-adsbygoogle-status="done" style="display: none !important;" data-ad-status="unfilled"><ins id="aswift_0_expand" tabindex="0" title="Advertisement" aria-label="Advertisement" style="border: none; height: 0px; width: 0px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-table;"><ins id="aswift_0_anchor" style="border: none; height: 0px; width: 0px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: block;"><iframe id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;border:0;width:undefinedpx;height:undefinedpx" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" src="./rsync指定ssh端口进行文件同步的方法_files/ads(6).html" data-google-container-id="a!1" data-load-complete="true"></iframe></ins></ins></ins><iframe src="./rsync指定ssh端口进行文件同步的方法_files/aframe.html" width="0" height="0" style="display: none;"></iframe></body><iframe id="google_esf" name="google_esf" src="./rsync指定ssh端口进行文件同步的方法_files/zrt_lookup.html" style="display: none;"></iframe><ins class="adsbygoogle adsbygoogle-noablate" data-adsbygoogle-status="done" style="display: none !important; width: 100vw !important; height: 100vh !important; inset: 0px auto auto 0px !important; clear: none !important; float: none !important; margin: 0px !important; max-height: none !important; max-width: none !important; opacity: 1 !important; overflow: visible !important; padding: 0px !important; position: fixed !important; vertical-align: baseline !important; visibility: visible !important; z-index: 2147483647 !important; background: transparent !important;" aria-hidden="true" data-ad-status="filled" data-vignette-loaded="true"><ins id="aswift_7_expand" tabindex="0" title="Advertisement" aria-label="Advertisement" style="border: none !important; height: 100vh !important; width: 100vw !important; margin: 0px !important; padding: 0px !important; position: relative !important; visibility: visible !important; background-color: transparent !important; display: inline-table !important; inset: auto !important; clear: none !important; float: none !important; max-height: none !important; max-width: none !important; opacity: 1 !important; overflow: visible !important; vertical-align: baseline !important; z-index: auto !important;"><ins id="aswift_7_anchor" style="border: none !important; height: 100vh !important; width: 100vw !important; margin: 0px !important; padding: 0px !important; position: relative !important; visibility: visible !important; background-color: transparent !important; display: block !important; inset: auto !important; clear: none !important; float: none !important; max-height: none !important; max-width: none !important; opacity: 1 !important; overflow: visible !important; vertical-align: baseline !important; z-index: auto !important;"><iframe id="aswift_7" name="aswift_7" style="width: 100vw !important; height: 100vh !important; inset: 0px auto auto 0px !important; position: absolute !important; clear: none !important; display: inline !important; float: none !important; margin: 0px !important; max-height: none !important; max-width: none !important; opacity: 1 !important; overflow: visible !important; padding: 0px !important; vertical-align: baseline !important; visibility: visible !important; z-index: auto !important;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" width="" height="" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" src="./rsync指定ssh端口进行文件同步的方法_files/zrt_lookup(1).html" data-google-container-id="a!8" data-google-query-id="COKLq_2i9fcCFQXEfAodc2cD8A" data-load-complete="true"></iframe></ins></ins></ins></html>
