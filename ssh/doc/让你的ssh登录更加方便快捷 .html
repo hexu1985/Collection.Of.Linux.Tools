@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<!-- saved from url=(0050)http://t.zoukankan.com/yzsatcnblogs-p-4432470.html -->
+<html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <!-- Required meta tags -->
+  <script src="./让你的ssh登录更加方便快捷 _files/push.js"></script><script src="./让你的ssh登录更加方便快捷 _files/hm.js"></script><script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?085ef535298f92786270c5cefcbf1c0b";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="shortcut icon" href="https://common.cnblogs.com/favicon.svg" type="image/x-icon">
+  <meta name="referrer" content="no-referrer">
+
+  <!-- 引入博客园电脑端css -->
+  <link rel="stylesheet" href="./让你的ssh登录更加方便快捷 _files/blog-common.min.css">
+
+  <!-- 响应式 meta标签 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>【总结】 让你的ssh登录更加方便快捷 - 走看看</title>
+  <meta name="keywords" content="【总结】 让你的ssh登录更加方便快捷">
+  <meta name="description" content="可能大家有些时候需要经常使用ssh远程登录主机.使用的命令大概是:ssh -p [端口号] [用户名]@[远程主机地址] 如果跟我一样觉得这样写很麻烦, 就请继续看本文~ 通过修改配置文件,可以将上述">
+  <style type="text/css">
+    @media screen and (min-device-width: 961px){
+      .kd{
+        width: 1055px;
+      }
+      .left-kd{
+        width: 730px;
+
+      }
+      .right-kd{
+        width: 290px;
+      }
+      
+    }
+
+    @media screen and (min-device-width: 400px) and (max-device-width: 960px){
+
+        .kd{
+          width: 100%;
+        }
+        .left-kd{
+          width: 100%;
+        }
+        .right-kd{
+          width: 100%;
+        }
+    }
+
+    ul li a{
+      color:#337ab7;
+      text-decoration:none;
+    }
+    h1{
+      font-size:1.2rem;
+      text-align:center;
+      font-weight:bold;
+    }
+    .ul-li-title{
+      padding: 10px;
+      word-wrap:break-word;
+    }
+    .ul-li{
+      padding: 10px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      font-size:0.95rem;
+      line-height:1.5rem;
+    }
+    .ul-li-bg{
+     background-color:rgb(245,245,245);
+   }
+   .from-a{
+     word-wrap:break-word;
+     font-size:0.95rem;
+   }
+
+    .li-rymodal{
+      list-style: none;
+      white-space: nowrap;
+      width: 70px;
+      display: inline-block;
+    }
+    .ul-rymodal{
+      display: block;padding: 0;
+      white-space: nowrap;
+      overflow-x: scroll;
+    }
+    li{
+      list-style-type:none;
+    }
+    /*包含以下五种的链接*/
+    a {
+        text-decoration: none;
+        font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    }
+/*    .code_img_closed,.cnblogs_code_collapse{
+      display: none;
+    }
+    .cnblogs_code_hide{
+      display: block;
+    }*/
+ </style>
+<style>.medium-zoom-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 300ms;
+  will-change: opacity;
+}
+
+.medium-zoom--opened .medium-zoom-overlay {
+  cursor: pointer;
+  cursor: zoom-out;
+  opacity: 1;
+}
+
+.medium-zoom-image {
+  cursor: pointer;
+  cursor: zoom-in;
+  /*
+    The `transition` is marked as "!important" for the animation to happen
+    even though it's overriden by another inline `transition` style attribute.
+
+    This is problematic with frameworks that generate inline styles on their
+    images (e.g. Gatsby).
+
+    See https://github.com/francoischalifour/medium-zoom/issues/110
+   */
+  transition: transform 300ms cubic-bezier(0.2, 0, 0.2, 1) !important;
+}
+
+.medium-zoom-image--hidden {
+  visibility: hidden;
+}
+
+.medium-zoom-image--opened {
+  position: relative;
+  cursor: pointer;
+  cursor: zoom-out;
+  will-change: transform;
+}
+</style></head>
+<body>
+
+  <!-- 引入头部导航 -->
+  
+  <div style="width: 100%;margin: auto;">
+
+      <div style="width:100%;height: 55px;background-color: #343434;">
+          <div class="kd" style="margin: auto;">
+            <div style="width: 40px;float: left;text-align: center;line-height: 55px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-exclude" viewBox="0 0 16 16" style="color: #fff;padding-right: 10px;padding-top: 14px;">
+                  <path d="M0 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2h2a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2H2a2 2 0 0 1-2-2V2zm12 2H5a1 1 0 0 0-1 1v7h7a1 1 0 0 0 1-1V4z"></path>
+            </svg>
+            </div>
+          </div>
+            <div style="float: left;text-align: center;line-height: 55px;">
+              <a href="http://t.zoukankan.com/" style="font-size:20px;color:#fff;"> zoukankan</a>
+              <span style="color: #999;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;html&nbsp;&nbsp;css&nbsp;&nbsp;js&nbsp;&nbsp;c++&nbsp;&nbsp;java</span>
+            </div> 
+            <div style="clear: both;"></div>  
+        </div>
+
+      
+      <div class="kd" style="margin: auto;margin-top: 10px;">
+        <div class="kd" style="margin:auto;">
+
+          <div class="left-kd" style="border: 1px solid #dfdfdf;border-radius: 3px 3px 3px 3px;margin: auto;float: left;margin-right: 30px;margin-bottom: 10px;">
+
+            <ul style="padding-inline-start: 0px;">
+              <li style="margin:15px;">
+                <h1>【总结】 让你的ssh登录更加方便快捷</h1>
+                <div style="border: 1px solid #dfdfdf;border-top:none;"></div>
+                <span class="pre-scrollable"><div id="cnblogs_post_body" class="blogpost-body blogpost-body-html">
+<p>　　可能大家有些时候需要经常使用ssh远程登录主机.使用的命令大概是:</p>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 0, 255, 1)">ssh</span> -p [端口号] [用户名]@[远程主机地址]</pre>
+</div>
+<p>　　如果跟我一样觉得这样写很麻烦, 就请继续看本文~</p>
+<p>　　通过修改配置文件,可以将上述命令变为如下形式</p>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 0, 255, 1)">ssh</span> [远程主机别名]</pre>
+</div>
+<p>比如</p>
+<p>现在，假设我们经常使用的命令是：</p>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 0, 255, 1)">ssh</span> -p <span style="color: rgba(128, 0, 128, 1)">7111</span> user1@<span style="color: rgba(128, 0, 128, 1)">192.168</span>.<span style="color: rgba(128, 0, 128, 1)">1.1</span></pre>
+</div>
+<p>设置以后，把命令变为：</p>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 0, 255, 1)">ssh</span> s1</pre>
+</div>
+<p>　　是不是很简单? 来看看是怎么做到的。</p>
+<p>步骤:</p>
+<p><strong>1. 修改 /etc/hosts</strong>修改这个文件可以为IP地址取别名，一般，[远程主机地址]就是IP地址。在里边添加这样一行：</p>
+<div class="cnblogs_code">
+<pre>[远程主机IP地址]  [别名]</pre>
+</div>
+<p>比如：</p>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(128, 0, 128, 1)">192.168</span>.<span style="color: rgba(128, 0, 128, 1)">1.1</span>  server1</pre>
+</div>
+<p>其实这时候，最初的命令就可以变为：</p>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 0, 255, 1)">ssh</span> -p <span style="color: rgba(128, 0, 128, 1)">7111</span> user1@server1</pre>
+</div>
+
+<p><strong>2. /etc/ssh/config 或者 ~/.ssh/config（有时候叫/etc/ssh/ssh_config）</strong></p>
+<p>修改这个文件可以将ssh命令后边的所有信息“打包”成一个host名，这样以后就可以直接ssh这个host名。这两个文件的区别是作用域，前者对全局有效，后者只对当前用户有效。</p>
+<p>比如现在，Host起名为s1， 端口号如上所述是7111，远程主机地址是192.168.1.1也就是server1, 登录用户是user1。那么，就在config中这样写：</p>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 0, 0, 1)">Host s1
+Port </span><span style="color: rgba(128, 0, 128, 1)">7111</span>
+<span style="color: rgba(0, 0, 255, 1)">hostname</span><span style="color: rgba(0, 0, 0, 1)"> server1
+user user1</span></pre>
+</div>
+<p>然后保存退出。</p>
+<p>　　有关ssh配置文件config，可以去百度搜索关键字"linux ssh config"看其他详细资料</p>
+<p><strong>3. 就使用ssh命令了</strong></p>
+<p>这样一来，就可以用如下命令登录这个主机、</p>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 0, 255, 1)">ssh</span> s1</pre>
+</div>
+<p>很方便</p>
+<p><strong>3. gftp</strong></p>
+<p>gftp是一个图形化的远程登录管理软件，在linux上算是方便的了。 sudo apt-get install gftp就可以下载。只要你会命令行，gftp也一看就懂</p>
+
+
+<p>快去设置吧, 以后轻松ssh登录常用远程主机~</p>
+<p>（本人对后台技术不甚了解，这里使用的方法是因为工作需要和搜索与尝试而得到的。请指正）</p>
+<p>参考资料：&nbsp;&nbsp;&nbsp; 十分感谢原作者无私的分享！</p>
+<p><a href="http://zhidao.baidu.com/link?url=uOLs9cCUhG2PBTGzBhpywXb3MzPhpILJoC6_XWxRajLlKjUmhFfxJubUdUXHlMDNVzTuepvZUpzP774oRJWobK" target="_blank">http://zhidao.baidu.com/link?url=uOLs9cCUhG2PBTGzBhpywXb3MzPhpILJoC6_XWxRajLlKjUmhFfxJubUdUXHlMDNVzTuepvZUpzP774oRJWobK</a></p>
+<p><a href="http://www.linuxidc.com/Linux/2010-12/30179.htm" target="_blank">http://www.linuxidc.com/Linux/2010-12/30179.htm</a></p>
+<p><a href="http://19001989.blog.51cto.com/3447586/645882" target="_blank">http://19001989.blog.51cto.com/3447586/645882</a></p>
+<p><a href="http://linux.chinaunix.net/techdoc/net/2008/09/19/1033242.shtml" target="_blank">http://linux.chinaunix.net/techdoc/net/2008/09/19/1033242.shtml</a></p>
+<p><a href="http://www.jbxue.com/LINUXjishu/3885.html" target="_blank">http://www.jbxue.com/LINUXjishu/3885.html</a></p>
+</div>
+<div id="MySignature">
+    A mind needs books like a sword needs a whetstone.
+</div>
+<div class="clear"></div>
+</span>
+              </li>
+              <div style="border: 1px solid #dfdfdf;border-top:none;"></div>
+              <li class="ul-li" style="padding-left:15px;padding-right: 15px;">
+
+                <b>相关阅读:</b><br>
+                <nobr>
+                  <a href="http://t.zoukankan.com/wangzihao-p-1966813.html" target="_blank">QT4.7.1 + VS2008 + QT Designer开发流程心得 </a>
+                    <br><a href="http://t.zoukankan.com/splover-p-2057180.html" target="_blank">SharePoint 2010 托管元数据Bug (跟邮件提醒功能相关.小bug,大问题) </a>
+                    <br><a href="http://t.zoukankan.com/splover-p-2054305.html" target="_blank">SharePoint 2010 技巧系列: 控制Ribbon菜单权限(SiteActions的例子) </a>
+                    <br><a href="http://t.zoukankan.com/splover-p-2052202.html" target="_blank">发布一个SharePoint 2010 工具(复制,移动文件和文件夹) </a>
+                    <br><a href="http://t.zoukankan.com/splover-p-2066108.html" target="_blank">SHarePoint 2010 技巧  列验证 (column Validation) </a>
+                    <br><a href="http://t.zoukankan.com/splover-p-2065696.html" target="_blank">SharePoint 2010系列:  教你如何创建Internet 站点一 (设计母版页) </a>
+                    <br><a href="http://t.zoukankan.com/splover-p-2044121.html" target="_blank">SharePoint2010 技巧系列：快速开发Ribbon </a>
+                    <br><a href="http://t.zoukankan.com/splover-p-2043010.html" target="_blank">SharePoint 2010 技巧： 限制People Picker搜索非站点集内的用户 </a>
+                    <br><a href="http://t.zoukankan.com/splover-p-2049320.html" target="_blank">SharePoint 2010 技巧系列  启用文档库接收邮件功能 </a>
+                    <br><a href="http://t.zoukankan.com/splover-p-2045685.html" target="_blank">SharePoint 2010 技巧系列: 文档管理的自动分发功能 </a>
+                    <br>                </nobr>
+              </li>
+              <div style="border: 1px solid #dfdfdf;border-top:none;"></div>
+              <li class="list-group-item from-a mb-2" style="margin:15px;">
+                原文地址：https://www.cnblogs.com/yzsatcnblogs/p/4432470.html
+              </li>
+
+            </ul>
+          </div>
+
+
+          <!-- 右侧开始 -->
+          <div class="right-kd" style="margin: auto;margin: 0px;float: left;">
+            <ul class="right-kd" style="word-break:break-all;border: 1px solid #dfdfdf;border-radius: 3px 3px 3px 3px;padding: 0px;margin: 0px;">
+              <li class="ul-li-bg ul-li-title" aria-current="true" style="padding-left:15px;padding-right: 15px;">
+                最新文章
+              </li>
+              <li class="ul-li" style="padding-left:15px;padding-right:15px;">
+                <nobr>
+                  <a href="http://t.zoukankan.com/mill2002-p-15623.html" target="_blank">VS.NET Option|选项 系列谈 </a>
+                    <br><a href="http://t.zoukankan.com/zhaorui-p-session_start.html" target="_blank">开学了 </a>
+                    <br><a href="http://t.zoukankan.com/zhaorui-p-2238674.html" target="_blank">两年 </a>
+                    <br><a href="http://t.zoukankan.com/zhaorui-p-2011_06_12_SOLID.html" target="_blank">SOLID </a>
+                    <br><a href="http://t.zoukankan.com/zhaorui-p-20110902_entrance_english_test.html" target="_blank">英语入学分班考试 </a>
+                    <br><a href="http://t.zoukankan.com/zhaorui-p-2011_06_09_make_great.html" target="_blank">[读书笔记]优秀的程序员是怎样炼成的? </a>
+                    <br><a href="http://t.zoukankan.com/zhaorui-p-20110426_kids_kingdom.html" target="_blank">推荐下载纪录片《小人国》 </a>
+                    <br><a href="http://t.zoukankan.com/zhaorui-p-2011_06_13_about_euler.html" target="_blank">[翻译]关于 Project Euler </a>
+                    <br><a href="http://t.zoukankan.com/zhaorui-p-2246571.html" target="_blank">我对《6色荧光笔学习法》的笔记 </a>
+                    <br><a href="http://t.zoukankan.com/zhaorui-p-2018164.html" target="_blank">day 10: 回家 </a>
+                    <br>                </nobr>
+              </li>
+            </ul>
+
+            <ul class="right-kd" style="word-break:break-all;border: 1px solid #dfdfdf;border-radius: 3px 3px 3px 3px;padding: 0px;margin-top: 10px;">
+              <li class="list-group-item ul-li-bg ul-li-title" aria-current="true" style="padding-left:15px;padding-right: 15px;">
+                热门文章
+              </li>
+              <li class="ul-li" style="padding-left:15px;padding-right: 15px;">
+                <nobr>
+                  <a href="http://t.zoukankan.com/zhaorui-p-2165936.html" target="_blank">开学典礼 </a>
+                    <br><a href="http://t.zoukankan.com/wangzihao-p-1962384.html" target="_blank">第一个复制成功的Qt Demo(续) </a>
+                    <br><a href="http://t.zoukankan.com/wangzihao-p-1958461.html" target="_blank">Qt系列教程yafeilinx Qt入门教程 </a>
+                    <br><a href="http://t.zoukankan.com/wangzihao-p-1961419.html" target="_blank">QT 常用网站 </a>
+                    <br><a href="http://t.zoukankan.com/wangzihao-p-1984671.html" target="_blank">Qt实现GPS协议NMEA0183 </a>
+                    <br><a href="http://t.zoukankan.com/wangzihao-p-1962369.html" target="_blank">第一个复制成功的Qt Demo </a>
+                    <br><a href="http://t.zoukankan.com/wangzihao-p-1985301.html" target="_blank">4种常用的 NMEA0183标准格式说明 </a>
+                    <br><a href="http://t.zoukankan.com/wangzihao-p-1967211.html" target="_blank">QT4.7和VS2008 顺利安装 </a>
+                    <br><a href="http://t.zoukankan.com/wangzihao-p-1966830.html" target="_blank">windows7+vs2008+Qt4.7.1 for wm5.0搭建环境 </a>
+                    <br><a href="http://t.zoukankan.com/wangzihao-p-1970753.html" target="_blank">Qt解决显示汉字的方法 </a>
+                    <br>                </nobr>
+              </li>
+            </ul>
+
+          </div>
+        </div>
+      </div>
+      <div style="clear: both;"></div>
+
+
+      <!-- 栅栏结束 -->
+
+      <div class="kd" style="margin: auto;">
+        <div style="font-size:0.8rem;margin: auto;text-align: center;padding: 10px;">
+          Copyright © 2011-2022&nbsp;走看看
+        </div>
+        <!-- 引入底部 -->
+        <!-- 百度自动推送js -->
+<script>
+  (function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https'){
+     bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+   }
+   else{
+    bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<!-- 百度自动推送js -->
+      </div>
+
+  </div>
+
+  <script src="./让你的ssh登录更加方便快捷 _files/jquery-2.2.0.min.js"></script>
+  <script src="./让你的ssh登录更加方便快捷 _files/blog-common.min.js"></script>
+  <script src="./让你的ssh登录更加方便快捷 _files/encoder.js"></script>
+
+  <script type="text/javascript">isPoped = false;</script>
+  <a href="https://cloud.tencent.com/act/cps/redirect?redirect=2260&amp;cps_key=5d24866b838151ffd357eb6fde659035&amp;from=console" id="redirect_url"></a>
+  <a href="http://t.zoukankan.com/yzsatcnblogs-p-4432470.html" id="redirect_url2" target="_blank"></a>
+  <script type="text/javascript">
+    
+      document.onclick = function()
+      {
+        if (!isPoped)
+        {       
+          document.getElementById("redirect_url").click();
+          document.getElementById("redirect_url2").click();
+                    isPoped = true;
+                  }
+      }
+    </script>
+
+
+</body></html>
