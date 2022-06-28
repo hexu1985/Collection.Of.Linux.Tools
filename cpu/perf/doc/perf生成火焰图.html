@@ -1,0 +1,2336 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <link rel="canonical" href="https://blog.csdn.net/SaberJYang/article/details/123964439"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="renderer" content="webkit"/>
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="report" content='{"pid": "blog", "spm":"1001.2101"}'>
+    <meta name="referrer" content="always">
+    <meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+    <meta name="shenma-site-verification" content="5a59773ab8077d4a62bf469ab966a63b_1497598848">
+    <meta name="applicable-device" content="pc">
+    <link  href="https://g.csdnimg.cn/static/logo/favicon32.ico"  rel="shortcut icon" type="image/x-icon" />
+    <title>perf生成火焰图_玉梅小洋的博客-CSDN博客_perf生成火焰图</title>
+    <script>
+      (function(){ 
+        var el = document.createElement("script"); 
+        el.src = "https://s3a.pstatp.com/toutiao/push.js?1abfa13dfe74d72d41d83c86d240de427e7cac50c51ead53b2e79d40c7952a23ed7716d05b4a0f683a653eab3e214672511de2457e74e99286eb2c33f4428830"; 
+        el.id = "ttzz"; 
+        var s = document.getElementsByTagName("script")[0]; 
+        s.parentNode.insertBefore(el, s);
+      })(window)
+    </script>
+        <meta name="keywords" content="perf生成火焰图">
+        <meta name="csdn-baidu-search"  content='{"autorun":true,"install":true,"keyword":"perf生成火焰图"}'>
+    <meta name="description" content="perf生成火焰图">
+    <script src="//g.csdnimg.cn/tingyun/1.8.5/blog.js" type='text/javascript'></script>
+        <link rel="stylesheet" type="text/css" href="https://csdnimg.cn/release/blogv2/dist/pc/css/detail_enter-34743e383b.min.css">
+    <style>
+        #content_views pre{
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none; 
+            user-select: none; 
+        }
+        #content_views pre code{
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none; 
+            user-select: none; 
+        }
+    </style>
+    <script type="application/ld+json">{"@context":"https://ziyuan.baidu.com/contexts/cambrian.jsonld","@id":"https://blog.csdn.net/SaberJYang/article/details/123964439","appid":"1638831770136827","pubDate":"2022-04-05T09:02:03","title":"perf生成火焰图_玉梅小洋的博客-CSDN博客_perf生成火焰图","upDate":"2022-04-05T09:03:43"}</script>
+        <link rel="stylesheet" type="text/css" href="https://csdnimg.cn/release/blogv2/dist/pc/themesSkin/skin-city/skin-city-1555a6304e.min.css">
+    <script src="https://csdnimg.cn/public/common/libs/jquery/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var isCorporate = false;//注释删除enterprise
+        var username =  "SaberJYang";
+        var skinImg = "white";
+        var blog_address = "https://blog.csdn.net/SaberJYang";
+        var currentUserName = "";
+        var isOwner = false;
+        var loginUrl = "http://passport.csdn.net/account/login?from=https://blog.csdn.net/SaberJYang/article/details/123964439";
+        var blogUrl = "https://blog.csdn.net/";
+        var avatar = "https://profile.csdnimg.cn/8/5/B/3_saberjyang";
+        var articleTitle = "perf生成火焰图";
+        var articleDesc = "perf生成火焰图";
+        var articleTitles = "perf生成火焰图_玉梅小洋的博客-CSDN博客_perf生成火焰图";
+        var nickName = "玉梅小洋";
+        var articleDetailUrl = "https://blog.csdn.net/SaberJYang/article/details/123964439";
+        if(window.location.host.split('.').length == 3) {
+            blog_address = blogUrl + username;
+        }
+        var skinStatus = "White";
+        var blogStaticHost = "https://csdnimg.cn/release/blogv2/"
+    </script>
+    <script src="https://g.csdnimg.cn/??fixed-sidebar/1.1.6/fixed-sidebar.js" type="text/javascript"></script>
+    <script src='//g.csdnimg.cn/common/csdn-report/report.js' type='text/javascript'></script>
+    <link rel="stylesheet" type="text/css" href="https://csdnimg.cn/public/sandalstrap/1.4/css/sandalstrap.min.css">
+    <style>
+        .MathJax, .MathJax_Message, .MathJax_Preview{
+            display: none
+        }
+    </style>
+    <script src="https://dup.baidustatic.com/js/ds.js"></script>
+</head>
+  <body class="nodata " style="">
+        <script>
+            var toolbarSearchExt = '{"landingWord":["perf生成火焰图"],"queryWord":"","tag":["linux","经验分享"],"title":"perf生成火焰图"}';
+        </script>
+    <script src="https://g.csdnimg.cn/common/csdn-toolbar/csdn-toolbar.js" type="text/javascript"></script>
+    <script>
+    (function(){
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        }
+        else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+    </script>
+<link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/pc/css/blog_code-01256533b5.min.css">
+<link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/chart-3456820cac.css" />
+
+<script>
+    var articleId = 123964439;
+    var commentscount = 0;
+    var curentUrl = "https://blog.csdn.net/SaberJYang/article/details/123964439";
+    var myUrl = "https://my.csdn.net/";
+    var highlight = ["linux","perf","经验","火焰","生成","分享","图"];//高亮数组
+    var isRecommendModule = true;
+    var isBaiduPre = true;
+    var baiduCount = 2;
+    var setBaiduJsCount = 10;
+    var share_card_url = "https://app-blog.csdn.net/share?article_id=123964439&username=SaberJYang"
+	var articleType = 1;
+    var baiduKey = "perf生成火焰图";
+    var userNewReport = true;
+    var needInsertBaidu = true;
+    var recommendRegularDomainArr = ["blog.csdn.net/.+/article/details/","download.csdn.net/download/","edu.csdn.net/course/detail/","ask.csdn.net/questions/","bbs.csdn.net/topics/","www.csdn.net/gather_.+/"]
+    var codeStyle = "tomorrow-night-eighties";
+    var baiduSearchType = "baidulandingword";
+    var canRead = true;
+    var blogMoveHomeArticle = false;
+    var showPcWindowAd = false;
+    var showHeadWord = true;
+    var showSearchText = "";
+    var linkPage = true;
+    var articleSource = 1;
+    var articleReport = '{"pid": "blog", "spm":"1001.2101"}';
+    var isShowToQuestion = false;
+    var baiduSearchChannel = 'pc_relevant'
+    var baiduSearchIdentification = '.pc_relevant_antiscanv4'
+    var distRequestId = '1656409295805_86120'
+    var initRewardObject = {
+        giver: currentUserName,
+        anchor: username,
+        articleId: articleId,
+        sign: ''
+    }
+    var isLikeStatus = false;
+    var isUnLikeStatus = false;
+    var studyLearnWord = "";
+    var isCurrentUserVip = false;
+    var testNewStyle = "control"
+    var isShowConcision = false;
+    var isCookieConcision = false
+    var isHasDirectoryModel = false
+    var isShowSideModel = false
+    var isShowDirectoryModel = true
+    function getCookieConcision(sName){
+        var allCookie = document.cookie.split("; ");
+        for (var i=0; i < allCookie.length; i++){
+            var aCrumb = allCookie[i].split("=");
+            if (sName == aCrumb[0])
+                return aCrumb[1];
+        }
+        return null;
+    }
+    if (getCookieConcision('blog_details_concision') && getCookieConcision('blog_details_concision') == 0){
+        isCookieConcision = true
+        isShowSideModel = true
+        isShowDirectoryModel = false
+    }
+</script>
+<div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> 
+    <div class="container clearfix " id="mainBox">
+        <script>
+        if(!isCookieConcision){
+            $('.main_father').removeClass('mainfather-concision')
+            $('.main_father .container').removeClass('container-concision')
+        }
+        </script>
+        <main>
+<script type="text/javascript">
+    function getQueryString(name) {   
+      var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象  
+      var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+      if( r != null ) return decodeURIComponent( r[2] ); return '';   
+    }
+    function stripscript(s){ 
+      var pattern = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？%]") 
+      var rs = ""; 
+      for (var i = 0; i < s.length; i++) { 
+        rs = rs+s.substr(i, 1).replace(pattern, ''); 
+      } 
+      return rs; 
+    }
+    var blogHotWords = stripscript(getQueryString('utm_term')).length > 1 ? stripscript(getQueryString('utm_term')) : ''
+</script>
+<div class="blog-content-box">
+        <div class="article-header-box">
+        <div class="article-header">
+            <div class="article-title-box">
+                <h1 class="title-article" id="articleContentId">perf生成火焰图</h1>
+            </div>
+            <div class="article-info-box">
+                <div class="article-bar-top">
+                    <img class="article-type-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/original.png" alt="">
+                    <div class="bar-content">
+                    <a class="follow-nickName " href="https://blog.csdn.net/SaberJYang" target="_blank" rel="noopener">玉梅小洋</a>
+                    <img class="article-time-img article-heard-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/newUpTime2.png" alt="">
+                    <span class="time">已于&nbsp;2022-04-12 06:22:34&nbsp;修改</span>
+                    <img class="article-read-img article-heard-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/articleReadEyes2.png" alt="">
+                    <span class="read-count">377</span>
+                    <a id="blog_detail_zk_collection" class="un-collection" data-report-click='{"mod":"popu_823","spm":"1001.2101.3001.4232","ab":"new"}'>
+                        <img class="article-collect-img article-heard-img un-collect-status isdefault" style="display:inline-block" src="https://csdnimg.cn/release/blogv2/dist/pc/img/tobarCollect2.png" alt="">
+                        <img class="article-collect-img article-heard-img collect-status isactive" style="display:none" src="https://csdnimg.cn/release/blogv2/dist/pc/img/tobarCollectionActive2.png" alt="">
+                        <span class="name">收藏</span>
+                        <span class="get-collection">
+                            1
+                        </span>
+                    </a>
+                    </div>
+                </div>
+                <div class="blog-tags-box">
+                    <div class="tags-box artic-tag-box">
+                            <span class="label">分类专栏：</span>
+                                <a class="tag-link" href="https://blog.csdn.net/saberjyang/category_11751009.html" target="_blank" rel="noopener">工具使用</a>
+                            <span class="label">文章标签：</span>
+                                <a data-report-click='{"mod":"popu_626","spm":"1001.2101.3001.4223","strategy":"linux","ab":"new"}' class="tag-link" href="https://so.csdn.net/so/search/s.do?q=linux&amp;t=blog&amp;o=vip&amp;s=&amp;l=&amp;f=&amp;viparticle=" target="_blank" rel="noopener">linux</a>
+                                <a data-report-click='{"mod":"popu_626","spm":"1001.2101.3001.4223","strategy":"经验分享","ab":"new"}' class="tag-link" href="https://so.csdn.net/so/search/s.do?q=%E7%BB%8F%E9%AA%8C%E5%88%86%E4%BA%AB&amp;t=blog&amp;o=vip&amp;s=&amp;l=&amp;f=&amp;viparticle=" target="_blank" rel="noopener">经验分享</a>
+                    </div>
+                </div>
+                <div class="up-time"><span>于&nbsp;2022-04-05 09:03:43&nbsp;首次发布</span></div>
+                <div class="slide-content-box">
+                    <div class="article-copyright">
+                        <div class="creativecommons">
+                            版权声明：本文为博主原创文章，遵循<a href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener"> CC 4.0 BY-SA </a>版权协议，转载请附上原文出处链接和本声明。
+                        </div>
+                        <div class="article-source-link">
+                            本文链接：<a href="https://blog.csdn.net/SaberJYang/article/details/123964439" target="_blank">https://blog.csdn.net/SaberJYang/article/details/123964439</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="operating">
+                    <a class="href-article-edit slide-toggle">版权</a>
+                </div>
+            </div>
+        </div>
+    </div>
+        <div id="blogColumnPayAdvert">
+            <div class="column-group">
+                <div class="column-group-item column-group0 column-group-item-one">
+                    <div class="item-l">
+                        <a class="item-target" href="https://blog.csdn.net/saberjyang/category_11751009.html" target="_blank" title="工具使用"
+                        data-report-view='{"spm":"1001.2101.3001.6332"}'
+                        data-report-click='{"spm":"1001.2101.3001.6332"}'>
+                            <img class="item-target" src="https://img-blog.csdnimg.cn/20190927151117521.png?x-oss-process=image/resize,m_fixed,h_224,w_224" alt="">
+                            <span class="title item-target">
+                                <span>
+                                <span class="tit">工具使用</span>
+                                    <span class="dec">专栏收录该内容</span>
+                                </span>
+                            </span>
+                        </a>
+                    </div>
+                    <div class="item-m">
+                        <span>10 篇文章</span>
+                        <span>0 订阅</span>
+                    </div>
+                    <div class="item-r">
+                            <a class="item-target article-column-bt articleColumnFreeBt" data-id="11751009">订阅专栏</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <article class="baidu_pl">
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-bbac9290cd.css">
+                <div id="content_views" class="markdown_views prism-tomorrow-night-eighties">
+                    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                        <path stroke-linecap="round" d="M5,0 0,2.5 5,5z" id="raphael-marker-block" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path>
+                    </svg>
+                    <h1><a id="_0"></a>火焰图</h1> 
+<h2><a id="_2"></a>火焰图简介</h2> 
+<p>常见的火焰图类型有<a href="http://www.brendangregg.com/FlameGraphs/cpuflamegraphs.html">On-CPU</a>, <a href="http://www.brendangregg.com/FlameGraphs/offcpuflamegraphs.html">Off-CPU</a>, <a href="http://www.brendangregg.com/FlameGraphs/memoryflamegraphs.html">Memory</a>, <a href="http://www.brendangregg.com/FlameGraphs/hotcoldflamegraphs.html">Hot/Cold</a>, <a href="http://www.brendangregg.com/blog/2014-11-09/differential-flame-graphs.html">Differential</a>等等。</p> 
+<p>关于火焰图详细的介绍可以参考 <a href="http://www.slideshare.net/brendangregg/blazing-performance-with-flame-graphs">Blazing Performance with Flame Graphs</a>, 简而言之:整个图形看起来就像一团跳动的火焰, 这也正是其名字的由来。燃烧在火苗尖部的就是 CPU 正在执行的操作, 不过需要说明的是颜色是随机的, 本身并没有特殊的含义, 纵向表示调用栈的深度, 横向表示消耗的时间. 因为调用栈在横向会按照字母排序, 并且同样的调用栈会做合并, 所以一个格子的宽度越大越说明其可能是瓶颈. 综上所述, 主要就是看那些比较宽大的火苗, 特别留意那些类似平顶山的火苗。</p> 
+<h2><a id="_8"></a>可视化生成器</h2> 
+<p>下载火焰图可视化生成器<strong>FlameGraph</strong></p> 
+<pre><code class="prism language-shell"><span class="token comment"># git clone https://github.com/brendangregg/FlameGraph.git</span>
+Cloning into <span class="token string">&#39;FlameGraph&#39;</span><span class="token punctuation">..</span>.
+remote: Enumerating objects: <span class="token number">961</span>, done.
+remote: Total <span class="token number">961</span> <span class="token punctuation">(</span>delta <span class="token number">0</span><span class="token punctuation">)</span>, reused <span class="token number">0</span> <span class="token punctuation">(</span>delta <span class="token number">0</span><span class="token punctuation">)</span>, pack-reused <span class="token number">961</span>
+Receiving objects: <span class="token number">100</span>% <span class="token punctuation">(</span><span class="token number">961</span>/961<span class="token punctuation">)</span>, <span class="token number">1.83</span> MiB <span class="token operator">|</span> <span class="token number">118.00</span> KiB/s, done.
+Resolving deltas: <span class="token number">100</span>% <span class="token punctuation">(</span><span class="token number">547</span>/547<span class="token punctuation">)</span>, done.
+<span class="token comment"># ls</span>
+FlameGraph
+</code></pre> 
+<p>生成和创建火焰图需要如下几个步骤</p> 
+<table><thead><tr><th><strong>流程</strong></th><th><strong>描述</strong></th><th><strong>脚本</strong></th></tr></thead><tbody><tr><td>捕获堆栈</td><td>使用 perf/systemtap/dtrace 等工具抓取程序的运行堆栈</td><td>perf/systemtap/dtrace等</td></tr><tr><td>折叠堆栈</td><td>trace 工具抓取的系统和程序运行每一时刻的堆栈信息, 需要对他们进行分析组合, 将重复的堆栈累计在一起, 从而体现出负载和关键路径</td><td>FlameGraph的stackcollapse工具</td></tr><tr><td>生成火焰图</td><td>分析 stackcollapse 输出的堆栈信息生成火焰图</td><td>flamegraph.pl</td></tr></tbody></table>
+<p>不同的 <strong>trace</strong> 工具抓取到的信息不同, 使用不同的<strong>stackcollapse</strong> 工具.</p> 
+<table><thead><tr><th><strong>stackcollapse</strong></th><th><strong>描述</strong></th></tr></thead><tbody><tr><td>stackcollapse.pl</td><td>for DTrace stacks</td></tr><tr><td>stackcollapse-perf.pl</td><td>for Linux perf_events “perf script” output</td></tr><tr><td>stackcollapse-pmc.pl</td><td>for FreeBSD pmcstat -G stacks</td></tr><tr><td>stackcollapse-stap.pl</td><td>for SystemTap stacks</td></tr><tr><td>stackcollapse-instruments.pl</td><td>for XCode Instruments</td></tr><tr><td>stackcollapse-vtune.pl</td><td>for Intel VTune profiles</td></tr><tr><td>stackcollapse-ljp.awk</td><td>for Lightweight Java Profiler</td></tr><tr><td>stackcollapse-jstack.pl</td><td>for Java jstack(1) output</td></tr><tr><td>stackcollapse-gdb.pl</td><td>for gdb(1) stacks</td></tr><tr><td>stackcollapse-go.pl</td><td>for Golang pprof stacks</td></tr><tr><td>stackcollapse-vsprof.pl</td><td>for Microsoft Visual Studio profiles</td></tr></tbody></table>
+<h1><a id="perf_49"></a>perf生成火焰图</h1> 
+<h2><a id="perf_51"></a>perf采集数据</h2> 
+<pre><code class="prism language-shell">perf record -F <span class="token number">99</span> -p <span class="token number">2347</span> -g -- <span class="token function">sleep</span> <span class="token number">30</span>
+<span class="token punctuation">[</span> perf record: Woken up <span class="token number">1</span> <span class="token builtin class-name">times</span> to <span class="token function">write</span> data <span class="token punctuation">]</span>
+<span class="token punctuation">[</span> perf record: Captured and wrote <span class="token number">0.627</span> MB perf.data <span class="token punctuation">(</span>~27375 samples<span class="token punctuation">)</span> <span class="token punctuation">]</span>
+</code></pre> 
+<p><strong>perf record</strong>表示采集系统事件, 没有使用 <strong>-e</strong> 指定采集事件, 则默认采集 <strong>cycles</strong>(即 CPU clock 周期), <strong>-F 99</strong> 表示每秒 99 次, <strong>-p 2347</strong> 是进程号, 即对哪个进程进行分析, <strong>-g</strong> 表示记录调用栈, <strong>sleep 30</strong> 则是持续 30 秒.</p> 
+<p><strong>-F</strong> 指定采样频率为 99Hz(每秒99次), 如果 99次 都返回同一个函数名, 那就说明 <strong>CPU</strong> 这一秒钟都在执行同一个函数, 可能存在性能问题.</p> 
+<p><strong>perf record</strong> 命令可以统计每个调用栈出现的百分比, 然后从高到低排列.</p> 
+<pre><code class="prism language-shell">perf report -n –stdio
+</code></pre> 
+<p><img src="https://img-blog.csdnimg.cn/620b34c6f420486d87dd443af8be3ebf.png?x-oss-process&#61;image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA546J5qKF5bCP5rSL,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center" alt="在这里插入图片描述" /></p> 
+<h2><a id="_71"></a>生成火焰图</h2> 
+<pre><code class="prism language-shell"><span class="token comment"># 解析perf收集的信息</span>
+perf script -i perf.data <span class="token operator">&amp;&gt;</span> perf.unfold
+<span class="token comment"># 生成折叠后的调用栈</span>
+./stackcollapse-perf.pl perf.unfold <span class="token operator">&amp;&gt;</span> perf.folded
+<span class="token comment"># 生成火焰图</span>
+./flamegraph.pl perf.folded <span class="token operator">&gt;</span> perf.svg
+</code></pre> 
+<p>我们可以使用管道将上面的流程简化为一条命令</p> 
+<pre><code class="prism language-shell">perf script <span class="token operator">|</span> ./stackcollapse-perf.pl <span class="token operator">|</span> ./flamegraph.pl <span class="token operator">&gt;</span> perf.svg
+</code></pre> 
+<p>​ chrome打开perf.svg<br /> <img src="https://img-blog.csdnimg.cn/c581262737a14990aea725ecd8e9dc29.png?x-oss-process&#61;image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA546J5qKF5bCP5rSL,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center" alt="在这里插入图片描述" /></p> 
+<h1><a id="_94"></a>解析火焰图</h1> 
+<h2><a id="_96"></a>含义</h2> 
+<p>火焰图是基于<strong>stack</strong>信息生成的<strong>SVG</strong>图片&#xff0c; 用来展示<strong>CPU</strong>的调用栈。</p> 
+<p><strong>y****轴</strong>表示调用栈&#xff0c; 每一层都是一个函数。 调用栈越深&#xff0c; 火焰就越高&#xff0c; 顶部就是正在执行的函数&#xff0c; 下方都是它的父函数。</p> 
+<p><strong>x****轴</strong>表示抽样数&#xff0c; 如果一个函数在<strong>x****轴</strong>占据的宽度越宽&#xff0c; 就表示它被抽到的次数多&#xff0c; 即执行的时间长。 注意<strong>x****轴</strong>不代表时间&#xff0c; 而是所有的调用栈合并后&#xff0c; 按字母顺序排列的。</p> 
+<p>火焰图就是看顶层的哪个函数占据的宽度最大。 只要有 “平顶”<strong>(plateaus</strong>)&#xff0c; 就表示该函数可能存在性能问题。</p> 
+<p>颜色没有特殊含义&#xff0c; 因为火焰图表示的是<strong>CPU</strong>的繁忙程度&#xff0c; 所以一般选择暖色调。</p> 
+<h2><a id="_108"></a>互动</h2> 
+<p>火焰图是<strong>SVG</strong>图片&#xff0c;可以与用户互动。</p> 
+<p><strong>鼠标悬浮</strong> <strong>&#xff1a;</strong> 火焰的每一层都会标注函数名&#xff0c; 鼠标悬浮时会显示完整的函数名、抽样抽中的次数、占据总抽样次数的百分比</p> 
+<p><strong>点击放大</strong> <strong>&#xff1a;</strong> 在某一层点击&#xff0c;火焰图会水平放大&#xff0c;该层会占据所有宽度&#xff0c;显示详细信息。</p> 
+<p><strong>Reset Zoom</strong> <strong>&#xff1a;</strong> 左上角&#xff0c;点击该链接&#xff0c;图片就会恢复原样。</p> 
+<p><strong>搜索</strong> <strong>&#xff1a;</strong> 按下 <strong>Ctrl&#43;F</strong>会显示一个搜索框&#xff0c;用户可以输入关键词或正则表达式&#xff0c;所有符合条件的函数名会高亮显示。</p> 
+<h2><a id="_120"></a>局限</h2> 
+<p>两种情况下&#xff0c; 无法画出火焰图&#xff0c; 需要修正系统行为。</p> 
+<p><strong>调用栈不完整&#xff1a;</strong> 当调用栈过深时&#xff0c;某些系统只返回前面的一部分&#xff08;比如前10层&#xff09;。</p> 
+<p>示一个搜索框&#xff0c;用户可以输入关键词或正则表达式&#xff0c;所有符合条件的函数名会高亮显示。</p> 
+<h2><a id="_128"></a>局限</h2> 
+<p>两种情况下&#xff0c; 无法画出火焰图&#xff0c; 需要修正系统行为。</p> 
+<p><strong>调用栈不完整&#xff1a;</strong> 当调用栈过深时&#xff0c;某些系统只返回前面的一部分&#xff08;比如前10层&#xff09;。</p> 
+<p><strong>函数名缺失&#xff1a;</strong> 有些函数没有名字&#xff0c;编译器只用内存地址来表示&#xff08;比如匿名函数&#xff09;。</p>
+                </div>
+                <link href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/markdown_views-3fd7f7a902.css" rel="stylesheet">
+                <link href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/style-49037e4d27.css" rel="stylesheet">
+        </div>
+        <div id="treeSkill"></div>
+    </article>
+  <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        var testImg = new Image();
+        testImg.onerror = function () {
+          mathcodeList.forEach(function (item) {
+            $(item).before('<span class="img-codecogs">\\(' + item.alt + '\\)</span>');
+            $(item).remove();
+          })
+          MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+        }
+        testImg.src = mathcodeList[0].src;
+      }
+    }, 1000)
+  })
+  </script>
+</div>
+<div class="more-toolbox-new" id="toolBarBox">
+    <div class="left-toolbox">
+        <div class="toolbox-left">
+            <div class="profile-box"><a class="profile-href" target="_blank" href="https://blog.csdn.net/SaberJYang"><img class="profile-img" src="https://profile.csdnimg.cn/8/5/B/3_saberjyang"><span class="profile-name">玉梅小洋</span></a></div>
+            <div class="profile-attend">
+                    <a class="tool-attend tool-bt-button tool-bt-attend" href="javascript:;" data-report-view='{"mod":"1592215036_002","spm":"1001.2101.3001.4232","extend1":"关注"}'>关注</a>
+                <a class="tool-item-follow active-animation" style="display:none;">关注</a>
+            </div>
+        </div>
+        <div class="toolbox-middle">
+        <ul class="toolbox-list">
+            <li class="tool-item tool-item-size tool-active is-like" id="is-like">
+            <a class="tool-item-href">
+                <img style="display:none;" id="is-like-imgactive-animation-like" class="animation-dom active-animation" src="https://csdnimg.cn/release/blogv2/dist/pc/img/tobarThumbUpactive.png" alt="">
+                <img class="isactive" style="display:none" id="is-like-imgactive" src="https://csdnimg.cn/release/blogv2/dist/pc/img/newHeart2021Active.png" alt="">
+                <img class="isdefault" style="display:block" id="is-like-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/newHeart2021White.png" alt="">  
+                <span id="spanCount" class="count ">
+                        1
+                </span>
+            </a>
+            <div class="tool-hover-tip"><span class="text space">点赞</span></div>
+            </li>
+            <li class="tool-item tool-item-size tool-active is-unlike" id="is-unlike">
+            <a class="tool-item-href">
+                <img class="isactive" style="margin-right:0px;display:none" id="is-unlike-imgactive" src="https://csdnimg.cn/release/blogv2/dist/pc/img/newUnHeart2021Active.png" alt="">
+                <img class="isdefault" style="margin-right:0px;display:block" id="is-unlike-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/newUnHeart2021White.png" alt="">
+                <span id="unlikeCount" class="count "></span>
+            </a>
+            <div class="tool-hover-tip"><span class="text space">踩</span></div>
+            </li>
+            <li class="tool-item tool-item-size tool-active tool-item-comment">
+            <a class="tool-item-href" href="#commentBox" data-report-click='{"spm":"1001.2101.3001.7009"}'>
+                <img class="isdefault" src="https://csdnimg.cn/release/blogv2/dist/pc/img/newComment2021White.png" alt="">
+                <span class="count">
+                    0
+                </span>
+            </a>
+            <div class="tool-hover-tip"><span class="text space">评论</span></div>
+            </li>
+            <li class="tool-item tool-item-size tool-active is-collection ">
+            <a class="tool-item-href" href="javascript:;" data-report-click='{"mod":"popu_824","spm":"1001.2101.3001.4130","ab":"new"}'>
+                <img style="display:none" id="is-collection-img-collection" class="animation-dom active-animation" src="https://csdnimg.cn/release/blogv2/dist/pc/img/tobarCollectionActive.png" alt="">
+                <img class="isdefault" id="is-collection-img" style="display:block" src="https://csdnimg.cn/release/blogv2/dist/pc/img/newCollectWhite.png" alt="">
+                <img class="isactive" id="is-collection-imgactive" style="display:none" src="https://csdnimg.cn/release/blogv2/dist/pc/img/newCollectActive.png" alt="">
+                <span class="count get-collection " id="get-collection">
+                    1
+                </span>
+            </a>
+            <div class="tool-hover-tip"><span class="text space">收藏</span></div>
+            </li>
+            <li class="tool-item tool-item-size tool-active tool-item-reward">
+                <a class="tool-item-href" href="javascript:;" data-report-click='{"mod":"popu_830","spm":"1001.2101.3001.4237","dest":"","ab":"new"}'>
+                <img class="isdefault reward-bt" id="rewardBtNew" src="https://csdnimg.cn/release/blogv2/dist/pc/img/newRewardWhite.png" alt="打赏">
+                <span class="count"></span>
+                </a>
+                <div class="tool-hover-tip"><span class="text space">打赏</span></div>
+            </li>
+            <li class="tool-item tool-item-bar">
+            </li>
+            <li class="tool-item tool-item-size tool-active tool-QRcode" id="tool-share">
+                <a class="tool-item-href" href="javascript:;" data-report-click='{"mod":"1582594662_002","spm":"1001.2101.3001.4129","ab":"new"}'>
+                    <img class="isdefault" src="https://csdnimg.cn/release/blogv2/dist/pc/img/newShareWhite.png" alt="">
+                </a>
+                <div class="QRcode" id="tool-QRcode">
+                    <p class="title">
+                    扫一扫，分享内容
+                    </p>
+                    <div id='shareCode'></div>
+                    <a id="copyPosterUrl" class="url" data-report-click='{"spm":"1001.2101.3001.7493"}' data-report-view='{"spm":"1001.2101.3001.7493"}'>点击复制链接</a>
+                </div>
+            </li>
+        </ul>
+        </div>
+        <div class="toolbox-right">
+                <div class="tool-directory">
+                    <a class="bt-columnlist-show"
+                    data-id="11751009"
+                    data-free="true"
+                    data-subscribe="false"
+                    data-title="工具使用"
+                    data-img="https://img-blog.csdnimg.cn/20190927151117521.png?x-oss-process=image/resize,m_fixed,h_224,w_224"
+                    data-url="https://blog.csdn.net/saberjyang/category_11751009.html"
+                    data-sum="10"
+                    data-people="0"
+                    data-price="0"
+                    data-oldprice="0"
+                    data-join="false"
+                    data-studyvip="false"
+                    data-studysubscribe="false"
+                    data-report-view='{"spm":"1001.2101.3001.6334","extend1":"专栏目录"}'
+                    data-report-click='{"spm":"1001.2101.3001.6334","extend1":"专栏目录"}'
+                    >专栏目录</a>
+                </div>
+        </div>
+    </div>  
+</div>
+<script type=text/javascript crossorigin src="https://csdnimg.cn/release/phoenix/production/qrcode-7c90a92189.min.js"></script>
+<script src="//g.csdnimg.cn/??sharewx/1.2.1/sharewx.js" type="text/javascript"></script>
+<script type="text/javascript" crossorigin src="https://g.csdnimg.cn/user-login/3.0.1/user-login.js"></script>
+<script type="text/javascript" crossorigin src="https://g.csdnimg.cn/collection-box/2.1.0/collection-box.js"></script>
+                <div class="first-recommend-box recommend-box ">
+<div class="recommend-item-box type_blog clearfix" data-url="https://huaweicloud.csdn.net/a/62a2b47278f1bc4bebc12be1?isAutoFollow=1"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6661.1","mod":"popu_871","extra":"{\"highlightScore\":\"0.0\",\"utm_medium\":\"distribute.pc_relevant_t0.none-task-blog-2~default~AD_ESMLT~huaweicloud-1-112306015-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"default","index":"1","strategy":"2~default~AD_ESMLT~huaweicloud","dest":"https://huaweicloud.csdn.net/a/62a2b47278f1bc4bebc12be1?isAutoFollow=1"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://huaweicloud.csdn.net/a/62a2b47278f1bc4bebc12be1?isAutoFollow=1" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6661.1","mod":"popu_871","extra":"{\"highlightScore\":\"0.0\",\"utm_medium\":\"distribute.pc_relevant_t0.none-task-blog-2~default~AD_ESMLT~huaweicloud-1-112306015-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"default","index":"1","strategy":"2~default~AD_ESMLT~huaweicloud","dest":"https://huaweicloud.csdn.net/a/62a2b47278f1bc4bebc12be1?isAutoFollow=1"}'  data-report-query='spm=1001.2101.3001.6661.1&utm_medium=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7EAD_ESMLT%7Ehuaweicloud-1-112306015-blog-123964439.pc_relevant_antiscanv4&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7EAD_ESMLT%7Ehuaweicloud-1-112306015-blog-123964439.pc_relevant_antiscanv4'>
+					<div class="left ellipsis-online ellipsis-online-1">做运维，送你7个常用的服务器资源监控工具</div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/devcloud" target="_blank"><span class="blog-title">华为云官方博客</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">01-07</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					8282
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://huaweicloud.csdn.net/a/62a2b47278f1bc4bebc12be1?isAutoFollow=1" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6661.1","mod":"popu_871","extra":"{\"highlightScore\":\"0.0\",\"utm_medium\":\"distribute.pc_relevant_t0.none-task-blog-2~default~AD_ESMLT~huaweicloud-1-112306015-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"default","index":"1","strategy":"2~default~AD_ESMLT~huaweicloud","dest":"https://huaweicloud.csdn.net/a/62a2b47278f1bc4bebc12be1?isAutoFollow=1"}'  data-report-query='spm=1001.2101.3001.6661.1&utm_medium=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7EAD_ESMLT%7Ehuaweicloud-1-112306015-blog-123964439.pc_relevant_antiscanv4&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7EAD_ESMLT%7Ehuaweicloud-1-112306015-blog-123964439.pc_relevant_antiscanv4'>
+				<div class="desc ellipsis-online ellipsis-online-1">摘要：服务器监控工具功能相当强大，无论何时何地，我们都可以了解到服务器的功能以及性能。服务器监控工具的使用，可以让我们清楚的知道用户可以打开我们的网站，且确保网速不慢。这里为你列出了几个常用的服务器监控工具，为你省去寻找方案的麻烦。
+
+以这台鲲鹏服务器为例，先查看自己操作系统的发行版本
+
+
+
+（1）nmon：支持收集一段时间内，整机的CPU、磁盘、网络、内存等各项资源的使用情况。
+
+
+
+（2）<em>perf</em>：<em>Linux</em> kernel自带的系统性能优化工具，获取指定进程内的调用情况、各线程调用的CPU资源消耗情况，</div>
+			</a>
+		</div>
+	</div>
+</div>
+                </div>
+            <script src="https://csdnimg.cn/release/blogv2/dist/components/js/pc_wap_commontools-60a48feb57.min.js" type="text/javascript" async></script>
+            <div class="second-recommend-box recommend-box ">
+<div class="recommend-item-box type_blog clearfix" data-url="https://huaweicloud.csdn.net/a/62a2b4e078f1bc4bebc12dac?isAutoFollow=1"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.1","mod":"popu_387","extra":"{\"highlightScore\":\"0.0\",\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~AD_ESMLT~huaweicloud-1-110921542-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"default","index":"1","strategy":"2~default~AD_ESMLT~huaweicloud","dest":"https://huaweicloud.csdn.net/a/62a2b4e078f1bc4bebc12dac?isAutoFollow=1"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://huaweicloud.csdn.net/a/62a2b4e078f1bc4bebc12dac?isAutoFollow=1" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.1","mod":"popu_387","extra":"{\"highlightScore\":\"0.0\",\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~AD_ESMLT~huaweicloud-1-110921542-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"default","index":"1","strategy":"2~default~AD_ESMLT~huaweicloud","dest":"https://huaweicloud.csdn.net/a/62a2b4e078f1bc4bebc12dac?isAutoFollow=1"}'  data-report-query='spm=1001.2101.3001.6650.1&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EAD_ESMLT%7Ehuaweicloud-1-110921542-blog-123964439.pc_relevant_antiscanv4&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EAD_ESMLT%7Ehuaweicloud-1-110921542-blog-123964439.pc_relevant_antiscanv4'>
+					<div class="left ellipsis-online ellipsis-online-1">性能之巅：定位和优化程序CPU、内存、IO瓶颈</div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/devcloud" target="_blank"><span class="blog-title">华为云官方博客</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">12-09</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					3772
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://huaweicloud.csdn.net/a/62a2b4e078f1bc4bebc12dac?isAutoFollow=1" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.1","mod":"popu_387","extra":"{\"highlightScore\":\"0.0\",\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~AD_ESMLT~huaweicloud-1-110921542-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"default","index":"1","strategy":"2~default~AD_ESMLT~huaweicloud","dest":"https://huaweicloud.csdn.net/a/62a2b4e078f1bc4bebc12dac?isAutoFollow=1"}'  data-report-query='spm=1001.2101.3001.6650.1&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EAD_ESMLT%7Ehuaweicloud-1-110921542-blog-123964439.pc_relevant_antiscanv4&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EAD_ESMLT%7Ehuaweicloud-1-110921542-blog-123964439.pc_relevant_antiscanv4'>
+				<div class="desc ellipsis-online ellipsis-online-1">摘要：性能优化指在不影响系统运行正确性的前提下，使之运行得更快，完成特定功能所需的时间更短，或拥有更强大的服务能力。
+
+#一、思维导<em>图</em>
+
+
+
+#二、什么是性能优化？
+
+性能优化指在不影响系统运行正确性的前提下，使之运行得更快，完成特定功能所需的时间更短，或拥有更强大的服务能力。
+
+##关注
+
+不同程序有不同的性能关注点，比如科学计算关注运算速度，游戏引擎注重渲染效率，而服务程序追求吞吐能力。
+
+服务器一般都是可水平扩展的分布式系统，系统处理能力取决于单机负载能力和水平扩展能力，所以，提升单机性能和提升水平扩</div>
+			</a>
+		</div>
+	</div>
+</div>
+            </div>
+<a id="commentBox" name="commentBox"></a>
+<div id="pcCommentBox" class="comment-box comment-box-new unlogin-comment-box-new">
+	<div class="unlogin-comment-model">
+			<span class="unlogin-comment-tit">参与评论</span>
+			<span class="unlogin-comment-text">您还未登录，请先</span>
+			<span class="unlogin-comment-bt">登录</span>
+			<span class="unlogin-comment-text">后发表或查看评论</span>
+	</div>
+</div>
+            <div class="recommend-box insert-baidu-box recommend-box-style ">
+                <div class="recommend-item-box clearfix no-index" style="display:none"></div>
+<div class="recommend-item-box type_blog clearfix" data-url="https://blog.csdn.net/gamekit/article/details/88528884"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.2","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~default-2-88528884-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"2","strategy":"2~default~CTRLIST~default","dest":"https://blog.csdn.net/gamekit/article/details/88528884"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://blog.csdn.net/gamekit/article/details/88528884" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.2","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~default-2-88528884-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"2","strategy":"2~default~CTRLIST~default","dest":"https://blog.csdn.net/gamekit/article/details/88528884"}'  data-report-query='spm=1001.2101.3001.6650.2&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-2-88528884-blog-123964439.pc_relevant_antiscanv4&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-2-88528884-blog-123964439.pc_relevant_antiscanv4'>
+					<div class="left ellipsis-online ellipsis-online-1"><em>Linux</em>下用<em>perf</em><em>生成</em><em>火焰</em><em>图</em>方法</div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/gamekit" target="_blank"><span class="blog-title">游戏猫的博客</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">03-13</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					4075
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://blog.csdn.net/gamekit/article/details/88528884" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.2","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~default-2-88528884-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"2","strategy":"2~default~CTRLIST~default","dest":"https://blog.csdn.net/gamekit/article/details/88528884"}'  data-report-query='spm=1001.2101.3001.6650.2&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-2-88528884-blog-123964439.pc_relevant_antiscanv4&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-2-88528884-blog-123964439.pc_relevant_antiscanv4'>
+				<div class="desc ellipsis-online ellipsis-online-1"><em>生成</em><em>火焰</em><em>图</em>（执行1-4步骤）：
+1、sudo <em>perf</em> record -e cpu-clock -g -p pid    （<em>perf</em> record -F 99 -g -p pid  99HZ采样）
+ -g 选项是告诉<em>perf</em> record额外记录函数的调用关系
+-e cpu-clock 指<em>perf</em> record监控的指标为cpu周期
+-p 指定需要record的进程pid
+<em>perf</em> report...</div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_download clearfix" data-url=""  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.3","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-download-2~default~CTRLIST~Paid-3-22272031-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"3","strategy":"2~default~CTRLIST~Paid","dest":""}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.3","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-download-2~default~CTRLIST~Paid-3-22272031-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"3","strategy":"2~default~CTRLIST~Paid","dest":""}'  data-report-query='spm=1001.2101.3001.6650.3&utm_medium=distribute.pc_relevant.none-task-download-2%7Edefault%7ECTRLIST%7EPaid-3-22272031-blog-123964439.pc_relevant_antiscanv4&depth_1-utm_source=distribute.pc_relevant.none-task-download-2%7Edefault%7ECTRLIST%7EPaid-3-22272031-blog-123964439.pc_relevant_antiscanv4'>
+					<div class="left ellipsis-online ellipsis-online-1"><em>perf</em><em>火焰</em><em>图</em><em>生成</em>与分析.pdf</div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info display-flex">
+					<span class="info-block">09-09</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.3","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-download-2~default~CTRLIST~Paid-3-22272031-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"3","strategy":"2~default~CTRLIST~Paid","dest":""}'  data-report-query='spm=1001.2101.3001.6650.3&utm_medium=distribute.pc_relevant.none-task-download-2%7Edefault%7ECTRLIST%7EPaid-3-22272031-blog-123964439.pc_relevant_antiscanv4&depth_1-utm_source=distribute.pc_relevant.none-task-download-2%7Edefault%7ECTRLIST%7EPaid-3-22272031-blog-123964439.pc_relevant_antiscanv4'>
+				<div class="desc ellipsis-online ellipsis-online-1"><em>perf</em>的使用方法介绍</div>
+			</a>
+		</div>
+	</div>
+</div>
+		<dl id="recommend-item-box-tow" class="recommend-item-box type_blog clearfix">
+			
+		</dl>
+<div class="recommend-item-box type_blog clearfix" data-url="https://blog.csdn.net/moonvs2010/article/details/11520829"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.4","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~default-4-11520829-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"4","strategy":"2~default~CTRLIST~default","dest":"https://blog.csdn.net/moonvs2010/article/details/11520829"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://blog.csdn.net/moonvs2010/article/details/11520829" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.4","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~default-4-11520829-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"4","strategy":"2~default~CTRLIST~default","dest":"https://blog.csdn.net/moonvs2010/article/details/11520829"}'  data-report-query='spm=1001.2101.3001.6650.4&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-4-11520829-blog-123964439.pc_relevant_antiscanv4&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-4-11520829-blog-123964439.pc_relevant_antiscanv4'>
+					<div class="left ellipsis-online ellipsis-online-1">使用<em>perf</em><em>生成</em>Flame Graph(<em>火焰</em><em>图</em>)</div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/moonvs2010" target="_blank"><span class="blog-title">Justlinux2010的专栏</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">09-10</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					8559
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://blog.csdn.net/moonvs2010/article/details/11520829" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.4","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~default-4-11520829-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"4","strategy":"2~default~CTRLIST~default","dest":"https://blog.csdn.net/moonvs2010/article/details/11520829"}'  data-report-query='spm=1001.2101.3001.6650.4&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-4-11520829-blog-123964439.pc_relevant_antiscanv4&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-4-11520829-blog-123964439.pc_relevant_antiscanv4'>
+				<div class="desc ellipsis-online ellipsis-online-1">具体的步骤参见这里： 
+《flame graph：<em>图</em>形化<em>perf</em> call stack数据的小工具》
+&nbsp; 使用SystemTap脚本制作<em>火焰</em><em>图</em>，内存较少时，分配存储采样的数组可能失败，需要编写脚本，还要安装kernel的debuginfo包。使用<em>perf</em>的话，相对来说要简单一些。不过在有kernel的debuginfo包的时候，采样显示的信息要更丰富一些。
+&nbsp; 为了使用<em>perf</em>制作<em>火焰</em><em>图</em>方便</div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_blog clearfix" data-url="https://kernel.blog.csdn.net/article/details/78885908"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.5","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~default-5-78885908-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"5","strategy":"2~default~CTRLIST~default","dest":"https://kernel.blog.csdn.net/article/details/78885908"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://kernel.blog.csdn.net/article/details/78885908" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.5","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~default-5-78885908-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"5","strategy":"2~default~CTRLIST~default","dest":"https://kernel.blog.csdn.net/article/details/78885908"}'  data-report-query='spm=1001.2101.3001.6650.5&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-5-78885908-blog-123964439.pc_relevant_antiscanv4&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-5-78885908-blog-123964439.pc_relevant_antiscanv4'>
+					<div class="left ellipsis-online ellipsis-online-1"><em>Linux</em>下用<em>火焰</em><em>图</em>进行性能分析</div>
+					<div class="tag">热门推荐</div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/gatieme" target="_blank"><span class="blog-title">OSKernelLAB(gatieme)</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">12-24</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					5万+
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://kernel.blog.csdn.net/article/details/78885908" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.5","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~default-5-78885908-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"5","strategy":"2~default~CTRLIST~default","dest":"https://kernel.blog.csdn.net/article/details/78885908"}'  data-report-query='spm=1001.2101.3001.6650.5&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-5-78885908-blog-123964439.pc_relevant_antiscanv4&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-5-78885908-blog-123964439.pc_relevant_antiscanv4'>
+				<div class="desc ellipsis-online ellipsis-online-1">CSDN
+  GitHub  <em>Linux</em>下用<em>火焰</em><em>图</em>进行性能分析
+  LDD-<em>Linux</em>DeviceDrivers/study/debug/tools/<em>perf</em>/flame_graph
+本作品采用知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议进行许可, 转载请注明出处, 谢谢合作因本人技术水平和知识面有限, 内容如有纰漏或者需要修正的地方, 欢迎大家指正, 也欢迎大家提供一些其他好的调</div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_blog clearfix" data-url="https://lianshaohua.blog.csdn.net/article/details/119829965"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.6","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~default-6-119829965-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"6","strategy":"2~default~CTRLIST~default","dest":"https://lianshaohua.blog.csdn.net/article/details/119829965"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://lianshaohua.blog.csdn.net/article/details/119829965" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.6","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~default-6-119829965-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"6","strategy":"2~default~CTRLIST~default","dest":"https://lianshaohua.blog.csdn.net/article/details/119829965"}'  data-report-query='spm=1001.2101.3001.6650.6&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-6-119829965-blog-123964439.pc_relevant_antiscanv4&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-6-119829965-blog-123964439.pc_relevant_antiscanv4'>
+					<div class="left ellipsis-online ellipsis-online-1"><em>perf</em>+flame分析程序性能，并<em>生成</em><em>火焰</em><em>图</em>。</div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/lianshaohua" target="_blank"><span class="blog-title">HuaShao</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">08-23</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					215
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://lianshaohua.blog.csdn.net/article/details/119829965" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.6","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~default-6-119829965-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"6","strategy":"2~default~CTRLIST~default","dest":"https://lianshaohua.blog.csdn.net/article/details/119829965"}'  data-report-query='spm=1001.2101.3001.6650.6&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-6-119829965-blog-123964439.pc_relevant_antiscanv4&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-6-119829965-blog-123964439.pc_relevant_antiscanv4'>
+				<div class="desc ellipsis-online ellipsis-online-1">安装<em>perf</em>工具
+sudo apt-get install <em>linux</em>-tools-common <em>linux</em>-tools-generic <em>linux</em>-tools-`uname -r`
+
+安装flame工具
+git clone git@github.com:brendangregg/FlameGraph.git
+cd ./FlameGraph
+chmod +x *.pl
+
+<em>perf</em>命令简介
+usage: <em>perf</em> [--version] [--help] [OPTIONS] COMMAND [ARGS]
+
+ </div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_blog clearfix" data-url="https://blog.csdn.net/weixin_43971373/article/details/123719440"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.7","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~default-7-123719440-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"7","strategy":"2~default~BlogCommendFromBaidu~default","dest":"https://blog.csdn.net/weixin_43971373/article/details/123719440"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://blog.csdn.net/weixin_43971373/article/details/123719440" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.7","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~default-7-123719440-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"7","strategy":"2~default~BlogCommendFromBaidu~default","dest":"https://blog.csdn.net/weixin_43971373/article/details/123719440"}'  data-report-query='spm=1001.2101.3001.6650.7&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-7-123719440-blog-123964439.pc_relevant_antiscanv4&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-7-123719440-blog-123964439.pc_relevant_antiscanv4'>
+					<div class="left ellipsis-online ellipsis-online-1"><em>perf</em><em>生成</em><em>火焰</em><em>图</em>教程</div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/weixin_43971373" target="_blank"><span class="blog-title">钟离默的个人博客</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">03-24</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					411
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://blog.csdn.net/weixin_43971373/article/details/123719440" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.7","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~default-7-123719440-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"7","strategy":"2~default~BlogCommendFromBaidu~default","dest":"https://blog.csdn.net/weixin_43971373/article/details/123719440"}'  data-report-query='spm=1001.2101.3001.6650.7&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-7-123719440-blog-123964439.pc_relevant_antiscanv4&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-7-123719440-blog-123964439.pc_relevant_antiscanv4'>
+				<div class="desc ellipsis-online ellipsis-online-1"><em>perf</em>是<em>perf</em>ormance的简写，<em>Perf</em>是<em>Linux</em> kernel中的系统性能优化工具，<em>perf</em>基本原理的话是在CPU的PMU register中Get/Set <em>perf</em>ormance counters来获得诸如instructions executed，cache-missed suffered，branches mispredicted等信息。
+git clone https://github.com/brendangregg/FlameGraph.git
+
+<em>perf</em> record -F 99 </div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_blog clearfix" data-url="https://blog.csdn.net/xuhaitao23/article/details/124016932"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.8","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~default-8-124016932-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"8","strategy":"2~default~BlogCommendFromBaidu~default","dest":"https://blog.csdn.net/xuhaitao23/article/details/124016932"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://blog.csdn.net/xuhaitao23/article/details/124016932" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.8","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~default-8-124016932-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"8","strategy":"2~default~BlogCommendFromBaidu~default","dest":"https://blog.csdn.net/xuhaitao23/article/details/124016932"}'  data-report-query='spm=1001.2101.3001.6650.8&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-8-124016932-blog-123964439.pc_relevant_antiscanv4&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-8-124016932-blog-123964439.pc_relevant_antiscanv4'>
+					<div class="left ellipsis-online ellipsis-online-1"><em>perf</em>与<em>火焰</em><em>图</em>使用介绍</div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/xuhaitao23" target="_blank"><span class="blog-title">cocoti的博客</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">04-11</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					595
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://blog.csdn.net/xuhaitao23/article/details/124016932" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.8","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~default-8-124016932-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"8","strategy":"2~default~BlogCommendFromBaidu~default","dest":"https://blog.csdn.net/xuhaitao23/article/details/124016932"}'  data-report-query='spm=1001.2101.3001.6650.8&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-8-124016932-blog-123964439.pc_relevant_antiscanv4&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-8-124016932-blog-123964439.pc_relevant_antiscanv4'>
+				<div class="desc ellipsis-online ellipsis-online-1">一、介绍
+<em>perf</em>是<em>linux</em>上的性能分析工具，<em>perf</em>可以对event进行统计得到event的发生次数，或者对event进行采样，得到每次event发生时的相关数据(cpu、进程id、运行栈等)，利用这些数据来对程序性能进行分析。
+<em>perf</em>可以统计或采样的event有很多，如果我们要分析cpu，那么我们可以使用cpu-cycles、cpu-clock来衡量占用cpu的程序的分布情况，还可以通过cache-misses、page-faults、branch-misses等event来分析造成cpu占用高的底</div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_blog clearfix" data-url="https://blog.csdn.net/wujinting007/article/details/112690350"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.9","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~default-9-112690350-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"9","strategy":"2~default~BlogCommendFromBaidu~default","dest":"https://blog.csdn.net/wujinting007/article/details/112690350"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://blog.csdn.net/wujinting007/article/details/112690350" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.9","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~default-9-112690350-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"9","strategy":"2~default~BlogCommendFromBaidu~default","dest":"https://blog.csdn.net/wujinting007/article/details/112690350"}'  data-report-query='spm=1001.2101.3001.6650.9&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-9-112690350-blog-123964439.pc_relevant_antiscanv4&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-9-112690350-blog-123964439.pc_relevant_antiscanv4'>
+					<div class="left ellipsis-online ellipsis-online-1"><em>perf</em>工具简介+<em>火焰</em><em>图</em>制作与解读</div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/wujinting007" target="_blank"><span class="blog-title"></span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">01-16</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					4144
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://blog.csdn.net/wujinting007/article/details/112690350" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.9","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~default-9-112690350-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"9","strategy":"2~default~BlogCommendFromBaidu~default","dest":"https://blog.csdn.net/wujinting007/article/details/112690350"}'  data-report-query='spm=1001.2101.3001.6650.9&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-9-112690350-blog-123964439.pc_relevant_antiscanv4&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-9-112690350-blog-123964439.pc_relevant_antiscanv4'>
+				<div class="desc ellipsis-online ellipsis-online-1"><em>perf</em>工具简介+<em>火焰</em><em>图</em>制作与解读
+
+
+
+1、<em>perf</em>工具简单原理
+
+<em>perf</em>是一款<em>Linux</em>性能分析工具。<em>Linux</em>性能计数器是一个新的基于内核的子系统，它提供一个性能分析框架，比如硬件（CPU、PMU(<em>Perf</em>ormance Monitoring Unit)）功能和软件(软件计数器、tracepoint)功能。通过<em>perf</em>，应用程序可以利用PMU、tracepoint和内核中的计数器来进行性能统计。它不但可以分析指定应用程序的性能问题（per thread），也可以用来分析内核的性能问题，当然也可以同.</div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_blog clearfix" data-url="https://blog.csdn.net/Xiaobai__Lee/article/details/109471969"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.10","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~default-10-109471969-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"10","strategy":"2~default~BlogCommendFromBaidu~default","dest":"https://blog.csdn.net/Xiaobai__Lee/article/details/109471969"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://blog.csdn.net/Xiaobai__Lee/article/details/109471969" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.10","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~default-10-109471969-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"10","strategy":"2~default~BlogCommendFromBaidu~default","dest":"https://blog.csdn.net/Xiaobai__Lee/article/details/109471969"}'  data-report-query='spm=1001.2101.3001.6650.10&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-10-109471969-blog-123964439.pc_relevant_antiscanv4&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-10-109471969-blog-123964439.pc_relevant_antiscanv4'>
+					<div class="left ellipsis-online ellipsis-online-1">利用<em>perf</em>及FlameGraph<em>生成</em><em>火焰</em><em>图</em></div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/Xiaobai__Lee" target="_blank"><span class="blog-title">Xiaobai__Lee的博客</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">11-03</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					1123
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://blog.csdn.net/Xiaobai__Lee/article/details/109471969" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.10","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~default-10-109471969-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"10","strategy":"2~default~BlogCommendFromBaidu~default","dest":"https://blog.csdn.net/Xiaobai__Lee/article/details/109471969"}'  data-report-query='spm=1001.2101.3001.6650.10&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-10-109471969-blog-123964439.pc_relevant_antiscanv4&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-10-109471969-blog-123964439.pc_relevant_antiscanv4'>
+				<div class="desc ellipsis-online ellipsis-online-1">利用<em>perf</em>及FlameGraph<em>生成</em><em>火焰</em><em>图</em>
+使用之前
+如果普通用户使用<em>perf</em>分析程序性能的话，需要将<em>perf</em>_event_paranoid的等级降低。默认是3。
+
+也可以直接使用root权限去运行，但是感觉一般不要随便用root权限去运行东西。
+经过实验，发现只需要将<em>perf</em>_event_paranoid的等级设置到1，普通用户即可开启追踪。通过以下命令来设置，/proc/sys/AAA/BBB_ccc的变量都可以通过sysctl AAA.BBB_CCC=XXX的形式设置。
+sudo sysctl ke</div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_blog clearfix" data-url="https://hanhandi.blog.csdn.net/article/details/123119285"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.11","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~default-11-123119285-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"11","strategy":"2~default~BlogCommendFromBaidu~default","dest":"https://hanhandi.blog.csdn.net/article/details/123119285"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://hanhandi.blog.csdn.net/article/details/123119285" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.11","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~default-11-123119285-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"11","strategy":"2~default~BlogCommendFromBaidu~default","dest":"https://hanhandi.blog.csdn.net/article/details/123119285"}'  data-report-query='spm=1001.2101.3001.6650.11&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-11-123119285-blog-123964439.pc_relevant_antiscanv4&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-11-123119285-blog-123964439.pc_relevant_antiscanv4'>
+					<div class="left ellipsis-online ellipsis-online-1"><em>perf</em> +<em>火焰</em><em>图</em>使用</div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/qq_42604176" target="_blank"><span class="blog-title">hanhan的博客</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">02-24</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					156
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://hanhandi.blog.csdn.net/article/details/123119285" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.11","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~default-11-123119285-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"11","strategy":"2~default~BlogCommendFromBaidu~default","dest":"https://hanhandi.blog.csdn.net/article/details/123119285"}'  data-report-query='spm=1001.2101.3001.6650.11&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-11-123119285-blog-123964439.pc_relevant_antiscanv4&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-11-123119285-blog-123964439.pc_relevant_antiscanv4'>
+				<div class="desc ellipsis-online ellipsis-online-1">以mysqld进程为例：
+[root@VM-90-225-centos ~]#  ps -ef | grep mysqld
+root      9808  9621  0 19:30 pts/7    00:00:00 grep --color=auto mysqld
+root     16104     1  0 17:30 pts/0    00:00:00 /bin/sh /usr/local/mysql/bin/mysqld_safe --datadir=/usr/local/mysql/data </div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_blog clearfix" data-url="https://blog.csdn.net/juS3Ve/article/details/78526764"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.12","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~default-12-78526764-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"12","strategy":"2~default~CTRLIST~default","dest":"https://blog.csdn.net/juS3Ve/article/details/78526764"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://blog.csdn.net/juS3Ve/article/details/78526764" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.12","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~default-12-78526764-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"12","strategy":"2~default~CTRLIST~default","dest":"https://blog.csdn.net/juS3Ve/article/details/78526764"}'  data-report-query='spm=1001.2101.3001.6650.12&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-12-78526764-blog-123964439.pc_relevant_antiscanv4&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-12-78526764-blog-123964439.pc_relevant_antiscanv4'>
+					<div class="left ellipsis-online ellipsis-online-1">宋宝华：<em>火焰</em><em>图</em>：全局视野的<em>Linux</em>性能剖析</div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/juS3Ve" target="_blank"><span class="blog-title">Linux阅码场</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">11-14</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					2228
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://blog.csdn.net/juS3Ve/article/details/78526764" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.12","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~default-12-78526764-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"12","strategy":"2~default~CTRLIST~default","dest":"https://blog.csdn.net/juS3Ve/article/details/78526764"}'  data-report-query='spm=1001.2101.3001.6650.12&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-12-78526764-blog-123964439.pc_relevant_antiscanv4&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-12-78526764-blog-123964439.pc_relevant_antiscanv4'>
+				<div class="desc ellipsis-online ellipsis-online-1">作者简介
+宋宝华，他有10几年的<em>Linux</em>开发<em>经验</em>。他长期在大型企业担任一线工程师和系统架构师，编写大量的<em>Linux</em>代码，并负责在gerrit上review其他同事的代码。Barry Song是<em>Linux</em>的活跃开发者，是某些内核版本的最活跃开发者之一（如https://lwn.net/Articles/395961/ 、https://lwn.net/Articles/429912/），也曾是一</div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_blog clearfix" data-url="https://blog.csdn.net/weixin_43690845/article/details/119190244"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.13","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~default-13-119190244-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"13","strategy":"2~default~CTRLIST~default","dest":"https://blog.csdn.net/weixin_43690845/article/details/119190244"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://blog.csdn.net/weixin_43690845/article/details/119190244" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.13","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~default-13-119190244-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"13","strategy":"2~default~CTRLIST~default","dest":"https://blog.csdn.net/weixin_43690845/article/details/119190244"}'  data-report-query='spm=1001.2101.3001.6650.13&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-13-119190244-blog-123964439.pc_relevant_antiscanv4&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-13-119190244-blog-123964439.pc_relevant_antiscanv4'>
+					<div class="left ellipsis-online ellipsis-online-1"><em>perf</em>-<em>火焰</em><em>图</em></div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/weixin_43690845" target="_blank"><span class="blog-title">weixin_43690845的博客</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">07-28</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					78
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://blog.csdn.net/weixin_43690845/article/details/119190244" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.13","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~default-13-119190244-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"13","strategy":"2~default~CTRLIST~default","dest":"https://blog.csdn.net/weixin_43690845/article/details/119190244"}'  data-report-query='spm=1001.2101.3001.6650.13&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-13-119190244-blog-123964439.pc_relevant_antiscanv4&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-13-119190244-blog-123964439.pc_relevant_antiscanv4'>
+				<div class="desc ellipsis-online ellipsis-online-1"><em>火焰</em><em>图</em>使用步骤：
+1)解压FlameGraph-master.zip
+2)将FlameGraph-master目录绝对路径写入fg.sh中的FG_DIR中；
+3)在<em>火焰</em><em>图</em>中添加export语句，将UB_BINDIR设置为环境变量，如右<em>图</em>所示，设置为execl所在绝对目录；
+
+4)抓取execl进程运行时的<em>火焰</em><em>图</em>：
+sudo ./fs.sh /home/uos/UnixBench/pgms/execl 3
+5)  将<em>生成</em>的out_2481.svg文件放入浏览器查看；
+
+...</div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_blog clearfix" data-url="https://blog.csdn.net/FreeeLinux/article/details/84207787"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.14","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~default-14-84207787-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"14","strategy":"2~default~CTRLIST~default","dest":"https://blog.csdn.net/FreeeLinux/article/details/84207787"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://blog.csdn.net/FreeeLinux/article/details/84207787" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.14","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~default-14-84207787-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"14","strategy":"2~default~CTRLIST~default","dest":"https://blog.csdn.net/FreeeLinux/article/details/84207787"}'  data-report-query='spm=1001.2101.3001.6650.14&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-14-84207787-blog-123964439.pc_relevant_antiscanv4&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-14-84207787-blog-123964439.pc_relevant_antiscanv4'>
+					<div class="left ellipsis-online ellipsis-online-1">性能工具<em>perf</em>的用法以及如何绘制性能<em>火焰</em><em>图</em></div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/FreeeLinux" target="_blank"><span class="blog-title">FreeeLinux&#39;s blog</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">11-19</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					4034
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://blog.csdn.net/FreeeLinux/article/details/84207787" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.14","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~default-14-84207787-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"14","strategy":"2~default~CTRLIST~default","dest":"https://blog.csdn.net/FreeeLinux/article/details/84207787"}'  data-report-query='spm=1001.2101.3001.6650.14&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-14-84207787-blog-123964439.pc_relevant_antiscanv4&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-14-84207787-blog-123964439.pc_relevant_antiscanv4'>
+				<div class="desc ellipsis-online ellipsis-online-1"><em>perf</em>简介
+<em>Perf</em>是内置于<em>Linux</em>内核源码树中的性能剖析(profiling)工具。其基于事件采样原理，以性能事件为基础，常用于性能瓶颈的查找与热点代码的定位。
+性能调优工具如 <em>perf</em>，Oprofile 等的基本原理都是对被监测对象进行采样，最简单的情形是根据 tick 中断进行采样，即在 tick 中断内触发采样点，在采样点里判断程序当时的上下文。假如一个程序 90% 的时间都花费在函数...</div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_blog clearfix" data-url="https://blog.csdn.net/weixin_33253741/article/details/116899451"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.15","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~default-15-116899451-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"15","strategy":"2~default~CTRLIST~default","dest":"https://blog.csdn.net/weixin_33253741/article/details/116899451"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://blog.csdn.net/weixin_33253741/article/details/116899451" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.15","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~default-15-116899451-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"15","strategy":"2~default~CTRLIST~default","dest":"https://blog.csdn.net/weixin_33253741/article/details/116899451"}'  data-report-query='spm=1001.2101.3001.6650.15&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-15-116899451-blog-123964439.pc_relevant_antiscanv4&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-15-116899451-blog-123964439.pc_relevant_antiscanv4'>
+					<div class="left ellipsis-online ellipsis-online-1"><em>linux</em> <em>perf</em><em>生成</em><em>火焰</em><em>图</em>,<em>火焰</em><em>图</em>：全局视野的<em>Linux</em>性能剖析</div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/weixin_33253741" target="_blank"><span class="blog-title">weixin_33253741的博客</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">05-13</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					235
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://blog.csdn.net/weixin_33253741/article/details/116899451" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.15","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~CTRLIST~default-15-116899451-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"15","strategy":"2~default~CTRLIST~default","dest":"https://blog.csdn.net/weixin_33253741/article/details/116899451"}'  data-report-query='spm=1001.2101.3001.6650.15&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-15-116899451-blog-123964439.pc_relevant_antiscanv4&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-15-116899451-blog-123964439.pc_relevant_antiscanv4'>
+				<div class="desc ellipsis-online ellipsis-online-1">原标题：<em>火焰</em><em>图</em>：全局视野的<em>Linux</em>性能剖析文章背景日常的工作中，会收到一堆CPU使用率过高的告警邮件，遇到某台服务的 CPU被占满了 ，这时候我们就要去查看是什么进程将服务器的CPU资源占用满了。通常我们会通过 top 或者 htop 来快速的查看占据CPU最高的那个进程，如下<em>图</em>： 这里是通过一个普通的服务器做演示使用，如<em>图</em>所示当前服务器占用CPU最高的是一个叫做 kube-apiserver ...</div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_blog clearfix" data-url="https://enjoy-day.blog.csdn.net/article/details/110559888"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.16","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~default-16-110559888-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"16","strategy":"2~default~BlogCommendFromBaidu~default","dest":"https://enjoy-day.blog.csdn.net/article/details/110559888"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://enjoy-day.blog.csdn.net/article/details/110559888" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.16","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~default-16-110559888-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"16","strategy":"2~default~BlogCommendFromBaidu~default","dest":"https://enjoy-day.blog.csdn.net/article/details/110559888"}'  data-report-query='spm=1001.2101.3001.6650.16&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-16-110559888-blog-123964439.pc_relevant_antiscanv4&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-16-110559888-blog-123964439.pc_relevant_antiscanv4'>
+					<div class="left ellipsis-online ellipsis-online-1"><em>Linux</em> 之 <em>perf</em>性能分析(<em>火焰</em><em>图</em>)</div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/u013919153" target="_blank"><span class="blog-title">enjoy.day</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">12-03</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					2708
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://enjoy-day.blog.csdn.net/article/details/110559888" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.16","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~default-16-110559888-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"16","strategy":"2~default~BlogCommendFromBaidu~default","dest":"https://enjoy-day.blog.csdn.net/article/details/110559888"}'  data-report-query='spm=1001.2101.3001.6650.16&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-16-110559888-blog-123964439.pc_relevant_antiscanv4&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-16-110559888-blog-123964439.pc_relevant_antiscanv4'>
+				<div class="desc ellipsis-online ellipsis-online-1">项目开发的程序，运行定位问题方法很多，这里介绍使用<em>perf</em>软件查看程序问题
+1.使用<em>perf</em>采样
+
+1.直接使用<em>perf</em>启动服务
+# <em>perf</em> record -g ls
+--------------------------------
+2.挂接到已启动的进程
+# 使用PID监控程序
+# sudo <em>perf</em> record -e cpu-clock -g -p pid
+# 使用程序名监控程序
+# sudo <em>perf</em> record -e cpu-clock -g -p `pgrep your_program`
+-</div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_blog clearfix" data-url="https://guoqiang.blog.csdn.net/article/details/123120439"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.17","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~default-17-123120439-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"17","strategy":"2~default~BlogCommendFromBaidu~default","dest":"https://guoqiang.blog.csdn.net/article/details/123120439"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://guoqiang.blog.csdn.net/article/details/123120439" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.17","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~default-17-123120439-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"17","strategy":"2~default~BlogCommendFromBaidu~default","dest":"https://guoqiang.blog.csdn.net/article/details/123120439"}'  data-report-query='spm=1001.2101.3001.6650.17&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-17-123120439-blog-123964439.pc_relevant_antiscanv4&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-17-123120439-blog-123964439.pc_relevant_antiscanv4'>
+					<div class="left ellipsis-online ellipsis-online-1"><em>perf</em>+<em>火焰</em><em>图</em> = 性能分析利器</div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/Darlingqiang" target="_blank"><span class="blog-title">格物致知</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">02-24</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					225
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://guoqiang.blog.csdn.net/article/details/123120439" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.17","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~default-17-123120439-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"17","strategy":"2~default~BlogCommendFromBaidu~default","dest":"https://guoqiang.blog.csdn.net/article/details/123120439"}'  data-report-query='spm=1001.2101.3001.6650.17&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-17-123120439-blog-123964439.pc_relevant_antiscanv4&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-17-123120439-blog-123964439.pc_relevant_antiscanv4'>
+				<div class="desc ellipsis-online ellipsis-online-1"><em>perf</em>
+1. <em>perf</em>安装
+sudo apt install <em>linux</em>-tools-common
+
+检查是否安装好
+<em>perf</em>
+
+如果出现 You may need to install the following packages for this specific kernel:推荐安装可以按照提示将推荐安装包全部安装好
+sudo apt-get install <em>linux</em>-tools-对应版本-generic <em>linux</em>-cloud-tools-对应版本-generic 
+
+再次检查是否安装好
+pe</div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_blog clearfix" data-url="https://blog.csdn.net/qq_32323239/article/details/122437767"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.18","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~default-18-122437767-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"18","strategy":"2~default~BlogCommendFromBaidu~default","dest":"https://blog.csdn.net/qq_32323239/article/details/122437767"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://blog.csdn.net/qq_32323239/article/details/122437767" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.18","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~default-18-122437767-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"18","strategy":"2~default~BlogCommendFromBaidu~default","dest":"https://blog.csdn.net/qq_32323239/article/details/122437767"}'  data-report-query='spm=1001.2101.3001.6650.18&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-18-122437767-blog-123964439.pc_relevant_antiscanv4&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-18-122437767-blog-123964439.pc_relevant_antiscanv4'>
+					<div class="left ellipsis-online ellipsis-online-1">IDEA中<em>生成</em><em>火焰</em><em>图</em></div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/qq_32323239" target="_blank"><span class="blog-title">qq_32323239的博客</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">01-11</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					422
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://blog.csdn.net/qq_32323239/article/details/122437767" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.18","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~default-18-122437767-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"18","strategy":"2~default~BlogCommendFromBaidu~default","dest":"https://blog.csdn.net/qq_32323239/article/details/122437767"}'  data-report-query='spm=1001.2101.3001.6650.18&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-18-122437767-blog-123964439.pc_relevant_antiscanv4&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-18-122437767-blog-123964439.pc_relevant_antiscanv4'>
+				<div class="desc ellipsis-online ellipsis-online-1">背景
+
+IntelliJ IDEA 与以下分析工具集成：
+
+Async Profiler：适用于 <em>Linux</em> 和 macOS 的 CPU 和内存分析工具。
+	Java Flight Recorder：Oracle 提供的 CPU 工具，可在 <em>Linux</em>、macOS 和 Windows 上使用。
+使用简介
+
+
+
+
+public class Demo {
+
+    public static void main(String[] args) {
+        for (int i = 0; i &lt; 10</div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_blog clearfix" data-url="https://blog.csdn.net/chengqiuming/article/details/120099968"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.19","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~default-19-120099968-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"19","strategy":"2~default~BlogCommendFromBaidu~default","dest":"https://blog.csdn.net/chengqiuming/article/details/120099968"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://blog.csdn.net/chengqiuming/article/details/120099968" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.19","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~default-19-120099968-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"19","strategy":"2~default~BlogCommendFromBaidu~default","dest":"https://blog.csdn.net/chengqiuming/article/details/120099968"}'  data-report-query='spm=1001.2101.3001.6650.19&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-19-120099968-blog-123964439.pc_relevant_antiscanv4&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-19-120099968-blog-123964439.pc_relevant_antiscanv4'>
+					<div class="left ellipsis-online ellipsis-online-1">Arthas <em>生成</em><em>火焰</em><em>图</em></div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/chengqiuming" target="_blank"><span class="blog-title">实践求真知</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">09-04</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					647
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://blog.csdn.net/chengqiuming/article/details/120099968" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.19","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~default-19-120099968-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"19","strategy":"2~default~BlogCommendFromBaidu~default","dest":"https://blog.csdn.net/chengqiuming/article/details/120099968"}'  data-report-query='spm=1001.2101.3001.6650.19&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-19-120099968-blog-123964439.pc_relevant_antiscanv4&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-19-120099968-blog-123964439.pc_relevant_antiscanv4'>
+				<div class="desc ellipsis-online ellipsis-online-1">一点睛
+
+
+profiler：用于<em>生成</em><em>火焰</em><em>图</em>
+
+
+二 代码
+
+
+package chapter03;
+
+import java.util.ArrayList;
+import java.util.Random;
+
+/**
+* -Xms600m -Xmx600m -XX:SurvivorRatio=8
+* 老年代：400m
+* 伊甸园：160m
+* s0:20m
+* s1:20m
+*/
+public class OOMTest {
+    public static void main(String[] ar.</div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_blog clearfix" data-url="https://blog.csdn.net/shankezh/article/details/124706430"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.20","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~default-20-124706430-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"20","strategy":"2~default~BlogCommendFromBaidu~default","dest":"https://blog.csdn.net/shankezh/article/details/124706430"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://blog.csdn.net/shankezh/article/details/124706430" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.20","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~default-20-124706430-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"20","strategy":"2~default~BlogCommendFromBaidu~default","dest":"https://blog.csdn.net/shankezh/article/details/124706430"}'  data-report-query='spm=1001.2101.3001.6650.20&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-20-124706430-blog-123964439.pc_relevant_antiscanv4&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-20-124706430-blog-123964439.pc_relevant_antiscanv4'>
+					<div class="left ellipsis-online ellipsis-online-1">【工具】<em>Perf</em>性能分析工具<em>火焰</em><em>图</em><em>生成</em></div>
+					<div class="tag">最新发布</div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/shankezh" target="_blank"><span class="blog-title">shankezh的博客</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">05-11</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					169
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://blog.csdn.net/shankezh/article/details/124706430" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.20","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~default-20-124706430-blog-123964439.pc_relevant_antiscanv4\",\"dist_request_id\":\"1656409295805_86120\"}","dist_request_id":"1656409295805_86120","ab_strategy":"antiscanv4","index":"20","strategy":"2~default~BlogCommendFromBaidu~default","dest":"https://blog.csdn.net/shankezh/article/details/124706430"}'  data-report-query='spm=1001.2101.3001.6650.20&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-20-124706430-blog-123964439.pc_relevant_antiscanv4&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-20-124706430-blog-123964439.pc_relevant_antiscanv4'>
+				<div class="desc ellipsis-online ellipsis-online-1"><em>Perf</em>，一款性能剖析工具。
+
+安装步骤
+
+当前环境为：ubuntu18.04
+
+安装<em>perf</em>工具，使用命令
+
+sudo apt-get install <em>linux</em>-tools-common
+
+运行<em>perf</em>指令，提示缺少模块，如下：
+
+
+
+安装工具：
+
+sudo apt-get install <em>linux</em>-tools-5.4.0-107-generic
+
+
+sudo apt-get install <em>linux</em>-cloud-tools-5.4.0-generic
+
+
+sudo apt-get install </div>
+			</a>
+		</div>
+	</div>
+</div>
+            </div>
+<div id="recommendNps" class="recommend-nps-box common-nps-box">
+  <h3 class="aside-title">“相关推荐”对你有帮助么？</h3>
+  <div class="aside-content">
+      <ul class="newnps-list">
+          <li class="newnps-item" data-type="非常没帮助">
+              <div class="newnps-img-box">
+                  <img class="newnps-img active" src="https://csdnimg.cn/release/blogv2/dist/pc/img/npsFeel1.png" alt="">
+                  <img class="newnps-img default" src="https://csdnimg.cn/release/blogv2/dist/pc/img/npsFeelGrey1.png" alt="">
+              </div>
+              <div class="newnps-text">非常没帮助</div>
+          </li>
+          <li class="newnps-item" data-type="没帮助">
+              <div class="newnps-img-box">
+                  <img class="newnps-img active" src="https://csdnimg.cn/release/blogv2/dist/pc/img/npsFeel2.png" alt="">
+                  <img class="newnps-img default" src="https://csdnimg.cn/release/blogv2/dist/pc/img/npsFeelGrey2.png" alt="">
+              </div>
+              <div class="newnps-text">没帮助</div>
+          </li>
+          <li class="newnps-item" data-type="一般">
+              <div class="newnps-img-box">
+                  <img class="newnps-img active" src="https://csdnimg.cn/release/blogv2/dist/pc/img/npsFeel3.png" alt="">
+                  <img class="newnps-img default" src="https://csdnimg.cn/release/blogv2/dist/pc/img/npsFeelGrey3.png" alt="">
+              </div>
+              <div class="newnps-text">一般</div>
+          </li>
+          <li class="newnps-item" data-type="有帮助">
+              <div class="newnps-img-box">
+                  <img class="newnps-img active" src="https://csdnimg.cn/release/blogv2/dist/pc/img/npsFeel4.png" alt="">
+                  <img class="newnps-img default" src="https://csdnimg.cn/release/blogv2/dist/pc/img/npsFeelGrey4.png" alt="">
+              </div>
+              <div class="newnps-text">有帮助</div>
+          </li>
+          <li class="newnps-item" data-type="非常有帮助">
+              <div class="newnps-img-box">
+                  <img class="newnps-img active" src="https://csdnimg.cn/release/blogv2/dist/pc/img/npsFeel5.png" alt="">
+                  <img class="newnps-img default" src="https://csdnimg.cn/release/blogv2/dist/pc/img/npsFeelGrey5.png" alt="">
+              </div>
+              <div class="newnps-text">非常有帮助</div>
+          </li>
+      </ul>
+      <div class="newnps-form-box">
+      <div class="newnps-form">
+          <input type="text" placeholder="请输入建议或反馈后点击提交" class="newnps-input">
+          <span class="newnps-btn">提交</span>
+      </div>
+      </div>
+  </div>
+</div>            <div class="template-box">
+                <span>©️2022 CSDN</span>
+                <span>皮肤主题：创作都市</span>
+                <span> 设计师：CSDN官方博客</span>
+                <span>
+                    <a href="https://blog.csdn.net/" class="back-home c-blue c-blue-hover c-blue-focus">返回首页</a>
+                </span>
+            </div>
+<div class="blog-footer-bottom" style="margin-top:10px;"></div>
+<script src="https://g.csdnimg.cn/common/csdn-footer/csdn-footer.js" data-isfootertrack="false" type="text/javascript"></script>
+<script type="text/javascript">
+    window.csdn.csdnFooter.options = {
+        el: '.blog-footer-bottom',
+        type: 2
+    }
+</script>        </main>
+<aside class="blog_container_aside">
+<div id="asideProfile" class="aside-box">
+    <div class="profile-intro d-flex">
+        <div class="avatar-box d-flex justify-content-center flex-column">
+            <a href="https://blog.csdn.net/SaberJYang" target="_blank" data-report-click='{"mod":"popu_379","spm":"1001.2101.3001.4121","dest":"https://blog.csdn.net/SaberJYang","ab":"new"}'>
+                <img src="https://profile.csdnimg.cn/8/5/B/3_saberjyang" class="avatar_pic">
+            </a>
+        </div>
+        <div class="user-info d-flex flex-column profile-intro-name-box">
+            <div class="profile-intro-name-boxTop">
+                <a href="https://blog.csdn.net/SaberJYang" target="_blank" class="" id="uid" title="玉梅小洋" data-report-click='{"mod":"popu_379","spm":"1001.2101.3001.4122","dest":"https://blog.csdn.net/SaberJYang","ab":"new"}'>
+                    <span class="name " username="SaberJYang">玉梅小洋</span>
+                </a>
+                <span>
+                </span>
+                <span class="flag expert-blog">
+                <span class="bubble">CSDN认证博客专家</span>
+                </span>
+                <span class="flag company-blog">
+                <span class="bubble">CSDN认证企业博客</span>
+                </span>
+            </div>
+            <div class="profile-intro-name-boxFooter">
+                <span class="personal-home-page personal-home-years" title="已加入 CSDN 5年">码龄5年</span>
+                    <span class="personal-home-page">
+                    <a class="personal-home-certification" href="https://i.csdn.net/#/uc/profile?utm_source=14998968" target="_blank" title="暂无认证">
+                    <img src="https://csdnimg.cn/identity/nocErtification.png" alt="">
+                    暂无认证
+                    </a>
+                    </span>
+            </div>
+        </div>
+    </div>
+    <div class="data-info d-flex item-tiling">
+        <dl class="text-center" title="63">
+            <a href="https://blog.csdn.net/SaberJYang" data-report-click='{"mod":"1598321000_001","spm":"1001.2101.3001.4310"}' data-report-query="t=1">  
+                <dt><span class="count">63</span></dt>
+                <dd class="font">原创</dd>
+            </a>
+        </dl>
+        <dl class="text-center" data-report-click='{"mod":"1598321000_002","spm":"1001.2101.3001.4311"}' title="19250">
+            <a href="https://blog.csdn.net/rank/list/weekly" target="_blank">
+                <dt><span class="count">1万+</span></dt>
+                <dd class="font">周排名</dd>
+            </a>
+        </dl>
+        <dl class="text-center" title="27263">
+            <a href="https://blog.csdn.net/rank/list/total" data-report-click='{"mod":"1598321000_003","spm":"1001.2101.3001.4312"}' target="_blank">
+                <dt><span class="count">2万+</span></dt>
+                <dd class="font">总排名</dd>
+            </a>
+        </dl>
+        <dl class="text-center" style="min-width:58px" title="92663">  
+            <dt><span class="count">9万+</span></dt>
+            <dd>访问</dd>
+        </dl>
+        <dl class="text-center" title="4级,点击查看等级说明">
+            <dt><a href="https://blog.csdn.net/blogdevteam/article/details/103478461" target="_blank">
+                <img class="level" src="https://csdnimg.cn/identity/blog4.png">
+            </a>
+            </dt>
+            <dd>等级</dd>
+        </dl>
+    </div>
+    <div class="item-rank"></div>
+    <div class="data-info d-flex item-tiling">
+        <dl class="text-center" title="1130">
+            <dt><span class="count">1130</span></dt>
+            <dd>积分</dd>
+        </dl>
+         <dl class="text-center" id="fanBox" title="8">
+            <dt><span class="count" id="fan">8</span></dt>
+            <dd>粉丝</dd>
+        </dl>
+        <dl class="text-center" title="23">
+            <dt><span class="count">23</span></dt>
+            <dd>获赞</dd>
+        </dl>
+        <dl class="text-center" title="16">
+            <dt><span class="count">16</span></dt>
+            <dd>评论</dd>
+        </dl>
+        <dl class="text-center" title="71">
+            <dt><span class="count">71</span></dt>
+            <dd>收藏</dd>
+        </dl>
+    </div>
+    <div class="aside-box-footer" data-report-view='{"spm":"3001.4296"}'>
+        <div class="badge-box d-flex">
+            <div class="badge d-flex">
+                <div class="icon-badge" title="签到新秀">
+                    <div class="mouse-box">
+                        <img class="medal-img" data-report-click='{"spm":"3001.4296"}' src="https://csdnimg.cn/medal/qiandao1@240.png" alt="签到新秀">
+                    </div>
+                </div>
+                <div class="icon-badge" title="持之以恒">
+                    <div class="mouse-box">
+                        <img class="medal-img" data-report-click='{"spm":"3001.4296"}' src="https://csdnimg.cn/medal/chizhiyiheng@240.png" alt="持之以恒">
+                    </div>
+                </div>
+                <div class="icon-badge" title="勤写标兵">
+                    <div class="mouse-box">
+                        <img class="medal-img" data-report-click='{"spm":"3001.4296"}' src="https://csdnimg.cn/medal/qixiebiaobing4@240.png" alt="勤写标兵">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="profile-intro-name-boxOpration">
+        <div class="opt-letter-watch-box">
+        <a class="bt-button personal-letter" href="https://im.csdn.net/chat/SaberJYang" target="_blank" rel="noopener">私信</a>
+        </div>
+        <div class="opt-letter-watch-box"> 
+            <a class="personal-watch bt-button" id="btnAttent" >关注</a>  
+        </div>
+    </div>
+</div>
+ <div id="asideSearchArticle" class="aside-box">
+	<div class="aside-content search-comter">
+    <div class="aside-search aside-search-blog">         
+        <input type="text" class="input-serch-blog" name="" autocomplete="off" value="" id="search-blog-words" placeholder="搜博主文章">
+        <a class="btn-search-blog">
+                    <img src="//csdnimg.cn/cdn/content-toolbar/csdn-sou.png?v=1587021042">
+        </a>
+    </div>
+    </div>
+</div><div class="box-shadow mb8" data-pid="blog" style="height:250px;">
+    <div class="aside-content text-center" id="cpro_u2734133">
+        <div id="kp_box_56" data-pid="56"><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1076724771190722"
+     crossorigin="anonymous"></script>
+<!-- 左侧 博文页 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-1076724771190722"
+     data-ad-slot="3806919815"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script><img class="pre-img-lasy" data-src="https://kunyu.csdn.net/1.png?p=56&adId=6815&a=6815&c=0&k=perf生成火焰图&spm=1001.2101.3001.5000&articleId=123964439&d=1&t=3&u=a3f41193efcb42c3938b163532698f67" style="display: block;width: 0px;height: 0px;"></div>
+    </div>
+</div>
+
+
+
+<div id="asideHotArticle" class="aside-box">
+	<h3 class="aside-title">热门文章</h3>
+	<div class="aside-content">
+		<ul class="hotArticle-list">
+			<li>
+				<a href="https://blog.csdn.net/SaberJYang/article/details/69665927" target="_blank"  data-report-click='{"mod":"popu_541","spm":"1001.2101.3001.4139","dest":"https://blog.csdn.net/SaberJYang/article/details/69665927","ab":"new"}'>
+				Linux 防火墙和SELinux的开启和关闭
+					<img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					<span class="read">31763</span>
+                </a>
+			</li>
+			<li>
+				<a href="https://blog.csdn.net/SaberJYang/article/details/72836100" target="_blank"  data-report-click='{"mod":"popu_541","spm":"1001.2101.3001.4139","dest":"https://blog.csdn.net/SaberJYang/article/details/72836100","ab":"new"}'>
+				Xshell多窗口执行同一个命令
+					<img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					<span class="read">11372</span>
+                </a>
+			</li>
+			<li>
+				<a href="https://blog.csdn.net/SaberJYang/article/details/119749296" target="_blank"  data-report-click='{"mod":"popu_541","spm":"1001.2101.3001.4139","dest":"https://blog.csdn.net/SaberJYang/article/details/119749296","ab":"new"}'>
+				yuzu最新安装使用教程
+					<img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					<span class="read">5706</span>
+                </a>
+			</li>
+			<li>
+				<a href="https://blog.csdn.net/SaberJYang/article/details/63360161" target="_blank"  data-report-click='{"mod":"popu_541","spm":"1001.2101.3001.4139","dest":"https://blog.csdn.net/SaberJYang/article/details/63360161","ab":"new"}'>
+				putty窗口标题修改、字体颜色修改等简单配置以及putty多开工具mtputty的使用
+					<img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					<span class="read">4299</span>
+                </a>
+			</li>
+			<li>
+				<a href="https://blog.csdn.net/SaberJYang/article/details/124090847" target="_blank"  data-report-click='{"mod":"popu_541","spm":"1001.2101.3001.4139","dest":"https://blog.csdn.net/SaberJYang/article/details/124090847","ab":"new"}'>
+				IntelliJ IDEA 2021.3.3版本安装
+					<img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					<span class="read">3279</span>
+                </a>
+			</li>
+		</ul>
+	</div>
+</div>
+<div id="asideCategory" class="aside-box flexible-box">
+    <h3 class="aside-title">分类专栏</h3>
+    <div class="aside-content">
+        <ul>
+            <li>
+                <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_11742000.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_11742000.html","ab":"new"}'>
+                    <div class="special-column-bar "></div>
+                    <img src="https://img-blog.csdnimg.cn/20190927151124774.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        LeetCode题解
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_11742002.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_11742002.html","ab":"new"}'>
+                    <div class="special-column-bar special-column-bar-second"></div>
+                    <img src="https://img-blog.csdnimg.cn/20190918135101160.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        LeetCode题解之数组
+                    </span>
+                </a>
+                <span class="special-column-num">5篇</span>
+            </li>
+            <li>
+                <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_11745591.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_11745591.html","ab":"new"}'>
+                    <div class="special-column-bar special-column-bar-second"></div>
+                    <img src="https://img-blog.csdnimg.cn/20190918140012416.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        LeetCode题解之链表
+                    </span>
+                </a>
+                <span class="special-column-num">4篇</span>
+            </li>
+            <li>
+                <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_11753366.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_11753366.html","ab":"new"}'>
+                    <div class="special-column-bar special-column-bar-second"></div>
+                    <img src="https://img-blog.csdnimg.cn/20201014180756918.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        LeetCode题解之哈希表
+                    </span>
+                </a>
+                <span class="special-column-num">3篇</span>
+            </li>
+            <li>
+                <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_11753635.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_11753635.html","ab":"new"}'>
+                    <div class="special-column-bar special-column-bar-second"></div>
+                    <img src="https://img-blog.csdnimg.cn/20190918140129601.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        LeetCode题解之双指针法
+                    </span>
+                </a>
+                <span class="special-column-num">1篇</span>
+            </li>
+            <li>
+                <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_11756206.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_11756206.html","ab":"new"}'>
+                    <div class="special-column-bar special-column-bar-second"></div>
+                    <img src="https://img-blog.csdnimg.cn/20201014180756918.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        LeetCode题解之字符串
+                    </span>
+                </a>
+                <span class="special-column-num">1篇</span>
+            </li>
+            <li>
+                <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_11751009.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_11751009.html","ab":"new"}'>
+                    <div class="special-column-bar "></div>
+                    <img src="https://img-blog.csdnimg.cn/20190927151117521.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        工具使用
+                    </span>
+                </a>
+                <span class="special-column-num">10篇</span>
+            </li>
+            <li>
+                <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_11809195.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_11809195.html","ab":"new"}'>
+                    <div class="special-column-bar "></div>
+                    <img src="https://img-blog.csdnimg.cn/20201014180756780.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        消息队列
+                    </span>
+                </a>
+                <span class="special-column-num">1篇</span>
+            </li>
+            <li>
+                <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_6767417.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_6767417.html","ab":"new"}'>
+                    <div class="special-column-bar "></div>
+                    <img src="https://img-blog.csdnimg.cn/20190918140145169.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        软件安装
+                    </span>
+                </a>
+                <span class="special-column-num">5篇</span>
+            </li>
+            <li>
+                <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_11731219.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_11731219.html","ab":"new"}'>
+                    <div class="special-column-bar "></div>
+                    <img src="https://img-blog.csdnimg.cn/20201014180756724.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        FQA
+                    </span>
+                </a>
+                <span class="special-column-num">14篇</span>
+            </li>
+            <li>
+                <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_6847116.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_6847116.html","ab":"new"}'>
+                    <div class="special-column-bar "></div>
+                    <img src="https://img-blog.csdnimg.cn/20201014180756757.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        go
+                    </span>
+                </a>
+                <span class="special-column-num">10篇</span>
+            </li>
+            <li>
+                <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_11859277.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_11859277.html","ab":"new"}'>
+                    <div class="special-column-bar "></div>
+                    <img src="https://img-blog.csdnimg.cn/20201014180756754.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        NAS
+                    </span>
+                </a>
+                <span class="special-column-num">2篇</span>
+            </li>
+            <li>
+                <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_6767998.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_6767998.html","ab":"new"}'>
+                    <div class="special-column-bar "></div>
+                    <img src="https://img-blog.csdnimg.cn/20201014180756738.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        分布式存储
+                    </span>
+                </a>
+                <span class="special-column-num">1篇</span>
+            </li>
+            <li>
+                <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_11291782.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_11291782.html","ab":"new"}'>
+                    <div class="special-column-bar "></div>
+                    <img src="https://img-blog.csdnimg.cn/20201014180756927.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        游戏
+                    </span>
+                </a>
+                <span class="special-column-num">1篇</span>
+            </li>
+            <li>
+                <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_6767410.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_6767410.html","ab":"new"}'>
+                    <div class="special-column-bar "></div>
+                    <img src="https://img-blog.csdnimg.cn/20201014180756926.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        linux c编程
+                    </span>
+                </a>
+                <span class="special-column-num">3篇</span>
+            </li>
+            <li>
+                <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_6767408.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_6767408.html","ab":"new"}'>
+                    <div class="special-column-bar "></div>
+                    <img src="https://img-blog.csdnimg.cn/20201014180756923.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        python
+                    </span>
+                </a>
+                <span class="special-column-num">1篇</span>
+            </li>
+            <li>
+                <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_6767409.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_6767409.html","ab":"new"}'>
+                    <div class="special-column-bar "></div>
+                    <img src="https://img-blog.csdnimg.cn/20201014180756928.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        linux命令
+                    </span>
+                </a>
+                <span class="special-column-num">1篇</span>
+            </li>
+            <li>
+                <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_6767411.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_6767411.html","ab":"new"}'>
+                    <div class="special-column-bar "></div>
+                    <img src="https://img-blog.csdnimg.cn/20201014180756927.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        linux 配置与操作
+                    </span>
+                </a>
+                <span class="special-column-num">4篇</span>
+            </li>
+            <li>
+                <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_6767415.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_6767415.html","ab":"new"}'>
+                    <div class="special-column-bar "></div>
+                    <img src="https://img-blog.csdnimg.cn/20201014180756780.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        调试
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_6767416.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_6767416.html","ab":"new"}'>
+                    <div class="special-column-bar "></div>
+                    <img src="https://img-blog.csdnimg.cn/20201014180756757.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        Windows
+                    </span>
+                </a>
+                <span class="special-column-num">3篇</span>
+            </li>
+            <li>
+                <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_6831346.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_6831346.html","ab":"new"}'>
+                    <div class="special-column-bar "></div>
+                    <img src="https://img-blog.csdnimg.cn/20201014180756918.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        搞笑段子
+                    </span>
+                </a>
+                <span class="special-column-num">2篇</span>
+            </li>
+            <li>
+                <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_6767407.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_6767407.html","ab":"new"}'>
+                    <div class="special-column-bar "></div>
+                    <img src="https://img-blog.csdnimg.cn/20201014180756930.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        杂记
+                    </span>
+                </a>
+                <span class="special-column-num">1篇</span>
+            </li>
+        </ul>
+    </div>
+    <p class="text-center">
+        <a class="flexible-btn" data-fbox="aside-archive"><img class="look-more" src="https://csdnimg.cn/release/blogv2/dist/pc/img/arrowDownWhite.png" alt=""></a>
+    </p>
+</div>
+<div id="asideNewComments" class="aside-box">
+    <h3 class="aside-title">最新评论</h3>
+    <div class="aside-content">
+        <ul class="newcomment-list">
+            <li>
+                <a class="title text-truncate" target="_blank" href="https://blog.csdn.net/SaberJYang/article/details/124485273#comments_21772623" data-report-click='{"mod":"popu_542","spm":"1001.2101.3001.4231","dest":"https://blog.csdn.net/SaberJYang/article/details/124485273#comments_21772623","ab":"new"}' data-report-view='{"mod":"popu_542","spm":"1001.2101.3001.4231","dest":"https://blog.csdn.net/SaberJYang/article/details/124485273#comments_21772623","ab":"new"}'>微信公众号（订阅号）申请流程</a>
+                <p class="comment ellipsis">
+                    <a href="https://blog.csdn.net/SaberJYang" class="user-name" target="_blank">玉梅小洋: </a>
+                    <span class="code-comments">你的报什么错？</span>
+                </p>
+            </li>
+            <li>
+                <a class="title text-truncate" target="_blank" href="https://blog.csdn.net/SaberJYang/article/details/124485273#comments_21763390" data-report-click='{"mod":"popu_542","spm":"1001.2101.3001.4231","dest":"https://blog.csdn.net/SaberJYang/article/details/124485273#comments_21763390","ab":"new"}' data-report-view='{"mod":"popu_542","spm":"1001.2101.3001.4231","dest":"https://blog.csdn.net/SaberJYang/article/details/124485273#comments_21763390","ab":"new"}'>微信公众号（订阅号）申请流程</a>
+                <p class="comment ellipsis">
+                    <a href="https://blog.csdn.net/m0_71680773" class="user-name" target="_blank">m0_71680773: </a>
+                    <span class="code-comments">就是用微信发现页中的扫一扫扫的啊</span>
+                </p>
+            </li>
+            <li>
+                <a class="title text-truncate" target="_blank" href="https://blog.csdn.net/SaberJYang/article/details/124485273#comments_21763385" data-report-click='{"mod":"popu_542","spm":"1001.2101.3001.4231","dest":"https://blog.csdn.net/SaberJYang/article/details/124485273#comments_21763385","ab":"new"}' data-report-view='{"mod":"popu_542","spm":"1001.2101.3001.4231","dest":"https://blog.csdn.net/SaberJYang/article/details/124485273#comments_21763385","ab":"new"}'>微信公众号（订阅号）申请流程</a>
+                <p class="comment ellipsis">
+                    <a href="https://blog.csdn.net/m0_71680773" class="user-name" target="_blank">m0_71680773: </a>
+                    <span class="code-comments">注册了好几次都不行</span>
+                </p>
+            </li>
+            <li>
+                <a class="title text-truncate" target="_blank" href="https://blog.csdn.net/SaberJYang/article/details/124485273#comments_21763382" data-report-click='{"mod":"popu_542","spm":"1001.2101.3001.4231","dest":"https://blog.csdn.net/SaberJYang/article/details/124485273#comments_21763382","ab":"new"}' data-report-view='{"mod":"popu_542","spm":"1001.2101.3001.4231","dest":"https://blog.csdn.net/SaberJYang/article/details/124485273#comments_21763382","ab":"new"}'>微信公众号（订阅号）申请流程</a>
+                <p class="comment ellipsis">
+                    <a href="https://blog.csdn.net/m0_71680773" class="user-name" target="_blank">m0_71680773: </a>
+                    <span class="code-comments">请问那个扫码为什么扫不上啊</span>
+                </p>
+            </li>
+            <li>
+                <a class="title text-truncate" target="_blank" href="https://blog.csdn.net/SaberJYang/article/details/124090847#comments_21714578" data-report-click='{"mod":"popu_542","spm":"1001.2101.3001.4231","dest":"https://blog.csdn.net/SaberJYang/article/details/124090847#comments_21714578","ab":"new"}' data-report-view='{"mod":"popu_542","spm":"1001.2101.3001.4231","dest":"https://blog.csdn.net/SaberJYang/article/details/124090847#comments_21714578","ab":"new"}'>IntelliJ IDEA 2021.3.3版本安装</a>
+                <p class="comment ellipsis">
+                    <a href="https://blog.csdn.net/SaberJYang" class="user-name" target="_blank">玉梅小洋: </a>
+                    <span class="code-comments">有参考安装包里面的安装文档操作码？</span>
+                </p>
+            </li>
+        </ul>
+    </div>
+</div>
+<div id="asideNewNps" class="aside-box common-nps-box">
+    <h3 class="aside-title">您愿意向朋友推荐“博客详情页”吗？</h3>
+    <div class="aside-content">
+        <ul class="newnps-list">
+            <li class="newnps-item" data-type="强烈不推荐">
+                <div class="newnps-img-box">
+                    <img class="newnps-img active" src="https://csdnimg.cn/release/blogv2/dist/pc/img/npsFeel1.png" alt="">
+                    <img class="newnps-img default" src="https://csdnimg.cn/release/blogv2/dist/pc/img/npsFeelGrey1.png" alt="">
+                </div>
+                <div class="newnps-text">强烈不推荐</div>
+            </li>
+            <li class="newnps-item" data-type="不推荐">
+                <div class="newnps-img-box">
+                    <img class="newnps-img active" src="https://csdnimg.cn/release/blogv2/dist/pc/img/npsFeel2.png" alt="">
+                    <img class="newnps-img default" src="https://csdnimg.cn/release/blogv2/dist/pc/img/npsFeelGrey2.png" alt="">
+                </div>
+                <div class="newnps-text">不推荐</div>
+            </li>
+            <li class="newnps-item" data-type="一般般">
+                <div class="newnps-img-box">
+                    <img class="newnps-img active" src="https://csdnimg.cn/release/blogv2/dist/pc/img/npsFeel3.png" alt="">
+                    <img class="newnps-img default" src="https://csdnimg.cn/release/blogv2/dist/pc/img/npsFeelGrey3.png" alt="">
+                </div>
+                <div class="newnps-text">一般般</div>
+            </li>
+            <li class="newnps-item" data-type="推荐">
+                <div class="newnps-img-box">
+                    <img class="newnps-img active" src="https://csdnimg.cn/release/blogv2/dist/pc/img/npsFeel4.png" alt="">
+                    <img class="newnps-img default" src="https://csdnimg.cn/release/blogv2/dist/pc/img/npsFeelGrey4.png" alt="">
+                </div>
+                <div class="newnps-text">推荐</div>
+            </li>
+            <li class="newnps-item" data-type="强烈推荐">
+                <div class="newnps-img-box">
+                    <img class="newnps-img active" src="https://csdnimg.cn/release/blogv2/dist/pc/img/npsFeel5.png" alt="">
+                    <img class="newnps-img default" src="https://csdnimg.cn/release/blogv2/dist/pc/img/npsFeelGrey5.png" alt="">
+                </div>
+                <div class="newnps-text">强烈推荐</div>
+            </li>
+        </ul>
+        <div class="newnps-form-box">
+        <div class="newnps-form">
+            <input type="text" placeholder="请输入建议或反馈后点击提交" class="newnps-input">
+            <span class="newnps-btn">提交</span>
+        </div>
+        </div>
+    </div>
+</div>
+<div id="asideArchive" class="aside-box" style="display:block!important; width:300px;">
+    <h3 class="aside-title">最新文章</h3>
+    <div class="aside-content">
+        <ul class="inf_list clearfix">
+            <li class="clearfix">
+            <a href="https://blog.csdn.net/SaberJYang/article/details/125501124" target="_blank" data-report-click='{"mod":"popu_382","spm":"1001.2101.3001.4136","dest":"https://blog.csdn.net/SaberJYang/article/details/125501124","ab":"new"}' data-report-view='{"mod":"popu_382","dest":"https://blog.csdn.net/SaberJYang/article/details/125501124","ab":"new"}'>Centos7 git 升级</a>
+            </li>
+            <li class="clearfix">
+            <a href="https://blog.csdn.net/SaberJYang/article/details/125499529" target="_blank" data-report-click='{"mod":"popu_382","spm":"1001.2101.3001.4136","dest":"https://blog.csdn.net/SaberJYang/article/details/125499529","ab":"new"}' data-report-view='{"mod":"popu_382","dest":"https://blog.csdn.net/SaberJYang/article/details/125499529","ab":"new"}'>git Unknown option: -C</a>
+            </li>
+            <li class="clearfix">
+            <a href="https://blog.csdn.net/SaberJYang/article/details/125219350" target="_blank" data-report-click='{"mod":"popu_382","spm":"1001.2101.3001.4136","dest":"https://blog.csdn.net/SaberJYang/article/details/125219350","ab":"new"}' data-report-view='{"mod":"popu_382","dest":"https://blog.csdn.net/SaberJYang/article/details/125219350","ab":"new"}'>go list模拟栈和队列</a>
+            </li>
+        </ul>
+        <div class="archive-bar"></div>
+        <div class="archive-box">
+                <div class="archive-title">2022</div> 
+                <div class="archive-content">
+                    <div class="archive-item">
+                        <a href="https://blog.csdn.net/SaberJYang?type=blog&amp;year=2022&amp;month=06" target="_blank" data-report-click='{"mod":"popu_538","spm":"1001.2101.3001.4138","ab":"new","dest":"https://blog.csdn.net/SaberJYang?type=blog&amp;year=2022&amp;month=06"}'>
+                        <span class="time">06月</span>
+                        <span class="count">8篇</span>
+                        </a>
+                    </div>
+                    <div class="archive-item">
+                        <a href="https://blog.csdn.net/SaberJYang?type=blog&amp;year=2022&amp;month=05" target="_blank" data-report-click='{"mod":"popu_538","spm":"1001.2101.3001.4138","ab":"new","dest":"https://blog.csdn.net/SaberJYang?type=blog&amp;year=2022&amp;month=05"}'>
+                        <span class="time">05月</span>
+                        <span class="count">3篇</span>
+                        </a>
+                    </div>
+                    <div class="archive-item">
+                        <a href="https://blog.csdn.net/SaberJYang?type=blog&amp;year=2022&amp;month=04" target="_blank" data-report-click='{"mod":"popu_538","spm":"1001.2101.3001.4138","ab":"new","dest":"https://blog.csdn.net/SaberJYang?type=blog&amp;year=2022&amp;month=04"}'>
+                        <span class="time">04月</span>
+                        <span class="count">40篇</span>
+                        </a>
+                    </div>
+                    <div class="archive-item">
+                        <a href="https://blog.csdn.net/SaberJYang?type=blog&amp;year=2022&amp;month=03" target="_blank" data-report-click='{"mod":"popu_538","spm":"1001.2101.3001.4138","ab":"new","dest":"https://blog.csdn.net/SaberJYang?type=blog&amp;year=2022&amp;month=03"}'>
+                        <span class="time">03月</span>
+                        <span class="count">2篇</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="archive-list-item"><a href="https://blog.csdn.net/SaberJYang?type=blog&amp;year=2021&amp;month=08" target="_blank" data-report-click='{"mod":"popu_538","spm":"1001.2101.3001.4138","ab":"new","dest":"https://blog.csdn.net/SaberJYang?type=blog&amp;year=2021&amp;month=08"}'><span class="year">2021年</span><span class="num">1篇</span></a></div>
+                <div class="archive-list-item"><a href="https://blog.csdn.net/SaberJYang?type=blog&amp;year=2017&amp;month=06" target="_blank" data-report-click='{"mod":"popu_538","spm":"1001.2101.3001.4138","ab":"new","dest":"https://blog.csdn.net/SaberJYang?type=blog&amp;year=2017&amp;month=06"}'><span class="year">2017年</span><span class="num">13篇</span></a></div>
+        </div>
+    </div>
+</div>
+	<div id="footerRightAds" class="isShowFooterAds">
+		<div class="aside-box">
+			<div id="kp_box_57" data-pid="57"><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1076724771190722"
+     crossorigin="anonymous"></script>
+<!-- 左侧 博文页 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-1076724771190722"
+     data-ad-slot="3806919815"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script><img class="pre-img-lasy" data-src="https://kunyu.csdn.net/1.png?p=57&adId=6816&a=6816&c=0&k=perf生成火焰图&spm=1001.2101.3001.5001&articleId=123964439&d=1&t=3&u=5a555c3eee304af5a990559bf3ef738b" style="display: block;width: 0px;height: 0px;"></div>
+		</div>
+	</div>
+    <!-- 详情页显示目录 -->
+<!--文章目录-->
+<div id="asidedirectory" class="aside-box">
+    <div class='groupfile' id="directory">
+        <h3 class="aside-title">目录</h3>
+        <div class="align-items-stretch group_item">
+            <div class="pos-box">
+            <div class="scroll-box">
+                <div class="toc-box"></div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+</aside>
+<script>
+	$("a.flexible-btn").click(function(){
+		$(this).parents('div.aside-box').removeClass('flexible-box');
+		$(this).parents("p.text-center").remove();
+	})
+</script>
+<script type="text/javascript"  src="https://g.csdnimg.cn/user-tooltip/2.5/user-tooltip.js"></script>
+<script type="text/javascript"  src="https://g.csdnimg.cn/user-medal/2.0.0/user-medal.js"></script>    </div>
+<div class="recommend-right align-items-stretch clearfix" id="rightAside" data-type="recommend">
+    <aside class="recommend-right_aside">
+        <div id="recommend-right" >
+                                <div class="programmer1Box">
+                        <div id="kp_box_530" data-pid="530"><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1076724771190722"
+     crossorigin="anonymous"></script>
+<!-- 博文页右侧 大 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-1076724771190722"
+     data-ad-slot="6842192987"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script><img class="pre-img-lasy" data-src="https://kunyu.csdn.net/1.png?p=530&adId=6859&a=6859&c=0&k=perf生成火焰图&spm=1001.2101.3001.4647&articleId=123964439&d=1&t=3&u=d11656406bee46479b6a0b96e050bf2d" style="display: block;width: 0px;height: 0px;"></div>
+                    </div>
+            <div class='flex-column aside-box groupfile' id="groupfile">
+                <div class="groupfile-div">
+                <h3 class="aside-title">目录</h3>
+                <div class="align-items-stretch group_item">
+                    <div class="pos-box">
+                        <div class="scroll-box">
+                            <div class="toc-box"></div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+                <div id="recommendAdBox">
+                    <div id="kp_box_479" data-pid="479"><script type="text/javascript" src="https://cdn.wwads.cn/js/makemoney.js" async></script>
+ <div class="wwads-cn wwads-vertical" data-id="149" style="max-width:300px;margin-top:0;background-color: #fff;margin-bottom: 5px;"><img class="pre-img-lasy" data-src="https://kunyu.csdn.net/1.png?p=479&adId=6860&a=6860&c=0&k=perf生成火焰图&spm=1001.2101.3001.4834&articleId=123964439&d=1&t=3&u=051c177fd2cd414cb69a2fa317bd7974" style="display: block;width: 0px;height: 0px;"></div>
+                </div>
+            <div class='aside-box kind_person d-flex flex-column'>
+                    <h3 class="aside-title">分类专栏</h3>
+                    <div class="align-items-stretch kindof_item" id="kind_person_column">
+                        <div class="aside-content">
+                            <ul>
+                                <li>
+                                    <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_11742000.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_11742000.html","ab":"new"}'>
+                                        <div class="special-column-bar "></div>
+                                        <img src="https://img-blog.csdnimg.cn/20190927151124774.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                        <span class="">
+                                            LeetCode题解
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_11742002.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_11742002.html","ab":"new"}'>
+                                        <div class="special-column-bar special-column-bar-second"></div>
+                                        <img src="https://img-blog.csdnimg.cn/20190918135101160.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                        <span class="">
+                                            LeetCode题解之数组
+                                        </span>
+                                    </a>
+                                    <span class="special-column-num">5篇</span>
+                                </li>
+                                <li>
+                                    <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_11745591.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_11745591.html","ab":"new"}'>
+                                        <div class="special-column-bar special-column-bar-second"></div>
+                                        <img src="https://img-blog.csdnimg.cn/20190918140012416.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                        <span class="">
+                                            LeetCode题解之链表
+                                        </span>
+                                    </a>
+                                    <span class="special-column-num">4篇</span>
+                                </li>
+                                <li>
+                                    <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_11753366.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_11753366.html","ab":"new"}'>
+                                        <div class="special-column-bar special-column-bar-second"></div>
+                                        <img src="https://img-blog.csdnimg.cn/20201014180756918.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                        <span class="">
+                                            LeetCode题解之哈希表
+                                        </span>
+                                    </a>
+                                    <span class="special-column-num">3篇</span>
+                                </li>
+                                <li>
+                                    <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_11753635.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_11753635.html","ab":"new"}'>
+                                        <div class="special-column-bar special-column-bar-second"></div>
+                                        <img src="https://img-blog.csdnimg.cn/20190918140129601.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                        <span class="">
+                                            LeetCode题解之双指针法
+                                        </span>
+                                    </a>
+                                    <span class="special-column-num">1篇</span>
+                                </li>
+                                <li>
+                                    <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_11756206.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_11756206.html","ab":"new"}'>
+                                        <div class="special-column-bar special-column-bar-second"></div>
+                                        <img src="https://img-blog.csdnimg.cn/20201014180756918.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                        <span class="">
+                                            LeetCode题解之字符串
+                                        </span>
+                                    </a>
+                                    <span class="special-column-num">1篇</span>
+                                </li>
+                                <li>
+                                    <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_11751009.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_11751009.html","ab":"new"}'>
+                                        <div class="special-column-bar "></div>
+                                        <img src="https://img-blog.csdnimg.cn/20190927151117521.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                        <span class="">
+                                            工具使用
+                                        </span>
+                                    </a>
+                                    <span class="special-column-num">10篇</span>
+                                </li>
+                                <li>
+                                    <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_11809195.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_11809195.html","ab":"new"}'>
+                                        <div class="special-column-bar "></div>
+                                        <img src="https://img-blog.csdnimg.cn/20201014180756780.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                        <span class="">
+                                            消息队列
+                                        </span>
+                                    </a>
+                                    <span class="special-column-num">1篇</span>
+                                </li>
+                                <li>
+                                    <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_6767417.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_6767417.html","ab":"new"}'>
+                                        <div class="special-column-bar "></div>
+                                        <img src="https://img-blog.csdnimg.cn/20190918140145169.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                        <span class="">
+                                            软件安装
+                                        </span>
+                                    </a>
+                                    <span class="special-column-num">5篇</span>
+                                </li>
+                                <li>
+                                    <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_11731219.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_11731219.html","ab":"new"}'>
+                                        <div class="special-column-bar "></div>
+                                        <img src="https://img-blog.csdnimg.cn/20201014180756724.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                        <span class="">
+                                            FQA
+                                        </span>
+                                    </a>
+                                    <span class="special-column-num">14篇</span>
+                                </li>
+                                <li>
+                                    <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_6847116.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_6847116.html","ab":"new"}'>
+                                        <div class="special-column-bar "></div>
+                                        <img src="https://img-blog.csdnimg.cn/20201014180756757.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                        <span class="">
+                                            go
+                                        </span>
+                                    </a>
+                                    <span class="special-column-num">10篇</span>
+                                </li>
+                                <li>
+                                    <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_11859277.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_11859277.html","ab":"new"}'>
+                                        <div class="special-column-bar "></div>
+                                        <img src="https://img-blog.csdnimg.cn/20201014180756754.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                        <span class="">
+                                            NAS
+                                        </span>
+                                    </a>
+                                    <span class="special-column-num">2篇</span>
+                                </li>
+                                <li>
+                                    <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_6767998.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_6767998.html","ab":"new"}'>
+                                        <div class="special-column-bar "></div>
+                                        <img src="https://img-blog.csdnimg.cn/20201014180756738.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                        <span class="">
+                                            分布式存储
+                                        </span>
+                                    </a>
+                                    <span class="special-column-num">1篇</span>
+                                </li>
+                                <li>
+                                    <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_11291782.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_11291782.html","ab":"new"}'>
+                                        <div class="special-column-bar "></div>
+                                        <img src="https://img-blog.csdnimg.cn/20201014180756927.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                        <span class="">
+                                            游戏
+                                        </span>
+                                    </a>
+                                    <span class="special-column-num">1篇</span>
+                                </li>
+                                <li>
+                                    <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_6767410.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_6767410.html","ab":"new"}'>
+                                        <div class="special-column-bar "></div>
+                                        <img src="https://img-blog.csdnimg.cn/20201014180756926.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                        <span class="">
+                                            linux c编程
+                                        </span>
+                                    </a>
+                                    <span class="special-column-num">3篇</span>
+                                </li>
+                                <li>
+                                    <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_6767408.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_6767408.html","ab":"new"}'>
+                                        <div class="special-column-bar "></div>
+                                        <img src="https://img-blog.csdnimg.cn/20201014180756923.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                        <span class="">
+                                            python
+                                        </span>
+                                    </a>
+                                    <span class="special-column-num">1篇</span>
+                                </li>
+                                <li>
+                                    <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_6767409.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_6767409.html","ab":"new"}'>
+                                        <div class="special-column-bar "></div>
+                                        <img src="https://img-blog.csdnimg.cn/20201014180756928.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                        <span class="">
+                                            linux命令
+                                        </span>
+                                    </a>
+                                    <span class="special-column-num">1篇</span>
+                                </li>
+                                <li>
+                                    <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_6767411.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_6767411.html","ab":"new"}'>
+                                        <div class="special-column-bar "></div>
+                                        <img src="https://img-blog.csdnimg.cn/20201014180756927.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                        <span class="">
+                                            linux 配置与操作
+                                        </span>
+                                    </a>
+                                    <span class="special-column-num">4篇</span>
+                                </li>
+                                <li>
+                                    <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_6767415.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_6767415.html","ab":"new"}'>
+                                        <div class="special-column-bar "></div>
+                                        <img src="https://img-blog.csdnimg.cn/20201014180756780.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                        <span class="">
+                                            调试
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_6767416.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_6767416.html","ab":"new"}'>
+                                        <div class="special-column-bar "></div>
+                                        <img src="https://img-blog.csdnimg.cn/20201014180756757.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                        <span class="">
+                                            Windows
+                                        </span>
+                                    </a>
+                                    <span class="special-column-num">3篇</span>
+                                </li>
+                                <li>
+                                    <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_6831346.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_6831346.html","ab":"new"}'>
+                                        <div class="special-column-bar "></div>
+                                        <img src="https://img-blog.csdnimg.cn/20201014180756918.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                        <span class="">
+                                            搞笑段子
+                                        </span>
+                                    </a>
+                                    <span class="special-column-num">2篇</span>
+                                </li>
+                                <li>
+                                    <a class="clearfix special-column-name" target="_blank" href="https://blog.csdn.net/saberjyang/category_6767407.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/saberjyang/category_6767407.html","ab":"new"}'>
+                                        <div class="special-column-bar "></div>
+                                        <img src="https://img-blog.csdnimg.cn/20201014180756930.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://img-blog.csdnimg.cn/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                        <span class="">
+                                            杂记
+                                        </span>
+                                    </a>
+                                    <span class="special-column-num">1篇</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </aside>
+</div>
+
+<div class="recommend-right1  align-items-stretch clearfix" id="rightAsideConcision" data-type="recommend">
+    <aside class="recommend-right_aside">
+        <div id="recommend-right-concision" >
+            <div class='flex-column aside-box groupfile' id="groupfileConcision">
+                <div class="groupfile-div1">
+                <h3 class="aside-title">目录</h3>
+                <div class="align-items-stretch group_item">
+                    <div class="pos-box">
+                        <div class="scroll-box">
+                            <div class="toc-box"></div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+</div>
+
+</div>
+<div class="mask-dark"></div>
+<script type="text/javascript">
+    var timert = setInterval(function() {
+      sideToolbar = $(".csdn-side-toolbar");
+      if (sideToolbar.length > 0) {
+        sideToolbar.css('cssText','bottom:64px !important;')
+        clearInterval(timert);
+      }
+    }, 200);
+</script>
+<script src="https://csdnimg.cn/public/sandalstrap/1.4/js/sandalstrap.min.js"></script>
+<div class="skin-boxshadow"></div>
+<div class="directory-boxshadow"></div>
+<div id="rewardNew" class="reward-popupbox-new">
+	<p class="rewad-title">打赏作者<span class="reward-close"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/closeBt.png"></span></p>
+	<dl class="profile-box">
+		<dd>
+		<a href="https://blog.csdn.net/SaberJYang" data-report-click='{"mod":"popu_379","dest":"https://blog.csdn.net/SaberJYang","ab":"new"}'>
+			<img src="https://profile.csdnimg.cn/8/5/B/3_saberjyang" class="avatar_pic">
+		</a>
+		</dd>
+		<dt>
+			<p class="blog-name">玉梅小洋</p>
+			<p class="blog-discript">你的鼓励将是我创作的最大动力</p>
+		</dt>
+	</dl>
+	<div class="reward-box-new">
+			<div class="reward-content"><div class="reward-right"></div></div>
+	</div>
+	<div class="money-box">
+				<span class="choose-money choosed" data-id="2">¥2</span>
+				<span class="choose-money " data-id="4">¥4</span>
+				<span class="choose-money " data-id="6">¥6</span>
+				<span class="choose-money " data-id="10">¥10</span>
+				<span class="choose-money " data-id="20">¥20</span>
+				<input id="customizeMoney" class="customize-money" name="" type="" value="" placeholder="自定义"/>
+				<div class="customize-tip">输入1-500的整数</div>
+	</div>
+	<div class="pay-box">
+		<div class="pay-type-blance pay-type active" data-type="blance">
+			<img class="unchoose" src="https://csdnimg.cn/release/blogv2/dist/pc/img/newUnChoose.png" alt="">
+			<img class="choose"src="https://csdnimg.cn/release/blogv2/dist/pc/img/newChoose.png" alt="">
+			<span class="pay-type-name">余额支付</span>
+			<span class="pay-type-num">(余额：-- )</span>
+		</div>
+		<div class="pay-type-money pay-type" data-type="money">
+			<img class="unchoose" src="https://csdnimg.cn/release/blogv2/dist/pc/img/newUnChoose.png" alt="">
+			<img class="choose"src="https://csdnimg.cn/release/blogv2/dist/pc/img/newChoose.png" alt="">
+			<span class="pay-type-name">扫码支付</span>
+		</div>
+	</div>
+	<div class="sure-box">
+		<div class="sure-box-money">
+			<div class="code-box">
+				<div class="code-num-box">
+					<span class="code-name">扫码支付：</span><span class="code-num">¥2</span>
+				</div>
+				<div class="code-img-box">
+					<div class="renovate">
+					<img src="https://csdnimg.cn/release/blogv2/dist/pc/img/pay-time-out.png">
+					<span>获取中</span>
+					</div>
+				</div>
+				<div class="code-pay-box">
+					<img src="https://csdnimg.cn/release/blogv2/dist/pc/img/newWeiXin.png" alt="">
+					<img src="https://csdnimg.cn/release/blogv2/dist/pc/img/newZhiFuBao.png" alt="">
+					<span>扫码支付</span>
+				</div>
+			</div>
+		</div>
+		<div class="sure-box-blance">
+			<p class="tip">您的余额不足，请更换扫码支付或<a target="_blank" data-report-click='{"mod":"1597646289_003","spm":"1001.2101.3001.4302"}' href="https://i.csdn.net/#/wallet/balance/recharge?utm_source=RewardVip" class="go-invest">充值</a></p>
+			<p class="is-have-money"><a class="reward-sure">打赏作者</a></p>
+		</div>
+	</div>
+</div>
+<div class="pay-code">
+    <div class="pay-money">实付<span class="pay-money-span" data-nowprice='' data-oldprice=''>元</span></div>
+    <div class="content-blance"><a class="blance-bt" href="javascript:;">使用余额支付</a></div>
+    <div class="content-code">
+    <div id="payCode" data-id="">
+            <div class="renovate">
+                <img src="https://csdnimg.cn/release/blogv2/dist/pc/img/pay-time-out.png">
+                <span>点击重新获取</span>
+            </div>
+        </div>
+        <div class="pay-style"><span><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/weixin.png"></span><span><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/zhifubao.png"></span><span><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/jingdong.png"></span><span class="text">扫码支付</span></div>
+    </div>
+    <div class="bt-close"><svg t="1567152543821" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10924" xmlns:xlink="http://www.w3.org/1999/xlink" width="12" height="12"><defs><style type="text/css"></style></defs><path d="M512 438.378667L806.506667 143.893333a52.032 52.032 0 1 1 73.6 73.621334L585.621333 512l294.485334 294.485333a52.074667 52.074667 0 0 1-73.6 73.642667L512 585.621333 217.514667 880.128a52.053333 52.053333 0 1 1-73.621334-73.642667L438.378667 512 143.893333 217.514667a52.053333 52.053333 0 1 1 73.621334-73.621334L512 438.378667z" fill="" p-id="10925"></path></svg></div>
+    <!-- <p style="margin-top: 8px;font-size: 14px;" class="text-center">支付成功即可阅读</p> -->
+    <div class="pay-balance">
+    <input type="radio" class="pay-code-radio" data-type="details"> 
+    <span class="span">钱包余额</span>
+    <span class="balance" style="color:#FC5531;font-size:14px;">0</span>  
+    <div class="pay-code-tile">
+        <img src="https://csdnimg.cn/release/blogv2/dist/pc/img/pay-help.png" alt="">
+        <div class="pay-code-content">
+            <div class="span">
+                <p class="title">抵扣说明：</p>
+                <p> 1.余额是钱包充值的虚拟货币，按照1:1的比例进行支付金额的抵扣。<br> 2.余额无法直接购买下载，可以购买VIP、C币套餐、付费专栏及课程。</p>
+            </div>
+        </div>
+    </div>
+    </div>
+    <a class="pay-balance-con" href="https://i.csdn.net/#/wallet/balance/recharge" target="_blank"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/recharge.png" alt=""><span  >余额充值</span></a>
+</div>
+<div class="keyword-dec-box" id="keywordDecBox"></div>
+</body>
+<script src="https://csdnimg.cn/release/blogv2/dist/components/js/pc_wap_highlight-7e7de84184.min.js" type="text/javascript"></script>
+<script src="https://csdnimg.cn/release/blogv2/dist/components/js/pc_wap_common-fbcbe8567e.min.js" type="text/javascript"></script>
+<script src="https://csdnimg.cn/release/blogv2/dist/components/js/edit_copy_code-3d2bfc7b1e.min.js" type="text/javascript"></script>
+<link rel="stylesheet" href="https://csdnimg.cn/release/blog_editor_html/release1.6.12/ckeditor/plugins/codesnippet/lib/highlight/styles/tomorrow-night-eighties.css">
+<script src="https://g.csdnimg.cn/user-accusation/1.0.5/user-accusation.js" type="text/javascript" ></script>
+<script>
+ // 全局声明
+ if (window.csdn === undefined) {
+      window.csdn = {};
+    }
+    window.csdn.sideToolbar = {
+        options: {
+            report:{
+                isShow: true,
+            },
+            qr: {
+                isShow: false,
+            },
+            guide: {
+                isShow: true
+            }
+        }
+    }
+    $(function(){
+        $(document).on('click',"a.option-box[data-type='report']",function() {
+            window.csdn.userLogin.loadAjax(function(res){
+                window.csdn.feedback({
+                    "type":'blog',
+                    "rtype":'article',
+                    "rid":articleId,
+                    "reportedName":username,
+                    "submitOptions":{
+                        "title":articleTitle,
+                        "contentUrl":articleDetailUrl
+                    },
+                    "callback":function(){
+                        showToast({
+                            text: "感谢您的举报，我们会尽快审核！",
+                            bottom: '10%', 
+                            zindex: 9000, 
+                            speed: 500,
+                            time: 1500
+                        });
+                    }
+                })
+            })
+        });
+    })
+</script>
+    <script src="https://g.csdnimg.cn/baidu-search/1.0.11/baidu-search.js"  type="text/javascript"></script>
+<script src="https://csdnimg.cn/release/download/old_static/js/qrcode.js"></script>
+<script src="https://g.csdnimg.cn/lib/qrcode/1.0.0/qrcode.min.js"></script>
+<script src="https://g.csdnimg.cn/user-ordercart/3.0.1/user-ordercart.js" type="text/javascript"></script>
+<script src="https://g.csdnimg.cn/user-ordertip/4.1.3/user-ordertip.js" type="text/javascript" ></script>
+<script src="https://g.csdnimg.cn/order-payment/4.0.1/order-payment.js" type="text/javascript" ></script>
+<script src="https://csdnimg.cn/release/blogv2/dist/pc/js/common-a1dfbf1dc3.min.js" type="text/javascript"></script>
+<script src="https://csdnimg.cn/release/blogv2/dist/pc/js/detail-80d5c34642.min.js" type="text/javascript"></script>
+<script src="https://csdnimg.cn/release/blogv2/dist/pc/js/column-f317ee9bfe.min.js" type="text/javascript"></script>
+<script src="https://g.csdnimg.cn/side-toolbar/3.1/side-toolbar.js" type="text/javascript"></script>
+<script src="https://g.csdnimg.cn/copyright/1.0.4/copyright.js" type="text/javascript"></script>
+<script>
+    $(".MathJax").remove();
+    if ($('div.markdown_views pre.prettyprint code.hljs').length > 0) {
+        $('div.markdown_views')[0].className = 'markdown_views';
+    }
+</script>
+<script type="text/javascript" src="https://csdnimg.cn/release/blog_mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+            "HTML-CSS": {
+                    linebreaks: { automatic: true, width: "94%container" },
+                    imageFont: null
+            },
+            tex2jax: {
+                preview: "none",
+                ignoreClass:"title-article"
+            },
+            mml2jax: {
+                preview: 'none'
+            }
+    });
+</script>
+<script type="text/javascript" crossorigin src="https://g.csdnimg.cn/common/csdn-login-box/csdn-login-box.js"></script></html>
