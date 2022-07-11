@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<!-- saved from url=(0048)https://www.cnblogs.com/liyongsan/p/7459523.html -->
+<html lang="zh-cn" style="--olcb-folder-code-block-max-height:80vh;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin-when-cross-origin">
+    <meta name="description" content="参考链接：http://lovesoo.org/linux-sar-command-detailed.html sar命令常用格式 sar [options] [-A] [-o file] t [n]">
+    <meta property="og:description" content="参考链接：http://lovesoo.org/linux-sar-command-detailed.html sar命令常用格式 sar [options] [-A] [-o file] t [n]">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Linux sar 命令详解 - 李永三 - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="https://common.cnblogs.com/favicon.svg" type="image/svg+xml">
+    
+    <style>:not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]):not([class*="brush:"]) code:not(.hljs) {background: rgb(245, 245, 245);
+        padding: 12px;
+        border: 1px solid rgb(204, 204, 204);
+        border-radius: 3px;
+        border-color: transparent;
+        color: rgb(68, 68, 68);
+        font-family: "Courier New", sans-serif;
+        font-size: 12px}</style><link rel="stylesheet" href="./Linux_sar命令详解_files/blog-common.min.css">
+    <link id="MainCss" rel="stylesheet" href="./Linux_sar命令详解_files/bundle-coffee.min.css">
+    <link id="highlighter-theme-cnblogs" type="text/css" rel="stylesheet" href="./Linux_sar命令详解_files/cnblogs.css">
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./Linux_sar命令详解_files/bundle-coffee-mobile.min.css">
+    
+    
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/liyongsan/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/liyongsan/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/liyongsan/wlwmanifest.xml">
+    <script type="text/javascript" async="" src="./Linux_sar命令详解_files/analytics.js"></script><script>
+        var currentBlogId = 254527;
+        var currentBlogApp = 'liyongsan';
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'coffee';
+        var visitorUserId = '';
+        var hasCustomScript = false;
+        try {
+            if (hasCustomScript && document.referrer && document.referrer.indexOf('baidu.com') >= 0) {
+                Object.defineProperty(document, 'referrer', { value: '' });
+                Object.defineProperty(Document.prototype, 'referrer', { get: function(){ return ''; } });
+            }
+        } catch(error) { }
+        window.cb_enable_mathjax = false;
+        window.mathEngine = 0;
+        window.codeHighlightEngine = 1;
+        window.enableCodeLineNumber = false;
+        window.codeHighlightTheme = 'cnblogs';
+        window.isDarkCodeHighlightTheme = false;
+        window.isDisableCodeHighlighter = false;
+    </script>
+        <script>
+            var currentPostDateAdded = '2017-08-31 17:46';
+        </script>
+    <script src="./Linux_sar命令详解_files/jquery-2.2.0.min.js"></script>
+    <script src="./Linux_sar命令详解_files/blog-common.min.js"></script><style>.medium-zoom-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 300ms;
+  will-change: opacity;
+}
+
+.medium-zoom--opened .medium-zoom-overlay {
+  cursor: pointer;
+  cursor: zoom-out;
+  opacity: 1;
+}
+
+.medium-zoom-image {
+  cursor: pointer;
+  cursor: zoom-in;
+  /*
+    The `transition` is marked as "!important" for the animation to happen
+    even though it's overriden by another inline `transition` style attribute.
+
+    This is problematic with frameworks that generate inline styles on their
+    images (e.g. Gatsby).
+
+    See https://github.com/francoischalifour/medium-zoom/issues/110
+   */
+  transition: transform 300ms cubic-bezier(0.2, 0, 0.2, 1) !important;
+}
+
+.medium-zoom-image--hidden {
+  visibility: hidden;
+}
+
+.medium-zoom-image--opened {
+  position: relative;
+  cursor: pointer;
+  cursor: zoom-out;
+  will-change: transform;
+}
+</style><script id="hljs-script" src="./Linux_sar命令详解_files/highlight.min.js" type="text/javascript" async=""></script>    
+    
+<meta http-equiv="origin-trial" content="AzoawhTRDevLR66Y6MROu167EDncFPBvcKOaQispTo9ouEt5LvcBjnRFqiAByRT+2cDHG1Yj4dXwpLeIhc98/gIAAACFeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjYxMjk5MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A6+nc62kbJgC46ypOwRsNW6RkDn2x7tgRh0wp7jb3DtFF7oEhu1hhm4rdZHZ6zXvnKZLlYcBlQUImC4d3kKihAcAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjYxMjk5MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A/9La288e7MDEU2ifusFnMg1C2Ij6uoa/Z/ylwJIXSsWfK37oESIPbxbt4IU86OGqDEPnNVruUiMjfKo65H/CQwAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjYxMjk5MTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><script src="./Linux_sar命令详解_files/pubads_impl_2022063001.js" async=""></script><link rel="preload" href="./Linux_sar命令详解_files/f.txt" as="script"><script type="text/javascript" src="./Linux_sar命令详解_files/f.txt"></script></head>
+<body class="skin-coffee has-navbar">
+<a name="top"></a>
+<div id="top_nav" class="navbar forpc">
+    <nav id="nav_main" class="navbar-main">
+        <ul id="nav_left" class="navbar-list navbar-left">
+            <li class="navbar-branding">
+                <a href="https://www.cnblogs.com/" title="开发者的网上家园" role="banner">
+                    <img src="./Linux_sar命令详解_files/logo.svg" alt="博客园Logo">
+                </a>
+            </li>
+            <li>
+                <a href="https://www.cnblogs.com/" onclick="countClicks(&#39;skin-navbar-sitehome&#39;)">首页</a>
+            </li>
+            <li>
+                <a href="https://news.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-news&#39;)">新闻</a>
+            </li>
+            <li>
+                <a href="https://q.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-q&#39;)">博问</a>
+            </li>
+            <li>
+                <a id="nav_brandzone" href="https://brands.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-brands&#39;)">专区</a>
+            </li>
+            <li>
+                <a href="https://ing.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-ing&#39;)">闪存</a>
+            </li>
+            <li>
+                <a href="https://edu.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-edu&#39;)">班级</a>
+            </li>
+        </ul>
+        <ul id="nav_right" class="navbar-list navbar-right">
+            <li>
+                <form id="zzk_search" class="navbar-search" action="https://zzk.cnblogs.com/s" method="get" role="search">
+                    <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="search" tabindex="3">
+                    <button type="submit" id="zzk_search_button">
+                        <img src="./Linux_sar命令详解_files/search.svg" alt="搜索">
+                    </button>
+                </form>
+            </li>
+            <li id="navbar_login_status" class="navbar-list">
+                <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔" style="display: none;">
+                    <img id="new_post_icon" class="navbar-icon" src="./Linux_sar命令详解_files/newpost.svg" alt="写随笔">
+                </a>
+                <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客" style="display: none;">
+                    <img id="myblog_icon" class="navbar-icon" src="./Linux_sar命令详解_files/myblog.svg" alt="我的博客">
+                </a>
+                <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息" style="display: none;">
+                    <img id="msg_icon" class="navbar-icon" src="./Linux_sar命令详解_files/message.svg" alt="短消息">
+                    <span id="msg_count" style="display: none"></span>
+                </a>
+                <a id="navbar_lite_mode_indicator" data-current-page="blog" style="display: none" href="javascript:void(0)" alt="简洁模式" title="简洁模式启用，您在访问他人博客时会使用简洁款皮肤展示">
+                    <img class="navbar-icon" src="./Linux_sar命令详解_files/lite-mode-on.svg" alt="简洁模式">
+                </a>
+                <div id="user_info" class="navbar-user-info dropdown" style="display: none;">
+                    <a class="dropdown-button" href="https://home.cnblogs.com/">
+                        <img id="user_icon" class="navbar-avatar" src="./Linux_sar命令详解_files/avatar-default.svg" alt="用户头像">
+                    </a>
+                    <div class="dropdown-menu">
+                        <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                        <a href="https://home.cnblogs.com/">我的园子</a>
+                        <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                        <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <img id="navbar_lite_mode_on" src="./Linux_sar命令详解_files/lite-mode-check.svg" class="hide"><span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+                        <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                    </div>
+                </div>
+                <a class="navbar-anonymous" href="https://account.cnblogs.com/signup" style="display: inline;">注册</a>
+                <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()" style="display: inline;">登录</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+
+
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a href="https://www.cnblogs.com/liyongsan/"><img id="blogLogo" src="./Linux_sar命令详解_files/logo.gif" alt="返回主页"></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/liyongsan/">天才源于勤奋  聪明在于积累</a>
+</h1>
+<h2></h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="navigator">
+			
+<ul id="navList">
+	<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+	<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/liyongsan/">
+首页</a>
+</li>
+	<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+	<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/%E6%9D%8E%E6%B0%B8%E4%B8%89">
+联系</a></li>
+	<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+	<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/liyongsan/rss/">
+订阅</a>
+	
+<a id="blog_nav_rss_image" href="https://www.cnblogs.com/liyongsan/rss/">
+    <img src="./Linux_sar命令详解_files/xml.gif" alt="订阅">
+</a></li>
+</ul>
+
+
+
+			<div class="blogStats">
+				
+				<!--done-->
+随笔- 132&nbsp;
+文章- 3&nbsp;
+评论- 4&nbsp;
+阅读- 
+<span title="总阅读数: 229373">
+22万</span>&nbsp;
+
+
+
+				
+			</div><!--end: blogStats -->
+		</div><!--end: navigator 博客导航栏 -->
+		<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class="post">
+		<h1 class="postTitle">
+			
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/liyongsan/p/7459523.html">
+    <span role="heading" aria-level="2">Linux sar 命令详解</span>
+    
+</a><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button>
+
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body blogpost-body-html">
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>参考链接：http://lovesoo.org/linux-sar-command-detailed.html</p>
+<p>&nbsp;</p>
+<h1><span class="wp_keywordlink_affiliate"><a title="View all posts in sar" href="http://lovesoo.org/tag/sar" target="_blank" rel="noopener">sar</a>命令常用格式</span><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<p>sar [options] [-A] [-o file] t [n]</p>
+<p>其中：</p>
+<p>t为采样间隔，n为采样次数，默认值是1；</p>
+<p>-o file表示将命令结果以二进制格式存放在文件中，file 是文件名。</p>
+<p>options 为命令行选项，sar命令常用选项如下：</p>
+<p><img src="./Linux_sar命令详解_files/839910-20170831162443530-111593376.png" alt="" class="medium-zoom-image"></p>
+<p>-A：所有报告的总和</p>
+<p>-u：输出<span class="wp_keywordlink_affiliate"><a title="View all posts in CPU" href="http://lovesoo.org/tag/cpu" target="_blank" rel="noopener">CPU</a>使用情况的统计信息</span></p>
+<p>-v：输出inode、文件和其他内核表的统计信息</p>
+<p>-d：输出每一个块设备的活动信息</p>
+<p>-r：输出<span class="wp_keywordlink_affiliate"><a title="View all posts in 内存" href="http://lovesoo.org/tag/%e5%86%85%e5%ad%98" target="_blank" rel="noopener">内存</a>和交换空间的统计信息</span></p>
+<p>-b：显示<span class="wp_keywordlink_affiliate"><a title="View all posts in I/O" href="http://lovesoo.org/tag/io" target="_blank" rel="noopener">I/O</a>和传送速率的统计信息</span></p>
+<p>-a：文件读写情况</p>
+<p>-c：输出进程统计信息，每秒创建的进程数</p>
+<p>-R：输出内存页面的统计信息</p>
+<p>-y：终端设备活动情况</p>
+<p>-w：输出系统交换活动信息</p>
+<h1>1. CPU资源监控<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<p>例如，每10秒采样一次，连续采样3次，观察CPU 的使用情况，并将采样结果以二进制形式存入当前目录下的文件test中，需键入如下命令：</p>
+<p><img src="./Linux_sar命令详解_files/839910-20170831162542796-318130325.png" alt="" class="medium-zoom-image"></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>输出项说明：</p>
+<p>CPU：all 表示统计信息为所有 CPU 的平均值。</p>
+<p>%user：显示在用户级别(application)运行使用 CPU 总时间的百分比。</p>
+<p>%nice：显示在用户级别，用于nice操作，所占用 CPU 总时间的百分比。</p>
+<p>%system：在核心级别(kernel)运行所使用 CPU 总时间的百分比。</p>
+<p>%iowait：显示用于等待<span class="wp_keywordlink_affiliate"><a title="View all posts in I/O" href="http://lovesoo.org/tag/io" target="_blank" rel="noopener">I/O</a>操作占用 CPU 总时间的百分比。</span></p>
+<p>%steal：管理程序(hypervisor)为另一个虚拟进程提供服务而等待虚拟 CPU 的百分比。</p>
+<p>%idle：显示 CPU 空闲时间占用 CPU 总时间的百分比。</p>
+<p>1. 若 %iowait 的值过高，表示硬盘存在I/O瓶颈</p>
+<p>2. 若 %idle 的值高但系统响应慢时，有可能是 CPU 等待分配内存，此时应加大内存容量</p>
+<p>3. 若 %idle 的值持续低于1，则系统的 CPU 处理能力相对较低，表明系统中最需要解决的资源是 CPU 。</p>
+<p>如果要查看二进制文件test中的内容，需键入如下sar命令：</p>
+<p>sar -u -f test</p>
+<h1>2. inode、文件和其他内核表监控<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<p>例如，每10秒采样一次，连续采样3次，观察核心表的状态，需键入如下命令：</p>
+<p>sar -v 10 3</p>
+<p>屏幕显示如下：</p>
+<p>17:10:49 dentunusd file-nr inode-nr pty-nr</p>
+<p>17:10:59 6301 5664 12037 4</p>
+<p>17:11:09 6301 5664 12037 4</p>
+<p>17:11:19 6301 5664 12037 4</p>
+<p>Average: 6301 5664 12037 4</p>
+<p>输出项说明：</p>
+<p>dentunusd：目录高速缓存中未被使用的条目数量</p>
+<p>file-nr：文件句柄（file handle）的使用数量</p>
+<p>inode-nr：索引节点句柄（inode handle）的使用数量</p>
+<p>pty-nr：使用的pty数量</p>
+<h1>3. 内存和交换空间监控<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<p>例如，每10秒采样一次，连续采样3次，监控内存分页：</p>
+<p>sar -r 10 3</p>
+<p>屏幕显示如下：</p>
+<p><img src="./Linux_sar命令详解_files/839910-20170831175921530-923779238.png" alt="" class="medium-zoom-image"></p>
+<p>&nbsp;</p>
+<p>输出项说明：</p>
+<p>kbmemfree：这个值和free命令中的free值基本一致,所以它不包括buffer和cache的空间.</p>
+<p>kbmemused：这个值和free命令中的used值基本一致,所以它包括buffer和cache的空间.</p>
+<p>%memused：这个值是kbmemused和内存总量(不包括swap)的一个百分比.</p>
+<p>kbbuffers和kbcached：这两个值就是free命令中的buffer和cache.</p>
+<p>kbcommit：保证当前系统所需要的内存,即为了确保不溢出而需要的内存(RAM+swap).</p>
+<p>%commit：这个值是kbcommit与内存总量(包括swap)的一个百分比.</p>
+<h1>4. 内存分页监控<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<p>例如，每10秒采样一次，连续采样3次，监控内存分页：</p>
+<p>sar -B 10 3</p>
+<p>屏幕显示如下：</p>
+<p><img src="./Linux_sar命令详解_files/839910-20170831180031937-1328476398.png" alt="" class="medium-zoom-image"></p>
+<p>&nbsp;</p>
+<p>输出项说明：</p>
+<p>pgpgin/s：表示每秒从<span class="wp_keywordlink_affiliate"><a title="View all posts in 磁盘" href="http://lovesoo.org/tag/%e7%a3%81%e7%9b%98" target="_blank" rel="noopener">磁盘</a>或SWAP置换到内存的字节数(KB)</span></p>
+<p>pgpgout/s：表示每秒从内存置换到<span class="wp_keywordlink_affiliate"><a title="View all posts in 磁盘" href="http://lovesoo.org/tag/%e7%a3%81%e7%9b%98" target="_blank" rel="noopener">磁盘</a>或SWAP的字节数(KB)</span></p>
+<p>fault/s：每秒钟系统产生的缺页数,即主缺页与次缺页之和(major + minor)</p>
+<p>majflt/s：每秒钟产生的主缺页数.</p>
+<p>pgfree/s：每秒被放入空闲队列中的页个数</p>
+<p>pgscank/s：每秒被kswapd扫描的页个数</p>
+<p>pgscand/s：每秒直接被扫描的页个数</p>
+<p>pgsteal/s：每秒钟从cache中被清除来满足内存需要的页个数</p>
+<p>%vmeff：每秒清除的页(pgsteal)占总扫描页(pgscank+pgscand)的百分比</p>
+<h1>5. I/O和传送速率监控<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<p>例如，每10秒采样一次，连续采样3次，报告缓冲区的使用情况，需键入如下命令：</p>
+<p>sar -b 10 3</p>
+<p>屏幕显示如下：</p>
+<p>18:51:05 tps rtps wtps bread/s bwrtn/s</p>
+<p>18:51:15 0.00 0.00 0.00 0.00 0.00</p>
+<p>18:51:25 1.92 0.00 1.92 0.00 22.65</p>
+<p>18:51:35 0.00 0.00 0.00 0.00 0.00</p>
+<p>Average: 0.64 0.00 0.64 0.00 7.59</p>
+<p>输出项说明：</p>
+<p>tps：每秒钟物理设备的 I/O 传输总量</p>
+<p>rtps：每秒钟从物理设备读入的数据总量</p>
+<p>wtps：每秒钟向物理设备写入的数据总量</p>
+<p>bread/s：每秒钟从物理设备读入的数据量，单位为 块/s</p>
+<p>bwrtn/s：每秒钟向物理设备写入的数据量，单位为 块/s</p>
+<h1>6. 进程队列长度和平均负载状态监控<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<p>例如，每10秒采样一次，连续采样3次，监控进程队列长度和平均负载状态：</p>
+<p>sar -q 10 3</p>
+<p>屏幕显示如下：</p>
+<p>19:25:50 runq-sz plist-sz ldavg-1 ldavg-5 ldavg-15</p>
+<p>19:26:00 0 259 0.00 0.00 0.00</p>
+<p>19:26:10 0 259 0.00 0.00 0.00</p>
+<p>19:26:20 0 259 0.00 0.00 0.00</p>
+<p>Average: 0 259 0.00 0.00 0.00</p>
+<p>输出项说明：</p>
+<p>runq-sz：运行队列的长度（等待运行的进程数）</p>
+<p>plist-sz：进程列表中进程（processes）和线程（threads）的数量</p>
+<p>ldavg-1：最后1分钟的系统平均负载（System load average）</p>
+<p>ldavg-5：过去5分钟的系统平均负载</p>
+<p>ldavg-15：过去15分钟的系统平均负载</p>
+<h1>7. 系统交换活动信息监控<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<p>例如，每10秒采样一次，连续采样3次，监控系统交换活动信息：</p>
+<p>sar -&nbsp;&nbsp;&nbsp;&nbsp;W 10 3</p>
+<p>屏幕显示如下：</p>
+<p>19:39:50 pswpin/s pswpout/s</p>
+<p>19:40:00 0.00 0.00</p>
+<p>19:40:10 0.00 0.00</p>
+<p>19:40:20 0.00 0.00</p>
+<p>Average: 0.00 0.00</p>
+<p>输出项说明：</p>
+<p>pswpin/s：每秒系统换入的交换页面（swap page）数量</p>
+<p>pswpout/s：每秒系统换出的交换页面（swap page）数量</p>
+<p>8：sar -n #统计网络信息</p>
+<p>#sar -n选项使用6个不同的开关：DEV，EDEV，NFS，NFSD，SOCK，IP，EIP，ICMP，EICMP，TCP，ETCP，UDP，SOCK6，IP6，EIP6，ICMP6，EICMP6和UDP6&nbsp;，DEV显示网络接口信息，EDEV显示关于网络错误的统计数据，NFS统计活动的NFS客户端的信息，NFSD统计NFS服务器的信息，SOCK显示套接字信息，ALL显示所有5个开关。它们可以单独或者一起使用。&nbsp;</p>
+<p>sar -n DEV 1 1： 每间隔1秒统计一次，总计统计1次，下面的average是在多次统计后的平均值</p>
+<p><img src="./Linux_sar命令详解_files/839910-20170831182506218-269650916.png" alt="" class="medium-zoom-image"></p>
+<p>#IFACE 本地网卡接口的名称</p>
+<p>#rxpck/s 每秒钟接受的数据包</p>
+<p>#txpck/s 每秒钟发送的数据库</p>
+<p>#rxKB/S 每秒钟接受的数据包大小，单位为KB</p>
+<p>#txKB/S 每秒钟发送的数据包大小，单位为KB</p>
+<p>#rxcmp/s 每秒钟接受的压缩数据包</p>
+<p>#txcmp/s 每秒钟发送的压缩包</p>
+<p>#rxmcst/s 每秒钟接收的多播数据包 &nbsp;&nbsp;</p>
+<h3>sar -n EDEV &nbsp;1 1 &nbsp;#统计网络设备通信失败信息：<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h3>
+<p><img src="./Linux_sar命令详解_files/839910-20170831182749655-1217589084.png" alt="" class="medium-zoom-image"></p>
+<p>&nbsp;</p>
+<p>#IFACE 网卡名称</p>
+<p>#rxerr/s 每秒钟接收到的损坏的数据包</p>
+<p>#txerr/s 每秒钟发送的数据包错误数</p>
+<p>#coll/s 当发送数据包时候，每秒钟发生的冲撞（collisions）数，这个是在半双工模式下才有</p>
+<p>#rxdrop/s 当由于缓冲区满的时候，网卡设备接收端每秒钟丢掉的网络包的数目</p>
+<p>#txdrop/s 当由于缓冲区满的时候，网络设备发送端每秒钟丢掉的网络包的数目</p>
+<p>#txcarr/s &nbsp;当发送数据包的时候，每秒钟载波错误发生的次数</p>
+<p>#rxfram &nbsp; 在接收数据包的时候，每秒钟发生的帧对其错误的次数</p>
+<p>#rxfifo &nbsp; &nbsp;在接收数据包的时候，每秒钟缓冲区溢出的错误发生的次数</p>
+<p>#txfifo &nbsp; &nbsp;在发生数据包 的时候，每秒钟缓冲区溢出的错误发生的次数</p>
+<p>&nbsp;</p>
+<p>sar -n SOCK 1 1 &nbsp;#统计socket连接信息</p>
+<p><img src="./Linux_sar命令详解_files/839910-20170831182824390-701554454.png" alt="" class="medium-zoom-image"></p>
+<p>#totsck 当前被使用的socket总数</p>
+<p>#tcpsck 当前正在被使用的TCP的socket总数</p>
+<p>#udpsck &nbsp;当前正在被使用的UDP的socket总数</p>
+<p>#rawsck 当前正在被使用于RAW的skcket总数</p>
+<p>#if-frag &nbsp;当前的IP分片的数目</p>
+<p>#tcp-tw TCP套接字中处于TIME-WAIT状态的连接数量</p>
+<p>########如果你使用FULL关键字，相当于上述DEV、EDEV和SOCK三者的综合&nbsp;</p>
+<p>sar -n TCP 1 3 #TCP连接的统计</p>
+<p><img src="./Linux_sar命令详解_files/839910-20170831182907030-937795206.png" alt="" class="medium-zoom-image"></p>
+<p>#active/s 新的主动连接</p>
+<p>#passive/s 新的被动连接</p>
+<p>#iseg/s 接受的段</p>
+<p>#oseg/s 输出的段</p>
+<p>&nbsp; 1.10.5：sar -n 使用总结</p>
+<pre class="prettyprint lang-bsh"><span class="pun">-<span class="pln">n DEV <span class="pun">：<span class="pln"> <span class="pun">网络接口统计信息。<span class="pln">
+<span class="pun">-<span class="pln">n EDEV <span class="pun">：<span class="pln"> <span class="pun">网络接口错误。<span class="pln">
+<span class="pun">-<span class="pln">n IP <span class="pun">：<span class="pln"> IP<span class="pun">数据报统计信息。<span class="pln">
+<span class="pun">-<span class="pln">n EIP <span class="pun">：<span class="pln"> IP<span class="pun">错误统计信息。<span class="pln">
+<span class="pun">-<span class="pln">n TCP <span class="pun">：<span class="pln"> TCP<span class="pun">统计信息。<span class="pln">
+<span class="pun">-<span class="pln">n ETCP <span class="pun">：<span class="pln"> TCP<span class="pun">错误统计信息。<span class="pln">
+<span class="pun">-<span class="pln">n SOCK <span class="pun">：<span class="pln"> <span class="pun">套接字使用。</span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></pre>
+<h1>9. 设备使用情况监控<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<p>例如，每10秒采样一次，连续采样3次，报告设备使用情况，需键入如下命令：</p>
+<p># sar -d 10 3 –p</p>
+<p>屏幕显示如下：</p>
+<p>17:45:54&nbsp;&nbsp;&nbsp;&nbsp;DEV&nbsp;&nbsp;&nbsp;&nbsp;tps&nbsp;&nbsp;&nbsp;&nbsp;rd_sec/s&nbsp;&nbsp;&nbsp;&nbsp;wr_sec/s&nbsp;&nbsp;&nbsp;&nbsp;avgrq-sz&nbsp;&nbsp;&nbsp;&nbsp;avgqu-sz&nbsp;&nbsp;&nbsp;&nbsp;await&nbsp;&nbsp;&nbsp;&nbsp;svctm&nbsp;&nbsp;&nbsp;&nbsp;%util</p>
+<p>17:46:04&nbsp;&nbsp;&nbsp;&nbsp;scd0&nbsp;&nbsp;&nbsp;&nbsp;0.00&nbsp;&nbsp;&nbsp;&nbsp;0.00&nbsp;&nbsp;&nbsp;&nbsp;0.00&nbsp;&nbsp;&nbsp;&nbsp;0.00&nbsp;&nbsp;&nbsp;&nbsp;0.00&nbsp;&nbsp;&nbsp;&nbsp;0.00&nbsp;&nbsp;&nbsp;&nbsp;0.00&nbsp;&nbsp;&nbsp;&nbsp;0.00</p>
+<p>17:46:04&nbsp;&nbsp;&nbsp;&nbsp;sda&nbsp;&nbsp;&nbsp;&nbsp;0.00&nbsp;&nbsp;&nbsp;&nbsp;0.00&nbsp;&nbsp;&nbsp;&nbsp;0.00&nbsp;&nbsp;&nbsp;&nbsp;0.00&nbsp;&nbsp;&nbsp;&nbsp;0.00&nbsp;&nbsp;&nbsp;&nbsp;0.00&nbsp;&nbsp;&nbsp;&nbsp;0.00&nbsp;&nbsp;&nbsp;&nbsp;0.00</p>
+<p>17:46:04&nbsp;&nbsp;&nbsp;&nbsp;vg_livedvd-lv_root&nbsp;&nbsp;&nbsp;&nbsp;0.00&nbsp;&nbsp;&nbsp;&nbsp;0.00&nbsp;&nbsp;&nbsp;&nbsp;0.00&nbsp;&nbsp;&nbsp;&nbsp;0.00&nbsp;&nbsp;&nbsp;&nbsp;0.00&nbsp;&nbsp;&nbsp;&nbsp;0.00&nbsp;&nbsp;&nbsp;&nbsp;0.00&nbsp;&nbsp;&nbsp;&nbsp;0.00</p>
+<p>17:46:04&nbsp;&nbsp;&nbsp;&nbsp;vg_livedvd-lv_swap&nbsp;&nbsp;&nbsp;&nbsp;0.00&nbsp;&nbsp;&nbsp;&nbsp;0.00&nbsp;&nbsp;&nbsp;&nbsp;0.00&nbsp;&nbsp;&nbsp;&nbsp;0.00&nbsp;&nbsp;&nbsp;&nbsp;0.00&nbsp;&nbsp;&nbsp;&nbsp;0.00&nbsp;&nbsp;&nbsp;&nbsp;0.00&nbsp;&nbsp;&nbsp;&nbsp;0.00</p>
+<p>其中：</p>
+<p>参数-p可以打印出sda,hdc等磁盘设备名称,如果不用参数-p,设备节点则有可能是dev8-0,dev22-0</p>
+<p>tps:每秒从物理磁盘I/O的次数.多个逻辑请求会被合并为一个I/O磁盘请求,一次传输的大小是不确定的.</p>
+<p>rd_sec/s:每秒读扇区的次数.</p>
+<p>wr_sec/s:每秒写扇区的次数.</p>
+<p>avgrq-sz:平均每次设备I/O操作的数据大小(扇区).</p>
+<p>avgqu-sz:磁盘请求队列的平均长度.</p>
+<p>await:从请求磁盘操作到系统完成处理,每次请求的平均消耗时间,包括请求队列等待时间,单位是毫秒(1秒=1000毫秒).</p>
+<p>svctm:系统处理每次请求的平均时间,不包括在请求队列中消耗的时间.</p>
+<p>%util:I/O请求占CPU的百分比,比率越大,说明越饱和.</p>
+<p>1. avgqu-sz 的值较低时，设备的利用率较高。</p>
+<p>2. 当%util的值接近 1% 时，表示设备带宽已经占满。</p>
+<h1>要判断系统瓶颈问题，有时需几个 sar 命令选项结合起来<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<p>怀疑CPU存在瓶颈，可用 sar -u 和 sar -q 等来查看</p>
+<p>怀疑内存存在瓶颈，可用 sar -B、sar -r 和 sar -W 等来查看</p>
+<p>怀疑I/O存在瓶颈，可用 sar -b、sar -u 和 sar -d 等来查看</p>
+<p>&nbsp;</p>
+<p>11：常用命令汇总，因版本和平台不同，有部分命令可能没有或显示结果不一致：</p>
+<pre class="prettyprint lang-bsh"><span class="pun">默认监控:<span class="pln"> sar <span class="lit">5<span class="pln"> <span class="lit">5<span class="pln">     <span class="pun">//<span class="pln">  CPU<span class="pun">和<span class="pln">IOWAIT<span class="pun">统计状态<span class="pln"> 
+<span class="pun">(<span class="lit">1<span class="pun">)<span class="pln"> sar <span class="pun">-<span class="pln">b <span class="lit">5<span class="pln"> <span class="lit">5<span class="pln">        <span class="pun">//<span class="pln"> IO<span class="pun">传送速率<span class="pln">
+<span class="pun">(<span class="lit">2<span class="pun">)<span class="pln"> sar <span class="pun">-<span class="pln">B <span class="lit">5<span class="pln"> <span class="lit">5<span class="pln">        <span class="pun">//<span class="pln"> <span class="pun">页交换速率<span class="pln">
+<span class="pun">(<span class="lit">3<span class="pun">)<span class="pln"> sar <span class="pun">-<span class="pln">c <span class="lit">5<span class="pln"> <span class="lit">5<span class="pln">        <span class="pun">//<span class="pln"> <span class="pun">进程创建的速率<span class="pln">
+<span class="pun">(<span class="lit">4<span class="pun">)<span class="pln"> sar <span class="pun">-<span class="pln">d <span class="lit">5<span class="pln"> <span class="lit">5<span class="pln">        <span class="pun">//<span class="pln"> <span class="pun">块设备的活跃信息<span class="pln">
+<span class="pun">(<span class="lit">5<span class="pun">)<span class="pln"> sar <span class="pun">-<span class="pln">n DEV <span class="lit">5<span class="pln"> <span class="lit">5<span class="pln">    <span class="pun">//<span class="pln"> <span class="pun">网路设备的状态信息<span class="pln">
+<span class="pun">(<span class="lit">6<span class="pun">)<span class="pln"> sar <span class="pun">-<span class="pln">n SOCK <span class="lit">5<span class="pln"> <span class="lit">5<span class="pln">   <span class="pun">//<span class="pln"> SOCK<span class="pun">的使用情况<span class="pln">
+<span class="pun">(<span class="lit">7<span class="pun">)<span class="pln"> sar <span class="pun">-<span class="pln">n ALL <span class="lit">5<span class="pln"> <span class="lit">5<span class="pln">    <span class="pun">//<span class="pln"> <span class="pun">所有的网络状态信息<span class="pln">
+<span class="pun">(<span class="lit">8<span class="pun">)<span class="pln"> sar <span class="pun">-<span class="pln">P ALL <span class="lit">5<span class="pln"> <span class="lit">5<span class="pln">    <span class="pun">//<span class="pln"> <span class="pun">每颗<span class="pln">CPU<span class="pun">的使用状态信息和<span class="pln">IOWAIT<span class="pun">统计状态<span class="pln"> 
+<span class="pun">(<span class="lit">9<span class="pun">)<span class="pln"> sar <span class="pun">-<span class="pln">q <span class="lit">5<span class="pln"> <span class="lit">5<span class="pln">        <span class="pun">//<span class="pln"> <span class="pun">队列的长度（等待运行的进程数）和负载的状态<span class="pln">
+<span class="pun">(<span class="lit">10<span class="pun">)<span class="pln"> sar <span class="pun">-<span class="pln">r <span class="lit">5<span class="pln"> <span class="lit">5<span class="pln">       <span class="pun">//<span class="pln"> <span class="pun">内存和<span class="pln">swap<span class="pun">空间使用情况<span class="pln">
+<span class="pun">(<span class="lit">11<span class="pun">)<span class="pln"> sar <span class="pun">-<span class="pln">R <span class="lit">5<span class="pln"> <span class="lit">5<span class="pln">       <span class="pun">//<span class="pln"> <span class="pun">内存的统计信息（内存页的分配和释放、系统每秒作为<span class="pln">BUFFER<span class="pun">使用内存页、每秒被<span class="pln">cache<span class="pun">到的内存页）<span class="pln">
+<span class="pun">(<span class="lit">12<span class="pun">)<span class="pln"> sar <span class="pun">-<span class="pln">u <span class="lit">5<span class="pln"> <span class="lit">5<span class="pln">       <span class="pun">//<span class="pln"> CPU<span class="pun">的使用情况和<span class="pln">IOWAIT<span class="pun">信息（同默认监控）<span class="pln">
+<span class="pun">(<span class="lit">13<span class="pun">)<span class="pln"> sar <span class="pun">-<span class="pln">v <span class="lit">5<span class="pln"> <span class="lit">5<span class="pln">       <span class="pun">//<span class="pln"> inode<span class="pun">,<span class="pln"> file and other kernel tablesd<span class="pun">的状态信息<span class="pln">
+<span class="pun">(<span class="lit">14<span class="pun">)<span class="pln"> sar <span class="pun">-<span class="pln">w <span class="lit">5<span class="pln"> <span class="lit">5<span class="pln">       <span class="pun">//<span class="pln"> <span class="pun">每秒上下文交换的数目<span class="pln">
+<span class="pun">(<span class="lit">15<span class="pun">)<span class="pln"> sar <span class="pun">-<span class="pln">W <span class="lit">5<span class="pln"> <span class="lit">5<span class="pln">       <span class="pun">//<span class="pln"> SWAP<span class="pun">交换的统计信息(监控状态同<span class="pln">iostat <span class="pun">的<span class="pln">si so<span class="pun">)<span class="pln">
+<span class="pun">(<span class="lit">16<span class="pun">)<span class="pln"> sar <span class="pun">-<span class="pln">x <span class="lit">2906<span class="pln"> <span class="lit">5<span class="pln"> <span class="lit">5<span class="pln">  <span class="pun">//<span class="pln"> <span class="pun">显示指定进程(<span class="lit">2906<span class="pun">)的统计信息，信息包括：进程造成的错误、用户级和系统级用户<span class="pln">CPU<span class="pun">的占用情况、运行在哪颗<span class="pln">CPU<span class="pun">上<span class="pln">
+<span class="pun">(<span class="lit">17<span class="pun">)<span class="pln"> sar <span class="pun">-<span class="pln">y <span class="lit">5<span class="pln"> <span class="lit">5<span class="pln">       <span class="pun">//<span class="pln"> TTY<span class="pun">设备的活动状态<span class="pln">
+<span class="pun">(<span class="lit">18<span class="pun">)<span class="pln"> <span class="pun">将输出到文件(-<span class="pln">o<span class="pun">)和读取记录信息(-<span class="pln">f<span class="pun">)<br><br><br>sar也可以监控非实时数据，通过cron周期的运行到指定目录下<br>例如:我们想查看本月27日,从0点到23点的内存资源.<br>sa27就是本月27日,指定具体的时间可以通过-s(start)和-e(end)来指定.<br>sar -f /var/log/sa/sa27 -s 00:00:00 -e 23:00:00 -r<br></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></pre>
+</div>
+<div class="clear"></div>
+<div id="blog_post_info_block" role="contentinfo"><div id="BlogPostCategory">
+    分类: 
+            <a href="https://www.cnblogs.com/liyongsan/category/973120.html" target="_blank">日常运维</a></div>
+
+
+    <div id="blog_post_info">
+<div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(7459523,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+        <a id="green_channel_follow" onclick="follow(&#39;72e6a131-a28d-e511-9fc1-ac853d9f53cc&#39;);" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="./Linux_sar命令详解_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="./Linux_sar命令详解_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/liyongsan/" target="_blank"><img src="./Linux_sar命令详解_files/20180308162027.png" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/liyongsan/">李永三</a><br>
+            <a href="https://home.cnblogs.com/u/liyongsan/followers/">粉丝 - <span class="follower-count">31</span></a>
+            <a href="https://home.cnblogs.com/u/liyongsan/followees/">关注 - <span class="following-count">2</span></a><br>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow" class="follow-tip">
+                <a href="javascript:void(0);" onclick="follow(&#39;72e6a131-a28d-e511-9fc1-ac853d9f53cc&#39;);return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(7459523,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">0</span>
+    </div>
+    <div class="buryit" onclick="votePost(7459523,&#39;Bury&#39;)">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+    <div class="clear"></div>
+    <div id="post_next_prev">
+
+    <a href="https://www.cnblogs.com/liyongsan/p/7442669.html" class="p_n_p_prefix">« </a> 上一篇：    <a href="https://www.cnblogs.com/liyongsan/p/7442669.html" data-featured-image="" title="发布于 2017-08-28 10:18">day31 堡垒机尾声 + Python与金融量化分析(一)</a>
+    <br>
+    <a href="https://www.cnblogs.com/liyongsan/p/7472697.html" class="p_n_p_prefix">» </a> 下一篇：    <a href="https://www.cnblogs.com/liyongsan/p/7472697.html" data-featured-image="" title="发布于 2017-09-04 11:15">day32 Python与金融量化分析(二)</a>
+
+</div>
+</div>
+		</div>
+		<div class="postDesc">posted @ 
+<span id="post-date">2017-08-31 17:46</span>&nbsp;
+<a href="https://www.cnblogs.com/liyongsan/">李永三</a>&nbsp;
+阅读(<span id="post_view_count">18097</span>)&nbsp;
+评论(<span id="post_comment_count">0</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=7459523" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(7459523);return false;">收藏</a>&nbsp;
+<a href="javascript:void(0)" onclick="reportManager.report({ currentUserId: &#39;&#39;, targetType: &#39;blogPost&#39;, targetId: &#39;7459523&#39;, targetLink: &#39;https://www.cnblogs.com/liyongsan/p/7459523.html&#39;, title: &#39;Linux sar 命令详解&#39; })">举报</a></div>
+	</div>
+	
+	
+</div><!--end: topics 文章、评论容器-->
+
+<script>
+    var cb_entryId = 7459523, cb_entryCreatedDate = '2017-08-31 17:46', cb_postType = 1, cb_postTitle = 'Linux sar 命令详解';
+    var allowComments = true, cb_blogId = 254527, cb_blogApp = 'liyongsan', cb_blogUserGuid = '72e6a131-a28d-e511-9fc1-ac853d9f53cc';
+    mermaidRender.render()
+    markdown_highlight()
+    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");
+    updatePostStats(
+            [cb_entryId],
+            function(id, count) { $("#post_view_count").text(count) },
+            function(id, count) { $("#post_comment_count").text(count) })
+</script>
+<a id="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="https://www.cnblogs.com/liyongsan/p/7459523.html#" onclick="return RefreshPage();">刷新页面</a><a href="https://www.cnblogs.com/liyongsan/p/7459523.html#top">返回顶部</a></div>
+    <div id="comment_form_container" style="visibility: visible;"><div class="login_tips">
+    登录后才能查看或发表评论，立即 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return account.login(&#39;!comments&#39;);">登录</a> 或者
+    <a href="https://www.cnblogs.com/">逛逛</a> 博客园首页
+</div>
+</div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="cnblogs_ch"></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="under-post-card">
+            <div id="div-gpt-ad-1592365906576-0" style="width: 300px; height: 250px;" data-google-query-id="CIPar8-a8PgCFQ5AvQod8IkK3Q"><div id="google_ads_iframe_/1090369/C1_0__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/1090369/C1_0" name="google_ads_iframe_/1090369/C1_0" title="3rd party ad content" width="300" height="250" scrolling="no" marginwidth="0" marginheight="0" frameborder="0" role="region" aria-label="Advertisement" tabindex="0" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" style="border: 0px; vertical-align: bottom;" data-google-container-id="1" data-load-complete="true" src="./Linux_sar命令详解_files/saved_resource.html"></iframe></div></div>
+    </div>
+    <div id="under_post_card1"><div class="under-post-card">
+<b>编辑推荐：</b>
+<br>
+
+· <a href="https://www.cnblogs.com/hez2010/p/whats-new-in-csharp-11.html" target="_blank">C# 11 的新特性和改进前瞻 </a>
+    <br>
+· <a href="https://www.cnblogs.com/yexiaochai/p/16440933.html" target="_blank">技术管理进阶——什么是管理者之体力、脑力、心力</a>
+    <br>
+· <a href="https://www.cnblogs.com/coco1s/p/16445448.html" target="_blank">使用纯 CSS 实现超酷炫的粘性气泡效果</a>
+    <br>
+· <a href="https://www.cnblogs.com/daniel-hutao/p/open-a-pr-in-github.html" target="_blank">如何参与开源项目 - 细说 GitHub 上的 PR 全过程</a>
+    <br>
+· <a href="https://www.cnblogs.com/uncleguo/p/16435007.html" target="_blank">如何提高团队开发质量</a>
+    <br>
+</div></div>
+    <div id="under_post_card2"><div class="itnews under-post-card">
+    <b>最新新闻</b>：
+    <br>
+ ·          <a href="https://news.cnblogs.com/n/724375/" target="_blank">马斯克放弃收购推特或让华尔街机构失去近2亿美元收入</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/724374/" target="_blank">腾讯与梅赛德斯-奔驰达成合作 将建立自动驾驶联合实验室</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/724373/" target="_blank">大多数美国人不愿买电动汽车 调查显示充电难是主要障碍</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/724372/" target="_blank">俄罗斯操作系统 Astra Linux 开发商计划 IPO</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/724371/" target="_blank">疑似被Apple招安，PlayCover作者删库跑路</a>
+        <br>
+    » <a href="https://news.cnblogs.com/" title="IT 新闻" target="_blank">更多新闻...</a>
+</div></div>
+    <div id="HistoryToday" class="under-post-card"></div>
+    <script type="text/javascript">
+        var commentManager = new blogCommentManager();
+        commentManager.renderComments(0);
+        fixPostBody();
+
+        window.tocManager.displayDisableTocTips = false;
+        window.tocManager.generateToc();
+    
+        setTimeout(function() { countViews(cb_blogId, cb_entryId); }, 50);
+    
+        deliverT2();
+        deliverC1C2();
+        loadNewsAndKb();
+    
+        LoadPostCategoriesTags(cb_blogId, cb_entryId);
+    
+        LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+        GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+        loadOptUnderPost();
+        GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+        
+    </script>
+</div>
+
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			<div id="sidebar_news" class="newsItem"><!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	
+<div id="blog-news">
+    
+    <div id="profile_block">
+        昵称：
+        <a href="https://home.cnblogs.com/u/liyongsan/">
+            李永三
+        </a>
+        <br>
+        园龄：
+        <a href="https://home.cnblogs.com/u/liyongsan/" title="入园时间：2015-11-18">
+            6年7个月
+        </a>
+        <br>
+        粉丝：
+        <a class="follower-count" href="https://home.cnblogs.com/u/liyongsan/followers/">
+            31
+        </a>
+        <br>
+        关注：
+        <a class="folowing-count" href="https://home.cnblogs.com/u/liyongsan/followees/">
+            2
+        </a>
+        <div id="p_b_follow" class="follow-tip">
+<a href="javascript:void(0)" onclick="follow(&#39;72e6a131-a28d-e511-9fc1-ac853d9f53cc&#39;)">+加关注</a></div>
+        <script>getFollowStatus('72e6a131-a28d-e511-9fc1-ac853d9f53cc');</script>
+    </div>
+</div>
+</div>
+
+</div>
+<div id="sidebar_c3"></div>
+			<div id="calendar"><div id="blog-calendar" style="">
+
+<table id="blogCalendar" class="Cal" cellspacing="0" cellpadding="0" title="Calendar" border="0">
+    <tbody>
+        <tr>
+            <td colspan="7">
+                <table class="CalTitle" cellspacing="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2022/06/11&#39;); return false;">&lt;</a>
+                            </td>
+                            <td align="center">2022年7月</td>
+                            <td align="right" class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2022/08/11&#39;); return false;">&gt;</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    <tr>
+        <th class="CalDayHeader" align="center" abbr="日" scope="col">日</th>
+        <th class="CalDayHeader" align="center" abbr="一" scope="col">一</th>
+        <th class="CalDayHeader" align="center" abbr="二" scope="col">二</th>
+        <th class="CalDayHeader" align="center" abbr="三" scope="col">三</th>
+        <th class="CalDayHeader" align="center" abbr="四" scope="col">四</th>
+        <th class="CalDayHeader" align="center" abbr="五" scope="col">五</th>
+        <th class="CalDayHeader" align="center" abbr="六" scope="col">六</th>
+    </tr>
+            <tr>
+                            <td class="CalOtherMonthDay" align="center">26</td>
+                            <td class="CalOtherMonthDay" align="center">27</td>
+                            <td class="CalOtherMonthDay" align="center">28</td>
+                            <td class="CalOtherMonthDay" align="center">29</td>
+                            <td class="CalOtherMonthDay" align="center">30</td>
+                        <td class="" align="center">
+                            1
+                        </td>
+                    <td class="CalWeekendDay" align="center">
+                        2
+                    </td>
+            </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            3
+                        </td>
+                            <td class="" align="center">
+                                4
+                            </td>
+                            <td class="" align="center">
+                                5
+                            </td>
+                            <td class="" align="center">
+                                6
+                            </td>
+                            <td class="" align="center">
+                                7
+                            </td>
+                            <td class="" align="center">
+                                8
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            9
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            10
+                        </td>
+                            <td class="CalTodayDay" align="center">
+                                11
+                            </td>
+                            <td class="" align="center">
+                                12
+                            </td>
+                            <td class="" align="center">
+                                13
+                            </td>
+                            <td class="" align="center">
+                                14
+                            </td>
+                            <td class="" align="center">
+                                15
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            16
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            17
+                        </td>
+                            <td class="" align="center">
+                                18
+                            </td>
+                            <td class="" align="center">
+                                19
+                            </td>
+                            <td class="" align="center">
+                                20
+                            </td>
+                            <td class="" align="center">
+                                21
+                            </td>
+                            <td class="" align="center">
+                                22
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            23
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            24
+                        </td>
+                            <td class="" align="center">
+                                25
+                            </td>
+                            <td class="" align="center">
+                                26
+                            </td>
+                            <td class="" align="center">
+                                27
+                            </td>
+                            <td class="" align="center">
+                                28
+                            </td>
+                            <td class="" align="center">
+                                29
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            30
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            31
+                        </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                1
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                2
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                3
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                4
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                5
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            6
+                        </td>
+                </tr>
+    </tbody>
+</table></div><script>loadBlogDefaultCalendar();</script></div>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"><!-- 搜索 -->
+<div id="sidebar_search" class="sidebar-block">
+    <div id="sidebar_search" class="mySearch">
+        <h3 class="catListTitle">搜索</h3>
+        <div id="sidebar_search_box">
+            <div id="widget_my_zzk" class="div_my_zzk">
+                <input type="text" id="q" onkeydown="return zzk_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="zzk_go()" type="button" value="找找看" id="btnZzk" class="btn_my_zzk">
+            </div>
+            <div id="widget_my_google" class="div_my_zzk">
+                <input type="text" name="google_q" id="google_q" onkeydown="return google_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="google_go()" type="button" value="谷歌搜索" class="btn_my_zzk">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 常用链接 -->
+<div id="sidebar_shortcut" class="sidebar-block"><div class="catListLink">
+<h3 class="catListTitle">
+常用链接
+</h3>
+<ul>
+    <li><a href="https://www.cnblogs.com/liyongsan/p/" title="我的博客的随笔列表">我的随笔</a></li>
+<li><a href="https://www.cnblogs.com/liyongsan/MyComments.html" title="我的发表过的评论列表">我的评论</a></li>
+<li><a href="https://www.cnblogs.com/liyongsan/OtherPosts.html" title="我评论过的随笔列表">我的参与</a></li>
+<li><a href="https://www.cnblogs.com/liyongsan/comments" title="我的博客的评论列表">最新评论</a></li>
+<li><a href="https://www.cnblogs.com/liyongsan/tag/" title="我的博客的标签列表">我的标签</a></li>
+
+    <li><a id="itemListLink" onclick="this.blur();WarpClass(&#39;itemListLink&#39;, &#39;itemListLin_con&#39;);return false;" href="https://www.cnblogs.com/liyongsan/p/7459523.html#">更多链接</a></li>
+</ul>
+</div>
+
+</div>
+
+<!-- 最新随笔 -->
+
+
+<!-- 我的标签 -->
+<div id="sidebar_toptags" class="sidebar-block"></div>
+
+<!-- 积分与排名 -->
+
+
+<!-- 随笔分类、随笔档案、文章分类、新闻分类、相册、链接 -->
+<div id="sidebar_categories">
+
+    <div class="catListPostCategory">
+        <h3 class="catListTitle">
+            
+    <a class="sidebar-card-title-a" href="https://www.cnblogs.com/liyongsan/categories">随笔分类</a>
+
+
+
+        </h3>
+
+        <ul>
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/liyongsan/category/1226845.html" class="category-item-link" rel="" target="">k8s(11)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/liyongsan/category/963684.html" class="category-item-link" rel="" target="">Python自动化2.0课程16期课件目录(42)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/liyongsan/category/1342235.html" class="category-item-link" rel="" target="">py日常记录(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/liyongsan/category/991886.html" class="category-item-link" rel="" target="">S16课件(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/liyongsan/category/973120.html" class="category-item-link" rel="" target="">日常运维(30)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/liyongsan/category/974091.html" class="category-item-link" rel="" target="">职业&amp;生活随笔(2)</a>
+ 
+                </li>                
+            
+        </ul>
+    </div>    
+    <div class="catListPostArchive">
+        <h3 class="catListTitle">
+            
+随笔档案
+
+
+        </h3>
+
+        <ul>
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/liyongsan/archive/2020/11.html" class="category-item-link" rel="" target="">2020年11月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/liyongsan/archive/2019/08.html" class="category-item-link" rel="" target="">2019年8月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/liyongsan/archive/2019/07.html" class="category-item-link" rel="" target="">2019年7月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/liyongsan/archive/2019/06.html" class="category-item-link" rel="" target="">2019年6月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/liyongsan/archive/2019/05.html" class="category-item-link" rel="" target="">2019年5月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/liyongsan/archive/2019/03.html" class="category-item-link" rel="" target="">2019年3月(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/liyongsan/archive/2018/11.html" class="category-item-link" rel="" target="">2018年11月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/liyongsan/archive/2018/09.html" class="category-item-link" rel="" target="">2018年9月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/liyongsan/archive/2018/06.html" class="category-item-link" rel="" target="">2018年6月(6)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/liyongsan/archive/2018/05.html" class="category-item-link" rel="" target="">2018年5月(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/liyongsan/archive/2018/03.html" class="category-item-link" rel="" target="">2018年3月(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/liyongsan/archive/2018/02.html" class="category-item-link" rel="" target="">2018年2月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/liyongsan/archive/2017/12.html" class="category-item-link" rel="" target="">2017年12月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/liyongsan/archive/2017/11.html" class="category-item-link" rel="" target="">2017年11月(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/liyongsan/archive/2017/10.html" class="category-item-link" rel="" target="">2017年10月(6)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/liyongsan/archive/2017/09.html" class="category-item-link" rel="" target="">2017年9月(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/liyongsan/archive/2017/08.html" class="category-item-link" rel="" target="">2017年8月(6)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/liyongsan/archive/2017/07.html" class="category-item-link" rel="" target="">2017年7月(9)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/liyongsan/archive/2017/06.html" class="category-item-link" rel="" target="">2017年6月(10)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/liyongsan/archive/2017/05.html" class="category-item-link" rel="" target="">2017年5月(9)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/liyongsan/archive/2017/04.html" class="category-item-link" rel="" target="">2017年4月(9)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/liyongsan/archive/2017/03.html" class="category-item-link" rel="" target="">2017年3月(9)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/liyongsan/archive/2017/02.html" class="category-item-link" rel="" target="">2017年2月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/liyongsan/archive/2017/01.html" class="category-item-link" rel="" target="">2017年1月(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/liyongsan/archive/2016/07.html" class="category-item-link" rel="" target="">2016年7月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/liyongsan/archive/2016/06.html" class="category-item-link" rel="" target="">2016年6月(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/liyongsan/archive/2016/05.html" class="category-item-link" rel="" target="">2016年5月(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/liyongsan/archive/2016/04.html" class="category-item-link" rel="" target="">2016年4月(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/liyongsan/archive/2016/03.html" class="category-item-link" rel="" target="">2016年3月(9)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/liyongsan/archive/2016/02.html" class="category-item-link" rel="" target="">2016年2月(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/liyongsan/archive/2015/12.html" class="category-item-link" rel="" target="">2015年12月(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/liyongsan/archive/2015/11.html" class="category-item-link" rel="" target="">2015年11月(6)</a>
+ 
+                </li>                
+            <li><a href="javascript:void(0)" onclick="sideColumnManager.loadMore(this)">更多</a></li>
+        </ul>
+    </div>    
+    <div class="catListArticleCategory">
+        <h3 class="catListTitle">
+            
+    <a class="sidebar-card-title-a" href="https://www.cnblogs.com/liyongsan/categories">文章分类</a>
+
+
+
+        </h3>
+
+        <ul>
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/liyongsan/category/973119.html" class="category-item-link" rel="" target="">日常运维(1)</a>
+ 
+                </li>                
+            
+        </ul>
+    </div>    
+</div>
+
+<!-- 最新评论 -->
+<!-- 阅读排行榜 -->
+<div id="sidebar_topviewedposts" class="sidebar-block"><div class="catListView">
+    <h3 class="catListTitle">
+        <a href="https://www.cnblogs.com/liyongsan/most-viewed" class="sidebar-card-title-a">
+    阅读排行榜
+</a>
+
+    </h3>
+    <div id="TopViewPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/liyongsan/p/6795851.html">
+                            1. Nginx常见错误及处理方法(57644)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/liyongsan/p/4987819.html">
+                            2. 使用python来访问Hadoop HDFS存储实现文件的操作(22025)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/liyongsan/p/7459523.html">
+                            3. Linux sar 命令详解(18093)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/liyongsan/p/9640361.html">
+                            4. RabbitMQ脑裂问题解决方案调查(14843)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/liyongsan/p/5508147.html">
+                            5. ipmitool 查看硬件信息(11663)
+                        </a>
+                    </li>
+            <li>
+                
+            </li>
+        </ul>
+    </div>
+</div></div>
+
+<!-- 评论排行榜 -->
+<div id="sidebar_topcommentedposts" class="sidebar-block"><div class="catListFeedback">
+    <h3 class="catListTitle">
+        <a href="https://www.cnblogs.com/liyongsan/most-commented" class="sidebar-card-title-a">评论排行榜</a>
+
+    </h3>
+    <div id="TopFeedbackPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/liyongsan/p/7889508.html">
+                            1. krb5-libs这个RPM包删掉了导致ssh无法连接(2)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/liyongsan/p/11039551.html">
+                            2. flask + celery实现定时任务和异步(1)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/liyongsan/p/10560278.html">
+                            3. k8s集群搭建指南(1)
+                        </a>
+                    </li>
+            <li>
+                
+            </li>
+        </ul>
+    </div>
+</div></div>
+
+<!-- 推荐排行榜 -->
+<div id="sidebar_topdiggedposts" class="sidebar-block"><div id="topdigg_posts_wrap">
+    <div class="catListView">
+        <h3 class="catListTitle">
+            <a href="https://www.cnblogs.com/liyongsan/most-liked" class="sidebar-card-title-a">推荐排行榜</a>
+
+        </h3>
+        <div id="TopDiggPostsBlock">
+            <ul style="word-break: break-all">
+                        <li>
+                            <a href="https://www.cnblogs.com/liyongsan/p/11039551.html">
+                                1. flask + celery实现定时任务和异步(2)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/liyongsan/p/6795851.html">
+                                2. Nginx常见错误及处理方法(2)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/liyongsan/p/10560278.html">
+                                3. k8s集群搭建指南(1)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/liyongsan/p/9208772.html">
+                                4. K8S镜像删除及环境清理(1)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/liyongsan/p/7839216.html">
+                                5. 进程上下文频繁切换导致load average过高(1)
+                            </a>
+                        </li>
+                <li>
+                    
+                </li>
+            </ul>
+        </div>
+    </div>
+</div></div><div id="sidebar_recentcomments" class="sidebar-block"><div class="catListComment">
+<h3 class="catListTitle"><a href="https://www.cnblogs.com/liyongsan/comments" class="sidebar-card-title-a">最新评论</a></h3>
+    <div class="RecentCommentBlock">
+        <ul>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/liyongsan/p/11039551.html">1. Re:flask + celery实现定时任务和异步</a></li>
+                <li class="recent_comment_body">写得赞，但主要还是celery太难了。 此国产分布式函数调度框架 ，从用法调用难度，用户所需代码量，超高并发性能，qps控频精确程度，支持的中间件类型，任务控制方式，稳定程度等19个方面全方位超过ce...</li>
+                <li class="recent_comment_author">--北风之神0509</li>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/liyongsan/p/7889508.html">2. Re:krb5-libs这个RPM包删掉了导致ssh无法连接</a></li>
+                <li class="recent_comment_body"><p>真的服了自己，竟然也干了这种事，还好是测试环境。这个楼主是怎么上传啊</p>
+</li>
+                <li class="recent_comment_author">--WH·xiao</li>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/liyongsan/p/10560278.html">3. Re:k8s集群搭建指南</a></li>
+                <li class="recent_comment_body">k8s不是剁手，是舵手</li>
+                <li class="recent_comment_author">--lushuan</li>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/liyongsan/p/7889508.html">4. Re:krb5-libs这个RPM包删掉了导致ssh无法连接</a></li>
+                <li class="recent_comment_body">感谢博主分享</li>
+                <li class="recent_comment_author">--水流就下</li>
+        </ul>
+    </div>
+</div>
+
+</div>
+
+
+</div>
+                    <script>loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright © 2022 李永三
+<br><span id="poweredby">Powered by .NET 6 on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+
+
+
+<input type="hidden" id="antiforgery_token" value="CfDJ8EOBBtWq0dNFoDS-ZHPSe50S6m1FICpeRzNDpcj8nUjgWit73lvqdnxp3N3Z_n9-4F4RXHc8Jn_1kJe8AHqO9s_MMYkm6Pwkw-bKDAOMriVlmNN-8VMsdTcY0VUoVPvBqLriPrR5f5iD4w9X6LhtMYo">
+    <script async="" src="./Linux_sar命令详解_files/js"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        var kv = getGACustom();
+        if (kv) {
+            gtag('set', kv);
+        }
+        gtag('config', 'UA-476124-1');
+    </script>
+<script defer="" src="./Linux_sar命令详解_files/hm.js"></script><iframe src="./Linux_sar命令详解_files/container.html" style="visibility: hidden; display: none;"></iframe>
+
+</body></html>
