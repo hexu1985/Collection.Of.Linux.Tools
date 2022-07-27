@@ -18,26 +18,11 @@ $ sudo add-apt-repository ppa:deadsnakes/ppa
 
 ```
 $ sudo apt install python3.9
+$ sudo apt install python3.9-dev
 ```
 通过键入以下命令验证安装是否成功
 
 ```
 $ python3.9 --version
-```
-输出(视安装版本而定)：
-
-3.9.13
-
-如果要使用virtualenv的话, 需要安装
-
-```
-$ sudo apt-get install python3.9-venv
-```
-
-创建virtualenv
-
-```
-$ python3.9 -m venv venv
-$ source venv/bin/activate
 ```
 

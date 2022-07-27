@@ -22,6 +22,7 @@ $ sudo add-apt-repository ppa:deadsnakes/ppa
 
 ```
 $ sudo apt install python3.9
+$ sudo apt install python3.9-dev
 ```
 通过键入以下命令验证安装是否成功
 
@@ -35,7 +36,7 @@ $ python3.9 --version
 如果要使用虚拟环境的话, 需要安装
 
 ```
-$ sudo apt-get install python3.9-venv
+$ sudo apt install python3.9-venv
 ```
 
 创建虚拟环境
@@ -47,23 +48,32 @@ $ python3.9 -m venv venv
 激活虚拟环境
 ```
 $ source venv/bin/activate
+(venv) $
 ```
 
 退出虚拟环境
 
 ```
-$ deactivate
+(venv) $ deactivate
 ```
 
 
 ### Python虚拟环境和requirements.txt文件的使用
 
-可以执行之后，把你的依赖包写入requirements.txt，执行命令:pip freeze > requirements.txt
+可以执行之后，把你的依赖包写入requirements.txt，执行命令:
+```
+(venv) $ pip freeze > requirements.txt
+```
 
 打开requirements.txt ，也可以查看你的依赖包。
 
 如果确实你的依赖包，请检查。
 如果是导出少了，可以手动添加，否则不要手动添加未使用的包，以免增添累赘。
 
+然后可以通过pip install -r安装requirements.txt指定的依赖. 具体的
+
+```
+(venv) $ pip install -r requirements.txt
+```
 
 
