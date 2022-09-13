@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<!-- saved from url=(0045)https://www.cnblogs.com/wholj/p/10924129.html -->
+<html lang="zh-cn" style="--olcb-folder-code-block-max-height:80vh;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin-when-cross-origin">
+    <meta name="description" content="parted的适用场景 创建操作大于2T的分区 一般情况下，我们都是选择使用 fdisk 工具来进行分区，但是目前在实际生产环境中使用的磁盘空间越来越大，呈TiB级别增长；而常用的 fdisk 这个工">
+    <meta property="og:description" content="parted的适用场景 创建操作大于2T的分区 一般情况下，我们都是选择使用 fdisk 工具来进行分区，但是目前在实际生产环境中使用的磁盘空间越来越大，呈TiB级别增长；而常用的 fdisk 这个工">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>linux分区命令parted的用法 - 长翅膀的蜗牛 - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="https://common.cnblogs.com/favicon.svg" type="image/svg+xml">
+    
+    <style>#home :not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]):not([class*="brush:"]) code:not(.hljs), :not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]):not([class*="brush:"]) code:not(.hljs) {background: rgb(245, 245, 245);
+        padding: 12px;
+        border: 1px solid rgb(204, 204, 204);
+        border-radius: 3px;
+        border-color: transparent;
+        color: rgb(68, 68, 68);
+        font-family: "Courier New", sans-serif;
+        font-size: 12px</style><link rel="stylesheet" href="./linux分区命令parted的用法_files/blog-common.min.css">
+    
+
+    <link id="MainCss" rel="stylesheet" href="./linux分区命令parted的用法_files/bundle-codinglife.min.css">
+        <link id="highlighter-theme-cnblogs" type="text/css" rel="stylesheet" href="./linux分区命令parted的用法_files/cnblogs.css">
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./linux分区命令parted的用法_files/bundle-codinglife-mobile.min.css">
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/wholj/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/wholj/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/wholj/wlwmanifest.xml">
+    <script type="text/javascript" async="" src="./linux分区命令parted的用法_files/analytics.js"></script><script>
+        var currentBlogId = 400965;
+        var currentBlogApp = 'wholj';
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'CodingLife';
+        var visitorUserId = '';
+        var hasCustomScript = false;
+        try {
+            if (hasCustomScript && document.referrer && document.referrer.indexOf('baidu.com') >= 0) {
+                Object.defineProperty(document, 'referrer', { value: '' });
+                Object.defineProperty(Document.prototype, 'referrer', { get: function(){ return ''; } });
+            }
+        } catch(error) { }
+        window.cb_enable_mathjax = false;
+        window.mathEngine = 0;
+        window.codeHighlightEngine = 1;
+        window.enableCodeLineNumber = false;
+        window.codeHighlightTheme = 'cnblogs';
+        window.darkModeCodeHighlightTheme = 'vs2015';
+        window.isDarkCodeHighlightTheme = false;
+        window.isDarkModeCodeHighlightThemeDark = true;
+        window.isDisableCodeHighlighter = false;
+        window.enableCodeThemeTypeFollowSystem = false;
+    </script>
+        <script>
+            var currentPostDateAdded = '2019-05-26 10:30';
+        </script>
+    <script src="./linux分区命令parted的用法_files/jquery-2.2.0.min.js"></script>
+    <script src="./linux分区命令parted的用法_files/blog-common.min.js"></script><style>.medium-zoom-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 300ms;
+  will-change: opacity;
+}
+
+.medium-zoom--opened .medium-zoom-overlay {
+  cursor: pointer;
+  cursor: zoom-out;
+  opacity: 1;
+}
+
+.medium-zoom-image {
+  cursor: pointer;
+  cursor: zoom-in;
+  /*
+    The `transition` is marked as "!important" for the animation to happen
+    even though it's overriden by another inline `transition` style attribute.
+
+    This is problematic with frameworks that generate inline styles on their
+    images (e.g. Gatsby).
+
+    See https://github.com/francoischalifour/medium-zoom/issues/110
+   */
+  transition: transform 300ms cubic-bezier(0.2, 0, 0.2, 1) !important;
+}
+
+.medium-zoom-image--hidden {
+  visibility: hidden;
+}
+
+.medium-zoom-image--opened {
+  position: relative;
+  cursor: pointer;
+  cursor: zoom-out;
+  will-change: transform;
+}
+</style><script id="hljs-script" src="./linux分区命令parted的用法_files/highlight.min.js" type="text/javascript" async=""></script>
+    
+
+    
+<meta http-equiv="origin-trial" content="A+cA2PUOfIOKAdSDJOW5CP9ZlxONy1yu+hqAq72zUtKw4rLdihqRp6Nui/jUyCyegr+BUtH+C+Elv0ufn05yBQEAAACFeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjY5NzY2Mzk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A+zsdH3aNZT/bkjT8U/o5ACzyaeNYzTvtoVmwf/KOilfv39pxY2AIsOwhQJv+YnXp98i3TqrQibIVtMWs5UHjgoAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjY5NzY2Mzk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="AxceVEhIegcDEHqLXFQ2+vPKqzCppoJYsRCZ/BdfVnbM/sUUF2BXV8lwNosyYjvoxnTh2FC8cOlAnA5uULr/zAUAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjY5NzY2Mzk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><script src="./linux分区命令parted的用法_files/pubads_impl_2022090801.js" async=""></script><link rel="preload" href="./linux分区命令parted的用法_files/f.txt" as="script"><script type="text/javascript" src="./linux分区命令parted的用法_files/f.txt"></script></head>
+<body class="skin-codinglife has-navbar hljs-engine">
+<a name="top"></a>
+<div id="top_nav" class="navbar forpc">
+    <nav id="nav_main" class="navbar-main">
+        <ul id="nav_left" class="navbar-list navbar-left">
+            <li class="navbar-branding">
+                <a href="https://www.cnblogs.com/" title="开发者的网上家园" role="banner">
+                    <img src="./linux分区命令parted的用法_files/logo.svg" alt="博客园Logo">
+                </a>
+            </li>
+            <li>
+                <a href="https://www.cnblogs.com/" onclick="countClicks(&#39;skin-navbar-sitehome&#39;)">首页</a>
+            </li>
+            <li>
+                <a href="https://news.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-news&#39;)">新闻</a>
+            </li>
+            <li>
+                <a href="https://q.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-q&#39;)">博问</a>
+            </li>
+            <li>
+                <a id="nav_brandzone" href="https://brands.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-brands&#39;)">专区</a>
+            </li>
+            <li>
+                <a href="https://ing.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-ing&#39;)">闪存</a>
+            </li>
+            <li>
+                <a href="https://edu.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-edu&#39;)">班级</a>
+            </li>
+        </ul>
+        <ul id="nav_right" class="navbar-list navbar-right">
+            <li>
+                <form id="zzk_search" class="navbar-search" action="https://zzk.cnblogs.com/s" method="get" role="search">
+                    <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="search" tabindex="3">
+                    <button type="submit" id="zzk_search_button">
+                        <img src="./linux分区命令parted的用法_files/search.svg" alt="搜索">
+                    </button>
+                </form>
+            </li>
+            <li id="navbar_login_status" class="navbar-list">
+                <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔" style="display: none;">
+                    <img id="new_post_icon" class="navbar-icon" src="./linux分区命令parted的用法_files/newpost.svg" alt="写随笔">
+                </a>
+                <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客" style="display: none;">
+                    <img id="myblog_icon" class="navbar-icon" src="./linux分区命令parted的用法_files/myblog.svg" alt="我的博客">
+                </a>
+                <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息" style="display: none;">
+                    <img id="msg_icon" class="navbar-icon" src="./linux分区命令parted的用法_files/message.svg" alt="短消息">
+                    <span id="msg_count" style="display: none"></span>
+                </a>
+                <a id="navbar_lite_mode_indicator" data-current-page="blog" style="display: none" href="javascript:void(0)" alt="简洁模式" title="简洁模式启用，您在访问他人博客时会使用简洁款皮肤展示">
+                    <img class="navbar-icon" src="./linux分区命令parted的用法_files/lite-mode-on.svg" alt="简洁模式">
+                </a>
+                <div id="user_info" class="navbar-user-info dropdown" style="display: none;">
+                    <a class="dropdown-button" href="https://home.cnblogs.com/">
+                        <img id="user_icon" class="navbar-avatar" src="./linux分区命令parted的用法_files/avatar-default.svg" alt="用户头像">
+                    </a>
+                    <div class="dropdown-menu">
+                        <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                        <a href="https://home.cnblogs.com/">我的园子</a>
+                        <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                        <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <img id="navbar_lite_mode_on" src="./linux分区命令parted的用法_files/lite-mode-check.svg" class="hide"><span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+                        <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                    </div>
+                </div>
+                <a class="navbar-anonymous" href="https://account.cnblogs.com/signup" style="display: inline;">注册</a>
+                <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()" style="display: inline;">登录</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/wholj/"><img id="blogLogo" src="./linux分区命令parted的用法_files/logo.gif" alt="返回主页"></a>		
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/wholj/">长翅膀的蜗牛</a>
+</h1>
+<h2></h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/wholj/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/%E9%95%BF%E7%BF%85%E8%86%80%E7%9A%84%E8%9C%97%E7%89%9B">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/wholj/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			<span id="stats_post_count">随笔 - 25&nbsp; </span>
+<span id="stats_article_count">文章 - 0&nbsp; </span>
+<span id="stats-comment_count">评论 - 16&nbsp; </span>
+<span id="stats-total-view-count">阅读 - 
+<span title="总阅读数: 331254">
+33万</span></span>
+
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    <!--done-->
+    <div id="topics">
+        <div class="post">
+            <h1 class="postTitle">
+                
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/wholj/p/10924129.html">
+    <span role="heading" aria-level="2">linux分区命令parted的用法</span>
+    
+</a><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                <div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+<h1 id="parted的适用场景">parted的适用场景<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<ul>
+<li>创建操作大于2T的分区<br>
+一般情况下，我们都是选择使用<strong>fdisk</strong>工具来进行分区，但是目前在实际生产环境中使用的磁盘空间越来越大，呈TiB级别增长；而常用的<strong>fdisk</strong>这个工具对分区是有大小限制的，它只能划分<strong>小于2T</strong>的磁盘，所以在划<strong>大于2T</strong>磁盘分区的时候<strong>fdisk</strong>就无法满足要求了；这个时候有2个方法，其一是通过卷管理来实现，其二就是通过<strong>parted</strong>工具来实现对<strong>GPT</strong>磁盘进行分区操作；这里我们采用<strong>parted</strong>的方法来实现管理。</li>
+</ul>
+<h1 id="parted的2种使用方式">parted的2种使用方式<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<ul>
+<li>交互式<br>
+手动按序交互式的创建；</li>
+<li>非交互式<br>
+可将命令行写在脚本中，运行脚本实现一键创建；适用于远程批量管理多台主机的场景。</li>
+<li>两种方式比较<br>
+两种方法的使用和原理其实是一样的；要想实现非交互式创建，无非是在每一个具体的交互式命令前加上<code>parted DEVICES_NAME</code>即可。</li>
+</ul>
+<h1 id="parted实现分区管理实践">parted实现分区管理实践<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<h2 id="实验环境">实验环境<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h2>
+<h3 id="操作系统">操作系统<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h3>
+<p>CentOS 7.5</p>
+<h3 id="磁盘信息">磁盘信息<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h3>
+<ul>
+<li>待管理磁盘<br>
+/dev/sdb</li>
+<li>磁盘总大小<br>
+18T</li>
+<li>分区需求<br>
+将整个<strong>/dev/sdb</strong>划分到同一个分区里，并挂载到**<em>/gfsdata01</em>目录下。</li>
+</ul>
+<h2 id="交互式方式实现分区步骤">交互式方式实现分区步骤<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h2>
+<h3 id="选择操作磁盘">选择操作磁盘<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h3>
+<p><strong>parted</strong>命令后跟上欲操作磁盘的名字即可选择此设备进行操作。</p>
+<pre class="highlighter-hljs" highlighted="true"><code class="highlighter-hljs hljs language-powershell">[<span class="hljs-type">root</span>@<span class="hljs-type">kvm</span> ~]<span class="hljs-comment"># parted /dev/sdb</span>
+GNU Parted <span class="hljs-number">3.1</span>
+<span class="hljs-keyword">Using</span> /dev/sdb
+Welcome to GNU Parted! <span class="hljs-built_in">Type</span> <span class="hljs-string">'help'</span> to view a list of commands.
+</code></pre>
+<h3 id="新建磁盘标签类型为gpt">新建磁盘标签类型为GPT<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h3>
+<p>因为parted命令只能针对gpt格式的磁盘进行操作，所以这里必须将新建的磁盘标签格式设为gpt。</p>
+<pre class="highlighter-hljs" highlighted="true"><code class="highlighter-hljs hljs language-scss">(parted) mklabel gpt
+</code></pre>
+<h3 id="分区">分区<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h3>
+<h4 id="命令格式">命令格式<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<pre class="highlighter-hljs" highlighted="true"><code class="highlighter-hljs hljs language-dos">mkpart PART-<span class="hljs-built_in">TYPE</span> [<span class="hljs-built_in">FS</span>-<span class="hljs-built_in">TYPE</span>] <span class="hljs-built_in">START</span> END
+</code></pre>
+<ul>
+<li>PART-TYPE(分区类型)
+<ul>
+<li>primary<br>
+主分区</li>
+<li>logical<br>
+逻辑分区</li>
+<li>extended<br>
+扩展分区</li>
+</ul>
+</li>
+<li>FS-TYPE(文件系统类型)
+<ul>
+<li>ext4</li>
+<li>ext3</li>
+<li>ext2</li>
+<li>xfs</li>
+<li>其他......</li>
+</ul>
+</li>
+<li>START<br>
+设定磁盘分区起始点；可以为0，numberMiB/GiB/TiB；
+<ul>
+<li>0<br>
+设定当前分区的起始点为磁盘的第一个扇区；</li>
+<li>1G<br>
+设定当前分区的起始点为磁盘的1G处开始；</li>
+</ul>
+</li>
+<li>END<br>
+设定磁盘分区结束点；
+<ul>
+<li>-1<br>
+设定当前分区的结束点为磁盘的最后一个扇区；</li>
+<li>10G<br>
+设定当前分区的结束点为磁盘的10G处；</li>
+</ul>
+</li>
+</ul>
+<h4 id="将devsdb整个空间分给同一个分区">将/dev/sdb整个空间分给同一个分区<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<pre class="highlighter-hljs" highlighted="true"><code class="highlighter-hljs hljs language-sql">(parted) mkpart <span class="hljs-keyword">primary</span> <span class="hljs-number">0</span> <span class="hljs-number">-1</span>                                              
+Warning: The resulting <span class="hljs-keyword">partition</span> <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> properly aligned <span class="hljs-keyword">for</span> best performance.
+Ignore<span class="hljs-operator">/</span>Cancel? I
+(parted) p                                                                
+Model: AVAGO AVAGO (scsi)
+Disk <span class="hljs-operator">/</span>dev<span class="hljs-operator">/</span>sdb: <span class="hljs-number">18.0</span>TB
+Sector size (logical<span class="hljs-operator">/</span>physical): <span class="hljs-number">512</span>B<span class="hljs-operator">/</span><span class="hljs-number">4096</span>B
+<span class="hljs-keyword">Partition</span> <span class="hljs-keyword">Table</span>: gpt
+Disk Flags: 
+
+Number  <span class="hljs-keyword">Start</span>   <span class="hljs-keyword">End</span>     Size    File <span class="hljs-keyword">system</span>  Name     Flags
+ <span class="hljs-number">1</span>      <span class="hljs-number">17.4</span>kB  <span class="hljs-number">18.0</span>TB  <span class="hljs-number">18.0</span>TB               <span class="hljs-keyword">primary</span>
+(parted) q                                                                
+Information: You may need <span class="hljs-keyword">to</span> <span class="hljs-keyword">update</span> <span class="hljs-operator">/</span>etc<span class="hljs-operator">/</span>fstab.
+</code></pre>
+<h3 id="格式化分区">格式化分区<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h3>
+<p>因为整个<strong>/dev/sdb</strong>只分了一个区，则这个分区名默认会分配为<strong>/dev/sdb1</strong>；使用<strong>mkfs</strong>命令将<strong>/dev/sdb1</strong>分区格式化为<strong>ext4</strong>。</p>
+<pre class="highlighter-hljs" highlighted="true"><code class="highlighter-hljs hljs language-sql">[root<span class="hljs-variable">@kvm</span> <span class="hljs-operator">~</span>]# mkfs <span class="hljs-operator">-</span>t ext4 <span class="hljs-operator">/</span>dev<span class="hljs-operator">/</span>sdb1                 
+mke2fs <span class="hljs-number">1.42</span><span class="hljs-number">.9</span> (<span class="hljs-number">28</span><span class="hljs-operator">-</span><span class="hljs-type">Dec</span><span class="hljs-number">-2013</span>)
+<span class="hljs-operator">/</span>dev<span class="hljs-operator">/</span>sdb1 alignment <span class="hljs-keyword">is</span> <span class="hljs-keyword">offset</span> <span class="hljs-keyword">by</span> <span class="hljs-number">244736</span> bytes.
+This may <span class="hljs-keyword">result</span> <span class="hljs-keyword">in</span> very poor performance, (re)<span class="hljs-operator">-</span>partitioning suggested.
+Filesystem label<span class="hljs-operator">=</span>
+OS type: Linux
+Block size<span class="hljs-operator">=</span><span class="hljs-number">4096</span> (log<span class="hljs-operator">=</span><span class="hljs-number">2</span>)
+Fragment size<span class="hljs-operator">=</span><span class="hljs-number">4096</span> (log<span class="hljs-operator">=</span><span class="hljs-number">2</span>)
+Stride<span class="hljs-operator">=</span><span class="hljs-number">64</span> blocks, Stripe width<span class="hljs-operator">=</span><span class="hljs-number">64</span> blocks
+<span class="hljs-number">274659328</span> inodes, <span class="hljs-number">4394530311</span> blocks
+<span class="hljs-number">219726515</span> blocks (<span class="hljs-number">5.00</span><span class="hljs-operator">%</span>) reserved <span class="hljs-keyword">for</span> the super <span class="hljs-keyword">user</span>
+<span class="hljs-keyword">First</span> data block<span class="hljs-operator">=</span><span class="hljs-number">0</span>
+<span class="hljs-number">134111</span> block <span class="hljs-keyword">groups</span>
+<span class="hljs-number">32768</span> blocks <span class="hljs-keyword">per</span> <span class="hljs-keyword">group</span>, <span class="hljs-number">32768</span> fragments <span class="hljs-keyword">per</span> <span class="hljs-keyword">group</span>
+<span class="hljs-number">2048</span> inodes <span class="hljs-keyword">per</span> <span class="hljs-keyword">group</span>
+Superblock backups stored <span class="hljs-keyword">on</span> blocks: 
+        <span class="hljs-number">32768</span>, <span class="hljs-number">98304</span>, <span class="hljs-number">163840</span>, <span class="hljs-number">229376</span>, <span class="hljs-number">294912</span>, <span class="hljs-number">819200</span>, <span class="hljs-number">884736</span>, <span class="hljs-number">1605632</span>, <span class="hljs-number">2654208</span>, 
+        <span class="hljs-number">4096000</span>, <span class="hljs-number">7962624</span>, <span class="hljs-number">11239424</span>, <span class="hljs-number">20480000</span>, <span class="hljs-number">23887872</span>, <span class="hljs-number">71663616</span>, <span class="hljs-number">78675968</span>, 
+        <span class="hljs-number">102400000</span>, <span class="hljs-number">214990848</span>, <span class="hljs-number">512000000</span>, <span class="hljs-number">550731776</span>, <span class="hljs-number">644972544</span>, <span class="hljs-number">1934917632</span>, 
+        <span class="hljs-number">2560000000</span>, <span class="hljs-number">3855122432</span>
+
+Allocating <span class="hljs-keyword">group</span> tables: done
+Writing inode tables: done
+Creating journal (<span class="hljs-number">32768</span> blocks): done
+Writing superblocks <span class="hljs-keyword">and</span> filesystem accounting information: done
+</code></pre>
+<h3 id="设定分区label非必要">设定分区label(非必要)<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h3>
+<pre class="highlighter-hljs" highlighted="true"><code class="highlighter-hljs hljs language-csharp">[<span class="hljs-meta">root@kvm ~</span>]<span class="hljs-meta"># e2label /dev/sdb1 /gfsdata01</span>
+</code></pre>
+<h3 id="创建挂载目录">创建挂载目录<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h3>
+<pre class="highlighter-hljs" highlighted="true"><code class="highlighter-hljs hljs language-csharp">[<span class="hljs-meta">root@kvm ~</span>]<span class="hljs-meta"># mkdir /gfsdata01</span>
+</code></pre>
+<h3 id="临时挂载分区">临时挂载分区<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h3>
+<pre class="highlighter-hljs" highlighted="true"><code class="highlighter-hljs hljs language-bash">[root@kvm ~]<span class="hljs-comment"># mount /dev/sdb1 /gfsdata01</span>
+[root@kvm ~]<span class="hljs-comment"># df -h</span>
+Filesystem                   Size  Used Avail Use% Mounted on
+/dev/mapper/root_vg-lv_root   89G  2.6G   82G   4% /
+devtmpfs                     126G     0  126G   0% /dev
+tmpfs                        126G     0  126G   0% /dev/shm
+tmpfs                        126G  2.0M  126G   1% /run
+tmpfs                        126G     0  126G   0% /sys/fs/cgroup
+/dev/sda1                    976M  216M  694M  24% /boot
+/dev/sda7                     99G   61M   94G   1% /home
+/dev/sda8                     62G   53M   59G   1% /tmp
+/dev/sda6                     99G   61M   94G   1% /app
+tmpfs                         26G     0   26G   0% /run/user/1014
+tmpfs                         26G     0   26G   0% /run/user/0
+/dev/sdb1                     17T   20K   16T   1% /gfsdata01
+</code></pre>
+<h3 id="开机自动挂载永久挂载">开机自动挂载(永久挂载)<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h3>
+<p>即修改<strong>/etc/fstab</strong>文件。</p>
+<pre class="highlighter-hljs" highlighted="true"><code class="highlighter-hljs hljs language-bash"><span class="hljs-built_in">echo</span> <span class="hljs-string">'/dev/sdb1 /gfsdata01    ext4    defaults    0 0'</span> &gt;&gt;/etc/fstab
+</code></pre>
+<h2 id="非交互式方式实现脚本">非交互式方式实现脚本<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h2>
+<p>适用于需要在多台主机上进行同样的分区操作，可以通过<strong>ansible</strong>工具调用脚本实现批量分区配置挂载等操作。</p>
+<pre class="highlighter-hljs" highlighted="true"><code class="highlighter-hljs hljs language-bash">[root@kvm ~]<span class="hljs-comment"># cat ./auto_partition.sh </span>
+<span class="hljs-comment">#!/bin/bash</span>
+<span class="hljs-comment"># 新建/dev/sdb的磁盘标签类型为GPT</span>
+parted /dev/sdb mklabel gpt 
+<span class="hljs-comment"># 将/dev/sdb整个空间分给同一个分区</span>
+parted /dev/sdb mkpart primary 0 100%
+<span class="hljs-comment"># 忽略警告</span>
+ignore
+<span class="hljs-comment"># 格式化分区</span>
+mkfs -t ext4 /dev/sdb1
+<span class="hljs-comment"># 设定分区label(非必要)</span>
+e2label /dev/sdb1 /gfsdata01
+<span class="hljs-comment"># 创建挂载目录</span>
+<span class="hljs-built_in">mkdir</span> /gfsdata01
+<span class="hljs-comment"># 临时挂载</span>
+mount /dev/sdb1 /gfsdata01
+<span class="hljs-comment"># 开机自动挂载(永久挂载)</span>
+<span class="hljs-built_in">echo</span> <span class="hljs-string">'/dev/sdb1 /gfsdata01       ext4    defaults        0 0'</span>&gt;&gt;/etc/fstab
+[root@kvm ~]<span class="hljs-comment"># </span>
+</code></pre>
+<h1 id="parted的其他常用子命令">parted的其他常用子命令<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<h2 id="删除分区rm子命令">删除分区(rm子命令)<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h2>
+<p><strong>rm NUMBER</strong>：<strong>NUMBER</strong>即为<strong>parted</strong>子命令<strong>p</strong>回显的<strong>Number</strong>对应的数字；<br>
+<em>此命令慎用！！！如果要删除的分区内已有数据，那么此命令会删除其中的所有数据，并且是不可逆的。</em></p>
+<pre class="highlighter-hljs" highlighted="true"><code class="highlighter-hljs hljs language-sql">(parted) p                                                                
+Model: AVAGO AVAGO (scsi)
+Disk <span class="hljs-operator">/</span>dev<span class="hljs-operator">/</span>sdb: <span class="hljs-number">18.0</span>TB
+Sector size (logical<span class="hljs-operator">/</span>physical): <span class="hljs-number">512</span>B<span class="hljs-operator">/</span><span class="hljs-number">4096</span>B
+<span class="hljs-keyword">Partition</span> <span class="hljs-keyword">Table</span>: gpt
+Disk Flags: 
+
+Number  <span class="hljs-keyword">Start</span>   <span class="hljs-keyword">End</span>     Size    File <span class="hljs-keyword">system</span>  Name     Flags
+ <span class="hljs-number">1</span>      <span class="hljs-number">17.4</span>kB  <span class="hljs-number">4096</span>GB  <span class="hljs-number">4096</span>GB               <span class="hljs-keyword">primary</span>
+
+(parted) rm <span class="hljs-number">1</span>                                                             
+(parted) p                                                                
+Model: AVAGO AVAGO (scsi)
+Disk <span class="hljs-operator">/</span>dev<span class="hljs-operator">/</span>sdb: <span class="hljs-number">18.0</span>TB
+Sector size (logical<span class="hljs-operator">/</span>physical): <span class="hljs-number">512</span>B<span class="hljs-operator">/</span><span class="hljs-number">4096</span>B
+<span class="hljs-keyword">Partition</span> <span class="hljs-keyword">Table</span>: gpt
+Disk Flags: 
+
+Number  <span class="hljs-keyword">Start</span>  <span class="hljs-keyword">End</span>  Size  File <span class="hljs-keyword">system</span>  Name  Flags
+
+(parted)
+</code></pre>
+
+</div>
+<div id="MySignature" role="contentinfo">
+    by: wholj
+
+email: wholj7650@163.com
+</div>
+<div class="clear"></div>
+<div id="blog_post_info_block" role="contentinfo"><div id="BlogPostCategory">
+    分类: 
+            <a href="https://www.cnblogs.com/wholj/category/1130051.html" target="_blank">Linux运维</a></div>
+<div id="EntryTag">
+    标签: 
+            <a href="https://www.cnblogs.com/wholj/tag/linux%E8%BF%90%E7%BB%B4/">linux运维</a></div>
+
+    <div id="blog_post_info">
+<div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(10924129,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+        <a id="green_channel_follow" onclick="follow(&#39;783b48b5-0a8b-4faf-470b-08d52fc34315&#39;);" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="./linux分区命令parted的用法_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="./linux分区命令parted的用法_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/wholj/" target="_blank"><img src="./linux分区命令parted的用法_files/sample_face.gif" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/wholj/">长翅膀的蜗牛</a><br>
+            <a href="https://home.cnblogs.com/u/wholj/followers/">粉丝 - <span class="follower-count">10</span></a>
+            <a href="https://home.cnblogs.com/u/wholj/followees/">关注 - <span class="following-count">0</span></a><br>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow" class="follow-tip">
+                <a href="javascript:void(0);" onclick="follow(&#39;783b48b5-0a8b-4faf-470b-08d52fc34315&#39;);return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(10924129,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">3</span>
+    </div>
+    <div class="buryit" onclick="votePost(10924129,&#39;Bury&#39;)">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+    <div class="clear"></div>
+    <div id="post_next_prev">
+
+    <a href="https://www.cnblogs.com/wholj/p/10897274.html" class="p_n_p_prefix">« </a> 上一篇：    <a href="https://www.cnblogs.com/wholj/p/10897274.html" data-featured-image="" title="发布于 2019-05-21 00:42">CentOS7.5升级OpenSSH</a>
+    <br>
+    <a href="https://www.cnblogs.com/wholj/p/10944407.html" class="p_n_p_prefix">» </a> 下一篇：    <a href="https://www.cnblogs.com/wholj/p/10944407.html" data-featured-image="" title="发布于 2019-05-29 16:06">升级openssh编译报错“configure: error: *** working libcrypto not found, check config.log”的解决办法</a>
+
+</div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date">2019-05-26 10:30</span>&nbsp;
+<a href="https://www.cnblogs.com/wholj/">长翅膀的蜗牛</a>&nbsp;
+阅读(<span id="post_view_count">48791</span>)&nbsp;
+评论(<span id="post_comment_count">1</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=10924129" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(10924129);return false;">收藏</a>&nbsp;
+<a href="javascript:void(0)" onclick="reportManager.report({ currentUserId: &#39;&#39;, targetType: &#39;blogPost&#39;, targetId: &#39;10924129&#39;, targetLink: &#39;https://www.cnblogs.com/wholj/p/10924129.html&#39;, title: &#39;linux分区命令parted的用法&#39; })">举报</a></div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+
+<script>
+    var cb_entryId = 10924129, cb_entryCreatedDate = '2019-05-26 10:30', cb_postType = 1, cb_postTitle = 'linux分区命令parted的用法';
+    var allowComments = true, cb_blogId = 400965, cb_blogApp = 'wholj', cb_blogUserGuid = '783b48b5-0a8b-4faf-470b-08d52fc34315';
+    mermaidRender.render()
+    markdown_highlight()
+    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");
+    updatePostStats(
+            [cb_entryId],
+            function(id, count) { $("#post_view_count").text(count) },
+            function(id, count) { $("#post_comment_count").text(count) })
+</script>
+<a id="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="https://www.cnblogs.com/wholj/p/10924129.html#" onclick="return RefreshPage();">刷新页面</a><a href="https://www.cnblogs.com/wholj/p/10924129.html#top">返回顶部</a></div>
+    <div id="comment_form_container" style="visibility: visible;"><div class="login_tips">
+    登录后才能查看或发表评论，立即 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return account.login(&#39;!comments&#39;);">登录</a> 或者
+    <a href="https://www.cnblogs.com/">逛逛</a> 博客园首页
+</div>
+</div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+        <div id="cnblogs_ch"><a href="https://lbsyun.baidu.com/promotion/specialoffer#/home?source=2" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-百度地图&#39;})">【推荐】百度地图新客尝鲜限时特惠，20多种服务等你来选</a><br><a href="https://brands.cnblogs.com/specdd" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-SpecDD专区&#39;})">【推荐】下一步，敏捷！云可达科技SpecDD敏捷开发专区</a><br><a href="https://curl.qcloud.com/k19RDMHo" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-腾讯云&#39;})">【推荐】腾讯云多款云产品1折起，买云服务器送免费机器</a><br></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="under-post-card">
+            <div id="div-gpt-ad-1592365906576-0" style="width: 300px; height: 250px;" data-google-query-id="CPvBxfbbkPoCFQqqvQodgAoCjg"><div id="google_ads_iframe_/1090369/C1_0__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/1090369/C1_0" name="google_ads_iframe_/1090369/C1_0" title="3rd party ad content" width="300" height="250" scrolling="no" marginwidth="0" marginheight="0" frameborder="0" role="region" aria-label="Advertisement" tabindex="0" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" style="border: 0px; vertical-align: bottom;" data-load-complete="true" data-google-container-id="1" src="./linux分区命令parted的用法_files/saved_resource.html"></iframe></div></div>
+    </div>
+    <div id="under_post_card1"><div class="under-post-card">
+<b>编辑推荐：</b>
+<br>
+
+· <a href="https://www.cnblogs.com/green-jcx/p/16671687.html" target="_blank">让泛型的思维扎根在脑海——深刻理解泛型</a>
+    <br>
+· <a href="https://www.cnblogs.com/coco1s/p/16672819.html" target="_blank">高阶 CSS 技巧在复杂动效中的应用</a>
+    <br>
+· <a href="https://www.cnblogs.com/lindexi/p/16671495.html" target="_blank">使用 MAUI 在 Windows 和 Linux 上绘制 PPT 的图表 </a>
+    <br>
+· <a href="https://www.cnblogs.com/crossoverJie/p/16663944.html" target="_blank">终于实现了一门属于自己的编程语言</a>
+    <br>
+· <a href="https://www.cnblogs.com/coco1s/p/16663752.html" target="_blank">有意思的水平横向溢出滚动 </a>
+    <br>
+</div></div>
+    <div id="under_post_card2"><div class="itnews under-post-card">
+    <b>最新新闻</b>：
+    <br>
+ ·          <a href="https://news.cnblogs.com/n/728113/" target="_blank">对着手机咳嗽一声，就能检测新冠了？还是剑桥大学出品</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/728112/" target="_blank">DeepMind发30页长文：我们要给聊天机器人不同的「三观」</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/728114/" target="_blank">唯有霍金拒绝！英国女王70年给这12位大科学家封爵</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/728115/" target="_blank">CV大神谢赛宁离职Meta加入纽约大学，与何恺明共著ResNeXt</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/728111/" target="_blank">副总裁集体跑路！Snap上演美国版「千人毕业」</a>
+        <br>
+    » <a href="https://news.cnblogs.com/" title="IT 新闻" target="_blank">更多新闻...</a>
+</div></div>
+    <div id="HistoryToday" class="under-post-card" style="display: none;"></div>
+    <script type="text/javascript">
+        var commentManager = new blogCommentManager();
+        commentManager.renderComments(0);
+        fixPostBody();
+
+            window.tocManager.displayDisableTocTips = false;
+            window.tocManager.generateToc();
+            
+                setTimeout(function() { countViews(cb_blogId, cb_entryId); }, 50);
+            
+            deliverT2();
+            deliverC1C2();
+            loadNewsAndKb();
+            
+                LoadPostCategoriesTags(cb_blogId, cb_entryId);
+            
+            LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+            GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+            loadOptUnderPost();
+            GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+                </script>
+</div>
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+	<div id="sideBar">
+		<div id="sideBarMain">
+			<div id="sidebar_news" class="newsItem"><!--done-->
+<h3 class="catListTitle">公告</h3>
+
+<div id="blog-news">
+    
+    <div id="profile_block">
+        昵称：
+        <a href="https://home.cnblogs.com/u/wholj/">
+            长翅膀的蜗牛
+        </a>
+        <br>
+        园龄：
+        <a href="https://home.cnblogs.com/u/wholj/" title="入园时间：2017-12-12">
+            4年9个月
+        </a>
+        <br>
+        粉丝：
+        <a class="follower-count" href="https://home.cnblogs.com/u/wholj/followers/">
+            10
+        </a>
+        <br>
+        关注：
+        <a class="folowing-count" href="https://home.cnblogs.com/u/wholj/followees/">
+            0
+        </a>
+        <div id="p_b_follow" class="follow-tip">
+<a href="javascript:void(0)" onclick="follow(&#39;783b48b5-0a8b-4faf-470b-08d52fc34315&#39;)">+加关注</a></div>
+        <script>getFollowStatus('783b48b5-0a8b-4faf-470b-08d52fc34315');</script>
+    </div>
+</div>
+
+</div>
+<div id="sidebar_c3" style="display: block;"><a href="https://lbsyun.baidu.com/promotion/specialoffer#/home?source=2" target="_blank"><img width="300" height="250" src="./linux分区命令parted的用法_files/35695-20220908174739681-1622347167.png" alt="百度地图-新客尝鲜限时特惠" onclick="countClicks(&#39;ad&#39;, &#39;C3-百度地图&#39;);"></a></div>
+			<div id="blog-calendar" style="">
+
+<table id="blogCalendar" class="Cal" cellspacing="0" cellpadding="0" title="Calendar" border="0">
+    <tbody>
+        <tr>
+            <td colspan="7">
+                <table class="CalTitle" cellspacing="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2022/08/13&#39;); return false;">&lt;</a>
+                            </td>
+                            <td align="center">2022年9月</td>
+                            <td align="right" class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2022/10/13&#39;); return false;">&gt;</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    <tr>
+        <th class="CalDayHeader" align="center" abbr="日" scope="col">日</th>
+        <th class="CalDayHeader" align="center" abbr="一" scope="col">一</th>
+        <th class="CalDayHeader" align="center" abbr="二" scope="col">二</th>
+        <th class="CalDayHeader" align="center" abbr="三" scope="col">三</th>
+        <th class="CalDayHeader" align="center" abbr="四" scope="col">四</th>
+        <th class="CalDayHeader" align="center" abbr="五" scope="col">五</th>
+        <th class="CalDayHeader" align="center" abbr="六" scope="col">六</th>
+    </tr>
+            <tr>
+                            <td class="CalOtherMonthDay" align="center">28</td>
+                            <td class="CalOtherMonthDay" align="center">29</td>
+                            <td class="CalOtherMonthDay" align="center">30</td>
+                            <td class="CalOtherMonthDay" align="center">31</td>
+                        <td class="" align="center">
+                            1
+                        </td>
+                        <td class="" align="center">
+                            2
+                        </td>
+                    <td class="CalWeekendDay" align="center">
+                        3
+                    </td>
+            </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            4
+                        </td>
+                            <td class="" align="center">
+                                5
+                            </td>
+                            <td class="" align="center">
+                                6
+                            </td>
+                            <td class="" align="center">
+                                7
+                            </td>
+                            <td class="" align="center">
+                                8
+                            </td>
+                            <td class="" align="center">
+                                9
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            10
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            11
+                        </td>
+                            <td class="" align="center">
+                                12
+                            </td>
+                            <td class="CalTodayDay" align="center">
+                                13
+                            </td>
+                            <td class="" align="center">
+                                14
+                            </td>
+                            <td class="" align="center">
+                                15
+                            </td>
+                            <td class="" align="center">
+                                16
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            17
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            18
+                        </td>
+                            <td class="" align="center">
+                                19
+                            </td>
+                            <td class="" align="center">
+                                20
+                            </td>
+                            <td class="" align="center">
+                                21
+                            </td>
+                            <td class="" align="center">
+                                22
+                            </td>
+                            <td class="" align="center">
+                                23
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            24
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            25
+                        </td>
+                            <td class="" align="center">
+                                26
+                            </td>
+                            <td class="" align="center">
+                                27
+                            </td>
+                            <td class="" align="center">
+                                28
+                            </td>
+                            <td class="" align="center">
+                                29
+                            </td>
+                            <td class="" align="center">
+                                30
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            1
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalOtherMonthDay" align="center">
+                            2
+                        </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                3
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                4
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                5
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                6
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                7
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            8
+                        </td>
+                </tr>
+    </tbody>
+</table></div><script>loadBlogDefaultCalendar();</script>			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"><!-- 搜索 -->
+<div id="sidebar_search" class="sidebar-block">
+    <div id="sidebar_search" class="mySearch">
+        <h3 class="catListTitle">搜索</h3>
+        <div id="sidebar_search_box">
+            <div id="widget_my_zzk" class="div_my_zzk">
+                <input type="text" id="q" onkeydown="return zzk_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="zzk_go()" type="button" value="找找看" id="btnZzk" class="btn_my_zzk">
+            </div>
+            <div id="widget_my_google" class="div_my_zzk">
+                <input type="text" name="google_q" id="google_q" onkeydown="return google_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="google_go()" type="button" value="谷歌搜索" class="btn_my_zzk">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 常用链接 -->
+<div id="sidebar_shortcut" class="sidebar-block"><div class="catListLink">
+<h3 class="catListTitle">
+常用链接
+</h3>
+<ul>
+    <li><a href="https://www.cnblogs.com/wholj/p/" title="我的博客的随笔列表">我的随笔</a></li>
+<li><a href="https://www.cnblogs.com/wholj/MyComments.html" title="我的发表过的评论列表">我的评论</a></li>
+<li><a href="https://www.cnblogs.com/wholj/OtherPosts.html" title="我评论过的随笔列表">我的参与</a></li>
+<li><a href="https://www.cnblogs.com/wholj/comments" title="我的博客的评论列表">最新评论</a></li>
+<li><a href="https://www.cnblogs.com/wholj/tag/" title="我的博客的标签列表">我的标签</a></li>
+
+</ul>
+</div>
+
+</div>
+
+<!-- 最新随笔 -->
+
+
+<!-- 我的标签 -->
+<div id="sidebar_toptags" class="sidebar-block"><div class="catListTag">
+<h3 class="catListTitle">我的标签</h3>
+<ul>
+        <li>
+            <a href="https://www.cnblogs.com/wholj/tag/linux%E8%BF%90%E7%BB%B4/">linux运维<span class="tag-count">(12)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/wholj/tag/docker/">docker<span class="tag-count">(9)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/wholj/tag/awk/">awk<span class="tag-count">(2)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/wholj/tag/IPV6%E5%9C%B0%E5%9D%80%E8%A1%A5%E5%85%A8/">IPV6地址补全<span class="tag-count">(1)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/wholj/tag/trunk/">trunk<span class="tag-count">(1)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/wholj/tag/%E5%AD%90%E6%8E%A5%E5%8F%A3/">子接口<span class="tag-count">(1)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/wholj/tag/bond/">bond<span class="tag-count">(1)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/wholj/tag/%E6%8E%A9%E7%A0%81%E8%BD%AC%E6%8D%A2/">掩码转换<span class="tag-count">(1)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/wholj/tag/python/">python<span class="tag-count">(1)</span></a>
+        </li>
+    
+
+</ul>
+</div>
+
+</div>
+
+<!-- 积分与排名 -->
+
+
+<!-- 随笔分类、随笔档案、文章分类、新闻分类、相册、链接 -->
+<div id="sidebar_categories">
+
+    <div id="sidebar_postcategory" class="catListPostCategory sidebar-block">
+        <h3 class="catListTitle">
+            
+    <a class="sidebar-card-title-a" href="https://www.cnblogs.com/wholj/categories">随笔分类</a>
+
+
+
+        </h3>
+
+        <ul>
+
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/wholj/category/1472695.html" class="category-item-link" rel="" target="">awk(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/wholj/category/1472691.html" class="category-item-link" rel="" target="">docker(9)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/wholj/category/1130051.html" class="category-item-link" rel="" target="">Linux运维(12)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/wholj/category/1130052.html" class="category-item-link" rel="" target="">python(1)</a>
+ 
+                </li>                
+            
+        </ul>
+
+
+    </div>    
+    <div id="sidebar_postarchive" class="catListPostArchive sidebar-block">
+        <h3 class="catListTitle">
+            
+随笔档案
+
+
+        </h3>
+
+        <ul>
+
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/wholj/archive/2019/08.html" class="category-item-link" rel="" target="">2019年8月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/wholj/archive/2019/06.html" class="category-item-link" rel="" target="">2019年6月(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/wholj/archive/2019/05.html" class="category-item-link" rel="" target="">2019年5月(8)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/wholj/archive/2019/04.html" class="category-item-link" rel="" target="">2019年4月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/wholj/archive/2019/03.html" class="category-item-link" rel="" target="">2019年3月(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/wholj/archive/2019/02.html" class="category-item-link" rel="" target="">2019年2月(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/wholj/archive/2019/01.html" class="category-item-link" rel="" target="">2019年1月(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/wholj/archive/2018/12.html" class="category-item-link" rel="" target="">2018年12月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/wholj/archive/2018/11.html" class="category-item-link" rel="" target="">2018年11月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/wholj/archive/2018/09.html" class="category-item-link" rel="" target="">2018年9月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/wholj/archive/2017/12.html" class="category-item-link" rel="" target="">2017年12月(1)</a>
+ 
+                </li>                
+            
+        </ul>
+
+
+    </div>    
+    <div id="sidebar_imagecategory" class="catListImageCategory sidebar-block">
+        <h3 class="catListTitle">
+            
+相册
+
+
+        </h3>
+
+        <ul>
+
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/wholj/gallery/1193268.html" class="category-item-link" rel="nofollow noopener noreferrer" target="">PXE(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/wholj/gallery/1558104.html" class="category-item-link" rel="nofollow noopener noreferrer" target="">笔记图片(20)</a>
+ 
+                </li>                
+            
+        </ul>
+
+
+    </div>    
+</div>
+
+<!-- 最新评论 -->
+<!-- 阅读排行榜 -->
+<div id="sidebar_topviewedposts" class="sidebar-block"><div class="catListView">
+    <h3 class="catListTitle">
+        <a href="https://www.cnblogs.com/wholj/most-viewed" class="sidebar-card-title-a">
+    阅读排行榜
+</a>
+
+    </h3>
+    <div id="TopViewPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/wholj/p/10551999.html">
+                            1. docker端口映射(114777)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/wholj/p/10924129.html">
+                            2. linux分区命令parted的用法(48790)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/wholj/p/10944407.html">
+                            3. 升级openssh编译报错“configure: error: *** working libcrypto not found, check config.log”的解决办法(29471)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/wholj/p/10396516.html">
+                            4. docker容器 - 进入容器、删除容器(23123)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/wholj/p/10401305.html">
+                            5. docker容器 - 导入容器、导出容器、查看容器(20601)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div></div>
+
+<!-- 评论排行榜 -->
+<div id="sidebar_topcommentedposts" class="sidebar-block"><div class="catListFeedback">
+    <h3 class="catListTitle">
+        <a href="https://www.cnblogs.com/wholj/most-commented" class="sidebar-card-title-a">评论排行榜</a>
+
+    </h3>
+    <div id="TopFeedbackPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/wholj/p/10961705.html">
+                            1. LVM实现将2块磁盘总空间“合二为一”并挂载到同一目录(7)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/wholj/p/10897274.html">
+                            2. CentOS7.5升级OpenSSH(2)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/wholj/p/11031220.html">
+                            3. 执行yum相关命令总是卡住，ctrl+c也退出不了(1)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/wholj/p/10944407.html">
+                            4. 升级openssh编译报错“configure: error: *** working libcrypto not found, check config.log”的解决办法(1)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/wholj/p/10924129.html">
+                            5. linux分区命令parted的用法(1)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div></div>
+
+<!-- 推荐排行榜 -->
+<div id="sidebar_topdiggedposts" class="sidebar-block">
+<div id="topdigg_posts_wrap">
+    <div class="catListView">
+        <h3 class="catListTitle">
+            <a href="https://www.cnblogs.com/wholj/most-liked" class="sidebar-card-title-a">推荐排行榜</a>
+
+        </h3>
+        <div id="TopDiggPostsBlock">
+            <ul style="word-break: break-all">
+                        <li>
+                            <a href="https://www.cnblogs.com/wholj/p/10924129.html">
+                                1. linux分区命令parted的用法(3)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/wholj/p/10329201.html">
+                                2. docker删除镜像时报错解决办法(3)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/wholj/p/10897274.html">
+                                3. CentOS7.5升级OpenSSH(2)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/wholj/p/10551999.html">
+                                4. docker端口映射(2)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/wholj/p/11381159.html">
+                                5. 根下var目录迁移(1)
+                            </a>
+                        </li>
+            </ul>
+        </div>
+    </div>
+</div></div><div id="sidebar_recentcomments" class="sidebar-block"><div class="catListComment">
+<h3 class="catListTitle"><a href="https://www.cnblogs.com/wholj/comments" class="sidebar-card-title-a">最新评论</a></h3>
+    <div class="RecentCommentBlock">
+        <ul>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/wholj/p/10551999.html">1. Re:docker端口映射</a></li>
+                <li class="recent_comment_body"><p>不错，学到了</p>
+</li>
+                <li class="recent_comment_author">--非常凡想</li>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/wholj/p/10897274.html">2. Re:CentOS7.5升级OpenSSH</a></li>
+                <li class="recent_comment_body"><p>非常感谢老师！解决了大问题！</p>
+</li>
+                <li class="recent_comment_author">--AdminSheng</li>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/wholj/p/10861857.html">3. Re:自制yum源离线安装ansible</a></li>
+                <li class="recent_comment_body"><p>厉害</p>
+</li>
+                <li class="recent_comment_author">--ybt&amp;kexiao</li>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/wholj/p/10961705.html">4. Re:LVM实现将2块磁盘总空间“合二为一”并挂载到同一目录</a></li>
+                <li class="recent_comment_body">告诉后来的兄弟：因为这个是启动自动挂载的文件，博主把“添加”，搞成了“覆盖”，所以原本的自动挂载文件出了问题，只要进入紧急修复模式，然后找到 /etc/fstab 文件，因为我知道我自己的/dev/s...</li>
+                <li class="recent_comment_author">--深色调子的男青年</li>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/wholj/p/10961705.html">5. Re:LVM实现将2块磁盘总空间“合二为一”并挂载到同一目录</a></li>
+                <li class="recent_comment_body">@种田人云天明 /dev/sda2 / ext4 defaults 0 0...</li>
+                <li class="recent_comment_author">--深色调子的男青年</li>
+        </ul>
+    </div>
+</div>
+
+</div>
+
+
+</div>
+                    <script>loadBlogSideColumn();</script>
+			</div>			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright © 2022 长翅膀的蜗牛
+<br><span id="poweredby">Powered by .NET 6 on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+
+
+
+<input type="hidden" id="antiforgery_token" value="CfDJ8EOBBtWq0dNFoDS-ZHPSe51qiUmzdIVsCord91tQoS-treWdKBAvX8st6mC0qJmd2Pf1hsbE0gi6VO0AT2H4REf_NGuARy2Ypmj7NCzibcthmzBicptjoS85s5lggJjuQaLtxzYCS_OXXqOAeww_288">
+<script async="" src="./linux分区命令parted的用法_files/js"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    var kv = getGACustom();
+    if (kv) {
+        gtag('set', kv);
+    }
+    gtag('config', 'UA-476124-1');
+</script>
+<script defer="" src="./linux分区命令parted的用法_files/hm.js"></script><iframe src="./linux分区命令parted的用法_files/container.html" style="visibility: hidden; display: none;"></iframe>
+
+<iframe src="./linux分区命令parted的用法_files/aframe.html" width="0" height="0" style="display: none;"></iframe></body></html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<!-- saved from url=(0043)https://wker.com/linux-command/hexdump.html -->
+<html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>hexdump - Linux命令简明手册</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="robots" content="index, follow">
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    <meta name="keywords" content="hexdump,Linux,命令,手册,教程,说明">
+    <meta name="description" content="以十六进制数值等数据形式显示输入文件">
+    <link rel="canonical" href="https://wker.com/linux-command/hexdump.html">
+    <link rel="stylesheet" href="./hexdump - Linux命令简明手册_files/styles.css" type="text/css" media="all">
+</head>
+
+<body>
+    <h1>hexdump</h1>
+    <p>以十六进制数值等数据形式显示输入文件</p>
+    <hr>
+    <h3>语法格式</h3>
+  <pre><strong>hexdump</strong> [-bcCdovx] [-e <em>fmtstr</em>] [-f <em>fmtfile</em>] [-n <em>length</em>] [-s <em>offset</em>] <em>file</em>s</pre>
+
+  <h3>命令简介</h3>
+
+  <p>hexdump命令可以采用ASCII字符、十进制数值、十六进制数值或八进制数值等不同的表示方式显示指定的数据文件，尤其是二进制数据文件。</p>
+
+  <p>其中，<em>files</em>是待考察的一个或多个文件。如果未指定文件，则使用标准输入作为输入文件。</p>
+
+  <p>除了使用预定义的选项与格式显示数据之外，还可以利用“-e”或“-f”选项，以及格式字符串，自定义输出格式。详见“-e”、“-f”选项与格式字符串的说明。</p>
+
+  <p>如果未指定任何选项，也未指定格式字符串，默认的显示相当于指定了“-x”选项，表示均以十六进制数值显示文件的偏移值与实际数据内容。</p>
+
+  <h3>命令选项</h3>
+
+  <p>-b　　单字节八进制数值显示方式。在每一行输出数据中，以十六进制数值显示文件的偏移值，接着以八进制数值显示16个字节的输入数据，每个字节占3列，不足者加前置0，字节之间加空格分隔符。</p>
+
+  <p>-c　　单字节字符显示方式。在每一行输出数据中，以十六进制数值显示文件的偏移值，接着显示16个字符的输入数据，每个字符占3列，不足者前面加空格，字符之间加空格分隔符。</p>
+
+  <p>-C　　典型的十六进制数值加ASCII字符显示方式。在每一行输出数据中，以十六进制数值显示文件的偏移值，接着采用十六进制数值显示16个字节的输入数据，每个字节占2列，字节间加空格分隔符。第三部分再采用“%_p”格式，以字符形式显示16个字节的同一数据，不可打印字符以句点“.”代之，整个数据前后加“|”字符。</p>
+
+  <p>-d　　双字节十进制数值显示方式。在每一行输出数据中，以十六进制数值显示文件的偏移值，接着以无符号的十进制数显示8个双字节的输入数据，每个数据占5列，不足者加前置0，数据之间加空格分隔符。</p>
+
+  <p>-e <em>fmtstr</em>　　采用指定的格式字符串定义的格式显示数据。</p>
+
+  <p>-f <em>fmtfile</em>　　指定一个文件，其中包含一个或多个由换行符分隔的格式字符串。忽略其中的空行或第一个非空字符为“#”的注释行。</p>
+
+  <p>-n <em>length</em>　　显示指定字节数量的输入数据。</p>
+
+  <p>-o　　采用两字节的八进制数值显示方式。在每个输出行中，以十六进制的数值显示文件的偏移值，接着以八进制的数值显示8个双字节的输入数据，中间加空格分隔符，每个数据占6列，不足者加前置0。</p>
+
+  <p>-s <em>offset</em>　　从输入数据的开始位置跳过指定字节数量的数据。通常，偏移值是一个十进制的数值。如果数值前面加上0x或0X，偏移值可以解释为十六进制的数值。如果加上前置0，偏移值就是一个八进制的数值。如果数值后面附加一个字符b、k或m，可以把偏移值相应地解释为以512、1024或1024<span class="math-super">2</span>个字节为单位。</p>
+
+  <p>-v　　显示所有的输入数据，不管是否重复。如果未加“-v”选项，任何一组输出数据行，如果其完全等同于相邻的前一组输出数据行（偏移值除外），则代以仅含单个星号“*”的数据行输出。</p>
+
+  <p>-x　　采用2字节的十六进制数值显示方式。在每个输出数据行中，以十六进制的数值显示文件的偏移值，接着以十六进制的数值显示8个双字节的输入数据，中间加空格分隔符，每个数据占4列，不足者加前置0。</p>
+
+  <h3>格式字符串</h3>
+
+  <p>hexdump将依次读取每个输入文件，按照“-e”或“-f”选项指定的格式字符串及其顺序，把转换后的数据写到标准输出。</p>
+
+  <p>一个格式字符串可以包含任意数量的格式单位，格式单位之间以空格作为分隔符。一个格式单位最多可以包含3个元素：重复计数、字节计数和显示格式。其语法格式如下：</p>
+  <pre>[<em>iterations</em>]/[<em>byte-count</em>] "[<em>format</em>]"</pre>
+
+  <p>重复计数<em>iterations</em>是一个正整数，表示相应的格式应重复使用的次数。重复计数可以不存在，默认值是1。</p>
+
+  <p>字节计数<em>byte-count</em>也是一个正整数，定义每个格式需要解释的字节数量。字节计数是选用的，可以不存在。</p>
+
+  <p>如果指定了重复计数和字节计数，两者之间必须插入一个斜线字符“/”，忽略其前后的空格字符。</p>
+
+  <p>显示格式<em>format</em>由C语言fprint(3)风格的格式转换字符串组成，前后必须加双引号，参见下面的说明。</p>
+
+  <p>上述语法格式的定义表示一个显示格式<em>format</em>占用<em>byte-count</em>个字节，重复显示<em>iterations</em>次。</p>
+
+  <p>hexdump命令支持C语言fprint(3)风格的格式转换字符，但存在若干例外情况：</p>
+
+  <ul class="kindle-cn-ul-disc">
+    <li>支持“#”、“0”、“+”、“-”和空格等标志字符。</li>
+
+    <li>支持“%[diouxfFeEgGaAcs]”等格式转换字符，但不支持“[hlnpq]”等转换限定字符。</li>
+
+    <li>支持“m.n”形式的字段宽度与精度定义，但星号“*”不能用于字段宽度或精度。</li>
+
+    <li>支持“\0”、“\a”、“\b”、“\f”、“\n”、“\r”、“\t”和“\v”等单字符的转义序列。</li>
+
+    <li>每个“%s”转换字符都要求提供一个字节计数或字段精度（在C语言的fprintf(3)函数中，即使未指定精度也能输出整个字符串）。</li>
+  </ul>
+
+  <p>此外，hexdump命令还支持下列附加的格式转换字符串：</p>
+
+  <p>%_a[dox]　　显示输入文件的偏移值。选用的字符d、o和x分别表示以十进制、八进制或十六进制的数值表示偏移值。</p>
+
+  <p>%_A[dox]　　等同于“%_a”格式转换字符串，也用于显示文件的偏移值，但仅在所有输入数据都处理完之后才执行一次。</p>
+
+  <p>%_c　　采用默认的字符集输出字符。不可打印的字符或采用两位的标准转义序列（如“\n”）表示，或采用3位八进制数字表示，不足者在前面加数字0补位。</p>
+
+  <p>%_p　　采用默认的字符集输出字符。不可打印的字符采用单个句点“.”表示。</p>
+
+  <p>%_u　　采用US ASCII字符显示字符，但控制字符采用下列小写字母缩写显示，其编码大于0xff 的采用十六进制的数字串显示。</p>
+  <pre>000 nul  001 soh  002 stx  003 etx  004 eot  005 enq
+006 ack         007 bel  008 bs   009 ht   00A lf   00B vt
+00C ff  00D cr   00E so   00F si   010 dle  011 dc1
+012 dc2         013 dc3  014 dc4  015 nak  016 syn  017 etb
+018 can         019 em   01A sub  01B esc  01C fs   01D gs
+01E rs  01F us   0FF del</pre>
+
+  <p>转换字符支持与默认的字节计数如下：</p>
+
+  <p>%_c, %_p, %_u, %c　　仅支持一个字节。</p>
+
+  <p>%u, %X, %x　　支持1、2和4个字节。默认4个字节。</p>
+
+  <p>%G, %g, %f　　支持4和8个字节。默认8个字节。</p>
+
+  <p>每个格式字符串解释的数据数量是每个格式单位要求的数据之和，等于字节计数与重复次数的乘积。如果字节计数未指定，等于格式单位要求的字节数与重复次数的乘积。</p>
+
+  <p>如果输入数据的数量大于格式字符串一次能够解释的数据数量，重复使用格式解释后续数据。如果输入数据的数量小于格式字符串一次能够解释的数据数量，则以NULL字符作为补充，表示数据的结束，不会显示额外的空格字符。</p>
+
+  <h3>应用实例</h3>
+
+  <p>1. 显示/boot文件系统分区根目录中的数据（首先使用debugfs命令获取根目录的数据块地址）。</p>
+  <pre># <strong>dd if=/dev/sda3 bs=1024 skip=4356 count=1 | hexdump -C</strong>
+
+00000000  02 00 00 00 0c 00 01 02  2e 00 00 00 02 00 00 00  |................|
+00000010  0c 00 02 02 2e 2e 00 00  0b 00 00 00 14 00 0a 02  |................|
+00000020  6c 6f 73 74 2b 66 6f 75  6e 64 00 00 01 fe 00 00  |lost+found......|
+00000030  0c 00 04 02 67 72 75 62  03 fe 00 00 0c 00 03 02  |....grub........|
+00000040  65 66 69 00 11 00 00 00  34 00 20 01 69 6e 69 74  |efi.....4. .init|
+00000050  72 61 6d 66 73 2d 32 2e  36 2e 33 32 2d 37 31 2e  |ramfs-2.6.32-71.|
+00000060  65 6c 36 2e 69 36 38 36  2e 69 6d 67 30 30 62 30  |el6.i686.img00b0|
+00000070  30 62 30 30 62 00 00 00  0c 00 00 00 28 00 20 01  |0b00b.......(. .|
+00000080  2e 76 6d 6c 69 6e 75 7a  2d 32 2e 36 2e 33 32 2d  |.vmlinuz-2.6.32-|
+00000090  37 31 2e 65 6c 36 2e 69  36 38 36 2e 68 6d 61 63  |71.el6.i686.hmac|
+000000a0  0d 00 00 00 28 00 1d 01  53 79 73 74 65 6d 2e 6d  |....(...System.m|
+000000b0  61 70 2d 32 2e 36 2e 33  32 2d 37 31 2e 65 6c 36  |ap-2.6.32-71.el6|
+000000c0  2e 69 36 38 36 00 00 00  0e 00 00 00 24 00 19 01  |.i686.......$...|
+000000d0  63 6f 6e 66 69 67 2d 32  2e 36 2e 33 32 2d 37 31  |config-2.6.32-71|
+000000e0  2e 65 6c 36 2e 69 36 38  36 00 00 00 0f 00 00 00  |.el6.i686.......|
+000000f0  28 00 1d 01 73 79 6d 76  65 72 73 2d 32 2e 36 2e  |(...symvers-2.6.|
+00000100  33 32 2d 37 31 2e 65 6c  36 2e 69 36 38 36 2e 67  |32-71.el6.i686.g|
+00000110  7a 00 00 00 10 00 00 00  ec 02 1a 01 76 6d 6c 69  |z...........vmli|
+00000120  6e 75 7a 2d 32 2e 36 2e  33 32 2d 37 31 2e 65 6c  |nuz-2.6.32-71.el|
+00000130  36 2e 69 36 38 36 00 00  00 00 00 00 00 00 00 00  |6.i686..........|
+</pre>
+
+  <p>2. 使用格式字符串模拟“-C”选项的输出格式。</p>
+  <pre>$ <strong>hexdump -e '"%08.8_ax  "8/1 "%02x " "  "8/1 "%02x "' –e '"  |" 16/1 "%_p" "|\n"' /usr/bin/zip</strong>
+00000000  7f 45 4c 46 01 01 01 00  00 00 00 00 00 00 00 00  |.ELF............|
+00000010  02 00 03 00 01 00 00 00  10 96 04 08 34 00 00 00  |............4...|
+00000020  48 3d 03 00 00 00 00 00  34 00 20 00 08 00 28 00  |H=......4. ...(.|
+00000030  20 00 1f 00 06 00 00 00  34 00 00 00 34 70 04 08  | .......4...4p..|
+00000040  34 70 04 08 00 01 00 00  00 01 00 00 05 00 00 00  |4p..............|
+00000050  04 00 00 00 03 00 00 00  34 01 00 00 34 71 04 08  |........4...4q..|
+00000060  34 71 04 08 13 00 00 00  13 00 00 00 04 00 00 00  |4q..............|
+</pre>
+    <div style="min-height: 3em"></div>
+    <hr>
+    <p>索引：<a href="https://wker.com/linux-command/index.html#a">A</a> | <a href="https://wker.com/linux-command/index.html#b">B</a> | <a href="https://wker.com/linux-command/index.html#c">C</a> | <a href="https://wker.com/linux-command/index.html#d">D</a> | <a href="https://wker.com/linux-command/index.html#d">E</a> | <a href="https://wker.com/linux-command/index.html#f">F</a> | <a href="https://wker.com/linux-command/index.html#f">G</a> | <a href="https://wker.com/linux-command/index.html#h">H</a> | <a href="https://wker.com/linux-command/index.html#i">I</a> | <a href="https://wker.com/linux-command/index.html#j">J</a> | <a href="https://wker.com/linux-command/index.html#k">K</a> | <a href="https://wker.com/linux-command/index.html#l">L</a> | <a href="https://wker.com/linux-command/index.html#m">M</a> | <a href="https://wker.com/linux-command/index.html#n">N</a> | <a href="https://wker.com/linux-command/index.html#o">O</a> | <a href="https://wker.com/linux-command/index.html#p">P</a> | <a href="https://wker.com/linux-command/index.html#q">Q</a> | <a href="https://wker.com/linux-command/index.html#r">R</a> | <a href="https://wker.com/linux-command/index.html#s">S</a> | <a href="https://wker.com/linux-command/index.html#t">T</a> | <a href="https://wker.com/linux-command/index.html#u">U</a> | <a href="https://wker.com/linux-command/index.html#v">V</a> | <a href="https://wker.com/linux-command/index.html#w">W</a> | <a href="https://wker.com/linux-command/index.html#x">X</a> | <a href="https://wker.com/linux-command/index.html#y">Y</a> | <a href="https://wker.com/linux-command/index.html#z">Z</a></p>
+
+<script src="./hexdump - Linux命令简明手册_files/push.js"></script><script>(function(){var bp=document.createElement('script');var curProtocol=window.location.protocol.split(':')[0];if(curProtocol==='https'){bp.src='https://zz.bdstatic.com/linksubmit/push.js';}
+else{bp.src='http://push.zhanzhang.baidu.com/push.js';}
+var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(bp,s);})();</script>
+<script src="./hexdump - Linux命令简明手册_files/5.1.0" type="module" integrity="sha384-by67kQnR+pyfy8yWP4kPO12fHKRLHZPfEsiSXR8u2IKcTdxD805MGUXBzVPnkLHw"></script>
+<script>
+(function(){
+var src = "https://s.ssl.qhres2.com/ssl/ab77b6ea7f3fbf79.js";
+document.write('<script src="' + src + '" id="sozz"><\/script>');
+})();
+</script><script src="./hexdump - Linux命令简明手册_files/ab77b6ea7f3fbf79.js" id="sozz"></script>
+
+
+</body></html>

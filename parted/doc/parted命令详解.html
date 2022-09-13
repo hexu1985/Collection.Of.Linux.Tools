@@ -1,0 +1,1736 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)https://www.cnblogs.com/machangwei-8/p/10353690.html -->
+<html lang="zh-cn" style="--olcb-folder-code-block-max-height:80vh;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="never">
+    <meta name="description" content="基础命令学习目录 帮助选项： 操作命令： 操作实例： 1、选择分区硬盘 首先类似fdisk一样，先选择要分区的硬盘，此处为/dev/hdd： ((parted)表示在parted中输入的命令，其他为自">
+    <meta property="og:description" content="基础命令学习目录 帮助选项： 操作命令： 操作实例： 1、选择分区硬盘 首先类似fdisk一样，先选择要分区的硬盘，此处为/dev/hdd： ((parted)表示在parted中输入的命令，其他为自">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>parted命令详解 - 马昌伟 - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="https://common.cnblogs.com/favicon.svg" type="image/svg+xml">
+    
+    <style>#home :not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]):not([class*="brush:"]) code:not(.hljs), :not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]):not([class*="brush:"]) code:not(.hljs) {background: rgb(245, 245, 245);
+        padding: 12px;
+        border: 1px solid rgb(204, 204, 204);
+        border-radius: 3px;
+        border-color: transparent;
+        color: rgb(68, 68, 68);
+        font-family: "Courier New", sans-serif;
+        font-size: 12px</style><link rel="stylesheet" href="./parted命令详解_files/blog-common.min.css">
+    
+
+    <link id="MainCss" rel="stylesheet" href="./parted命令详解_files/bundle-coffee.min.css">
+        <link id="highlighter-theme-cnblogs" type="text/css" rel="stylesheet" href="./parted命令详解_files/cnblogs.css">
+    <link type="text/css" rel="stylesheet" href="./parted命令详解_files/custom.css">
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./parted命令详解_files/bundle-coffee-mobile.min.css">
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/machangwei-8/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/machangwei-8/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/machangwei-8/wlwmanifest.xml">
+    <script type="text/javascript" async="" src="./parted命令详解_files/analytics.js"></script><script>
+        var currentBlogId = 412391;
+        var currentBlogApp = 'machangwei-8';
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'coffee';
+        var visitorUserId = '';
+        var hasCustomScript = true;
+        try {
+            if (hasCustomScript && document.referrer && document.referrer.indexOf('baidu.com') >= 0) {
+                Object.defineProperty(document, 'referrer', { value: '' });
+                Object.defineProperty(Document.prototype, 'referrer', { get: function(){ return ''; } });
+            }
+        } catch(error) { }
+        window.cb_enable_mathjax = false;
+        window.mathEngine = 0;
+        window.codeHighlightEngine = 1;
+        window.enableCodeLineNumber = false;
+        window.codeHighlightTheme = 'cnblogs';
+        window.darkModeCodeHighlightTheme = 'vs2015';
+        window.isDarkCodeHighlightTheme = false;
+        window.isDarkModeCodeHighlightThemeDark = true;
+        window.isDisableCodeHighlighter = false;
+        window.enableCodeThemeTypeFollowSystem = false;
+    </script>
+        <script>
+            var currentPostDateAdded = '2019-02-06 14:08';
+        </script>
+    <script src="./parted命令详解_files/jquery-2.2.0.min.js"></script>
+    <script src="./parted命令详解_files/blog-common.min.js"></script><style>.medium-zoom-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 300ms;
+  will-change: opacity;
+}
+
+.medium-zoom--opened .medium-zoom-overlay {
+  cursor: pointer;
+  cursor: zoom-out;
+  opacity: 1;
+}
+
+.medium-zoom-image {
+  cursor: pointer;
+  cursor: zoom-in;
+  /*
+    The `transition` is marked as "!important" for the animation to happen
+    even though it's overriden by another inline `transition` style attribute.
+
+    This is problematic with frameworks that generate inline styles on their
+    images (e.g. Gatsby).
+
+    See https://github.com/francoischalifour/medium-zoom/issues/110
+   */
+  transition: transform 300ms cubic-bezier(0.2, 0, 0.2, 1) !important;
+}
+
+.medium-zoom-image--hidden {
+  visibility: hidden;
+}
+
+.medium-zoom-image--opened {
+  position: relative;
+  cursor: pointer;
+  cursor: zoom-out;
+  will-change: transform;
+}
+</style><script id="hljs-script" src="./parted命令详解_files/highlight.min.js" type="text/javascript" async=""></script>
+    
+
+    
+<meta http-equiv="origin-trial" content="A+cA2PUOfIOKAdSDJOW5CP9ZlxONy1yu+hqAq72zUtKw4rLdihqRp6Nui/jUyCyegr+BUtH+C+Elv0ufn05yBQEAAACFeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjY5NzY2Mzk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A+zsdH3aNZT/bkjT8U/o5ACzyaeNYzTvtoVmwf/KOilfv39pxY2AIsOwhQJv+YnXp98i3TqrQibIVtMWs5UHjgoAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjY5NzY2Mzk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="AxceVEhIegcDEHqLXFQ2+vPKqzCppoJYsRCZ/BdfVnbM/sUUF2BXV8lwNosyYjvoxnTh2FC8cOlAnA5uULr/zAUAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjY5NzY2Mzk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><script src="./parted命令详解_files/pubads_impl_2022090801.js" async=""></script><link rel="preload" href="./parted命令详解_files/f.txt" as="script"><script type="text/javascript" src="./parted命令详解_files/f.txt"></script></head>
+<body class="skin-coffee no-navbar">
+<a name="top"></a>
+<div id="top_nav" class="navbar forpc navbar-custom">
+    <nav id="nav_main" class="navbar-main">
+        <ul id="nav_left" class="navbar-list navbar-left">
+            <li class="navbar-branding">
+                <a href="https://www.cnblogs.com/" title="开发者的网上家园" role="banner">
+                    <img src="./parted命令详解_files/logo.svg" alt="博客园Logo">
+                </a>
+            </li>
+            <li>
+                <a href="https://www.cnblogs.com/" onclick="countClicks(&#39;skin-navbar-sitehome&#39;)">首页</a>
+            </li>
+            <li>
+                <a href="https://news.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-news&#39;)">新闻</a>
+            </li>
+            <li>
+                <a href="https://q.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-q&#39;)">博问</a>
+            </li>
+            <li>
+                <a id="nav_brandzone" href="https://brands.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-brands&#39;)">专区</a>
+            </li>
+            <li>
+                <a href="https://ing.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-ing&#39;)">闪存</a>
+            </li>
+            <li>
+                <a href="https://edu.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-edu&#39;)">班级</a>
+            </li>
+        </ul>
+        <ul id="nav_right" class="navbar-list navbar-right">
+            <li>
+                <form id="zzk_search" class="navbar-search" action="https://zzk.cnblogs.com/s" method="get" role="search">
+                    <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="search" tabindex="3">
+                    <button type="submit" id="zzk_search_button">
+                        <img src="./parted命令详解_files/search.svg" alt="搜索">
+                    </button>
+                </form>
+            </li>
+            <li id="navbar_login_status" class="navbar-list">
+                <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔" style="display: none;">
+                    <img id="new_post_icon" class="navbar-icon" src="./parted命令详解_files/newpost.svg" alt="写随笔">
+                </a>
+                <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客" style="display: none;">
+                    <img id="myblog_icon" class="navbar-icon" src="./parted命令详解_files/myblog.svg" alt="我的博客">
+                </a>
+                <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息" style="display: none;">
+                    <img id="msg_icon" class="navbar-icon" src="./parted命令详解_files/message.svg" alt="短消息">
+                    <span id="msg_count" style="display: none"></span>
+                </a>
+                <a id="navbar_lite_mode_indicator" data-current-page="blog" style="display: none" href="javascript:void(0)" alt="简洁模式" title="简洁模式启用，您在访问他人博客时会使用简洁款皮肤展示">
+                    <img class="navbar-icon" src="./parted命令详解_files/lite-mode-on.svg" alt="简洁模式">
+                </a>
+                <div id="user_info" class="navbar-user-info dropdown" style="display: none;">
+                    <a class="dropdown-button" href="https://home.cnblogs.com/">
+                        <img id="user_icon" class="navbar-avatar" src="./parted命令详解_files/avatar-default.svg" alt="用户头像">
+                    </a>
+                    <div class="dropdown-menu">
+                        <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                        <a href="https://home.cnblogs.com/">我的园子</a>
+                        <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                        <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <img id="navbar_lite_mode_on" src="./parted命令详解_files/lite-mode-check.svg" class="hide"><span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+                        <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                    </div>
+                </div>
+                <a class="navbar-anonymous" href="https://account.cnblogs.com/signup" style="display: inline;">注册</a>
+                <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()" style="display: inline;">登录</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<div id="page_begin_html">
+<script type="text/javascript">
+/*
+    功能：生成博客目录的JS工具
+    测试：IE8，火狐，google测试通过
+    孤傲苍狼
+    2014-5-11
+*/
+var BlogDirectory = {
+    /*
+        获取元素位置，距浏览器左边界的距离（left）和距浏览器上边界的距离（top）
+    */
+    getElementPosition:function (ele) {        
+        var topPosition = 0;
+        var leftPosition = 0;
+        while (ele){              
+            topPosition += ele.offsetTop;
+            leftPosition += ele.offsetLeft;        
+            ele = ele.offsetParent;     
+        }  
+        return {top:topPosition, left:leftPosition}; 
+    },
+
+    /*
+    获取滚动条当前位置
+    */
+    getScrollBarPosition:function () {
+        var scrollBarPosition = document.body.scrollTop || document.documentElement.scrollTop;
+        return  scrollBarPosition;
+    },
+    
+    /*
+    移动滚动条，finalPos 为目的位置，internal 为移动速度
+    */
+    moveScrollBar:function(finalpos, interval) {
+
+        //若不支持此方法，则退出
+        if(!window.scrollTo) {
+            return false;
+        }
+
+        //窗体滚动时，禁用鼠标滚轮
+        window.onmousewheel = function(){
+            return false;
+        };
+          
+        //清除计时
+        if (document.body.movement) { 
+            clearTimeout(document.body.movement); 
+        } 
+
+        var currentpos =BlogDirectory.getScrollBarPosition();//获取滚动条当前位置
+
+        var dist = 0; 
+        if (currentpos == finalpos) {//到达预定位置，则解禁鼠标滚轮，并退出
+            window.onmousewheel = function(){
+                return true;
+            }
+            return true; 
+        } 
+        if (currentpos < finalpos) {//未到达，则计算下一步所要移动的距离
+            dist = Math.ceil((finalpos - currentpos)/10); 
+            currentpos += dist; 
+        } 
+        if (currentpos > finalpos) { 
+            dist = Math.ceil((currentpos - finalpos)/10); 
+            currentpos -= dist; 
+        }
+        
+        var scrTop = BlogDirectory.getScrollBarPosition();//获取滚动条当前位置
+        window.scrollTo(0, currentpos);//移动窗口
+        if(BlogDirectory.getScrollBarPosition() == scrTop)//若已到底部，则解禁鼠标滚轮，并退出
+        {
+            window.onmousewheel = function(){
+                return true;
+            }
+            return true;
+        }
+        
+        //进行下一步移动
+        var repeat = "BlogDirectory.moveScrollBar(" + finalpos + "," + interval + ")"; 
+        document.body.movement = setTimeout(repeat, interval); 
+    },
+    
+    htmlDecode:function (text){
+        var temp = document.createElement("div");
+        temp.innerHTML = text;
+        var output = temp.innerText || temp.textContent;
+        temp = null;
+        return output;
+    },
+
+    /*
+    创建博客目录，
+    id表示包含博文正文的 div 容器的 id，
+    mt 和 st 分别表示主标题和次级标题的标签名称（如 H2、H3，大写或小写都可以！），
+    interval 表示移动的速度
+    */
+    createBlogDirectory:function (id, mt, st, interval){
+         //获取博文正文div容器
+        var elem = document.getElementById(id);
+        if(!elem) return false;
+        //获取div中所有元素结点
+        var nodes = elem.getElementsByTagName("*");
+        //创建博客目录的div容器
+        var divSideBar = document.createElement('DIV');
+        divSideBar.className = 'uprightsideBar';
+        divSideBar.setAttribute('id', 'uprightsideBar');
+        var divSideBarTab = document.createElement('DIV');
+        divSideBarTab.setAttribute('id', 'sideBarTab');
+        divSideBar.appendChild(divSideBarTab);
+        var h2 = document.createElement('H2');
+        divSideBarTab.appendChild(h2);
+        var txt = document.createTextNode('目录导航');
+        h2.appendChild(txt);
+        var divSideBarContents = document.createElement('DIV');
+        divSideBarContents.style.display = 'none';
+        divSideBarContents.setAttribute('id', 'sideBarContents');
+        divSideBar.appendChild(divSideBarContents);
+        //创建自定义列表
+        var dlist = document.createElement("dl");
+        divSideBarContents.appendChild(dlist);
+        var num = 0;//统计找到的mt和st
+        mt = mt.toUpperCase();//转化成大写
+        st = st.toUpperCase();//转化成大写
+        //遍历所有元素结点
+        for(var i=0; i<nodes.length; i++)
+        {
+            if(nodes[i].nodeName == mt|| nodes[i].nodeName == st)    
+            {
+                //获取标题文本
+                var nodetext = nodes[i].innerHTML.replace(/<\/?[^>]+>/g,"");//innerHTML里面的内容可能有HTML标签，所以用正则表达式去除HTML的标签
+                nodetext = nodetext.replace(/ /ig, "");//替换掉所有的 
+                nodetext = BlogDirectory.htmlDecode(nodetext);
+                //插入锚        
+                nodes[i].setAttribute("id", "blogTitle" + num);
+                var item;
+                switch(nodes[i].nodeName)
+                {
+                    case mt:    //若为主标题 
+                        item = document.createElement("dt");
+                        break;
+                    case st:    //若为子标题
+                        item = document.createElement("dd");
+                        break;
+                }
+                
+                //创建锚链接
+                var itemtext = document.createTextNode(nodetext);
+                item.appendChild(itemtext);
+                item.setAttribute("name", num);
+                item.onclick = function(){        //添加鼠标点击触发函数
+                    var pos = BlogDirectory.getElementPosition(document.getElementById("blogTitle" + this.getAttribute("name")));
+                    if(!BlogDirectory.moveScrollBar(pos.top, interval)) return false;
+                };            
+                
+                //将自定义表项加入自定义列表中
+                dlist.appendChild(item);
+                num++;
+            }
+        }
+        
+        if(num == 0) return false; 
+        /*鼠标进入时的事件处理*/
+        divSideBarTab.onmouseenter = function(){
+            divSideBarContents.style.display = 'block';
+        }
+        /*鼠标离开时的事件处理*/
+        divSideBar.onmouseleave = function() {
+            divSideBarContents.style.display = 'none';
+        }
+
+        document.body.appendChild(divSideBar);
+    }
+    
+};
+
+window.onload=function(){
+    /*页面加载完成之后生成博客目录*/
+    BlogDirectory.createBlogDirectory("cnblogs_post_body","h2","h3",20);
+}
+</script>
+<div style="background-color: white;hight:10px; wide:50px;position: fixed;right:30px;top:30px"><a href="https://www.cnblogs.com/machangwei-8/p/9565009.html">返回总目录页</a></div>
+/*<img src="http://39.106.31.74/wangli/picture/timg.gif" alt="" class="wodetu">*/
+<img src="./parted命令详解_files/qq技术二维码.png" alt="" class="wodetu">
+</div>
+
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a href="https://www.cnblogs.com/machangwei-8/"><img id="blogLogo" src="./parted命令详解_files/logo.gif" alt="返回主页"></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/machangwei-8/">魔降风云变</a>
+</h1>
+<h2></h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="navigator">
+			
+<ul id="navList">
+	<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+	<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/machangwei-8/">
+首页</a>
+</li>
+	<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+	<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/%E9%A9%AC%E6%98%8C%E4%BC%9F">
+联系</a></li>
+	<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+	<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/machangwei-8/rss/">
+订阅</a>
+	
+<a id="blog_nav_rss_image" href="https://www.cnblogs.com/machangwei-8/rss/">
+    <img src="./parted命令详解_files/xml.gif" alt="订阅">
+</a></li>
+</ul>
+
+
+
+			<div class="blogStats">
+				
+				<!--done-->
+随笔- 479&nbsp;
+文章- 47&nbsp;
+评论- 37&nbsp;
+阅读- 
+<span title="总阅读数: 1949686">
+194万</span>&nbsp;
+
+
+
+				
+			</div><!--end: blogStats -->
+		</div><!--end: navigator 博客导航栏 -->
+		<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class="post">
+		<h1 class="postTitle">
+			
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/machangwei-8/p/10353690.html">
+    <span role="heading" aria-level="2">parted命令详解</span>
+    
+</a>
+
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body blogpost-body-html">
+<p>&nbsp;</p>
+<p><a id="CategoryEntryList1_EntryStoryList_ctl00_Entries_TitleUrl_4" class="entrylistItemTitle" href="https://www.cnblogs.com/machangwei-8/p/9299013.html" rel="noopener">基础命令学习目录</a>&nbsp;&nbsp;</p>
+<p>&nbsp;</p>
+<p><strong>帮助选项：</strong></p>
+<pre>-h, --help                    显示此求助信息 
+-l, --list                    列出所有设别的<a title="分区" href="http://www.linuxprobe.com/chapter-06/" rel="noopener" target="_blank">分区</a>信息
+-i, --interactive             在必要时，提示用户 
+-s, --script                  从不提示用户 
+-v, --version                 显示版本
+</pre>
+<div><strong>操作命令：</strong></div>
+<pre>cp [FROM-DEVICE] FROM-MINOR TO-MINOR           #将文件系统复制到另一个分区 
+help [COMMAND]                                 #打印通用求助信息，或关于 COMMAND 的信息 
+mklabel 标签类型                               #创建新的磁盘标签 (分区表) 
+mkfs MINOR 文件系统类型                        #在 MINOR 创建类型为“文件系统类型”的文件系统 
+mkpart 分区类型 [文件系统类型] 起始点 终止点   #创建一个分区 
+mkpartfs 分区类型 文件系统类型 起始点 终止点   #创建一个带有文件系统的分区 
+move MINOR 起始点 终止点                       #移动编号为 MINOR 的分区 
+name MINOR 名称                                #将编号为 MINOR 的分区命名为“名称” 
+print [MINOR]                                  #打印分区表，或者分区 
+quit                                           #退出程序 
+rescue 起始点 终止点                           #挽救临近“起始点”、“终止点”的遗失的分区 
+resize MINOR 起始点 终止点                     #改变位于编号为 MINOR 的分区中文件系统的大小 
+rm MINOR                                       #删除编号为 MINOR 的分区 
+select 设备                                    #选择要编辑的设备 
+set MINOR 标志 状态                            #改变编号为 MINOR 的分区的标志
+</pre>
+<div><strong>操作实例：</strong></div>
+<div><strong>1、选择分区硬盘</strong></div>
+<p><strong>首先类似fdisk一样，先选择要分区的硬盘，此处为/dev/hdd： ((parted)表示在parted中输入的命令，其他为自动打印的信息)</strong></p>
+<pre>[root@10.10.90.97 ~]# parted /dev/hdd
+GNU Parted 1.8.1
+Using /dev/hdd
+Welcome to GNU Parted! Type 'help' to view a list of commands.
+</pre>
+<div><strong>2、创建分区</strong></div>
+<p>选择了/dev/hdd作为我们操作的磁盘，接下来需要创建一个分区表(在parted中可以使用help命令打印帮助信息)：</p>
+<pre>(parted) mklabel
+New disk label type? gpt    (我们要正确分区大于2TB的磁盘，应该使用gpt方式的分区表，输入gpt后回车)
+</pre>
+<div><strong>3、完成分区操作</strong></div>
+<p>创建好分区表以后，接下来就可以进行分区操作了，执行mkpart命令，分别输入分区名称，文件系统和分区 的起止位置</p>
+<pre>(parted) mkpart
+Partition name? []? dp1
+File system type? [ext2]? ext3
+Start? 0           （可以用百分比表示，比如Start? 0% , End? 50%）
+End? 500GB
+</pre>
+<div><strong>4、验证分区信息</strong></div>
+<p>分好区后可以使用print命令打印分区信息，下面是一个print的样例</p>
+<pre>(parted) print
+Model: VBOX HARDDISK (ide)
+Disk /dev/hdd: 2199GB
+Sector size (logical/physical): 512B/512B
+Partition Table: gpt
+Number Start End Size File system Name Flags
+1 17.4kB 500GB 500GB dp1
+</pre>
+<div><strong>5、删除分区示例</strong></div>
+<p>如果分区错了，可以使用rm命令删除分区，比如我们要删除上面的分区，然后打印删除后的结果</p>
+<pre>(parted)rm 1               #rm后面使用分区的号码，就是用print打印出来的Number
+(parted) print
+Model: VBOX HARDDISK (ide)
+Disk /dev/hdd: 2199GB
+Sector size (logical/physical): 512B/512B
+Partition Table: gpt
+Number Start End Size File system Name Flags
+</pre>
+<div><strong>6、完整示例</strong></div>
+<p>按照上面的方法把整个硬盘都分好区，下面是一个分完后的样例</p>
+<pre>(parted) mkpart
+Partition name? []? dp1
+File system type? [ext2]? ext3
+Start? 0
+End? 500GB
+(parted) mkpart
+Partition name? []? dp2
+File system type? [ext2]? ext3
+Start? 500GB
+End? 2199GB
+(parted) print
+Model: VBOX HARDDISK (ide)
+Disk /dev/hdd: 2199GB
+Sector size (logical/physical): 512B/512B
+Partition Table: gpt
+Number Start End Size File system Name Flags
+1 17.4kB 500GB 500GB dp1
+2 500GB 2199GB 1699GB dp2
+</pre>
+<div><strong>7、格式化操作</strong></div>
+<p>完成以后我们可以使用quit命令退出parted并使用系统的mkfs命令对分区进行格式化了。</p>
+<pre>[root@10.10.90.97 ~]# fdisk -l
+WARNING: GPT (GUID Partition Table) detected on '/dev/hdd'! The util fdisk doesn't support GPT. Use GNU Parted.
+Disk /dev/hdd: 2199.0 GB, 2199022206976 bytes
+255 heads, 63 sectors/track, 267349 cylinders
+Units = cylinders of 16065 * 512 = 8225280 bytes
+Device Boot Start End Blocks Id System
+/dev/hdd1 1 267350 2147482623+ ee EFI GPT
+[root@10.10.90.97 ~]# mkfs.ext3 /dev/hdd1
+[root@10.10.90.97 ~]# mkfs.ext3 /dev/hdd2
+[root@10.10.90.97 ~]# mkdir /dp1 /dp2
+[root@10.10.90.97 ~]# mount /dev/hdd1 /dp1
+[root@10.10.90.97 ~]# mount /dev/hdd2 /dp2
+</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>本文转载自：<a href="http://www.linuxprobe.com/linux-command-parted/" rel="noopener" target="_blank">http://www.linuxprobe.com/linux-command-parted/</a></p>
+<p>&nbsp;</p>
+<p><strong>GPT概述</strong></p>
+<p>&nbsp;</p>
+<p>全局唯一标识分区表（GUID Partition Table，缩写：GPT）是一个实体硬盘的分区结构。它是可扩展固件接口标准的一部分，用来替代BIOS中的主引导记录分区表。 传统的主启动记录 (MBR) 磁盘分区支持最大卷为 2.2 TB (terabytes) ，每个磁盘最多有 4 个主分区（或 3 个主分区，1 个扩展分区和无限制的逻辑驱动器）。 与MBR 分区方法相比，GPT 具有更多的优点，因为它允许每个磁盘有多达 128 个分区，支持高达 18 千兆兆字节 (exabytes，1EB=10^6TB) 的卷大小，允许将主磁盘分区表和备份磁盘分区表用于冗余，还支持唯一的磁盘和分区 ID (GUID)。<br>与 MBR  分区的磁盘不同，GPT的分区信息是在分区中，而不象MBR一样在主引导扇区。为保护GPT不受MBR类磁盘管理软件的危害，GPT在主引导扇区建立了一 个保护分区 (Protective  MBR)的MBR分区表，这种分区的类型标识为0xEE，这个保护分区的大小在Windows下为128MB，Mac OS  X下为200MB，在Window磁盘管理器里名为GPT保护分区，可让MBR类磁盘管理软件把GPT看成一个未知格式的分区，而不是错误地当成一个未分 区的磁盘。另外，GPT 分区磁盘有多余的主要及备份分区表来提高分区数据结构的完整性。 </p>
+<p>&nbsp;</p>
+<p>在MBR硬盘中，分区信息直接存储于主引导记录(MBR)中（主引导记录中还存储着系统的引导程序）。但在GPT硬盘中，分区表的位置信息储存在GPT头中。但出于兼容性考虑，硬盘的第一个扇区仍然用作MBR，之后才是GPT头。跟现代的MBR一样，GPT也使用逻辑区块地址（LBA）取代了早期的CHS寻址方式。传统MBR信息存储于LBA 0，GPT头存储于LBA 1，接下来才是分区表本身。64位Windows操作系统使用16,384字节（或32扇区）作为GPT分区表，接下来的LBA 34是硬盘上第一个分区的开始。为了减少分区表损坏的风险，GPT在硬盘最后保存了一份分区表的副本。与主启动记录 (MBR) 分区方法相比，GPT 具有更多的优点，因为它允许每个磁盘有多达 128 个分区，支持高达18 千兆兆字节的卷大小，允许将主磁盘分区表和备份磁盘分区表用于冗余，还支持唯一的磁盘和分区ID(GUID)。 </p>
+<p>&nbsp;</p>
+<p><strong>GPT结构</strong> </p>
+<p>&nbsp;</p>
+<p>GPT的结构见下图 </p>
+<p>&nbsp;</p>
+<p><img src="./parted命令详解_files/5616035720121220214312091.png" alt=""> </p>
+<p>&nbsp;</p>
+<p><strong>传统MBR (LBA 0)</strong> <br>在GPT分区表的最开头，处于兼容性考虑仍然存储了一份传统的MBR，用来防止不支持GPT的硬盘管理工具错误识别并破坏硬盘中的数据，这个MBR也叫做保护MBR。在支持从GPT启动的操作系统中，这里也用于存储第一阶段的启动代码。在这个MBR中，只有一个标识为0xEE的分区，以此来表示这块硬盘使用GPT分区表。不能识别GPT硬盘的操作系统通常会识别出一个未知类型的分区，并且拒绝对硬盘进行操作，除非用户特别要求删除这个分区。这就避免了意外删除分区的危险。另外，能够识别GPT分区表的操作系统会检查保护MBR中的分区表，如果分区类型不是0xEE或者MBR分区表中有多个项，也会拒绝对硬盘进行操作。<br>在使用MBR/GPT混合分区表的硬盘中，这部分存储了GPT分区表的一部分分区（通常是前四个分区），可以使不支持从GPT启动的操作系统从这个MBR启动，启动后只能操作MBR分区表中的分区。如Boot Camp就是使用这种方式启动Windows。<br><strong>分区表头 (LBA 1) </strong><br>分区表头定义了硬盘的可用空间以及组成分区表的项的大小和数量。在使用64位Windows Server 2003的机器上，最多可以创建128个分区，即分区表中保留了128个项，其中每个都是128字节。（EFI标准要求分区表最小要有16,384字节，即128个分区项的大小）<br>分区表头还记录了这块硬盘的GUID，记录了分区表头本身的位置和大小（位置总是在LBA 1）以及备份分区表头和分区表的位置和大小（在硬盘的最后）。它还储存着它本身和分区表的CRC32校验。固件、引导程序和操作系统在启动时可以根据这个校验值来判断分区表是否出错，如果出错了，可以使用软件从硬盘最后的备份GPT中恢复整个分区表，如果备份GPT也校验错误，硬盘将不可使用。所以GPT硬盘的分区表不可以直接使用16进制编辑器修改。<br>分区表头的格式如下 </p>
+<p>&nbsp;</p>
+<div class="table-wrapper"><table class="wikitable" border="2">
+<tbody>
+<tr>
+<td><strong>起始字节 </strong></td>
+<td><strong>长度 </strong></td>
+<td><strong>内容 </strong></td>
+
+</tr>
+<tr>
+<td>0 </td>
+<td>8字节 </td>
+<td>签名（"EFI PART", 45 46 49 20 50 41 52 54） </td>
+
+</tr>
+<tr>
+<td>8 </td>
+<td>4字节 </td>
+<td>修订（在1.0版中，值是 00 00 01 00） </td>
+
+</tr>
+<tr>
+<td>12 </td>
+<td>4字节 </td>
+<td>分区表头的大小（单位是字节，通常是92字节，即 5C 00 00 00） </td>
+
+</tr>
+<tr>
+<td>16 </td>
+<td>4字节 </td>
+<td>分区表头（第0－91字节）的<span class="mw-redirect">CRC32 校验，在计算时，把这个字段作为0处理，需要计算出分区串行的CRC32校验后再计算本字段 </span></td>
+
+</tr>
+<tr>
+<td>20 </td>
+<td>4字节 </td>
+<td>保留，必须是 0 </td>
+
+</tr>
+<tr>
+<td>24 </td>
+<td>8字节 </td>
+<td>当前LBA（这个分区表头的位置） </td>
+
+</tr>
+<tr>
+<td>32 </td>
+<td>8字节 </td>
+<td>备份LBA（另一个分区表头的位置） </td>
+
+</tr>
+<tr>
+<td>40 </td>
+<td>8字节 </td>
+<td>第一个可用于分区的LBA（主分区表的最后一个LBA + 1） </td>
+
+</tr>
+<tr>
+<td>48 </td>
+<td>8字节 </td>
+<td>最后一个可用于分区的LBA（备份分区表的第一个LBA − 1） </td>
+
+</tr>
+<tr>
+<td>56 </td>
+<td>16字节 </td>
+<td>硬盘GUID（在<span class="mw-redirect">类UNIX 系统中也叫UUID） </span></td>
+
+</tr>
+<tr>
+<td>72 </td>
+<td>8字节 </td>
+<td>分区表项的起始LBA（在主分区表中是2） </td>
+
+</tr>
+<tr>
+<td>80 </td>
+<td>4字节 </td>
+<td>分区表项的数量 </td>
+
+</tr>
+<tr>
+<td>84 </td>
+<td>4字节 </td>
+<td>一个分区表项的大小（通常是128） </td>
+
+</tr>
+<tr>
+<td>88 </td>
+<td>4字节 </td>
+<td>分区串行的CRC32校验 </td>
+
+</tr>
+<tr>
+<td>92 </td>
+<td>* </td>
+<td>保留，剩余的字节必须是0（对于512字节LBA的硬盘即是420个字节） </td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+<p>&nbsp;</p>
+<p>主分区表和备份分区表的头分别位于硬盘的第二个扇区（LBA 1）以及硬盘的最后一个扇区。备份分区表头中的信息是关于备份分区表的。 </p>
+<p>&nbsp;</p>
+<p><strong>分区表项 (LBA 2–33)</strong> <br>GPT分区表使用简单而直接的方式表示分区。一个分区表项的前16字节是分区类型GUID。例如，EFI系统分区的GUID类型是{C12A7328-F81F-11D2-BA4B-00A0C93EC93B}。接下来的16字节是该分区唯一的GUID（这个GUID指的是该分区本身，而之前的GUID指的是该分区的类型）。再接下来是分区起始和末尾的64位LBA编号，以及分区的名字和属性。<br>GPT分区表项的格式如下 </p>
+<p>&nbsp;</p>
+<div class="table-wrapper"><table class="wikitable" border="2">
+<tbody>
+<tr>
+<td><strong>起始字节 </strong></td>
+<td><strong>长度 </strong></td>
+<td><strong>内容 </strong></td>
+
+</tr>
+<tr>
+<td>0 </td>
+<td>16字节 </td>
+<td>分区类型GUID </td>
+
+</tr>
+<tr>
+<td>16 </td>
+<td>16字节 </td>
+<td>分区GUID </td>
+
+</tr>
+<tr>
+<td>32 </td>
+<td>8字节 </td>
+<td>起始LBA（<span class="mw-redirect">小端序 ） </span></td>
+
+</tr>
+<tr>
+<td>40 </td>
+<td>8字节 </td>
+<td>末尾LBA </td>
+
+</tr>
+<tr>
+<td>48 </td>
+<td>8字节 </td>
+<td>属性标签（如：<code>60</code> 表示“只读”） </td>
+
+</tr>
+<tr>
+<td>56 </td>
+<td>72字节 </td>
+<td>分区名（可以包括36个UTF-16（小端序）字符） </td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+<p>&nbsp;</p>
+<p><strong>parted概述</strong> </p>
+<p>&nbsp;</p>
+<p>上文介绍了GPT，由于常见的fdisk不支持GPT(在硬盘容量大于2Tb的时候无法使用fdisk进行分区的管理)，故在IA64平台上管理磁盘时parted还是相当实用的，GNU Parted 具有丰富的功能，它除了能够进行分区的添加、删除等常见操作外，还可以进行移动分区、创建文件系统、调整文件系统大小、复制文件系统等操作。它可以处理最常见的分区格式，包括：ext2,ext3,fat16,fat32,NTFS,ReiserFS,JFS,XFS,UFS,HFS,以及Linux交换分区。 <br><strong>parted 命令格式 </strong><br>parted 有两种运行模式：命令行模式和交互模式。与 fdisk 的交互模式交互模式不同，在 parted 的交互模式下执行命令，一旦按回车键确认，命令就马上执行，对磁盘的更改就立刻生效。<br>parted 命令的常用格式是：<br>1、# parted [选项] &lt;硬盘设备名&gt;<br>2、# parted [选项] &lt;硬盘设备名&gt; &lt;子命令&gt; [&lt;子命令参数&gt;]<br>格式（1）用于进入parted 的交互模式，在该模式下输入parted的子命令对指定的硬盘进行分区等操作。quit 命令用于退出交互模式。<br>格式（2）直接在命令行方式下对指定的硬盘进行分区等操作。<br>其中常用的选项为：<br>-h, ––help — 显示求助信息<br>-i, ––interactive — 在必要时提示用户<br>-l, ––list — 显示所有磁盘设备的分区表<br>-s, ––script — 从不提示用户<br>-v, ––version — 显示版本<br>无论哪种模式，在parted中都可以使用若干子命令，见下表。 </p>
+<p>&nbsp;</p>
+<div class="table-wrapper"><table style="width: 668px" border="2">
+<tbody>
+<tr>
+<td><strong>命令 <br></strong></td>
+<td><strong>说明</strong> </td>
+
+</tr>
+<tr>
+<td>help [COMMAND] </td>
+<td>打印命令的帮助信息，或指定命令的帮助信息 </td>
+
+</tr>
+<tr>
+<td>print&nbsp; [free|NUMBER|all] &nbsp; &nbsp; </td>
+<td>显示分区表, 指定编号的分区, 或所有设备的分区表 </td>
+
+</tr>
+<tr>
+<td>mkpart PART-TYPE [FSTYPE] START END </td>
+<td>创建新分区。PART-TYPE 是以下类型之一：primary（主分 区）、extended（扩展分区）、logical（逻辑分区）。START 和 END 是新分区开始和结束的具体位置。 </td>
+
+</tr>
+<tr>
+<td>rm NUMBER </td>
+<td>删除指定编号 NUMBER 的分区。 </td>
+
+</tr>
+<tr>
+<td>set NUMBER FLAG STATE </td>
+<td>对指定编号 NUMBER 的分区设置分区标记 FLAG。对于 PC 常用的 msdos 分区表来说，分区标记 FLAG 可有如下值：”boot”（引导）, “hidden”（隐藏）, “raid”（软RAID磁盘阵）, “lvm”（逻辑卷）, “lba” （LBA，Logic Block Addressing模式）。 状态STATE 的取值是：on 或 off </td>
+
+</tr>
+<tr>
+<td>unit UNIT </td>
+<td>设置默认输出时表示磁盘大小的单位为 UNIT，UNIT 的常用取值可以为：‘MB’、‘GB’、‘%’（占整个磁盘设备的百分之多少）、‘compact’（人类易读方式，类似于 df 命令中 -h 参数的用）、‘s’（扇区）、‘cyl’ （柱面）、‘chs’ （柱面cylinders:磁头 heads:扇区 sectors 的地址） </td>
+
+</tr>
+<tr>
+<td>mkfs NUMBER FS-TYPE </td>
+<td>对指定编号 NUMBER 的分区创建指定类型 FS-TYPE 的文件系 统。 </td>
+
+</tr>
+<tr>
+<td>mkpartfs PART-TYPE FSTYPE START END </td>
+<td>创建新分区同时创建文件系统。FS-TYPE 是以下类型一：ext2、fat16、fat32、linuxswap、NTFS、reiserfs、ufs 等 </td>
+
+</tr>
+<tr>
+<td>cp [FROM-DEVICE] FROM-NUMBER TONUMBER </td>
+<td>将分区 FROM-NUMBER 上的文件系统完整地复制到分区TO-NUMBER 中，作为可选项还可以指定一个来源硬盘的设备名称FROM-DEVICE，若省略则在当前设备上进行复制。 </td>
+
+</tr>
+<tr>
+<td>move NUMBER START END </td>
+<td>将指定编号 NUMBER 的分区移动到从 START 开始 END 结束的位置上。注意：（1）只能将分区移动到空闲空间中。（2）虽然分区被移动了，但它的分区编号是不会改变的 </td>
+
+</tr>
+<tr>
+<td>resize NUMBER START END </td>
+<td>对指定编号 NUMBER 的分区调整大小。分区的开始位置和结束位置由 START 和 END 决定 </td>
+
+</tr>
+<tr>
+<td>check NUMBER</td>
+<td>检查指定编号 NUMBER 分区中的文件系统是否有什么错误</td>
+
+</tr>
+<tr>
+<td>rescue START END </td>
+<td>恢复靠近位置 START 和 END 之间的分区 </td>
+
+</tr>
+<tr>
+<td>mklabel,mktable LABELTYPE </td>
+<td>创建一个新的 LABEL-TYPE 类型的空磁盘分区表，对于PC而言 msdos 是常用的 LABELTYPE。 若是用 GUID 分区表，LABEL-TYPE 应该为 gpt </td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+<p>&nbsp;</p>
+<p><strong>parted使用实例 </strong><br># parted /dev/sdd<br>GNU Parted 1.8.1<br>Using /dev/sdd<br>Welcome to GNU Parted! Type 'help' to view a list of commands.<br>(parted) print&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>Model: OPNFILER VIRTUAL-DISK (scsi)<br>Disk /dev/sdd: 27.1GB<br>Sector size (logical/physical): 512B/512B<br>Partition Table: msdos<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>(parted) print&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #查看分区信息 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>Model: OPNFILER VIRTUAL-DISK (scsi)<br>Disk /dev/sdd: 27.1GB<br>Sector size (logical/physical): 512B/512B<br>Partition Table: msdos<br><br>Number&nbsp; Start&nbsp;&nbsp; End&nbsp;&nbsp;&nbsp;&nbsp; Size&nbsp;&nbsp;&nbsp; Type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; File system&nbsp; Flags<br>&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 16.4kB&nbsp; 4001MB&nbsp; 4001MB&nbsp; primary&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4001MB&nbsp; 4703MB&nbsp; 701MB&nbsp;&nbsp; extended&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4001MB&nbsp; 4102MB&nbsp; 101MB&nbsp;&nbsp; logical&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4102MB&nbsp; 4203MB&nbsp; 101MB&nbsp;&nbsp; logical&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4203MB&nbsp; 4303MB&nbsp; 101MB&nbsp;&nbsp; logical&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4303MB&nbsp; 4404MB&nbsp; 101MB&nbsp;&nbsp; logical&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4404MB&nbsp; 4416MB&nbsp; 11.5MB&nbsp; logical&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4416MB&nbsp; 4437MB&nbsp; 21.0MB&nbsp; logical&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>11&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4437MB&nbsp; 4468MB&nbsp; 31.4MB&nbsp; logical&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>12&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4468MB&nbsp; 4509MB&nbsp; 40.9MB&nbsp; logical&nbsp;&nbsp; ext3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br><br>(parted) mkpart&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #创建新的分区  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>Partition type?&nbsp; primary/logical? l&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>File system type?&nbsp; [ext2]? ext3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>Start? 4509MB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>End? -1s&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; # 表示硬盘最后一个扇区，就是硬盘的最末尾处 <br>Warning: You requested a partition from 4509MB to 27.1GB.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>The closest location we can manage is 4516MB to 4697MB.&nbsp; Is this still acceptable to you?<br>Yes/No? y&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>(parted) print&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>Model: OPNFILER VIRTUAL-DISK (scsi)<br>Disk /dev/sdd: 27.1GB<br>Sector size (logical/physical): 512B/512B<br>Partition Table: msdos<br><br>Number&nbsp; Start&nbsp;&nbsp; End&nbsp;&nbsp;&nbsp;&nbsp; Size&nbsp;&nbsp;&nbsp; Type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; File system&nbsp; Flags<br>&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 16.4kB&nbsp; 4001MB&nbsp; 4001MB&nbsp; primary&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4001MB&nbsp; 4703MB&nbsp; 701MB&nbsp;&nbsp; extended&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4001MB&nbsp; 4102MB&nbsp; 101MB&nbsp;&nbsp; logical&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4102MB&nbsp; 4203MB&nbsp; 101MB&nbsp;&nbsp; logical&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4203MB&nbsp; 4303MB&nbsp; 101MB&nbsp;&nbsp; logical&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4303MB&nbsp; 4404MB&nbsp; 101MB&nbsp;&nbsp; logical&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4404MB&nbsp; 4416MB&nbsp; 11.5MB&nbsp; logical&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4416MB&nbsp; 4437MB&nbsp; 21.0MB&nbsp; logical&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>11&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4437MB&nbsp; 4468MB&nbsp; 31.4MB&nbsp; logical&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>12&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4468MB&nbsp; 4509MB&nbsp; 40.9MB&nbsp; logical&nbsp;&nbsp; ext3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>13&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4516MB&nbsp; 4697MB&nbsp; 181MB&nbsp;&nbsp; logical&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br><br>(parted) unit s&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #设置单位为扇区 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>(parted) print&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br><br>Model: OPNFILER VIRTUAL-DISK (scsi)<br>Disk /dev/sdd: 52953087s<br>Sector size (logical/physical): 512B/512B<br>Partition Table: msdos<br><br>Number&nbsp; Start&nbsp;&nbsp;&nbsp;&nbsp; End&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Size&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; File system&nbsp; Flags<br>&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 32s&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7815167s&nbsp; 7815136s&nbsp; primary&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7815168s&nbsp; 9185279s&nbsp; 1370112s&nbsp; extended&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7815200s&nbsp; 8011775s&nbsp; 196576s&nbsp;&nbsp; logical&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8011808s&nbsp; 8208383s&nbsp; 196576s&nbsp;&nbsp; logical&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8208416s&nbsp; 8404991s&nbsp; 196576s&nbsp;&nbsp; logical&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8405024s&nbsp; 8601599s&nbsp; 196576s&nbsp;&nbsp; logical&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8601632s&nbsp; 8624127s&nbsp; 22496s&nbsp;&nbsp;&nbsp; logical&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8624160s&nbsp; 8665087s&nbsp; 40928s&nbsp;&nbsp;&nbsp; logical&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>11&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8665120s&nbsp; 8726527s&nbsp; 61408s&nbsp;&nbsp;&nbsp; logical&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>12&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8726560s&nbsp; 8806399s&nbsp; 79840s&nbsp;&nbsp;&nbsp; logical&nbsp;&nbsp; ext3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>13&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8819748s&nbsp; 9173114s&nbsp; 353367s&nbsp;&nbsp; logical&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br><br>(parted) rm 13&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #删除分区13  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>(parted) p<br><br>Model: OPNFILER VIRTUAL-DISK (scsi)<br>Disk /dev/sdd: 52953087s<br>Sector size (logical/physical): 512B/512B<br>Partition Table: msdos<br><br>Number&nbsp; Start&nbsp;&nbsp;&nbsp;&nbsp; End&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Size&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; File system&nbsp; Flags<br>&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 32s&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7815167s&nbsp; 7815136s&nbsp; primary&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7815168s&nbsp; 9185279s&nbsp; 1370112s&nbsp; extended&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7815200s&nbsp; 8011775s&nbsp; 196576s&nbsp;&nbsp; logical&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8011808s&nbsp; 8208383s&nbsp; 196576s&nbsp;&nbsp; logical&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8208416s&nbsp; 8404991s&nbsp; 196576s&nbsp;&nbsp; logical&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8405024s&nbsp; 8601599s&nbsp; 196576s&nbsp;&nbsp; logical&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8601632s&nbsp; 8624127s&nbsp; 22496s&nbsp;&nbsp;&nbsp; logical&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8624160s&nbsp; 8665087s&nbsp; 40928s&nbsp;&nbsp;&nbsp; logical&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>11&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8665120s&nbsp; 8726527s&nbsp; 61408s&nbsp;&nbsp;&nbsp; logical&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>12&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8726560s&nbsp; 8806399s&nbsp; 79840s&nbsp;&nbsp;&nbsp; logical&nbsp;&nbsp; ext3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br><br>(parted) set 12 lvm on&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #将分区12的lvm标志打开，这里仅打开标志，并未实际创建lv <br>(parted) p&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br><br>Model: OPNFILER VIRTUAL-DISK (scsi)<br>Disk /dev/sdd: 52953087s<br>Sector size (logical/physical): 512B/512B<br>Partition Table: msdos<br><br>Number&nbsp; Start&nbsp;&nbsp;&nbsp;&nbsp; End&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Size&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; File system&nbsp; Flags<br>&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 32s&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7815167s&nbsp; 7815136s&nbsp; primary&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7815168s&nbsp; 9185279s&nbsp; 1370112s&nbsp; extended&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7815200s&nbsp; 8011775s&nbsp; 196576s&nbsp;&nbsp; logical&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8011808s&nbsp; 8208383s&nbsp; 196576s&nbsp;&nbsp; logical&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8208416s&nbsp; 8404991s&nbsp; 196576s&nbsp;&nbsp; logical&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8405024s&nbsp; 8601599s&nbsp; 196576s&nbsp;&nbsp; logical&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8601632s&nbsp; 8624127s&nbsp; 22496s&nbsp;&nbsp;&nbsp; logical&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8624160s&nbsp; 8665087s&nbsp; 40928s&nbsp;&nbsp;&nbsp; logical&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>11&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8665120s&nbsp; 8726527s&nbsp; 61408s&nbsp;&nbsp;&nbsp; logical&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>12&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8726560s&nbsp; 8806399s&nbsp; 79840s&nbsp;&nbsp;&nbsp; logical&nbsp;&nbsp; ext3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; lvm &nbsp;</p>
+<p>(parted) q&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #退出交换模式  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>Information: Don't forget to update /etc/fstab, if necessary. </p>
+<p>&nbsp;</p>
+<div># parted -l /dev/sda&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; # 直接在命令模式下显示sda的分区表&nbsp;</div>
+<div>Model: VMware, VMware Virtual S (scsi)&nbsp;</div>
+<div>Disk /dev/sda: 8590MB&nbsp;</div>
+<div>Sector size (logical/physical): 512B/512B&nbsp;</div>
+<div>Partition Table: msdos&nbsp;</div>
+<div>Number Start End Size Type File system 标志&nbsp;</div>
+<div>1 32.3kB 107MB 107MB 主分区 ext3 启动&nbsp;</div>
+<div>2 107MB 8587MB 8480MB 主分区 lvm&nbsp;</div>
+<div>Model: VMware, VMware Virtual S (scsi) </div>
+<p>&nbsp;</p>
+<p><br>参考至:http://blog.sina.com.cn/s/blog_6ca646a00100z0uq.html<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; http://goward.jimdo.com/2010/07/19/linux-parted%E5%88%86%E5%8C%BA%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3/ </p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; http://zh.wikipedia.org/wiki/GUID%E7%A3%81%E7%A2%9F%E5%88%86%E5%89%B2%E8%A1%A8<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; http://baike.baidu.com/view/493745.htm </p>
+<p>&nbsp;</p>
+<p>本文原创，转载请注明出处、作者</p>
+<p>&nbsp;</p>
+</div>
+<div class="clear"></div>
+<div id="blog_post_info_block" role="contentinfo"><div id="BlogPostCategory">
+    分类: 
+            <a href="https://www.cnblogs.com/machangwei-8/category/1164784.html" target="_blank">Linux命令</a></div>
+
+
+    <div id="blog_post_info">
+<div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(10353690,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+        <a id="green_channel_follow" onclick="follow(&#39;67eb649c-b9ec-451f-2de8-08d52fc34315&#39;);" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="./parted命令详解_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="./parted命令详解_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/machangwei-8/" target="_blank"><img src="./parted命令详解_files/20211030214655.png" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/machangwei-8/">马昌伟</a><br>
+            <a href="https://home.cnblogs.com/u/machangwei-8/followers/">粉丝 - <span class="follower-count">192</span></a>
+            <a href="https://home.cnblogs.com/u/machangwei-8/followees/">关注 - <span class="following-count">36</span></a><br>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow" class="follow-tip">
+                <a href="javascript:void(0);" onclick="follow(&#39;67eb649c-b9ec-451f-2de8-08d52fc34315&#39;);return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(10353690,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">1</span>
+    </div>
+    <div class="buryit" onclick="votePost(10353690,&#39;Bury&#39;)">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+    <div class="clear"></div>
+    <div id="post_next_prev">
+
+    <a href="https://www.cnblogs.com/machangwei-8/p/10353683.html" class="p_n_p_prefix">« </a> 上一篇：    <a href="https://www.cnblogs.com/machangwei-8/p/10353683.html" data-featured-image="" title="发布于 2019-02-06 14:00">fdisk命令详解</a>
+    <br>
+    <a href="https://www.cnblogs.com/machangwei-8/p/10353697.html" class="p_n_p_prefix">» </a> 下一篇：    <a href="https://www.cnblogs.com/machangwei-8/p/10353697.html" data-featured-image="" title="发布于 2019-02-06 14:16">mkfs命令详解</a>
+
+</div>
+</div>
+		</div>
+		<div class="postDesc">posted @ 
+<span id="post-date">2019-02-06 14:08</span>&nbsp;
+<a href="https://www.cnblogs.com/machangwei-8/">马昌伟</a>&nbsp;
+阅读(<span id="post_view_count">34899</span>)&nbsp;
+评论(<span id="post_comment_count">0</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=10353690" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(10353690);return false;">收藏</a>&nbsp;
+<a href="javascript:void(0)" onclick="reportManager.report({ currentUserId: &#39;&#39;, targetType: &#39;blogPost&#39;, targetId: &#39;10353690&#39;, targetLink: &#39;https://www.cnblogs.com/machangwei-8/p/10353690.html&#39;, title: &#39;parted命令详解&#39; })">举报</a></div>
+	</div>
+	
+	
+</div><!--end: topics 文章、评论容器-->
+
+<script>
+    var cb_entryId = 10353690, cb_entryCreatedDate = '2019-02-06 14:08', cb_postType = 1, cb_postTitle = 'parted命令详解';
+    var allowComments = true, cb_blogId = 412391, cb_blogApp = 'machangwei-8', cb_blogUserGuid = '67eb649c-b9ec-451f-2de8-08d52fc34315';
+    mermaidRender.render()
+    markdown_highlight()
+    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");
+    updatePostStats(
+            [cb_entryId],
+            function(id, count) { $("#post_view_count").text(count) },
+            function(id, count) { $("#post_comment_count").text(count) })
+</script>
+<a id="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="https://www.cnblogs.com/machangwei-8/p/10353690.html#" onclick="return RefreshPage();">刷新页面</a><a href="https://www.cnblogs.com/machangwei-8/p/10353690.html#top">返回顶部</a></div>
+    <div id="comment_form_container" style="visibility: visible;"><div class="login_tips">
+    登录后才能查看或发表评论，立即 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return account.login(&#39;!comments&#39;);">登录</a> 或者
+    <a href="https://www.cnblogs.com/">逛逛</a> 博客园首页
+</div>
+</div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+        <div id="cnblogs_ch"><a href="https://lbsyun.baidu.com/promotion/specialoffer#/home?source=2" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-百度地图&#39;})">【推荐】百度地图新客尝鲜限时特惠，20多种服务等你来选</a><br><a href="https://brands.cnblogs.com/specdd" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-SpecDD专区&#39;})">【推荐】下一步，敏捷！云可达科技SpecDD敏捷开发专区</a><br><a href="https://curl.qcloud.com/k19RDMHo" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-腾讯云&#39;})">【推荐】腾讯云多款云产品1折起，买云服务器送免费机器</a><br></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="under-post-card">
+            <div id="div-gpt-ad-1592365906576-0" style="width: 300px; height: 250px;" data-google-query-id="COOzpYXdkPoCFUFQvQodgMYJbA"><div id="google_ads_iframe_/1090369/C1_0__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/1090369/C1_0" name="google_ads_iframe_/1090369/C1_0" title="3rd party ad content" width="300" height="250" scrolling="no" marginwidth="0" marginheight="0" frameborder="0" role="region" aria-label="Advertisement" tabindex="0" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" style="border: 0px; vertical-align: bottom;" data-load-complete="true" data-google-container-id="1" src="./parted命令详解_files/saved_resource.html"></iframe></div></div>
+    </div>
+    <div id="under_post_card1"><div class="under-post-card">
+<b>编辑推荐：</b>
+<br>
+
+· <a href="https://www.cnblogs.com/green-jcx/p/16671687.html" target="_blank">让泛型的思维扎根在脑海——深刻理解泛型</a>
+    <br>
+· <a href="https://www.cnblogs.com/coco1s/p/16672819.html" target="_blank">高阶 CSS 技巧在复杂动效中的应用</a>
+    <br>
+· <a href="https://www.cnblogs.com/lindexi/p/16671495.html" target="_blank">使用 MAUI 在 Windows 和 Linux 上绘制 PPT 的图表 </a>
+    <br>
+· <a href="https://www.cnblogs.com/crossoverJie/p/16663944.html" target="_blank">终于实现了一门属于自己的编程语言</a>
+    <br>
+· <a href="https://www.cnblogs.com/coco1s/p/16663752.html" target="_blank">有意思的水平横向溢出滚动 </a>
+    <br>
+</div></div>
+    <div id="under_post_card2"><div class="itnews under-post-card">
+    <b>最新新闻</b>：
+    <br>
+ ·          <a href="https://news.cnblogs.com/n/728113/" target="_blank">对着手机咳嗽一声，就能检测新冠了？还是剑桥大学出品</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/728112/" target="_blank">DeepMind发30页长文：我们要给聊天机器人不同的「三观」</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/728114/" target="_blank">唯有霍金拒绝！英国女王70年给这12位大科学家封爵</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/728115/" target="_blank">CV大神谢赛宁离职Meta加入纽约大学，与何恺明共著ResNeXt</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/728111/" target="_blank">副总裁集体跑路！Snap上演美国版「千人毕业」</a>
+        <br>
+    » <a href="https://news.cnblogs.com/" title="IT 新闻" target="_blank">更多新闻...</a>
+</div></div>
+    <div id="HistoryToday" class="under-post-card"></div>
+    <script type="text/javascript">
+        var commentManager = new blogCommentManager();
+        commentManager.renderComments(0);
+        fixPostBody();
+
+            window.tocManager.displayDisableTocTips = false;
+            window.tocManager.generateToc();
+            
+                setTimeout(function() { countViews(cb_blogId, cb_entryId); }, 50);
+            
+            deliverT2();
+            deliverC1C2();
+            loadNewsAndKb();
+            
+                LoadPostCategoriesTags(cb_blogId, cb_entryId);
+            
+            LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+            GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+            loadOptUnderPost();
+            GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+                </script>
+</div>
+
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			<div id="sidebar_news" class="newsItem"><!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	
+<div id="blog-news">
+    
+    <div id="profile_block">
+        昵称：
+        <a href="https://home.cnblogs.com/u/machangwei-8/">
+            马昌伟
+        </a>
+        <br>
+        园龄：
+        <a href="https://home.cnblogs.com/u/machangwei-8/" title="入园时间：2017-11-24">
+            4年9个月
+        </a>
+        <br>
+        粉丝：
+        <a class="follower-count" href="https://home.cnblogs.com/u/machangwei-8/followers/">
+            192
+        </a>
+        <br>
+        关注：
+        <a class="folowing-count" href="https://home.cnblogs.com/u/machangwei-8/followees/">
+            36
+        </a>
+        <div id="p_b_follow" class="follow-tip">
+<a href="javascript:void(0)" onclick="follow(&#39;67eb649c-b9ec-451f-2de8-08d52fc34315&#39;)">+加关注</a></div>
+        <script>getFollowStatus('67eb649c-b9ec-451f-2de8-08d52fc34315');</script>
+    </div>
+</div>
+</div>
+
+</div>
+<div id="sidebar_c3" style="display: block;"><a href="https://lbsyun.baidu.com/promotion/specialoffer#/home?source=2" target="_blank"><img width="300" height="250" src="./parted命令详解_files/35695-20220908174739681-1622347167.png" alt="百度地图-新客尝鲜限时特惠" onclick="countClicks(&#39;ad&#39;, &#39;C3-百度地图&#39;);"></a></div>
+			<div id="calendar"><div id="blog-calendar" style="">
+
+<table id="blogCalendar" class="Cal" cellspacing="0" cellpadding="0" title="Calendar" border="0">
+    <tbody>
+        <tr>
+            <td colspan="7">
+                <table class="CalTitle" cellspacing="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2022/08/13&#39;); return false;">&lt;</a>
+                            </td>
+                            <td align="center">2022年9月</td>
+                            <td align="right" class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2022/10/13&#39;); return false;">&gt;</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    <tr>
+        <th class="CalDayHeader" align="center" abbr="日" scope="col">日</th>
+        <th class="CalDayHeader" align="center" abbr="一" scope="col">一</th>
+        <th class="CalDayHeader" align="center" abbr="二" scope="col">二</th>
+        <th class="CalDayHeader" align="center" abbr="三" scope="col">三</th>
+        <th class="CalDayHeader" align="center" abbr="四" scope="col">四</th>
+        <th class="CalDayHeader" align="center" abbr="五" scope="col">五</th>
+        <th class="CalDayHeader" align="center" abbr="六" scope="col">六</th>
+    </tr>
+            <tr>
+                            <td class="CalOtherMonthDay" align="center">28</td>
+                            <td class="CalOtherMonthDay" align="center">29</td>
+                            <td class="CalOtherMonthDay" align="center">30</td>
+                            <td class="CalOtherMonthDay" align="center">31</td>
+                        <td class="" align="center">
+                            1
+                        </td>
+                        <td class="" align="center">
+                            2
+                        </td>
+                    <td class="CalWeekendDay" align="center">
+                        3
+                    </td>
+            </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            4
+                        </td>
+                            <td class="" align="center">
+                                5
+                            </td>
+                            <td class="" align="center">
+                                6
+                            </td>
+                            <td class="" align="center">
+                                7
+                            </td>
+                            <td class="" align="center">
+                                8
+                            </td>
+                            <td class="" align="center">
+                                9
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            10
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            11
+                        </td>
+                            <td class="" align="center">
+                                12
+                            </td>
+                            <td class="CalTodayDay" align="center">
+                                13
+                            </td>
+                            <td class="" align="center">
+                                14
+                            </td>
+                            <td class="" align="center">
+                                15
+                            </td>
+                            <td class="" align="center">
+                                16
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            17
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            18
+                        </td>
+                            <td class="" align="center">
+                                19
+                            </td>
+                            <td class="" align="center">
+                                20
+                            </td>
+                            <td class="" align="center">
+                                21
+                            </td>
+                            <td class="" align="center">
+                                22
+                            </td>
+                            <td class="" align="center">
+                                23
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            24
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            25
+                        </td>
+                            <td class="" align="center">
+                                26
+                            </td>
+                            <td class="" align="center">
+                                27
+                            </td>
+                            <td class="" align="center">
+                                28
+                            </td>
+                            <td class="" align="center">
+                                29
+                            </td>
+                            <td class="" align="center">
+                                30
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            1
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalOtherMonthDay" align="center">
+                            2
+                        </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                3
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                4
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                5
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                6
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                7
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            8
+                        </td>
+                </tr>
+    </tbody>
+</table></div><script>loadBlogDefaultCalendar();</script></div>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"><!-- 搜索 -->
+<div id="sidebar_search" class="sidebar-block">
+    <div id="sidebar_search" class="mySearch">
+        <h3 class="catListTitle">搜索</h3>
+        <div id="sidebar_search_box">
+            <div id="widget_my_zzk" class="div_my_zzk">
+                <input type="text" id="q" onkeydown="return zzk_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="zzk_go()" type="button" value="找找看" id="btnZzk" class="btn_my_zzk">
+            </div>
+            <div id="widget_my_google" class="div_my_zzk">
+                <input type="text" name="google_q" id="google_q" onkeydown="return google_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="google_go()" type="button" value="谷歌搜索" class="btn_my_zzk">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 常用链接 -->
+<div id="sidebar_shortcut" class="sidebar-block"><div class="catListLink">
+<h3 class="catListTitle">
+常用链接
+</h3>
+<ul>
+    <li><a href="https://www.cnblogs.com/machangwei-8/p/" title="我的博客的随笔列表">我的随笔</a></li>
+<li><a href="https://www.cnblogs.com/machangwei-8/MyComments.html" title="我的发表过的评论列表">我的评论</a></li>
+<li><a href="https://www.cnblogs.com/machangwei-8/OtherPosts.html" title="我评论过的随笔列表">我的参与</a></li>
+<li><a href="https://www.cnblogs.com/machangwei-8/comments" title="我的博客的评论列表">最新评论</a></li>
+<li><a href="https://www.cnblogs.com/machangwei-8/tag/" title="我的博客的标签列表">我的标签</a></li>
+
+    <li><a id="itemListLink" onclick="this.blur();WarpClass(&#39;itemListLink&#39;, &#39;itemListLin_con&#39;);return false;" href="https://www.cnblogs.com/machangwei-8/p/10353690.html#">更多链接</a></li>
+</ul>
+</div>
+
+</div>
+
+<!-- 最新随笔 -->
+
+
+<!-- 我的标签 -->
+<div id="sidebar_toptags" class="sidebar-block"><div class="catListTag">
+<h3 class="catListTitle">我的标签</h3>
+<ul>
+        <li>
+            <a href="https://www.cnblogs.com/machangwei-8/tag/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%A6%82%E5%BF%B5/">计算机概念<span class="tag-count">(2)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/machangwei-8/tag/Linux%E5%91%BD%E4%BB%A4/">Linux命令<span class="tag-count">(1)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/machangwei-8/tag/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/">网络协议<span class="tag-count">(1)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/machangwei-8/tag/%E8%BF%90%E7%BB%B4/">运维<span class="tag-count">(1)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/machangwei-8/tag/%E7%BD%91%E7%BB%9C/">网络<span class="tag-count">(1)</span></a>
+        </li>
+    
+
+</ul>
+</div>
+
+</div>
+
+<!-- 积分与排名 -->
+
+
+<!-- 随笔分类、随笔档案、文章分类、新闻分类、相册、链接 -->
+<div id="sidebar_categories">
+
+    <div class="catListPostCategory">
+        <h3 class="catListTitle">
+            
+    <a class="sidebar-card-title-a" href="https://www.cnblogs.com/machangwei-8/categories">随笔分类</a>
+
+
+
+        </h3>
+
+        <ul>
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/category/1164779.html" class="category-item-link" rel="" target="">Python(91)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/category/1252524.html" class="category-item-link" rel="" target="">目录(20)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/category/1164783.html" class="category-item-link" rel="" target="">Linux各种知识(56)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/category/1164784.html" class="category-item-link" rel="" target="">Linux命令(163)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/category/1164786.html" class="category-item-link" rel="" target="">云计算docker/k8s/openstack(25)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/category/1164792.html" class="category-item-link" rel="" target="">html,css(8)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/category/1164793.html" class="category-item-link" rel="" target="">javascript-jquery等(14)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/category/1164781.html" class="category-item-link" rel="" target="">各种数据库(27)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/category/1167557.html" class="category-item-link" rel="" target="">非公开笔记(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/category/1405334.html" class="category-item-link" rel="" target="">非技术篇章(11)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/category/1164842.html" class="category-item-link" rel="" target="">计算机相关概念总结(12)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/category/1164778.html" class="category-item-link" rel="" target="">shell(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/category/1255131.html" class="category-item-link" rel="" target="">java(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/category/1247188.html" class="category-item-link" rel="" target="">go语言(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/category/1164796.html" class="category-item-link" rel="" target="">爬虫(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/category/1164797.html" class="category-item-link" rel="" target="">网络知识(6)</a>
+ 
+                </li>                
+            <li><a href="javascript:void(0)" onclick="sideColumnManager.loadMore(this)">更多</a></li>
+        </ul>
+    </div>    
+    <div class="catListPostArchive">
+        <h3 class="catListTitle">
+            
+随笔档案
+
+
+        </h3>
+
+        <ul>
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2022/03.html" class="category-item-link" rel="" target="">2022年3月(19)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2022/02.html" class="category-item-link" rel="" target="">2022年2月(13)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2022/01.html" class="category-item-link" rel="" target="">2022年1月(17)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2021/12.html" class="category-item-link" rel="" target="">2021年12月(22)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2021/11.html" class="category-item-link" rel="" target="">2021年11月(17)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2021/10.html" class="category-item-link" rel="" target="">2021年10月(13)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2021/09.html" class="category-item-link" rel="" target="">2021年9月(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2021/08.html" class="category-item-link" rel="" target="">2021年8月(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2021/07.html" class="category-item-link" rel="" target="">2021年7月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2019/09.html" class="category-item-link" rel="" target="">2019年9月(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2019/08.html" class="category-item-link" rel="" target="">2019年8月(13)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2019/07.html" class="category-item-link" rel="" target="">2019年7月(9)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2019/06.html" class="category-item-link" rel="" target="">2019年6月(25)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2019/05.html" class="category-item-link" rel="" target="">2019年5月(23)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2019/04.html" class="category-item-link" rel="" target="">2019年4月(27)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2019/03.html" class="category-item-link" rel="" target="">2019年3月(18)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2019/02.html" class="category-item-link" rel="" target="">2019年2月(143)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2019/01.html" class="category-item-link" rel="" target="">2019年1月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2018/12.html" class="category-item-link" rel="" target="">2018年12月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2018/10.html" class="category-item-link" rel="" target="">2018年10月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2018/09.html" class="category-item-link" rel="" target="">2018年9月(37)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2018/08.html" class="category-item-link" rel="" target="">2018年8月(23)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2018/07.html" class="category-item-link" rel="" target="">2018年7月(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2018/04.html" class="category-item-link" rel="" target="">2018年4月(9)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2018/03.html" class="category-item-link" rel="" target="">2018年3月(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2018/02.html" class="category-item-link" rel="" target="">2018年2月(20)</a>
+ 
+                </li>                
+            <li><a href="javascript:void(0)" onclick="sideColumnManager.loadMore(this)">更多</a></li>
+        </ul>
+    </div>    
+</div>
+
+<!-- 最新评论 -->
+<!-- 阅读排行榜 -->
+<div id="sidebar_topviewedposts" class="sidebar-block"><div class="catListView">
+    <h3 class="catListTitle">
+        <a href="https://www.cnblogs.com/machangwei-8/most-viewed" class="sidebar-card-title-a">
+    阅读排行榜
+</a>
+
+    </h3>
+    <div id="TopViewPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/machangwei-8/p/10352725.html">
+                            1. ssh命令详解(91337)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/machangwei-8/p/10388883.html">
+                            2. strace命令详解(69982)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/machangwei-8/p/10350824.html">
+                            3. ipmitool命令详解(67656)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/machangwei-8/p/10353137.html">
+                            4. nslookup命令详解(61380)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/machangwei-8/p/10353216.html">
+                            5. dig命令详解(57306)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div></div>
+
+<!-- 评论排行榜 -->
+<div id="sidebar_topcommentedposts" class="sidebar-block"><div class="catListFeedback">
+    <h3 class="catListTitle">
+        <a href="https://www.cnblogs.com/machangwei-8/most-commented" class="sidebar-card-title-a">评论排行榜</a>
+
+    </h3>
+    <div id="TopFeedbackPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/machangwei-8/p/10738244.html">
+                            1. Python模块xlwt对excel进行写入操作(3)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/machangwei-8/p/10388883.html">
+                            2. strace命令详解(3)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/machangwei-8/p/11023394.html">
+                            3. Django图书管理系统(前端对有外键的数据表增删改查)(2)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/machangwei-8/p/10976535.html">
+                            4. js节点的创建添加删除(2)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/machangwei-8/p/10403533.html">
+                            5. lsblk命令详解(2)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div></div>
+
+<!-- 推荐排行榜 -->
+<div id="sidebar_topdiggedposts" class="sidebar-block"><div id="topdigg_posts_wrap">
+    <div class="catListView">
+        <h3 class="catListTitle">
+            <a href="https://www.cnblogs.com/machangwei-8/most-liked" class="sidebar-card-title-a">推荐排行榜</a>
+
+        </h3>
+        <div id="TopDiggPostsBlock">
+            <ul style="word-break: break-all">
+                        <li>
+                            <a href="https://www.cnblogs.com/machangwei-8/p/10388883.html">
+                                1. strace命令详解(12)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/machangwei-8/p/10353004.html">
+                                2. nmap命令详解(9)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/machangwei-8/p/10738244.html">
+                                3. Python模块xlwt对excel进行写入操作(5)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/machangwei-8/p/9299013.html">
+                                4. 基础命令学习目录首页(5)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/machangwei-8/p/10403533.html">
+                                5. lsblk命令详解(4)
+                            </a>
+                        </li>
+            </ul>
+        </div>
+    </div>
+</div></div><div id="sidebar_recentcomments" class="sidebar-block"><div class="catListComment">
+<h3 class="catListTitle"><a href="https://www.cnblogs.com/machangwei-8/comments" class="sidebar-card-title-a">最新评论</a></h3>
+    <div class="RecentCommentBlock">
+        <ul>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/machangwei-8/p/10352620.html">1. Re:useradd命令详解</a></li>
+                <li class="recent_comment_body"><p>非常好，把计算机代码翻译成人可以理解的语句，通俗易懂，加油</p>
+</li>
+                <li class="recent_comment_author">--VickyStudio</li>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/machangwei-8/p/8456888.html">2. Re:计算机相关概念总结（1）</a></li>
+                <li class="recent_comment_body"><p>大佬这文章是挨个敲的吗？好多内容啊</p>
+</li>
+                <li class="recent_comment_author">--时间的风景</li>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/machangwei-8/p/10352808.html">3. Re:ping命令详解</a></li>
+                <li class="recent_comment_body"><p>ping -t 在win里是长ping的意思。作者最好说明一下讲的是Win还是Linux。话说-t在win里来源于哪个单词呀？till?</p>
+</li>
+                <li class="recent_comment_author">--westsnowwzb</li>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/machangwei-8/p/10388883.html">4. Re:strace命令详解</a></li>
+                <li class="recent_comment_body"><p>赞一个，大佬</p>
+</li>
+                <li class="recent_comment_author">--故道丶白云</li>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/machangwei-8/p/9299013.html">5. Re:基础命令学习目录首页</a></li>
+                <li class="recent_comment_body"><p>好厉害啊</p>
+</li>
+                <li class="recent_comment_author">--元月二一</li>
+        </ul>
+    </div>
+</div>
+
+</div>
+
+
+</div>
+                    <script>loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright © 2022 马昌伟
+<br><span id="poweredby">Powered by .NET 6 on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+
+<div id="page_end_html">
+<script language="javascript" type="text/javascript">
+// 生成目录索引列表
+// ref: http://www.cnblogs.com/wangqiguo/p/4355032.html
+// modified by: zzq
+function GenerateContentList()
+{
+    var mainContent = $('#cnblogs_post_body');
+    var h2_list = $('#cnblogs_post_body h2');//如果你的章节标题不是h2,只需要将这里的h2换掉即可
+
+    if(mainContent.length < 1)
+        return;
+ 
+    if(h2_list.length>0)
+    {
+        var content = '<a rel="nofollow noopener"  name="_labelTop"></a>';
+        content += '<div id="navCategory" style="color:#152e97;">';
+        content += '<p style="font-size:18px;"><b>目录</b></p>';
+        content += '<ul>';
+        for(var i=0; i<h2_list.length; i++)
+        {
+            var go_to_top = '<div style="text-align: right;"><a rel="nofollow noopener"  href="#_labelTop" style="color:#f68a33">回到顶部</a><a rel="nofollow noopener"  name="_label' + i + '"></a></div>';
+            $(h2_list[i]).before(go_to_top);
+            
+            var h3_list = $(h2_list[i]).nextAll("h3");
+            var li3_content = '';
+            for(var j=0; j<h3_list.length; j++)
+            {
+                var tmp = $(h3_list[j]).prevAll('h2').first();
+                if(!tmp.is(h2_list[i]))
+                    break;
+                var li3_anchor = '<a rel="nofollow noopener"  name="_label' + i + '_' + j + '"></a>';
+                $(h3_list[j]).before(li3_anchor);
+                li3_content += '<li><a rel="nofollow noopener"  href="#_label' + i + '_' + j + '">' + $(h3_list[j]).text() + '</a></li>';
+            }
+            
+            var li2_content = '';
+            if(li3_content.length > 0)
+                li2_content = '<li><a rel="nofollow noopener"  href="#_label' + i + '">' + $(h2_list[i]).text() + '</a><ul>' + li3_content + '</ul></li>';
+            else
+                li2_content = '<li><a rel="nofollow noopener"  href="#_label' + i + '">' + $(h2_list[i]).text() + '</a></li>';
+            content += li2_content;
+        }
+        content += '</ul>';
+        content += '</div><p>&nbsp;</p>';
+        content += '<hr style="height:1px;border:none;border-top:1px dashed #0066CC;"/>';
+        if($('#cnblogs_post_body').length != 0 )
+        {
+            $($('#cnblogs_post_body')[0]).prepend(content);
+        }
+    }   
+}
+
+GenerateContentList();
+</script>
+</div>
+
+<input type="hidden" id="antiforgery_token" value="CfDJ8EOBBtWq0dNFoDS-ZHPSe52m8DH1Kx0Hq0BiuSPQWEoYlY5qllViCcRWfWVbpk49oEXoPtxCLqdmfbNUxEYebH0uM0GuUzYj6byX9JQSJ166EGCVfyjp4Bg5F4dXEO2lZJ0DhKZlEj5TCIaq5DvPnY0">
+<script async="" src="./parted命令详解_files/js"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    var kv = getGACustom();
+    if (kv) {
+        gtag('set', kv);
+    }
+    gtag('config', 'UA-476124-1');
+</script>
+<script defer="" src="./parted命令详解_files/hm.js"></script><iframe src="./parted命令详解_files/container.html" style="visibility: hidden; display: none;"></iframe>
+
+</body></html>
