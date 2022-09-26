@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<!-- saved from url=(0029)https://www.linuxcool.com/man -->
+<html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  
+  <meta name="viewport" content="width=device-width">
+  <meta name="format-detection" content="telephone=no">
+  <title>man命令 – 查看帮助信息 – Linux命令大全(手册)</title>
+<meta name="robots" content="max-image-preview:large">
+<!-- DX-Seo plugin start -->
+<meta name="description" content="man命令来自于英文单词manual的缩写，中文译为帮助手册，其功能是用于查看命令、配置文件及服务的帮助信息。网上搜索来的资料普遍不够准确（LinuxCool.Com除外~），或者缺乏系统性（LinuxProbe.Com除外~），质量不高">
+<!-- DX-Seo plugin end -->
+<link rel="dns-prefetch" href="https://fonts.googleapis.com/">
+<link rel="dns-prefetch" href="https://s.w.org/">
+<link rel="alternate" type="application/rss+xml" title="Linux命令大全(手册) » Feed" href="https://www.linuxcool.com/feed">
+<link rel="alternate" type="application/rss+xml" title="Linux命令大全(手册) » 评论Feed" href="https://www.linuxcool.com/comments/feed">
+<script src="./man命令 – 查看帮助信息 – Linux命令大全(手册)_files/push.js"></script><script src="./man命令 – 查看帮助信息 – Linux命令大全(手册)_files/hm.js"></script><script type="text/javascript">
+window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/14.0.0\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/14.0.0\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/www.linuxcool.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=6.0.2"}};
+/*! This file is auto-generated */
+!function(e,a,t){var n,r,o,i=a.createElement("canvas"),p=i.getContext&&i.getContext("2d");function s(e,t){var a=String.fromCharCode,e=(p.clearRect(0,0,i.width,i.height),p.fillText(a.apply(this,e),0,0),i.toDataURL());return p.clearRect(0,0,i.width,i.height),p.fillText(a.apply(this,t),0,0),e===i.toDataURL()}function c(e){var t=a.createElement("script");t.src=e,t.defer=t.type="text/javascript",a.getElementsByTagName("head")[0].appendChild(t)}for(o=Array("flag","emoji"),t.supports={everything:!0,everythingExceptFlag:!0},r=0;r<o.length;r++)t.supports[o[r]]=function(e){if(!p||!p.fillText)return!1;switch(p.textBaseline="top",p.font="600 32px Arial",e){case"flag":return s([127987,65039,8205,9895,65039],[127987,65039,8203,9895,65039])?!1:!s([55356,56826,55356,56819],[55356,56826,8203,55356,56819])&&!s([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]);case"emoji":return!s([129777,127995,8205,129778,127999],[129777,127995,8203,129778,127999])}return!1}(o[r]),t.supports.everything=t.supports.everything&&t.supports[o[r]],"flag"!==o[r]&&(t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&t.supports[o[r]]);t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&!t.supports.flag,t.DOMReady=!1,t.readyCallback=function(){t.DOMReady=!0},t.supports.everything||(n=function(){t.readyCallback()},a.addEventListener?(a.addEventListener("DOMContentLoaded",n,!1),e.addEventListener("load",n,!1)):(e.attachEvent("onload",n),a.attachEvent("onreadystatechange",function(){"complete"===a.readyState&&t.readyCallback()})),(e=t.source||{}).concatemoji?c(e.concatemoji):e.wpemoji&&e.twemoji&&(c(e.twemoji),c(e.wpemoji)))}(window,document,window._wpemojiSettings);
+</script><script src="./man命令 – 查看帮助信息 – Linux命令大全(手册)_files/wp-emoji-release.min.js" type="text/javascript" defer=""></script>
+<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 0.07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<link rel="stylesheet" id="wp-block-library-css" href="./man命令 – 查看帮助信息 – Linux命令大全(手册)_files/style.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="wp-components-css" href="./man命令 – 查看帮助信息 – Linux命令大全(手册)_files/style.min(1).css" type="text/css" media="all">
+<link rel="stylesheet" id="wp-block-editor-css" href="./man命令 – 查看帮助信息 – Linux命令大全(手册)_files/style.min(2).css" type="text/css" media="all">
+<link rel="stylesheet" id="wp-nux-css" href="./man命令 – 查看帮助信息 – Linux命令大全(手册)_files/style.min(3).css" type="text/css" media="all">
+<link rel="stylesheet" id="wp-reusable-blocks-css" href="./man命令 – 查看帮助信息 – Linux命令大全(手册)_files/style.min(4).css" type="text/css" media="all">
+<link rel="stylesheet" id="wp-editor-css" href="./man命令 – 查看帮助信息 – Linux命令大全(手册)_files/style.min(5).css" type="text/css" media="all">
+<link rel="stylesheet" id="htgb-style-css-css" href="./man命令 – 查看帮助信息 – Linux命令大全(手册)_files/blocks.style.build.css" type="text/css" media="all">
+<link rel="stylesheet" id="ht_toc-style-css-css" href="./man命令 – 查看帮助信息 – Linux命令大全(手册)_files/blocks.style.build(1).css" type="text/css" media="all">
+<style id="global-styles-inline-css" type="text/css">
+body{--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--duotone--dark-grayscale: url('#wp-duotone-dark-grayscale');--wp--preset--duotone--grayscale: url('#wp-duotone-grayscale');--wp--preset--duotone--purple-yellow: url('#wp-duotone-purple-yellow');--wp--preset--duotone--blue-red: url('#wp-duotone-blue-red');--wp--preset--duotone--midnight: url('#wp-duotone-midnight');--wp--preset--duotone--magenta-yellow: url('#wp-duotone-magenta-yellow');--wp--preset--duotone--purple-green: url('#wp-duotone-purple-green');--wp--preset--duotone--blue-orange: url('#wp-duotone-blue-orange');--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+</style>
+<link rel="stylesheet" id="shortcodes-css-css" href="./man命令 – 查看帮助信息 – Linux命令大全(手册)_files/shortcodes.css" type="text/css" media="all">
+<link rel="stylesheet" id="theme-style-css" href="./man命令 – 查看帮助信息 – Linux命令大全(手册)_files/style.css" type="text/css" media="all">
+<style id="theme-style-inline-css" type="text/css">
+ 
+				/* Links */
+				a, 
+				a:visited { color:#a03717; }
+				a:hover, 
+				.widget a:hover,
+				#primary-nav ul a:hover,
+				#footer-nav a:hover,
+				#breadcrumbs a:hover { color:#a03717; }
+				
+				/* Theme Color */
+				#commentform #submit, 
+				.st_faq h2.active .action, 
+				.widget_categories ul span, 
+				.pagination .current, 
+				.tags a, 
+				.page-links span,
+				#comments .comment-meta .author-badge,
+				input[type="reset"],
+				input[type="submit"],
+				input[type="button"] { background: #a03717; }
+				#live-search #searchsubmit, input[type="submit"] { background-color: #a03717; }
+				.tags a:before { border-color: transparent #a03717 transparent transparent; }
+
+				
+				
+				
+</style>
+<link rel="stylesheet" id="theme-font-css" href="./man命令 – 查看帮助信息 – Linux命令大全(手册)_files/css" type="text/css" media="all">
+<link rel="stylesheet" id="font-awesome-css" href="./man命令 – 查看帮助信息 – Linux命令大全(手册)_files/font-awesome.min.css" type="text/css" media="all">
+<script type="text/javascript" src="./man命令 – 查看帮助信息 – Linux命令大全(手册)_files/jquery.min.js" id="jquery-core-js"></script>
+<script type="text/javascript" src="./man命令 – 查看帮助信息 – Linux命令大全(手册)_files/jquery-migrate.min.js" id="jquery-migrate-js"></script>
+<link rel="https://api.w.org/" href="https://www.linuxcool.com/wp-json/"><link rel="alternate" type="application/json" href="https://www.linuxcool.com/wp-json/wp/v2/posts/3334"><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://www.linuxcool.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://www.linuxcool.com/wp-includes/wlwmanifest.xml"> 
+<meta name="generator" content="WordPress 6.0.2">
+<link rel="canonical" href="https://www.linuxcool.com/man">
+<link rel="shortlink" href="https://www.linuxcool.com/?p=3334">
+<link rel="alternate" type="application/json+oembed" href="https://www.linuxcool.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.linuxcool.com%2Fman">
+<link rel="alternate" type="text/xml+oembed" href="https://www.linuxcool.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.linuxcool.com%2Fman&amp;format=xml">
+<!--[if lt IE 9]><script src="https://www.linuxcool.com/wp-content/themes/knowhow/js/html5.js"></script><![endif]--><!--[if (gte IE 6)&(lte IE 8)]><script src="https://www.linuxcool.com/wp-content/themes/knowhow/js/selectivizr-min.js"></script><![endif]--><link rel="icon" href="https://www.linuxcool.com/wp-content/uploads/2019/03/cropped-redhat-32x32.png" sizes="32x32">
+<link rel="icon" href="https://www.linuxcool.com/wp-content/uploads/2019/03/cropped-redhat-192x192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="https://www.linuxcool.com/wp-content/uploads/2019/03/cropped-redhat-180x180.png">
+<meta name="msapplication-TileImage" content="https://www.linuxcool.com/wp-content/uploads/2019/03/cropped-redhat-270x270.png">
+		<style type="text/css" id="wp-custom-css">
+			p {line-height: 200%}
+.entry-content p { text-indent: 2em 		</style>
+		  <meta name="keywords" content="linuxcool,Linux,Linux系统,Linux命令,Linux命令大全,Linux常用命令,shell，shell脚本,shell脚本学习,Linux命令查询,Linux命令用法详解,Linux命令实例。">
+</head>
+<body class="post-template-default single single-post postid-3334 single-format-standard wp-embed-responsive">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0" width="0" height="0" focusable="false" role="none" style="visibility: hidden; position: absolute; left: -9999px; overflow: hidden;"><defs><filter id="wp-duotone-dark-grayscale"><fecolormatrix color-interpolation-filters="sRGB" type="matrix" values=" .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 "></fecolormatrix><fecomponenttransfer color-interpolation-filters="sRGB"><fefuncr type="table" tableValues="0 0.49803921568627"></fefuncr><fefuncg type="table" tableValues="0 0.49803921568627"></fefuncg><fefuncb type="table" tableValues="0 0.49803921568627"></fefuncb><fefunca type="table" tableValues="1 1"></fefunca></fecomponenttransfer><fecomposite in2="SourceGraphic" operator="in"></fecomposite></filter></defs></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0" width="0" height="0" focusable="false" role="none" style="visibility: hidden; position: absolute; left: -9999px; overflow: hidden;"><defs><filter id="wp-duotone-grayscale"><fecolormatrix color-interpolation-filters="sRGB" type="matrix" values=" .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 "></fecolormatrix><fecomponenttransfer color-interpolation-filters="sRGB"><fefuncr type="table" tableValues="0 1"></fefuncr><fefuncg type="table" tableValues="0 1"></fefuncg><fefuncb type="table" tableValues="0 1"></fefuncb><fefunca type="table" tableValues="1 1"></fefunca></fecomponenttransfer><fecomposite in2="SourceGraphic" operator="in"></fecomposite></filter></defs></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0" width="0" height="0" focusable="false" role="none" style="visibility: hidden; position: absolute; left: -9999px; overflow: hidden;"><defs><filter id="wp-duotone-purple-yellow"><fecolormatrix color-interpolation-filters="sRGB" type="matrix" values=" .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 "></fecolormatrix><fecomponenttransfer color-interpolation-filters="sRGB"><fefuncr type="table" tableValues="0.54901960784314 0.98823529411765"></fefuncr><fefuncg type="table" tableValues="0 1"></fefuncg><fefuncb type="table" tableValues="0.71764705882353 0.25490196078431"></fefuncb><fefunca type="table" tableValues="1 1"></fefunca></fecomponenttransfer><fecomposite in2="SourceGraphic" operator="in"></fecomposite></filter></defs></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0" width="0" height="0" focusable="false" role="none" style="visibility: hidden; position: absolute; left: -9999px; overflow: hidden;"><defs><filter id="wp-duotone-blue-red"><fecolormatrix color-interpolation-filters="sRGB" type="matrix" values=" .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 "></fecolormatrix><fecomponenttransfer color-interpolation-filters="sRGB"><fefuncr type="table" tableValues="0 1"></fefuncr><fefuncg type="table" tableValues="0 0.27843137254902"></fefuncg><fefuncb type="table" tableValues="0.5921568627451 0.27843137254902"></fefuncb><fefunca type="table" tableValues="1 1"></fefunca></fecomponenttransfer><fecomposite in2="SourceGraphic" operator="in"></fecomposite></filter></defs></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0" width="0" height="0" focusable="false" role="none" style="visibility: hidden; position: absolute; left: -9999px; overflow: hidden;"><defs><filter id="wp-duotone-midnight"><fecolormatrix color-interpolation-filters="sRGB" type="matrix" values=" .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 "></fecolormatrix><fecomponenttransfer color-interpolation-filters="sRGB"><fefuncr type="table" tableValues="0 0"></fefuncr><fefuncg type="table" tableValues="0 0.64705882352941"></fefuncg><fefuncb type="table" tableValues="0 1"></fefuncb><fefunca type="table" tableValues="1 1"></fefunca></fecomponenttransfer><fecomposite in2="SourceGraphic" operator="in"></fecomposite></filter></defs></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0" width="0" height="0" focusable="false" role="none" style="visibility: hidden; position: absolute; left: -9999px; overflow: hidden;"><defs><filter id="wp-duotone-magenta-yellow"><fecolormatrix color-interpolation-filters="sRGB" type="matrix" values=" .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 "></fecolormatrix><fecomponenttransfer color-interpolation-filters="sRGB"><fefuncr type="table" tableValues="0.78039215686275 1"></fefuncr><fefuncg type="table" tableValues="0 0.94901960784314"></fefuncg><fefuncb type="table" tableValues="0.35294117647059 0.47058823529412"></fefuncb><fefunca type="table" tableValues="1 1"></fefunca></fecomponenttransfer><fecomposite in2="SourceGraphic" operator="in"></fecomposite></filter></defs></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0" width="0" height="0" focusable="false" role="none" style="visibility: hidden; position: absolute; left: -9999px; overflow: hidden;"><defs><filter id="wp-duotone-purple-green"><fecolormatrix color-interpolation-filters="sRGB" type="matrix" values=" .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 "></fecolormatrix><fecomponenttransfer color-interpolation-filters="sRGB"><fefuncr type="table" tableValues="0.65098039215686 0.40392156862745"></fefuncr><fefuncg type="table" tableValues="0 1"></fefuncg><fefuncb type="table" tableValues="0.44705882352941 0.4"></fefuncb><fefunca type="table" tableValues="1 1"></fefunca></fecomponenttransfer><fecomposite in2="SourceGraphic" operator="in"></fecomposite></filter></defs></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0" width="0" height="0" focusable="false" role="none" style="visibility: hidden; position: absolute; left: -9999px; overflow: hidden;"><defs><filter id="wp-duotone-blue-orange"><fecolormatrix color-interpolation-filters="sRGB" type="matrix" values=" .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 "></fecolormatrix><fecomponenttransfer color-interpolation-filters="sRGB"><fefuncr type="table" tableValues="0.098039215686275 1"></fefuncr><fefuncg type="table" tableValues="0 0.66274509803922"></fefuncg><fefuncb type="table" tableValues="0.84705882352941 0.41960784313725"></fefuncb><fefunca type="table" tableValues="1 1"></fefunca></fecomponenttransfer><fecomposite in2="SourceGraphic" operator="in"></fecomposite></filter></defs></svg>
+  <!-- #site-container -->
+  <div id="site-container" class="clearfix">
+
+    
+    <!-- #header -->
+    <header id="site-header" class="clearfix" role="banner">
+      <div class="ht-container">
+        <!-- #logo -->
+	<div id="logo">
+                    <a title="Linux命令大全(手册)" href="https://www.linuxcool.com/">
+                          Linux命令大全(手册)                      </a>
+                  </div>
+<br>
+<p>准确，丰富，稳定，在技术之路上为您护航！</p>
+        <!-- /#logo -->
+
+        
+      </div>
+    </header>
+    <!-- /#header -->
+
+    <!-- #live-search -->
+    <div id="live-search">
+      <div class="ht-container">
+        <div id="search-wrap">
+          <form role="search" method="get" id="searchform" class="clearfix" action="https://www.linuxcool.com/">
+            <input type="text" onfocus="if (this.value == &#39;请输入一个命令或相关功能&#39;) {this.value = &#39;&#39;;}" onblur="if (this.value == &#39;&#39;)  {this.value = &#39;请输入一个命令或相关功能&#39;;}" value="请输入一个命令或相关功能" name="s" id="s" autocapitalize="off" autocorrect="off" autocomplete="off">
+            <i class="live-search-loading fa fa-spinner fa-spin"></i>
+            <button type="submit" id="searchsubmit">
+              <i class="fa fa-search"></i><span>查询</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+<!-- /#live-search -->
+
+
+
+<!-- #primary -->
+<div id="primary" class="sidebar-right clearfix"> 
+  <!-- .ht-container -->
+  <div class="ht-container">
+
+    <!-- #content -->
+    <section id="content" role="main">
+      
+      <!-- #page-header -->
+      <header id="page-header" class="clearfix">
+        <h1 class="page-title">man命令 – 查看帮助信息</h1>
+<link rel="stylesheet" href="./man命令 – 查看帮助信息 – Linux命令大全(手册)_files/font-awesome.min(1).css">
+
+<script src="./man命令 – 查看帮助信息 – Linux命令大全(手册)_files/jquery-2.1.1.min.js" type="text/javascript"></script>
+<script src="./man命令 – 查看帮助信息 – Linux命令大全(手册)_files/jquery.easyaudioeffects.1.0.0.min.js"></script>
+<section class="section" id="examples">
+  <div class="wrapper">
+    <section>
+      <script type="text/javascript">
+			  $(function(){
+				 $('.oneShotMonophonic-trigger-click').easyAudioEffects({
+					mp3 : "https://www.linuxcool.com/sounds/man.m4a",
+					eventType : 'click',
+					playType : 'oneShotMonophonic'
+				 });
+			  });
+		   </script>
+    </section>
+  </div>
+</section>
+
+       <style type="text/css">
+.div-inline{ display:inline} 
+</style>
+<div class="center" style="margin-top: 0px;">
+<div id="breadcrumbs"><a href="https://www.linuxcool.com/"><icon class="fa fa-home"></icon></a><span class="sep">/</span>真正好用的Linux命令在线查询手册<span class="sep">/</span> 
+  <div class="div-inline oneShotMonophonic-trigger-click sound-trigger sound-trigger--type-default sound-trigger--type-click">
+    <div class="div-inline sound-trigger__inner"><i class="fa fa-volume-up fa-lg"></i> </div>
+  </div>
+  <div class="div-inline">：播放正确发音</div>
+</div>
+      </div></header>
+<style type="text/css">
+	
+.text1 {
+	border:1px dashed #BBBBBB; 
+	background-color:#F9F9F9;
+	}
+a {
+    text-decoration: none;
+}
+#ad-arc-top {
+    line-height: 23px;
+}
+#ad-arc-top p {
+    padding: 8px 10px;
+    margin-top: 10px;
+    line-height: 23px;
+    border: 1px dashed #bbb;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+}
+p {
+	   margin-bottom: 0;
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+   </style>
+<div class="text1">
+<p><a href="https://www.linuxprobe.com/basic-learning-00.html" target="_blank" style="color: #D33428;">《Linux就该这么学》是一本基于最新Linux系统编写的入门必读书籍，内容面向零基础读者，由浅入深渐进式教学，销量保持国内第一，年销售量超过10万余本。<span style="color:#08c;">点此免费在线阅读。</span></a></p>
+</div>
+      <!-- /#page-header --> 
+
+      
+      
+                
+        
+
+         
+        <article id="post-3334" class="clearfix post-3334 post type-post status-publish format-standard hentry category-file">
+          
+         <!-- .entry-header -->
+         <header class="entry-header">
+          
+                              
+       </header>
+       <!-- /.entry-header -->
+       
+       
+       <div class="entry-content">
+        
+<p>man命令来自于英文单词manual的缩写，中文译为帮助手册，其功能是用于查看命令、配置文件及服务的帮助信息。网上搜索来的资料普遍不够准确（LinuxCool.Com除外~），或者缺乏系统性（LinuxProbe.Com除外~），质量不高造成学习进度缓慢，而man命令作为权威的官方工具则很好的解决了上述两点弊病，一份完整的帮助信息包含以下信息。</p>
+
+
+
+<figure id="tablepress-5" class="wp-block-table"><table><tbody><tr><td>结构名称</td><td>代表意义</td></tr><tr><td>NAME</td><td>命令的名称</td></tr><tr><td>SYNOPSIS</td><td>参数的大致使用方法</td></tr><tr><td>DESCRIPTION</td><td>介绍说明</td></tr><tr><td>EXAMPLES</td><td>演示（附带简单说明）</td></tr><tr><td>OVERVIEW</td><td>概述</td></tr><tr><td>DEFAULTS</td><td>默认的功能</td></tr><tr><td>OPTIONS</td><td>具体的可用选项（带介绍）</td></tr><tr><td>ENVIRONMENT</td><td>环境变量</td></tr><tr><td>FILES</td><td>用到的文件</td></tr><tr><td>SEE ALSO</td><td>相关的资料</td></tr><tr><td>HISTORY</td><td>维护历史与联系方式</td></tr></tbody></table></figure>
+
+
+
+<p><strong>语法格式：</strong>man [参数] 对象</p>
+
+
+
+<p><strong>常用参数：</strong></p>
+
+
+
+<figure class="wp-block-table"><table class="has-fixed-layout"><tbody><tr><td>-a</td><td>在所有的man帮助手册中搜索</td></tr><tr><td>-d</td><td>检查新加入的文件是否有错误</td></tr><tr><td>-f</td><td>显示给定关键字的简短描述信息</td></tr><tr><td>-p</td><td>指定内容时使用分页程序</td></tr><tr><td>-M</td><td>指定man手册搜索的路径</td></tr><tr><td>-w</td><td>显示文件所在位置</td></tr></tbody></table></figure>
+
+
+
+<p><strong> 快捷键：</strong></p>
+
+
+
+<figure class="wp-block-table"><table><tbody><tr><td>q</td><td>退出</td></tr><tr><td>Enter</td><td>按行下翻</td></tr><tr><td>Space</td><td>按页下翻</td></tr><tr><td>b</td><td>上翻一页</td></tr><tr><td>/字符串</td><td>在手册页中查找字符串</td></tr></tbody></table></figure>
+
+
+
+<p><strong>参考实例</strong></p>
+
+
+
+<p>查看指定命令的帮助信息：</p>
+
+
+
+<pre class="wp-block-preformatted">[root@linuxcool ~]# <strong>man ls</strong></pre>
+
+
+
+<p>查看指定配置文件的帮助信息：</p>
+
+
+
+<p>如果即有passwd命令，又有/etc/passwd文件，则需要手动指定帮助信息的编号。编号规则：普通命令为1，函数为2，库文件为3，设备为4，配置文件为5，游戏为6，宏文件为7，系统命令为8，内核程序为9，TK指令为10。</p>
+
+
+
+<pre class="wp-block-preformatted">[root@linuxcool ~]# <strong>man 5 passwd</strong></pre>
+
+
+
+<p>找到某个命令的帮助信息的存储位置：</p>
+
+
+
+<pre class="wp-block-preformatted">[root@linuxcool ~]# <strong>man -w ls</strong>
+/usr/share/man/man1/ls.1.gz</pre>
+
+
+
+<p>找到某个配置文件的帮助信息的存储位置：</p>
+
+
+
+<pre class="wp-block-preformatted">[root@linuxcool ~]# <strong>man -w 5 passwd</strong>
+/usr/share/man/man5/passwd.5.gz
+</pre>
+<div id="dxseo-related-posts" style="clear:both;"><h3 style="margin:20px 0 10px;padding:0;font-weight:bold;font-size:14px;">与该功能相关的Linux命令：</h3><ul class="dxseo-rl-items"><li style="list-style-type: disc;" class="dxseo-rl-item"><a href="https://www.linuxcool.com/slocate" target="_blank" title="slocate命令 – 查找文件或目录">slocate命令 – 查找文件或目录</a></li><li style="list-style-type: disc;" class="dxseo-rl-item"><a href="https://www.linuxcool.com/sz" target="_blank" title="sz命令 – 基于ZModem协议下载文件到本地">sz命令 – 基于ZModem协议下载文件到本地</a></li><li style="list-style-type: disc;" class="dxseo-rl-item"><a href="https://www.linuxcool.com/rndc-confgen" target="_blank" title="rndc-confgen命令 – 密钥生成工具">rndc-confgen命令 – 密钥生成工具</a></li><li style="list-style-type: disc;" class="dxseo-rl-item"><a href="https://www.linuxcool.com/newusers" target="_blank" title="newusers命令 – 更新和批量创建新用户">newusers命令 – 更新和批量创建新用户</a></li><li style="list-style-type: disc;" class="dxseo-rl-item"><a href="https://www.linuxcool.com/setconsole" target="_blank" title="setconsole命令 – 设置系统终端">setconsole命令 – 设置系统终端</a></li><li style="list-style-type: disc;" class="dxseo-rl-item"><a href="https://www.linuxcool.com/mount-nfs4" target="_blank" title="mount.nfs4命令 – 挂载NFSv4文件系统">mount.nfs4命令 – 挂载NFSv4文件系统</a></li><li style="list-style-type: disc;" class="dxseo-rl-item"><a href="https://www.linuxcool.com/iwconfig" target="_blank" title="iwconfig命令 – 配置无线网络接口">iwconfig命令 – 配置无线网络接口</a></li><li style="list-style-type: disc;" class="dxseo-rl-item"><a href="https://www.linuxcool.com/rhmask" target="_blank" title="rhmask命令 – 加密和解密文件">rhmask命令 – 加密和解密文件</a></li><li style="list-style-type: disc;" class="dxseo-rl-item"><a href="https://www.linuxcool.com/mmove" target="_blank" title="mmove命令 – 移动文件或目录">mmove命令 – 移动文件或目录</a></li><li style="list-style-type: disc;" class="dxseo-rl-item"><a href="https://www.linuxcool.com/mke2fs" target="_blank" title="mke2fs命令 -创建文件系统">mke2fs命令 -创建文件系统</a></li></ul></div>              </div>
+      
+            
+    </article>
+
+           <section id="entry-author" class="clearfix">
+<div class="wp-block-image"><figure class="aligncenter is-resized"><img src="./man命令 – 查看帮助信息 – Linux命令大全(手册)_files/author.png" alt="Author" class="wp-image-32" width="300" height="35"></figure></div>
+<p style="text-align:center"><strong>这篇优质的内容由TA贡献而来</strong></p>
+<p style="text-align:center">刘遄 </p>  
+<p style="text-align:center">  《Linux就该这么学》书籍作者，RHCA认证架构师，教育学（计算机专业硕士）。</p>
+  </section>
+        
+      
+
+
+</section>
+<!-- #content -->
+
+    <!-- #sidebar -->
+  <aside id="sidebar" role="complementary">
+    <div id="st_popular_articles_widget-2" class="widget st_popular_articles_widget clearfix FixedWidget__fixed_widget" style=""> 
+        <h4 class="widget-title"><span>最热命令</span></h4>                            
+                <ul class="clearfix">
+                
+					                                        <li class="clearfix format-standard">
+					<a href="https://www.linuxcool.com/ls" rel="bookmark">ls命令 – 显示指定工作目录下的文件及属性信息</a>
+                    </li>
+                                        <li class="clearfix format-standard">
+					<a href="https://www.linuxcool.com/rhel-download" rel="bookmark">Red Hat Enterprise Linux 8/7/6/5/4 合集下载地址</a>
+                    </li>
+                                        <li class="clearfix format-standard">
+					<a href="https://www.linuxcool.com/pronunciation" rel="bookmark">中国程序员最容易读错的单词汇总（带正确发音示范）</a>
+                    </li>
+                                        <li class="clearfix format-standard">
+					<a href="https://www.linuxcool.com/cp" rel="bookmark">cp命令 – 复制文件或目录</a>
+                    </li>
+                                        <li class="clearfix format-standard">
+					<a href="https://www.linuxcool.com/cat" rel="bookmark">cat命令 – 在终端设备上显示文件内容</a>
+                    </li>
+                                        <li class="clearfix format-standard">
+					<a href="https://www.linuxcool.com/mkdir" rel="bookmark">mkdir命令 – 创建目录文件</a>
+                    </li>
+                                        <li class="clearfix format-standard">
+					<a href="https://www.linuxcool.com/echo" rel="bookmark">echo命令 – 输出字符串或提取后的变量值</a>
+                    </li>
+                                        <li class="clearfix format-standard">
+					<a href="https://www.linuxcool.com/mv" rel="bookmark">mv命令 – 移动或改名文件</a>
+                    </li>
+                                        <li class="clearfix format-standard">
+					<a href="https://www.linuxcool.com/rm" rel="bookmark">rm命令 – 删除文件或目录</a>
+                    </li>
+                                        <li class="clearfix format-standard">
+					<a href="https://www.linuxcool.com/df" rel="bookmark">df命令 – 显示磁盘空间使用情况</a>
+                    </li>
+                                        <li class="clearfix format-standard">
+					<a href="https://www.linuxcool.com/pwd" rel="bookmark">pwd命令 – 显示当前工作目录的路径</a>
+                    </li>
+                                        <li class="clearfix format-standard">
+					<a href="https://www.linuxcool.com/ssh" rel="bookmark">ssh命令 – 安全的远程连接服务器</a>
+                    </li>
+                                        <li class="clearfix format-standard">
+					<a href="https://www.linuxcool.com/find" rel="bookmark">find命令 – 根据路径和条件搜索指定文件</a>
+                    </li>
+                                        <li class="clearfix format-standard">
+					<a href="https://www.linuxcool.com/rpm" rel="bookmark">rpm命令 – RPM软件包管理器</a>
+                    </li>
+                                        <li class="clearfix format-standard">
+					<a href="https://www.linuxcool.com/tail" rel="bookmark">tail命令 – 查看文件尾部内容</a>
+                    </li>
+                                        <li class="clearfix format-standard">
+					<a href="https://www.linuxcool.com/grep" rel="bookmark">grep命令 – 强大的文本搜索工具</a>
+                    </li>
+                                        <li class="clearfix format-standard">
+					<a href="https://www.linuxcool.com/mount" rel="bookmark">mount命令 – 把文件系统挂载到目录</a>
+                    </li>
+                                        <li class="clearfix format-standard">
+					<a href="https://www.linuxcool.com/tftp" rel="bookmark">tftp命令 – 上传及下载文件</a>
+                    </li>
+                                        <li class="clearfix format-standard">
+					<a href="https://www.linuxcool.com/netstat" rel="bookmark">netstat命令 – 显示网络状态</a>
+                    </li>
+                                        <li class="clearfix format-standard">
+					<a href="https://www.linuxcool.com/rmdir" rel="bookmark">rmdir命令 – 删除空目录文件</a>
+                    </li>
+                                        <li class="clearfix format-standard">
+					<a href="https://www.linuxcool.com/curl" rel="bookmark">curl命令 – 文件传输工具</a>
+                    </li>
+                                        <li class="clearfix format-standard">
+					<a href="https://www.linuxcool.com/fdisk" rel="bookmark">fdisk命令 – 管理磁盘分区</a>
+                    </li>
+                                        <li class="clearfix format-standard">
+					<a href="https://www.linuxcool.com/dhclient" rel="bookmark">dhclient命令 – 动态获取或释放IP地址</a>
+                    </li>
+                                        <li class="clearfix format-standard">
+					<a href="https://www.linuxcool.com/startx" rel="bookmark">startx命令 – 初始化X-windows系统</a>
+                    </li>
+                                        <li class="clearfix format-standard">
+					<a href="https://www.linuxcool.com/zip" rel="bookmark">zip命令 – 压缩文件</a>
+                    </li>
+                                        
+                    
+                </ul>
+		
+		</div><div id="block-2" class="widget widget_block widget_media_image clearfix FixedWidget__fixed_widget" style="">
+<figure class="wp-block-image size-full is-resized is-style-default"><img loading="lazy" src="./man命令 – 查看帮助信息 – Linux命令大全(手册)_files/cover.png" alt="" class="wp-image-8965" width="300" height="421" srcset="https://www.linuxcool.com/wp-content/uploads/2021/12/cover.png 300w, https://www.linuxcool.com/wp-content/uploads/2021/12/cover-214x300.png 214w, https://www.linuxcool.com/wp-content/uploads/2021/12/cover-43x60.png 43w, https://www.linuxcool.com/wp-content/uploads/2021/12/cover-107x150.png 107w" sizes="(max-width: 300px) 100vw, 300px"><figcaption><strong>在线阅读书籍：</strong><a rel="noreferrer noopener" href="https://www.linuxprobe.com/" target="_blank">https://www.linuxprobe.com</a> <strong><br>Linux系统大全：</strong><a rel="noreferrer noopener" href="https://www.linuxdown.com/" target="_blank">https://www.linuxdown.com</a><strong><br>红帽RHCE认证：</strong><a rel="noreferrer noopener" href="https://www.rhce.net/" target="_blank">https://www.rhce.net</a></figcaption></figure>
+</div>    <!-- #sidebar -->
+  </aside>
+  
+</div>
+<!-- .ht-container -->
+</div>
+<!-- /#primary -->
+
+<!-- #footer-widgets -->
+<!-- /#footer-widgets -->
+
+<!-- #site-footer -->
+<footer id="site-footer" class="clearfix" role="contentinfo">
+  <div class="ht-container">
+
+      <p><img style="float: left" src="./man命令 – 查看帮助信息 – Linux命令大全(手册)_files/Linux命令大全.jpg" alt="Linux命令大全"></p>
+  <small id="copyright">
+      <p style="text-align: center;"><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">京ICP备16058923号-1</a></p>
+<p style="text-align: center;">推荐用书：《<a href="https://www.linuxprobe.com/" target="_blank" rel="noreferrer noopener" aria-label="Linux就该这么学（在新窗口打开）">Linux就该这么学</a>》</p>
+<p style="text-align: center;"><strong>真正好用的Linux命令在线查询手册</strong></p>  </small>
+  
+</div>
+<!-- /.ht-container -->
+</footer> 
+<!-- /#site-footer -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?688c8b862521ebd236ee2271bdd52cff";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<!-- /#site-container -->
+</div>
+
+	<script type="text/javascript">
+	jQuery(document).ready(function() {
+	jQuery('#live-search #s').liveSearch({url: 'https://www.linuxcool.com/index.php?ajax=1&s='});
+	});
+	</script>
+<script type="text/javascript" src="./man命令 – 查看帮助信息 – Linux命令大全(手册)_files/ht-glossary-frontend.js" id="htgb-custom-js-js"></script>
+<script type="text/javascript" src="./man命令 – 查看帮助信息 – Linux命令大全(手册)_files/script.min.js" id="ht_toc-script-js-js"></script>
+<script type="text/javascript" src="./man命令 – 查看帮助信息 – Linux命令大全(手册)_files/shortcodes.js" id="shortcodes-js-js"></script>
+<script type="text/javascript" src="./man命令 – 查看帮助信息 – Linux命令大全(手册)_files/functions.js" id="st_theme_custom-js"></script>
+<script type="text/javascript" id="q2w3_fixed_widget-js-extra">
+/* <![CDATA[ */
+var q2w3_sidebar_options = [{"sidebar":"st_primary","use_sticky_position":false,"margin_top":10,"margin_bottom":200,"stop_elements_selectors":"","screen_max_width":0,"screen_max_height":0,"widgets":["#st_popular_articles_widget-2"]}];
+/* ]]> */
+</script>
+<script type="text/javascript" src="./man命令 – 查看帮助信息 – Linux命令大全(手册)_files/frontend.min.js" id="q2w3_fixed_widget-js"></script>
+<script type="text/javascript" src="./man命令 – 查看帮助信息 – Linux命令大全(手册)_files/jquery.livesearch.js" id="st_live_search-js"></script>
+
+
+<!-- Dynamic page generated in 0.215 seconds. -->
+<!-- Cached page generated by WP-Super-Cache on 2022-09-26 14:11:36 -->
+
+<!-- super cache --><div id="jquery-live-search" style="display: none;"></div></body></html>
