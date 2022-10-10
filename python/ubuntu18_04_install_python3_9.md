@@ -26,3 +26,13 @@ $ sudo apt install python3.9-dev
 $ python3.9 --version
 ```
 
+### 使用pyenv在Ubuntu上安装Python 3.9.9
+首先安装pyenv
+然后执行:
+```
+$ pyenv versions # 显示所有已经安装的python版本
+$ pyenv install --list # 显示可以安装的python版本
+$ pyenv install 3.9.9 # 安装3.9.9版本的CPython，嘿嘿！
+$ pyenv global 3.9.9 # 设置全局状态的python版本，即当前目录下没有 .python-version 文件
+$ pyenv local 3.9.9 # 会在目录下生成 .python-version 文件，用来指定当前目录下使用python的版本
+```
