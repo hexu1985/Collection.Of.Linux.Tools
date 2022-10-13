@@ -32,3 +32,28 @@ root          12       2  0 3月29 ?       00:00:00 [ksoftirqd/0]
 root          13       2  0 3月29 ?       00:00:13 [rcu_sched]
 root          14       2  0 3月29 ?       00:00:00 [migration/0]
 ```
+
+性能之巅7.5.5
+```
+$ ps -eo pid,pmem,vsz,rss,comm
+  PID %MEM    VSZ   RSS COMMAND
+    1  0.0 225928  9500 systemd
+    2  0.0      0     0 kthreadd
+    3  0.0      0     0 rcu_gp
+    4  0.0      0     0 rcu_par_gp
+    6  0.0      0     0 kworker/0:0H-ev
+    8  0.0      0     0 mm_percpu_wq
+[...]
+ 3497  0.3 30028392 120672 code
+ 3503  0.6 21539640 210580 code
+ 3539  0.2 21550004 71952 code
+ 3617  0.2 21539368 83640 code
+ 3701  0.4 21894660 145312 tabby
+ 3705  0.0 17177448 26708 tabby
+ 3706  0.0 17177448 25260 tabby
+ 3824  0.0 16809192 2372 chrome_crashpad
+ 3929  2.9 17459204 955780 tabby
+ 3934  0.1 17241212 36980 tabby
+ 3945  1.8 36425584 600912 tabby
+[...]
+```
