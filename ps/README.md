@@ -57,3 +57,19 @@ $ ps -eo pid,pmem,vsz,rss,comm
  3945  1.8 36425584 600912 tabby
 [...]
 ```
+
+- - -
+
+`ps -j`
+```
+$ ps -j
+  PID  PGID   SID TTY          TIME CMD
+ 3435  3435  3435 pts/0    00:00:02 bash
+17352 17352  3435 pts/0    00:00:00 python3
+17384 17352  3435 pts/0    00:00:00 sh
+17385 17352  3435 pts/0    00:00:00 run_forever.sh
+17398 17352  3435 pts/0    00:00:00 sleep
+17399 17399  3435 pts/0    00:00:00 ps
+22756 22752  3435 pts/0    00:00:15 python3
+22797 22752  3435 pts/0    00:00:00 uevent_monitor
+```
