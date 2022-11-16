@@ -1,0 +1,65 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*************************上一页*************************/
+.phpSyyBox{ width: 1200px; height:50px; background: #F3F3F3; margin: auto;}
+.phpSyyLeft{ float: left;}
+.phpSyySyj{ float: left; margin: 15px 0px 0px 30px;}
+.phpSyySyj span{ display: block; float: left;}
+.phpSyySyj span a{ display: block; color: #333333; text-decoration: none;}
+.phpSyySyj span a:hover{ color: #F52E3A;}
+.phpSyySyj span a b{ display: block; float:left; width: 17px; height: 12px; background: url(/static/images/examples/bg1.png) no-repeat; margin: 3px 5px 0px 0px;}
+.phpSyySyj span a b.icon1{ background-position: 0px 0px;}
+.phpSyySyj span a b.icon2{ background-position: -25px 0px;}
+.phpSyySyj span a b.icon3{ background-position: -50px 0px;}
+.phpSyySyj span a b.icon4{ background-position: 0px -20px;}
+.phpSyySyj em{ display: block; width: 1px; height: 15px; background: #333333; float: left; margin: 0px 15px 0px 15px;}
+.phpSyySyj span.right a{ color: #333333;}
+.phpSyySyj span.right a:hover{ color: #F52E3A;}
+.phpSyySyj span.rightIn a{ color: #999999;}
+.phpSyySyj span.rightIn a:hover{ color: #F52E3A;}
+.phpSyyQhlx{ float: left; width: 120px; height: 50px; margin-left:25px;}
+.phpSyyQhlx a{ display: block; width: 120px; height: 50px; background: #5A98DE; line-height: 50px; color: #ffffff; text-decoration: none;}
+.phpSyyQhlx a b{ display: block; float: left; width: 18px; height: 18px; background: url(/static/images/examples/bg1.png) no-repeat -85px 0px; margin: 15px 10px 0px 15px;}
+.phpSyyHqbz{ float: left; margin-left:25px; margin-top:15px;}
+.phpSyyHqbz a{ display: block; color: #333333; text-decoration: none;}
+.phpSyyHqbz a b{ display: block; float: left; width: 18px; height: 18px; background: url(/static/images/examples/bg1.png) no-repeat -115px 0px; margin: 0px 5px 0px 0px;}
+.phpSyyRight{ float: right;}
+.phpSyySjgk{ float: left; position: relative;}
+.phpSyySjgkTitle{ width: 120px; height: 50px;}
+.phpSyySjgkTitle a{ display: block; width: 120px; height: 50px; color: #F88C00; text-decoration: none; line-height: 50px;}
+.phpSyySjgkTitle a b{ display: block; float: left; width: 38px; height: 38px; background: url(/static/images/examples/bg1.png) no-repeat; margin: 5px 10px 0px 0px;}
+.phpSyySjgkTitle a b.icon1{ background-position: 0px -40px;}
+.phpSyySjgkTitle a b.icon2{ background-position: -50px -40px;}
+.phpSyySjgkCont{ width: 120px; height: 120px; background: #ffffff; border-radius: 5px; position:absolute; left:0px; top: 50px; box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.04); z-index: 99;}
+.phpSyySjgkCont img{ width: 100px; height: 100px; margin: 10px 0px 0px 10px;}
+.phpSyySjgkTitle1 a{ color: #009BFE;}
+
+
+/*************************会员介绍*************************/
+.hHuiyBox{ border-top: 2px solid #000; background: #fff;}
+.hHuiyBox h3 {font-size: 20px;font-weight: normal;line-height: 56px;padding-left: 10px;float: left;}
+.hHuiyBox .content2{padding: 0px 15px 0px 15px;}
+.hHuiyBox .vip_tips{display: block;float: right;width: 155px;height: 23px;background: linear-gradient(90deg, #F6E1B0 0%, #EDC66E 100%);border-radius: 5px;line-height: 23px;overflow: hidden;font-size: 10px;color: #593C13;text-decoration: none;margin: 15px 10px 0px 0px;}
+.hHuiyBox .vip_tips b{display: block;float: left;width: 24px;height: 9px;background: url(https://m.php.cn/static/images/hhl_bg5.png) no-repeat -110px -190px;background-size: 300px 300px;margin: 8px 5px 0px 5px;}
+.mjpKclbMenu{ width: 358px;padding: 0px 10px 0px 10px;}
+.mjpKclbMenu li{ float:left; margin: 0px 5px 0px 5px; height: 30px; background: #F7F7F7; border-radius: 4px; line-height: 28px; padding: 0px 15px; color: #646566; text-decoration: none; cursor: pointer;}
+.mjpKclbMenu li.current{ background: #FD4029; color: #ffffff; font-weight: bold;}
+.mjpKclbMenu li:first-child{ margin-left:0px;}
+.mjpKclbList{ width: 100%;}
+.mjpKclbList li{ border-bottom: 1px solid #F2F2F2; padding-bottom: 20px; margin-top:20px;}
+.mjpKclbList li span.img{ display: block; width: 146px; height: 84px; position: relative; float: left;}
+.mjpKclbList li span.img img{ width: 146px; height: 84px; border-radius: 6px;}
+.mjpKclbList li span.img p{ width: 56px; height: 20px; background: #FD4029; border-radius: 0px 6px 0px 6px; line-height: 20px; text-align: center; overflow: hidden; font-size: 12px; color: #ffffff; position:absolute; right: 0px; top: 0px;}
+.mjpKclbList li dl{ float: right; width: calc(100% - 161px);}
+.mjpKclbList li dl dt a{ display: block; height: 40px; line-height: 20px; overflow: hidden;}
+.mjpKclbList li dl dt span{ display:inline-block; height: 20px; border: 1px solid #FD4029; padding: 0px 5px; border-radius: 5px; font-size: 12px; color: #FD4029; margin-right: 5px; line-height: 18px; box-sizing: border-box;}
+.mjpKclbList li dl dd{ margin-top:5px; height: 20px; overflow: hidden;}
+.mjpKclbList li dl dd span.left{ display: block; float: left;}
+.mjpKclbList li dl dd span.left em{ display: block; float: left; color: #FD432C; font-size: 16px; margin: 0px 5px 0px 0px;}
+.mjpKclbList li dl dd span.left i{ display: block; float: left; font-style: normal; font-size: 12px; color: #93999F; margin-top:3px; text-decoration: line-through;}
+.mjpKclbList li dl dd span.right1{ display: block; width: 60px; height: 20px; background: #FCEAC0; border-radius: 2px; font-size: 12px; color: #633B00; line-height: 20px; text-align: center; overflow: hidden; float: right;}
+.mjpKclbList li dl dd span.right2{ display: block; float: right;}
+.mjpKclbList li dl dd span.right2 em{ display: block; float: left; width: 31px; height: 20px; background: #585858; border-radius: 2px 0px 0px 2px; color: #FCEAC0; font-size: 12px; line-height: 20px; overflow: hidden; text-align: center;}
+.mjpKclbList li dl dd span.right2 i{ display: block; float: left; height: 20px; background: #FCEAC0; border-radius: 0px 2px 2px 0px; color: #633B00; font-size: 12px; padding: 0px 5px; font-style: normal; line-height: 20px;}
+.mjpKclbList li dl dd.cont2{height: 18px; border-radius: 3px; border: 1px solid #FD4029; box-sizing: border-box; line-height: 16px; overflow: hidden; max-width: 187px; display:inline-block; font-size: 12px; color: #FD4029; padding: 0px 5px; margin-top:5px;}
