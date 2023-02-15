@@ -1,0 +1,1740 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)https://www.cnblogs.com/machangwei-8/p/10388883.html -->
+<html lang="zh-cn" style="--olcb-folder-code-block-max-height:80vh;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="never">
+    <meta name="description" content="基础命令学习目录首页 strace是什么？ 按照strace官网的描述, strace是一个可用于诊断、调试和教学的Linux用户空间跟踪器。我们用它来监控用户空间进程和内核的交互，比如系统调用、信号">
+    <meta property="og:description" content="基础命令学习目录首页 strace是什么？ 按照strace官网的描述, strace是一个可用于诊断、调试和教学的Linux用户空间跟踪器。我们用它来监控用户空间进程和内核的交互，比如系统调用、信号">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>strace命令详解 - 马昌伟 - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="https://common.cnblogs.com/favicon.svg" type="image/svg+xml">
+    
+    <style>#home :not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]):not([class*="brush:"]) code:not(.hljs), :not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]):not([class*="brush:"]) code:not(.hljs) {background: rgb(245, 245, 245);
+        padding: 12px;
+        border: 1px solid rgb(204, 204, 204);
+        border-radius: 3px;
+        border-color: transparent;
+        color: rgb(68, 68, 68);
+        font-family: "Courier New", sans-serif;
+        font-size: 12px</style><link rel="stylesheet" href="./strace命令详解_files/blog-common.min.css">
+    
+
+    <link id="MainCss" rel="stylesheet" href="./strace命令详解_files/bundle-coffee.min.css">
+        <link id="highlighter-theme-cnblogs" type="text/css" rel="stylesheet" href="./strace命令详解_files/cnblogs.css">
+    <link type="text/css" rel="stylesheet" href="./strace命令详解_files/custom.css">
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./strace命令详解_files/bundle-coffee-mobile.min.css">
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/machangwei-8/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/machangwei-8/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/machangwei-8/wlwmanifest.xml">
+    <script type="text/javascript" async="" src="./strace命令详解_files/analytics.js"></script><script>
+        var currentBlogId = 412391;
+        var currentBlogApp = 'machangwei-8';
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'coffee';
+        var visitorUserId = '';
+        var hasCustomScript = true;
+        try {
+            if (hasCustomScript && document.referrer && document.referrer.indexOf('baidu.com') >= 0) {
+                Object.defineProperty(document, 'referrer', { value: '' });
+                Object.defineProperty(Document.prototype, 'referrer', { get: function () { return ''; } });
+            }
+        } catch (error) { }
+        window.cb_enable_mathjax = false;
+        window.mathEngine = 0;
+        window.codeHighlightEngine = 1;
+        window.enableCodeLineNumber = false;
+        window.codeHighlightTheme = 'cnblogs';
+        window.darkModeCodeHighlightTheme = 'vs2015';
+        window.isDarkCodeHighlightTheme = false;
+        window.isDarkModeCodeHighlightThemeDark = true;
+        window.isDisableCodeHighlighter = false;
+        window.enableCodeThemeTypeFollowSystem = false;
+    </script>
+        <script>
+            var currentPostDateAdded = '2019-02-16 19:30';
+        </script>
+    <script src="./strace命令详解_files/jquery-2.2.0.min.js"></script>
+    <script src="./strace命令详解_files/blog-common.min.js"></script><style>.medium-zoom-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 300ms;
+  will-change: opacity;
+}
+
+.medium-zoom--opened .medium-zoom-overlay {
+  cursor: pointer;
+  cursor: zoom-out;
+  opacity: 1;
+}
+
+.medium-zoom-image {
+  cursor: pointer;
+  cursor: zoom-in;
+  /*
+    The `transition` is marked as "!important" for the animation to happen
+    even though it's overriden by another inline `transition` style attribute.
+
+    This is problematic with frameworks that generate inline styles on their
+    images (e.g. Gatsby).
+
+    See https://github.com/francoischalifour/medium-zoom/issues/110
+   */
+  transition: transform 300ms cubic-bezier(0.2, 0, 0.2, 1) !important;
+}
+
+.medium-zoom-image--hidden {
+  visibility: hidden;
+}
+
+.medium-zoom-image--opened {
+  position: relative;
+  cursor: pointer;
+  cursor: zoom-out;
+  will-change: transform;
+}
+</style>
+    
+
+    
+<meta http-equiv="origin-trial" content="Az6AfRvI8mo7yiW5fLfj04W21t0ig6aMsGYpIqMTaX60H+b0DkO1uDr+7BrzMcimWzv/X7SXR8jI+uvbV0IJlwYAAACFeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjgwNjUyNzk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A+USTya+tNvDPaxUgJooz+LaVk5hPoAxpLvSxjogX4Mk8awCTQ9iop6zJ9d5ldgU7WmHqBlnQB41LHHRFxoaBwoAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjgwNjUyNzk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A7FovoGr67TUBYbnY+Z0IKoJbbmRmB8fCyirUGHavNDtD91CiGyHHSA2hDG9r9T3NjUKFi6egL3RbgTwhhcVDwUAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjgwNjUyNzk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><script src="./strace命令详解_files/pubads_impl_2023020901.js" async=""></script><link rel="preload" href="./strace命令详解_files/f.txt" as="script"><script type="text/javascript" src="./strace命令详解_files/f.txt"></script></head>
+<body class="skin-coffee no-navbar">
+    <a name="top"></a>
+    <div id="top_nav" class="navbar forpc navbar-custom">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding">
+                    <a href="https://www.cnblogs.com/" title="开发者的网上家园" role="banner">
+                            <img src="./strace命令详解_files/logo.svg" alt="博客园Logo">
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.cnblogs.com/" onclick="countClicks(&#39;skin-navbar-sitehome&#39;)">首页</a>
+                </li>
+                <li>
+                    <a href="https://news.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-news&#39;)">新闻</a>
+                </li>
+                <li>
+                    <a href="https://q.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-q&#39;)">博问</a>
+                </li>
+                <li>
+                    <a id="nav_brandzone" href="https://brands.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-brands&#39;)">专区</a>
+                </li>
+                <li>
+                    <a href="https://ing.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-ing&#39;)">闪存</a>
+                </li>
+                <li>
+                    <a href="https://edu.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-edu&#39;)">班级</a>
+                </li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search dropdown" action="https://zzk.cnblogs.com/s" method="get" role="search">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="search" tabindex="3" autocomplete="off">
+                        <button id="zzk_search_button" onclick="window.navbarSearchManager.triggerActiveOption()">
+                            <img id="search_icon" class="focus-hidden" src="./strace命令详解_files/search.svg" alt="搜索">
+                            <img class="hidden focus-visible" src="./strace命令详解_files/enter.svg" alt="搜索">
+                        </button>
+                        <ul id="navbar_search_options" class="dropdown-menu quick-search-menu">
+                            <li tabindex="0" class="active" onclick="zzkSearch(event, document.getElementById(&#39;zzk_search_input&#39;).value)">
+                                <div class="keyword-wrapper">
+                                    <img src="./strace命令详解_files/search.svg" alt="搜索">
+                                    <div class="keyword"></div>
+                                </div>
+                                <span class="search-area">所有博客</span>
+                            </li>
+                                    <li tabindex="1" onclick="zzkBlogSearch(event, &#39;machangwei-8&#39;, document.getElementById(&#39;zzk_search_input&#39;).value)">
+                                        <div class="keyword-wrapper">
+                                            <img src="./strace命令详解_files/search.svg" alt="搜索">
+                                            <div class="keyword"></div>
+                                        </div>
+                                        <span class="search-area">当前博客</span>
+                                    </li>
+                        </ul>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔" style="display: none;">
+                        <img id="new_post_icon" class="navbar-icon" src="./strace命令详解_files/newpost.svg" alt="写随笔">
+                    </a>
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客" style="display: none;">
+                        <img id="myblog_icon" class="navbar-icon" src="./strace命令详解_files/myblog.svg" alt="我的博客">
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息" style="display: none;">
+                        <img id="msg_icon" class="navbar-icon" src="./strace命令详解_files/message.svg" alt="短消息">
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <a id="navbar_lite_mode_indicator" data-current-page="blog" style="display: none" href="javascript:void(0)" alt="简洁模式" title="简洁模式启用，您在访问他人博客时会使用简洁款皮肤展示">
+                        <img class="navbar-icon" src="./strace命令详解_files/lite-mode-on.svg" alt="简洁模式">
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown" style="display: none;">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="./strace命令详解_files/avatar-default.svg" alt="用户头像">
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <img id="navbar_lite_mode_on" src="./strace命令详解_files/lite-mode-check.svg" class="hide"><span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+                            <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup" style="display: inline;">注册</a>
+                    <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()" style="display: inline;">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div id="page_begin_html">
+        <script type="text/javascript">
+/*
+    功能：生成博客目录的JS工具
+    测试：IE8，火狐，google测试通过
+    孤傲苍狼
+    2014-5-11
+*/
+var BlogDirectory = {
+    /*
+        获取元素位置，距浏览器左边界的距离（left）和距浏览器上边界的距离（top）
+    */
+    getElementPosition:function (ele) {        
+        var topPosition = 0;
+        var leftPosition = 0;
+        while (ele){              
+            topPosition += ele.offsetTop;
+            leftPosition += ele.offsetLeft;        
+            ele = ele.offsetParent;     
+        }  
+        return {top:topPosition, left:leftPosition}; 
+    },
+
+    /*
+    获取滚动条当前位置
+    */
+    getScrollBarPosition:function () {
+        var scrollBarPosition = document.body.scrollTop || document.documentElement.scrollTop;
+        return  scrollBarPosition;
+    },
+    
+    /*
+    移动滚动条，finalPos 为目的位置，internal 为移动速度
+    */
+    moveScrollBar:function(finalpos, interval) {
+
+        //若不支持此方法，则退出
+        if(!window.scrollTo) {
+            return false;
+        }
+
+        //窗体滚动时，禁用鼠标滚轮
+        window.onmousewheel = function(){
+            return false;
+        };
+          
+        //清除计时
+        if (document.body.movement) { 
+            clearTimeout(document.body.movement); 
+        } 
+
+        var currentpos =BlogDirectory.getScrollBarPosition();//获取滚动条当前位置
+
+        var dist = 0; 
+        if (currentpos == finalpos) {//到达预定位置，则解禁鼠标滚轮，并退出
+            window.onmousewheel = function(){
+                return true;
+            }
+            return true; 
+        } 
+        if (currentpos < finalpos) {//未到达，则计算下一步所要移动的距离
+            dist = Math.ceil((finalpos - currentpos)/10); 
+            currentpos += dist; 
+        } 
+        if (currentpos > finalpos) { 
+            dist = Math.ceil((currentpos - finalpos)/10); 
+            currentpos -= dist; 
+        }
+        
+        var scrTop = BlogDirectory.getScrollBarPosition();//获取滚动条当前位置
+        window.scrollTo(0, currentpos);//移动窗口
+        if(BlogDirectory.getScrollBarPosition() == scrTop)//若已到底部，则解禁鼠标滚轮，并退出
+        {
+            window.onmousewheel = function(){
+                return true;
+            }
+            return true;
+        }
+        
+        //进行下一步移动
+        var repeat = "BlogDirectory.moveScrollBar(" + finalpos + "," + interval + ")"; 
+        document.body.movement = setTimeout(repeat, interval); 
+    },
+    
+    htmlDecode:function (text){
+        var temp = document.createElement("div");
+        temp.innerHTML = text;
+        var output = temp.innerText || temp.textContent;
+        temp = null;
+        return output;
+    },
+
+    /*
+    创建博客目录，
+    id表示包含博文正文的 div 容器的 id，
+    mt 和 st 分别表示主标题和次级标题的标签名称（如 H2、H3，大写或小写都可以！），
+    interval 表示移动的速度
+    */
+    createBlogDirectory:function (id, mt, st, interval){
+         //获取博文正文div容器
+        var elem = document.getElementById(id);
+        if(!elem) return false;
+        //获取div中所有元素结点
+        var nodes = elem.getElementsByTagName("*");
+        //创建博客目录的div容器
+        var divSideBar = document.createElement('DIV');
+        divSideBar.className = 'uprightsideBar';
+        divSideBar.setAttribute('id', 'uprightsideBar');
+        var divSideBarTab = document.createElement('DIV');
+        divSideBarTab.setAttribute('id', 'sideBarTab');
+        divSideBar.appendChild(divSideBarTab);
+        var h2 = document.createElement('H2');
+        divSideBarTab.appendChild(h2);
+        var txt = document.createTextNode('目录导航');
+        h2.appendChild(txt);
+        var divSideBarContents = document.createElement('DIV');
+        divSideBarContents.style.display = 'none';
+        divSideBarContents.setAttribute('id', 'sideBarContents');
+        divSideBar.appendChild(divSideBarContents);
+        //创建自定义列表
+        var dlist = document.createElement("dl");
+        divSideBarContents.appendChild(dlist);
+        var num = 0;//统计找到的mt和st
+        mt = mt.toUpperCase();//转化成大写
+        st = st.toUpperCase();//转化成大写
+        //遍历所有元素结点
+        for(var i=0; i<nodes.length; i++)
+        {
+            if(nodes[i].nodeName == mt|| nodes[i].nodeName == st)    
+            {
+                //获取标题文本
+                var nodetext = nodes[i].innerHTML.replace(/<\/?[^>]+>/g,"");//innerHTML里面的内容可能有HTML标签，所以用正则表达式去除HTML的标签
+                nodetext = nodetext.replace(/ /ig, "");//替换掉所有的 
+                nodetext = BlogDirectory.htmlDecode(nodetext);
+                //插入锚        
+                nodes[i].setAttribute("id", "blogTitle" + num);
+                var item;
+                switch(nodes[i].nodeName)
+                {
+                    case mt:    //若为主标题 
+                        item = document.createElement("dt");
+                        break;
+                    case st:    //若为子标题
+                        item = document.createElement("dd");
+                        break;
+                }
+                
+                //创建锚链接
+                var itemtext = document.createTextNode(nodetext);
+                item.appendChild(itemtext);
+                item.setAttribute("name", num);
+                item.onclick = function(){        //添加鼠标点击触发函数
+                    var pos = BlogDirectory.getElementPosition(document.getElementById("blogTitle" + this.getAttribute("name")));
+                    if(!BlogDirectory.moveScrollBar(pos.top, interval)) return false;
+                };            
+                
+                //将自定义表项加入自定义列表中
+                dlist.appendChild(item);
+                num++;
+            }
+        }
+        
+        if(num == 0) return false; 
+        /*鼠标进入时的事件处理*/
+        divSideBarTab.onmouseenter = function(){
+            divSideBarContents.style.display = 'block';
+        }
+        /*鼠标离开时的事件处理*/
+        divSideBar.onmouseleave = function() {
+            divSideBarContents.style.display = 'none';
+        }
+
+        document.body.appendChild(divSideBar);
+    }
+    
+};
+
+window.onload=function(){
+    /*页面加载完成之后生成博客目录*/
+    BlogDirectory.createBlogDirectory("cnblogs_post_body","h2","h3",20);
+}
+</script>
+<div style="background-color: white;hight:10px; wide:50px;position: fixed;right:30px;top:30px"><a href="https://www.cnblogs.com/machangwei-8/p/9565009.html">返回总目录页</a></div>
+<!-- <img src="https://gitee.com/machangwei-8/picture/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/qq%E6%8A%80%E6%9C%AF%E4%BA%8C%E7%BB%B4%E7%A0%81.png" alt="" class="wodetu"> -->
+    </div>
+
+    
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a href="https://www.cnblogs.com/machangwei-8/"><img id="blogLogo" src="./strace命令详解_files/logo.gif" alt="返回主页"></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/machangwei-8/">魔降风云变</a>
+</h1>
+<h2></h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="navigator">
+			
+<ul id="navList">
+	<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+	<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/machangwei-8/">
+首页</a>
+</li>
+	<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+	<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/%E9%A9%AC%E6%98%8C%E4%BC%9F">
+联系</a></li>
+	<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+	<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/machangwei-8/rss/">
+订阅</a>
+	
+<a id="blog_nav_rss_image" href="https://www.cnblogs.com/machangwei-8/rss/">
+    <img src="./strace命令详解_files/xml.gif" alt="订阅">
+</a></li>
+</ul>
+
+
+
+			<div class="blogStats">
+				
+				<!--done-->
+随笔- 532&nbsp;
+文章- 47&nbsp;
+评论- 38&nbsp;
+阅读- 
+<span title="总阅读数: 2114592">
+211万</span>&nbsp;
+
+
+
+				
+			</div><!--end: blogStats -->
+		</div><!--end: navigator 博客导航栏 -->
+		<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class="post">
+		<h1 class="postTitle">
+			
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/machangwei-8/p/10388883.html">
+    <span role="heading" aria-level="2">strace命令详解</span>
+    
+</a><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button>
+
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body blogpost-body-html"><a rel="nofollow noopener" name="_labelTop"></a><div id="navCategory" style="color:#152e97;"><p style="font-size:18px;"><b>目录</b></p><ul><li><a rel="nofollow noopener" href="https://www.cnblogs.com/machangwei-8/p/10388883.html#_label0">!/bin/bash</a></li><li><a rel="nofollow noopener" href="https://www.cnblogs.com/machangwei-8/p/10388883.html#_label1">!/bin/bash</a></li></ul></div><p>&nbsp;</p><hr style="height:1px;border:none;border-top:1px dashed #0066CC;">
+<p>&nbsp;&nbsp;</p>
+<p><a id="link_post_title" class="link-post-title" href="https://www.cnblogs.com/machangwei-8/p/9299013.html" rel="noopener">基础命令学习目录首页</a></p>
+<p>&nbsp;</p>
+<h3 id="blogTitle0"><a name="t0" rel="noopener"></a>strace是什么？<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h3>
+<p>按照strace官网的描述, strace是一个可用于诊断、调试和教学的Linux用户空间跟踪器。我们用它来监控用户空间进程和内核的交互，比如系统调用、信号传递、进程状态变更等。</p>
+<blockquote>
+<p>strace底层使用内核的ptrace特性来实现其功能。</p>
+</blockquote>
+<p>在运维的日常工作中，故障处理和问题诊断是个主要的内容，也是必备的技能。strace作为一种动态跟踪工具，能够帮助运维高效地定位进程和服务故障。它像是一个侦探，通过系统调用的蛛丝马迹，告诉你异常的真相。</p>
+<h3 id="blogTitle1"><a name="t1" rel="noopener"></a>strace能做什么？<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h3>
+<p>运维工程师都是实践派的人，我们还是先来个例子吧。</p>
+<p>我们从别的机器copy了个叫做some_server的软件包过来，开发说直接启动就行，啥都不用改。可是尝试启动时却报错，根本起不来！</p>
+<p>启动命令：</p>
+<pre>./some_server&nbsp;../conf/some_server.conf</pre>
+<p>输出:</p>
+<pre>FATAL:&nbsp;InitLogFile&nbsp;failed&nbsp;iRet:&nbsp;-1!
+Init&nbsp;error:&nbsp;-1655</pre>
+<p>为什么起不来呢？从日志看，似乎是初始化日志文件失败，真相到底怎样呢？我们用strace来看看。</p>
+<pre>strace&nbsp;-tt&nbsp;-f&nbsp; ./some_server&nbsp;../conf/some_server.conf</pre>
+<p>输出:</p>
+<p>&nbsp;</p>
+<p>我们注意到，在输出InitLogFile failed错误的前一行，有个open系统调用:</p>
+<pre>23:14:24.448034&nbsp;open("/usr/local/apps/some_server/log//server_agent.log",&nbsp;O_RDWR|O_CREAT|O_APPEND|O_LARGEFILE,&nbsp;0666)&nbsp;=&nbsp;-1&nbsp;ENOENT&nbsp;(No&nbsp;such&nbsp;file&nbsp;or&nbsp;directory)</pre>
+<p>它尝试打开文件/usr/local/apps/some_server/log//server_agent.log来写(不存在则创建)，可是却出错了，返回码是-1, 系统错误号errorno为ENOENT。 查下open系统调用的手册页：</p>
+<p>man 2 open</p>
+<p>搜索ENOENT这个错误号errno的解释</p>
+<blockquote>
+<p>ENOENT O_CREAT &nbsp;is not set and the named file does not exist. &nbsp;Or, a directory component in pathname does not exist or is a dangling symbolic link.</p>
+</blockquote>
+<p>这里说得比较清楚，因为我们例子中的open选项指定了O_CREAT选项，这里errno为ENOENT的原因是日志路径中某个部分不存在或者是一个失效的符号链接。我们来一级一级看下路径中的哪部分不存在：</p>
+<pre>ls&nbsp;-l&nbsp;/usr/local/apps/some_server/log
+ls:&nbsp;cannot&nbsp;access&nbsp;/usr/local/apps/some_server/log:&nbsp;No&nbsp;such&nbsp;file&nbsp;or&nbsp;directory
+ls&nbsp;-l&nbsp;/usr/local/apps/some_server
+total&nbsp;8
+drwxr-xr-x&nbsp;2&nbsp;root&nbsp;users&nbsp;4096&nbsp;May&nbsp;14&nbsp;23:13&nbsp;bin
+drwxr-xr-x&nbsp;2&nbsp;root&nbsp;users&nbsp;4096&nbsp;May&nbsp;14&nbsp;22:48&nbsp;conf</pre>
+<p><strong>原来是log子目录不存在！上层目录都是存在的。手工创建log子目录后，服务就能正常启动了。</strong></p>
+<p><strong>回过头来， strace究竟能做什么呢？</strong></p>
+<blockquote>
+<p>它能够打开应用进程的这个黑盒，通过系统调用的线索，告诉你进程大概在干嘛。</p>
+</blockquote>
+<h3 id="blogTitle2"><a name="t2" rel="noopener"></a>strace怎么用？<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h3>
+<p>既然strace是用来跟踪用户空间进程的系统调用和信号的，在进入strace使用的主题之前，我们的先理解什么是系统调用。</p>
+<p>关于系统调用：</p>
+<p>按维基百科中的解释，在计算机中，系统调用（英语：system call），又称为系统呼叫，<strong>指运行在用户空间的程序向操作系统内核请求需要更高权限运行的服务。</strong></p>
+<p>系统调用提供用户程序与操作系统之间的接口。操作系统的进程空间分为用户空间和内核空间：</p>
+<ul>
+<li>
+<p>操作系统内核直接运行在硬件上，提供设备管理、内存管理、任务调度等功能。</p>
+</li>
+<li>
+<p>用户空间通过API请求内核空间的服务来完成其功能——内核提供给用户空间的这些API, 就是系统调用。</p>
+</li>
+</ul>
+<p>在Linux系统上，应用代码通过glibc库封装的函数，间接使用系统调用。</p>
+<p>Linux内核目前有300多个系统调用，详细的列表可以通过syscalls手册页查看。这些系统调用主要分为几类：</p>
+<pre>文件和设备访问类&nbsp;比如open/close/read/write/chmod等
+进程管理类&nbsp;fork/clone/execve/exit/getpid等
+信号类&nbsp;signal/sigaction/kill&nbsp;等
+内存管理&nbsp;brk/mmap/mlock等
+进程间通信IPC&nbsp;shmget/semget&nbsp;*&nbsp;信号量，共享内存，消息队列等
+网络通信&nbsp;socket/connect/sendto/sendmsg&nbsp;等
+其他</pre>
+<p>熟悉Linux系统调用/系统编程，能够让我们在使用strace时<a href="https://www.baidu.com/s?wd=%E5%BE%97%E5%BF%83%E5%BA%94%E6%89%8B&amp;tn=24004469_oem_dg&amp;rsv_dl=gh_pl_sl_csd" target="_blank" rel="noopener">得心应手</a>。不过，对于运维的问题定位来说，知道strace这个工具，会查系统调用手册，就差不多够了。</p>
+<blockquote>
+<p>想要深入了解的同学，建议阅读<a href="https://www.baidu.com/s?wd=%E3%80%8ALinux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8B%E3%80%8B&amp;tn=24004469_oem_dg&amp;rsv_dl=gh_pl_sl_csd" target="_blank" rel="noopener">《Linux系统编程》</a>, <a href="https://www.baidu.com/s?wd=%E3%80%8AUnix%E7%8E%AF%E5%A2%83%E9%AB%98%E7%BA%A7%E7%BC%96%E7%A8%8B%E3%80%8B&amp;tn=24004469_oem_dg&amp;rsv_dl=gh_pl_sl_csd" target="_blank" rel="noopener">《Unix环境高级编程》</a>等书籍。</p>
+</blockquote>
+<p>我们回到strace的使用上来。strace有两种运行模式。</p>
+<p>一种是通过它启动要跟踪的进程。用法很简单，在原本的命令前加上strace即可。比如我们要跟踪 "ls -lh /var/log/messages"&nbsp;这个命令的执行，可以这样：</p>
+<pre>strace&nbsp;ls&nbsp;-lh&nbsp;/var/log/messages</pre>
+<p>另外一种运行模式，是跟踪已经在运行的进程，在不中断进程执行的情况下，理解它在干嘛。 这种情况，给strace传递个-p pid 选项即可。</p>
+<p>比如，有个在运行的some_server服务，第一步，查看pid:</p>
+<pre>pidof&nbsp;some_server&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+17553</pre>
+<p>得到其pid 17553然后就可以用strace跟踪其执行:</p>
+<pre>strace&nbsp;-p&nbsp;17553</pre>
+<p>完成跟踪时，按ctrl + C 结束strace即可。</p>
+<p>strace有一些选项可以调整其行为，我们这里介绍下其中几个比较常用的，然后通过示例讲解其实际应用效果。</p>
+<p>strace常用选项：</p>
+<p>从一个示例命令来看：</p>
+<pre>strace&nbsp;-tt&nbsp;-T&nbsp;-v&nbsp;-f&nbsp;-e&nbsp;trace=file&nbsp;-o&nbsp;/data/log/strace.log&nbsp;-s&nbsp;1024&nbsp;-p&nbsp;23489</pre>
+<blockquote>
+<p>-tt 在每行输出的前面，显示毫秒级别的时间<br>
+-T 显示每次系统调用所花费的时间<br>
+-v 对于某些相关调用，把完整的环境变量，文件stat结构等打出来。<br>
+-f 跟踪目标进程，以及目标进程创建的所有子进程<br>
+-e 控制要跟踪的事件和跟踪行为,比如指定要跟踪的系统调用名称<br>
+-o 把strace的输出单独写到指定的文件<br>
+-s 当系统调用的某个参数是字符串时，最多输出指定长度的内容，默认是32个字节<br>
+-p 指定要跟踪的进程pid, 要同时跟踪多个pid, 重复多次-p选项即可。</p>
+
+
+</blockquote>
+<p><strong>实例：跟踪nginx, 看其启动时都访问了哪些文件</strong></p>
+<pre>strace&nbsp;-tt&nbsp;-T&nbsp;-f&nbsp;-e&nbsp;trace=file&nbsp;-o&nbsp;/data/log/strace.log&nbsp;-s&nbsp;1024&nbsp;./nginx</pre>
+<p>部分输出:</p>
+<p>&nbsp;</p>
+<p>输出中，第一列显示的是进程的pid, 接着是毫秒级别的时间，这个是-tt 选项的效果。</p>
+<p>每一行的最后一列，显示了该调用所花的时间，是-T选项的结果。</p>
+<p>这里的输出只显示和文件访问有关的内容，这是因为我们通过-e trace=file 选项指定了。</p>
+<h3 id="blogTitle3"><a name="t3" rel="noopener"></a>strace问题定位案例<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h3>
+<p>1、定位进程异常退出</p>
+<p>问题：机器上有个叫做run.sh的常驻脚本，运行一分钟后会死掉。需要查出死因。</p>
+<p>定位：进程还在运行时，通过ps命令获取其pid, 假设我们得到的pid是24298</p>
+<pre>strace&nbsp;-o&nbsp;strace.log&nbsp;-tt&nbsp;-p&nbsp;24298</pre>
+<p>查看strace.log, 我们在最后2行看到如下内容:</p>
+<pre>22:47:42.803937&nbsp;wait4(-1,&nbsp; &lt;unfinished&nbsp;...&gt;
+22:47:43.228422&nbsp;+++&nbsp;killed&nbsp;by&nbsp;SIGKILL&nbsp;+++</pre>
+<p>这里可以看出，进程是被其他进程用KILL信号杀死的。</p>
+<p>实际上，通过分析，我们发现机器上别的服务有个监控脚本，它监控一个也叫做run.sh的进程，当发现run.sh进程数大于2时，就会把它杀死重启。结果导致我们这个run.sh脚本被误杀。</p>
+<p>进程被杀退出时，strace会输出killed by SIGX(SIGX代表发送给进程的信号)等，那么，进程自己退出时会输出什么呢？</p>
+<p>这里有个叫做test_exit的程序，其代码如下:</p>
+<pre>#include&nbsp;&lt;stdio.h&gt;
+#include&nbsp;&lt;stdlib.h&gt;
+
+int&nbsp;main(int&nbsp;argc,&nbsp;char&nbsp;**argv)&nbsp;{
+&nbsp; &nbsp; &nbsp; &nbsp;exit(1);
+}</pre>
+<p>我们strace看下它退出时strace上能看到什么痕迹。</p>
+<pre>strace&nbsp;-tt&nbsp;-e&nbsp;trace=process&nbsp;-f&nbsp;./test_exit</pre>
+<p>说明: -e trace=process 表示只跟踪和进程管理相关的系统调用。</p>
+<p>输出：</p>
+<pre>23:07:24.672849&nbsp;execve("./test_exit",&nbsp;["./test_exit"],&nbsp;[/*&nbsp;35&nbsp;vars&nbsp;*/])&nbsp;=&nbsp;0
+23:07:24.674665&nbsp;arch_prctl(ARCH_SET_FS,&nbsp;0x7f1c0eca7740)&nbsp;=&nbsp;0
+23:07:24.675108&nbsp;exit_group(1)&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;=&nbsp;?
+23:07:24.675259&nbsp;+++&nbsp;exited&nbsp;with&nbsp;1&nbsp;+++</pre>
+<p>可以看出，进程自己退出时（调用exit函数，或者从main函数返回）, 最终调用的是exit_group系统调用， 并且strace会输出exited with X（X为退出码）。</p>
+<p>可能有人会疑惑，代码里面明明调用的是exit, 怎么显示为exit_group?</p>
+<blockquote>
+<p>这是因为这里的exit函数不是系统调用，而是glibc库提供的一个函数，exit函数的调用最终会转化为exit_group系统调用，它会退出当前进程的所有线程。实际上，有一个叫做_exit()的系统调用(注意exit前面的下划线), 线程退出时最终会调用它。</p>
+</blockquote>
+<p>2、定位共享内存异常</p>
+<p>有个服务启动时报错：</p>
+<pre>shmget&nbsp;267264&nbsp;30097568:&nbsp;Invalid&nbsp;argument
+Can&nbsp;not&nbsp;get&nbsp;shm...exit!</pre>
+<p>错误日志大概告诉我们是获取共享内存出错，通过strace看下：</p>
+<pre>strace&nbsp;-tt&nbsp;-f&nbsp;-e&nbsp;trace=ipc&nbsp;./a_mon_svr&nbsp; &nbsp; &nbsp;../conf/a_mon_svr.conf</pre>
+<p>输出：</p>
+<pre>22:46:36.351798&nbsp;shmget(0x5feb,&nbsp;12000,&nbsp;0666)&nbsp;=&nbsp;0
+22:46:36.351939&nbsp;shmat(0,&nbsp;0,&nbsp;0)&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; =&nbsp;?
+Process&nbsp;21406&nbsp;attached
+22:46:36.355439&nbsp;shmget(0x41400,&nbsp;30097568,&nbsp;0666)&nbsp;=&nbsp;-1&nbsp;EINVAL&nbsp;(Invalid&nbsp;argument)
+shmget&nbsp;267264&nbsp;30097568:&nbsp;Invalid&nbsp;argument
+Can&nbsp;not&nbsp;get&nbsp;shm...exit!</pre>
+<p>这里，我们通过-e trace=ipc 选项，让strace只跟踪和进程通信相关的系统调用。</p>
+<p>从strace输出，我们知道是shmget系统调用出错了，errno是EINVAL。同样， 查询下shmget手册页，搜索EINVAL的错误码的说明:</p>
+<blockquote>
+<p>EINVAL A new segment was to be created and size &lt; SHMMIN or size &gt; SHMMAX, or no new segment was to be created, a segment with given key existed, but size is greater than the size of that segment</p>
+</blockquote>
+<p>翻译下，shmget设置EINVAL错误码的原因为下列之一：</p>
+<ul>
+<li>
+<p>要创建的共享内存段比 SHMMIN小 (一般是1个字节)</p>
+</li>
+<li>
+<p>要创建的共享内存段比 SHMMAX 大 (内核参数kernel.shmmax配置)</p>
+</li>
+<li>
+<p>指定key的共享内存段已存在，其大小和调用shmget时传递的值不同。</p>
+</li>
+</ul>
+<p>从strace输出看，我们要连的共享内存key 0x41400, 指定的大小是30097568字节，明显与第1、2种情况不匹配。那只剩下第三种情况。使用ipcs看下是否真的是大小不匹配：</p>
+<pre>ipcs&nbsp; -m&nbsp;|&nbsp;grep&nbsp;41400
+key&nbsp; &nbsp; &nbsp; &nbsp; shmid&nbsp; &nbsp; &nbsp; owner&nbsp; &nbsp; &nbsp; perms&nbsp; &nbsp; &nbsp; bytes&nbsp; &nbsp; &nbsp; nattch&nbsp; &nbsp; &nbsp;status&nbsp; &nbsp; 
+0x00041400&nbsp;1015822&nbsp; &nbsp; root&nbsp; &nbsp; &nbsp; &nbsp;666&nbsp; &nbsp; &nbsp; &nbsp; 30095516&nbsp; &nbsp;1</pre>
+<p>可以看到，已经0x41400这个key已经存在，并且其大小为30095516字节，和我们调用参数中的30097568不匹配，于是产生了这个错误。</p>
+<p>在我们这个案例里面，导致共享内存大小不一致的原因，是一组程序中，其中一个编译为32位，另外一个编译为64位,代码里面使用了long这个变长int数据类型。</p>
+<blockquote>
+<p>把两个程序都编译为64解决了这个问题。</p>
+</blockquote>
+<p><strong>这里特别说下strace的-e trace选项。</strong></p>
+<p>要跟踪某个具体的系统调用，-e trace=xxx即可。但有时候我们要跟踪一类系统调用，比如所有和文件名有关的调用、所有和内存分配有关的调用。</p>
+<p>如果人工输入每一个具体的系统调用名称，可能容易遗漏。于是strace提供了几类常用的系统调用组合名字。</p>
+<blockquote>
+<p>-e trace=file &nbsp; &nbsp; 跟踪和文件访问相关的调用(参数中有文件名)<br>
+-e trace=process &nbsp;和进程管理相关的调用，比如fork/exec/exit_group<br>
+-e trace=network &nbsp;和网络通信相关的调用，比如socket/sendto/connect<br>
+-e trace=signal &nbsp; &nbsp;信号发送和处理相关，比如kill/sigaction<br>
+-e trace=desc &nbsp;和文件描述符相关，比如write/read/select/epoll等<br>
+-e trace=ipc 进程见同学相关，比如shmget等</p>
+
+
+</blockquote>
+<p>绝大多数情况，我们使用上面的组合名字就够了。实在需要跟踪具体的系统调用时，可能需要注意C库实现的差异。</p>
+<blockquote>
+<p>比如我们知道创建进程使用的是fork系统调用，但在glibc里面，fork的调用实际上映射到了更底层的clone系统调用。使用strace时，得指定-e trace=clone, 指定-e trace=fork什么也匹配不上。</p>
+
+
+</blockquote>
+<p>3、 性能分析</p>
+<p>假如有个需求，统计Linux 4.5.4 版本内核中的代码行数(包含汇编和C代码)。这里提供两个Shell脚本实现：</p>
+<p>poor_script.sh:</p>
+<blockquote>
+<div style="text-align: right;"><a rel="nofollow noopener" href="https://www.cnblogs.com/machangwei-8/p/10388883.html#_labelTop" style="color:#f68a33">回到顶部</a><a rel="nofollow noopener" name="_label0"></a></div><h2 id="blogTitle4"><a name="t4" rel="noopener"></a>!/bin/bash<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h2>
+<p>total_line=0<br>
+while read filename; do<br>
+&nbsp; &nbsp;line=$(wc -l $filename | awk ‘{print $1}’)<br>
+&nbsp; &nbsp;(( total_line += line ))<br>
+done &lt; &lt;( find linux-4.5.4 -type f &nbsp;( -iname ‘<em>.c’ -o -iname ‘</em>.h’ -o -iname ‘*.S’ ) )<br>
+echo “total line: $total_line”</p>
+
+
+</blockquote>
+<p>good_script.sh:</p>
+<blockquote>
+<div style="text-align: right;"><a rel="nofollow noopener" href="https://www.cnblogs.com/machangwei-8/p/10388883.html#_labelTop" style="color:#f68a33">回到顶部</a><a rel="nofollow noopener" name="_label1"></a></div><h2 id="blogTitle5"><a name="t5" rel="noopener"></a>!/bin/bash<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h2>
+<p>find linux-4.5.4 -type f &nbsp;( -iname ‘<em>.c’ -o -iname ‘</em>.h’ -o -iname ‘*.S’ ) -print0 \<br>
+| wc -l —files0-from - | tail -n 1</p>
+
+
+</blockquote>
+<p>两段代码实现的目的是一样的。 我们通过strace的-c选项来分别统计两种版本的系统调用情况和其所花的时间(使用-f同时统计子进程的情况)</p>
+<p>从两个输出可以看出，good_script.sh 只需要2秒就可以得到结果：19613114行。它大部分的调用(calls)开销是文件操作(read/open/write/close)等，统计代码行数本来就是干这些事情。</p>
+<p>而poor_script.sh完成同样的任务则花了539秒。它大部分的调用开销都在进程和内存管理上(wait4/mmap/getpid…)。</p>
+<p>实际上，从两个图中clone系统调用的次数,我们可以看出good_script.sh只需要启动3个进程，而poor_script.sh完成整个任务居然启动了126335个进程！</p>
+<blockquote>
+<p>而进程创建和销毁的代价是相当高的，性能不差才怪。</p>
+
+
+</blockquote>
+<h3 id="blogTitle6"><a name="t6" rel="noopener"></a>总结<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h3>
+<p>当发现进程或服务异常时，我们可以通过strace来跟踪其系统调用，“看看它在干啥”，进而找到异常的原因。熟悉常用系统调用，能够更好地理解和使用strace。</p>
+<p>当然，万能的strace也不是真正的万能。当目标进程卡死在用户态时，strace就没有输出了。</p>
+<p>这个时候我们需要其他的跟踪手段，比如gdb/perf/SystemTap等。</p>
+<p>备注：</p>
+<p>1、perf原因kernel支持</p>
+<p>2、ftrace &nbsp;kernel支持可编程</p>
+<p>3、systemtap 功能强大，<a href="http://www.linuxidc.com/topicnews.aspx?tid=10" rel="noopener" target="_blank">RedHat</a>系统支持，对用户态，内核态逻辑都能探查，使用范围更广</p>
+<p>本文永久更新链接地址：<a href="https://www.linuxidc.com/Linux/2018-01/150654.htm" rel="noopener" target="_blank">http://www.linuxidc.com/Linux/2018-01/150654.htm</a></p>
+<p>&nbsp;</p>
+<p>原文链接：http://blog.51cto.com/10541556/1793898</p>
+<p>strace常用来跟踪进程执行时的系统调用和所接收的信号。 在Linux世界，进程不能直接访问硬件设备，当进程需要访问硬件设备(比如读取磁盘文件，接收网络数据等等)时，必须由用户态模式切换至内核态模式，通 过系统调用访问硬件设备。strace可以跟踪到一个进程产生的系统调用,包括参数，返回值，执行消耗的时间。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;strace命令是一个集诊断、调试、统计与一体的工具，我们可以使用strace对应用的系统调用和信号传递的跟踪结果来对应用进行分析，以达到解决问题或者是了解应用工作过程的目的。当然strace与专业的调试工具比如说gdb之类的是没法相比的，因为它不是一个专业的调试器。 strace的最简单的用法就是执行一个指定的命令，在指定的命令结束之后它也就退出了。在命令执行的过程中，strace会记录和解析命令进程的所有系统调用以及这个进程所接收到的所有的信号值。</p>
+<p>&nbsp;</p>
+<pre>root@ubuntu:/usr#&nbsp;strace&nbsp;cat&nbsp;/dev/&nbsp;
+execve(,&nbsp;[,&nbsp;],&nbsp;[])&nbsp;=&nbsp;
+brk()&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;
+access(,&nbsp;F_OK)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;-&nbsp;ENOENT&nbsp;(No&nbsp;such&nbsp;file&nbsp;or&nbsp;directory)
+mmap(NULL,&nbsp;,&nbsp;PROT_READ|PROT_WRITE,&nbsp;MAP_PRIVATE|MAP_ANONYMOUS,&nbsp;-,&nbsp;)&nbsp;=&nbsp;
+access(,&nbsp;R_OK)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;-&nbsp;ENOENT&nbsp;(No&nbsp;such&nbsp;file&nbsp;or&nbsp;directory)
+...
+brk()&nbsp;=&nbsp;
+brk()&nbsp;=&nbsp;
+fstat(,&nbsp;{st_mode=S_IFCHR|,&nbsp;st_rdev=makedev(,&nbsp;),&nbsp;...})&nbsp;=&nbsp;
+open(,&nbsp;O_RDONLY)&nbsp;=&nbsp;
+fstat(,&nbsp;{st_mode=S_IFCHR|,&nbsp;st_rdev=makedev(,&nbsp;),&nbsp;...})&nbsp;=&nbsp;
+read(,&nbsp;,&nbsp;)&nbsp;=&nbsp;
+close()&nbsp;=&nbsp;
+close()&nbsp;=&nbsp;
+close()&nbsp;=&nbsp;
+exit_group()&nbsp;=&nbsp;?</pre>
+<p>每一行都是一条系统调用，等号左边是系统调用的函数名及其参数，右边是该调用的返回值。<br>strace 显示这些调用的参数并返回符号形式的值。strace 从内核接收信息，而且不需要以任何特殊的方式来构建内核。</p>
+<p><strong>strace参数</strong></p>
+<pre>-c&nbsp;统计每一系统调用的所执行的时间,次数和出错的次数等.&nbsp;
+-d&nbsp;输出strace关于标准错误的调试信息.&nbsp;
+-f&nbsp;跟踪由fork调用所产生的子进程.&nbsp;
+-ff&nbsp;如果提供-o&nbsp;filename,则所有进程的跟踪结果输出到相应的filename.pid中,pid是各进程的进程号.&nbsp;
+-F&nbsp;尝试跟踪vfork调用.在-f时,vfork不被跟踪.&nbsp;
+-h&nbsp;输出简要的帮助信息.&nbsp;
+-i&nbsp;输出系统调用的入口指针.&nbsp;
+-q&nbsp;禁止输出关于脱离的消息.&nbsp;
+-r&nbsp;打印出相对时间关于,,每一个系统调用.&nbsp;
+-t&nbsp;在输出中的每一行前加上时间信息.&nbsp;
+-tt&nbsp;在输出中的每一行前加上时间信息,微秒级.&nbsp;
+-ttt&nbsp;微秒级输出,以秒了表示时间.&nbsp;
+-T&nbsp;显示每一调用所耗的时间.&nbsp;
+-v&nbsp;输出所有的系统调用.一些调用关于环境变量,状态,输入输出等调用由于使用频繁,默认不输出.&nbsp;
+-V&nbsp;输出strace的版本信息.&nbsp;
+-x&nbsp;以十六进制形式输出非标准字符串&nbsp;
+-xx&nbsp;所有字符串以十六进制形式输出.&nbsp;
+-a&nbsp;column&nbsp;
+设置返回值的输出位置.默认&nbsp;为40.&nbsp;
+-e&nbsp;expr&nbsp;
+指定一个表达式,用来控制如何跟踪.格式如下:&nbsp;
+[qualifier=][!]value1[,value2]...&nbsp;
+qualifier只能是&nbsp;trace,abbrev,verbose,raw,signal,read,write其中之一.value是用来限定的符号或数字.默认的&nbsp;qualifier是&nbsp;trace.感叹号是否定符号.例如:&nbsp;
+-eopen等价于&nbsp;-e&nbsp;trace=open,表示只跟踪open调用.而-etrace!=open表示跟踪除了open以外的其他调用.有两个特殊的符号&nbsp;all&nbsp;和&nbsp;none.&nbsp;
+注意有些shell使用!来执行历史记录里的命令,所以要使用\\.&nbsp;
+-e&nbsp;trace=&nbsp;
+只跟踪指定的系统&nbsp;调用.例如:-e&nbsp;trace=open,close,rean,write表示只跟踪这四个系统调用.默认的为set=all.&nbsp;
+-e&nbsp;trace=file&nbsp;
+只跟踪有关文件操作的系统调用.&nbsp;
+-e&nbsp;trace=process&nbsp;
+只跟踪有关进程控制的系统调用.&nbsp;
+-e&nbsp;trace=network&nbsp;
+跟踪与网络有关的所有系统调用.&nbsp;
+-e&nbsp;strace=signal&nbsp;
+跟踪所有与系统信号有关的&nbsp;系统调用&nbsp;
+-e&nbsp;trace=ipc&nbsp;
+跟踪所有与进程通讯有关的系统调用&nbsp;
+-e&nbsp;abbrev=&nbsp;
+设定&nbsp;strace输出的系统调用的结果集.-v&nbsp;等与&nbsp;abbrev=none.默认为abbrev=all.&nbsp;
+-e&nbsp;raw=&nbsp;
+将指&nbsp;定的系统调用的参数以十六进制显示.&nbsp;
+-e&nbsp;signal=&nbsp;
+指定跟踪的系统信号.默认为all.如&nbsp;signal=!SIGIO(或者signal=!io),表示不跟踪SIGIO信号.&nbsp;
+-e&nbsp;read=&nbsp;
+输出从指定文件中读出&nbsp;的数据.例如:&nbsp;
+-e&nbsp;read=,&nbsp;
+-e&nbsp;write=&nbsp;
+输出写入到指定文件中的数据.&nbsp;
+-o&nbsp;filename&nbsp;
+将strace的输出写入文件filename&nbsp;
+-p&nbsp;pid&nbsp;
+跟踪指定的进程pid.&nbsp;
+-s&nbsp;strsize&nbsp;
+指定输出的字符串的最大长度.默认为32.文件名一直全部输出.&nbsp;
+-u&nbsp;username&nbsp;
+以username&nbsp;的UID和GID执行被跟踪的命令</pre>
+<p>&nbsp;</p>
+<p><strong>通用的完整用法：</strong></p>
+<pre>strace&nbsp;-o&nbsp;output.txt&nbsp;-T&nbsp;-tt&nbsp;-e&nbsp;trace=all&nbsp;-p&nbsp;28979</pre>
+<p>上面的含义是 跟踪28979进程的所有系统调用（-e trace=all），并统计系统调用的花费时间，以及开始时间（并以可视化的时分秒格式显示），最后将记录结果存在output.txt文件里面。</p>
+<p>语法</p>
+<p>&nbsp;strace [ -dffhiqrtttTvxx ] [ -acolumn ] [ -eexpr ] ... [ -ofile ] [-ppid ] ... [ -sstrsize ] [ -uusername ] [ -Evar=val ] ... [ -Evar ]... [ command [ arg ... ] ]</p>
+<p>&nbsp;strace -c [ -eexpr ] ... [ -Ooverhead ] [ -Ssortby ] [ command [ arg... ] ]<br><br><strong>追踪系统调用&nbsp;</strong></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;现在我们做一个很简单的程序来演示strace的基本用法。这个程序的C语言代码如下：</p>
+<div class="code-toolbar">
+<div><div id="highlighter_138578" class="syntaxhighlighter  cpp"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="cpp preprocessor">#include&lt;stdio.h&gt;</code></div><div class="line number2 index1 alt1"><code class="cpp color1 bold">int</code> <code class="cpp plain">main()</code></div><div class="line number3 index2 alt2"><code class="cpp plain">{</code></div><div class="line number4 index3 alt1"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp color1 bold">int</code> <code class="cpp plain">a=0;</code></div><div class="line number5 index4 alt2"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp functions bold">printf</code><code class="cpp plain">(</code><code class="cpp string">"please input:\n"</code><code class="cpp plain">);</code></div><div class="line number6 index5 alt1"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp functions bold">scanf</code><code class="cpp plain">(</code><code class="cpp string">"%d"</code><code class="cpp plain">,&amp;a);</code></div><div class="line number7 index6 alt2"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp functions bold">printf</code><code class="cpp plain">(</code><code class="cpp string">"%9d\n"</code><code class="cpp plain">,a);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code></div><div class="line number8 index7 alt1"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp keyword bold">return</code> <code class="cpp plain">0;</code></div><div class="line number9 index8 alt2"><code class="cpp plain">}</code></div></div></td></tr></tbody></table></div></div>
+<div class="toolbar">&nbsp;</div>
+</div>
+<p>&nbsp;</p>
+<p><a href="./strace命令详解_files/wKioL1dzbpjiIjqBAAAjp-C3hNo468.png" target="_blank" rel="noopener"><img title="0.png" src="./strace命令详解_files/wKioL1dzbpjiIjqBAAAjp-C3hNo468.png" alt="wKioL1dzbpjiIjqBAAAjp-C3hNo468.png"></a></p>
+<p><a href="./strace命令详解_files/wKiom1dzbpmDeRuZAAFFE1J1bkc181.png" target="_blank" rel="noopener"><img title="1.png" src="./strace命令详解_files/wKiom1dzbpmDeRuZAAFFE1J1bkc181.png" alt="wKiom1dzbpmDeRuZAAFFE1J1bkc181.png"></a></p>
+<p><a href="./strace命令详解_files/wKioL1dzbpmDb4ZoAABCr_H3kJE024.png" target="_blank" rel="noopener"><img title="2.png" src="./strace命令详解_files/wKioL1dzbpmDb4ZoAABCr_H3kJE024.png" alt="wKioL1dzbpmDb4ZoAABCr_H3kJE024.png"></a></p>
+<p>从trace结构可以看到，系统首先调用execve开始一个新的进行，接着进行些环境的初始化操作，最后停顿在”read(0,”上面，这也就是执行到了我们的scanf函数，等待我们输入数字呢，在输入完99之后，在调用write函数将格式化后的数值" &nbsp; &nbsp; &nbsp; &nbsp;2″输出到屏幕，最后调用exit_group退出进行，完成整个程序的执行过程。<br><br></p>
+<p>跟踪信号传递</p>
+<p>我们还是使用上面的那个test程序，来观察进程接收信号的情况。</p>
+<p>&nbsp;</p>
+<p><a href="./strace命令详解_files/wKioL1dzcHyCtNHCAAAXR5BaW4A105.png" target="_blank" rel="noopener"><img title="4.png" src="./strace命令详解_files/wKioL1dzcHyCtNHCAAAXR5BaW4A105.png" alt="wKioL1dzcHyCtNHCAAAXR5BaW4A105.png"></a></p>
+<p><a href="./strace命令详解_files/wKiom1dzcHyimvAYAAAPGkNI4TM943.png" target="_blank" rel="noopener"><img title="5.png" src="./strace命令详解_files/wKiom1dzcHyimvAYAAAPGkNI4TM943.png" alt="wKiom1dzcHyimvAYAAAPGkNI4TM943.png"></a></p>
+<p><a href="./strace命令详解_files/wKioL1dzcHzjhFzCAABPN8odG54760.png" target="_blank" rel="noopener"><img title="6.png" src="./strace命令详解_files/wKioL1dzcHzjhFzCAABPN8odG54760.png" alt="wKioL1dzcHzjhFzCAABPN8odG54760.png"></a></p>
+<p>系统调用统计</p>
+<p>strace不光能追踪系统调用，通过使用参数-c，它还能将进程所有的系统调用做一个统计分析给你，下面就来看看strace的统计，这次我们执行带-c参数的strace：</p>
+<p><a href="./strace命令详解_files/wKiom1dzcO3zA5_gAABSnSen_gA823.png" target="_blank" rel="noopener"><img title="7.png" src="./strace命令详解_files/wKiom1dzcO3zA5_gAABSnSen_gA823.png" alt="wKiom1dzcO3zA5_gAABSnSen_gA823.png"></a></p>
+<p>这里很清楚的告诉你调用了那些系统函数，调用次数多少，消耗了多少时间等等这些信息，这个对我们分析一个程序来说是非常有用的。</p>
+<p><a href="./strace命令详解_files/wKioL1dzcquAKtl6AAGpHZN4owY844.png" target="_blank" rel="noopener"><img title="9.png" src="./strace命令详解_files/wKioL1dzcquAKtl6AAGpHZN4owY844.png" alt="wKioL1dzcquAKtl6AAGpHZN4owY844.png"></a></p>
+<p><a href="./strace命令详解_files/wKiom1dzdCuRLA97AADxEDo5gSg431.png" target="_blank" rel="noopener"><img title="10.png" src="./strace命令详解_files/wKiom1dzdCuRLA97AADxEDo5gSg431.png" alt="wKiom1dzdCuRLA97AADxEDo5gSg431.png"></a></p>
+<p>&nbsp;</p>
+<p><a href="./strace命令详解_files/wKioL1dzdvvRI6BuAACYuzS0aRI346.png" target="_blank" rel="noopener"><img title="0.png" src="./strace命令详解_files/wKioL1dzdvvRI6BuAACYuzS0aRI346.png" alt="wKioL1dzdvvRI6BuAACYuzS0aRI346.png"></a></p>
+<p><a href="./strace命令详解_files/wKioL1dzdv6Qi9UXAAGQjRsEEx4756.png" target="_blank" rel="noopener"><img title="1.png" src="./strace命令详解_files/wKioL1dzdv6Qi9UXAAGQjRsEEx4756.png" alt="wKioL1dzdv6Qi9UXAAGQjRsEEx4756.png"></a></p>
+<p>&nbsp;</p>
+</div>
+<div class="clear"></div>
+<div id="blog_post_info_block" role="contentinfo"><div id="BlogPostCategory">
+    分类: 
+            <a href="https://www.cnblogs.com/machangwei-8/category/1164784.html" target="_blank">Linux命令</a></div>
+
+
+    <div id="blog_post_info">
+<div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(10388883,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+        <a id="green_channel_follow" onclick="follow(&#39;67eb649c-b9ec-451f-2de8-08d52fc34315&#39;);" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="./strace命令详解_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="./strace命令详解_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/machangwei-8/" target="_blank"><img src="./strace命令详解_files/20211030214655.png" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/machangwei-8/">马昌伟</a><br>
+            <a href="https://home.cnblogs.com/u/machangwei-8/followers/">粉丝 - <span class="follower-count">205</span></a>
+            <a href="https://home.cnblogs.com/u/machangwei-8/followees/">关注 - <span class="following-count">38</span></a><br>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow" class="follow-tip">
+                <a href="javascript:void(0);" onclick="follow(&#39;67eb649c-b9ec-451f-2de8-08d52fc34315&#39;);return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(10388883,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">14</span>
+    </div>
+    <div class="buryit" onclick="votePost(10388883,&#39;Bury&#39;)">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+    <div class="clear"></div>
+    <div id="post_next_prev">
+
+    <a href="https://www.cnblogs.com/machangwei-8/p/10388824.html" class="p_n_p_prefix">« </a> 上一篇：    <a href="https://www.cnblogs.com/machangwei-8/p/10388824.html" data-featured-image="" title="发布于 2019-02-16 19:13">ipcs命令详解</a>
+    <br>
+    <a href="https://www.cnblogs.com/machangwei-8/p/10388938.html" class="p_n_p_prefix">» </a> 下一篇：    <a href="https://www.cnblogs.com/machangwei-8/p/10388938.html" data-featured-image="" title="发布于 2019-02-16 19:43">ltrace命令详解</a>
+
+</div>
+</div>
+		</div>
+		<div class="postDesc">posted @ 
+<span id="post-date" data-date-updated-tip="disable" data-date-updated="2019-02-16 19:30">2019-02-16 19:30</span>&nbsp;
+<a href="https://www.cnblogs.com/machangwei-8/">马昌伟</a>&nbsp;
+阅读(<span id="post_view_count">74643</span>)&nbsp;
+评论(<span id="post_comment_count">3</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=10388883" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(10388883);return false;">收藏</a>&nbsp;
+<a href="javascript:void(0)" onclick="reportManager.report({ currentUserId: &#39;&#39;, targetType: &#39;blogPost&#39;, targetId: &#39;10388883&#39;, targetLink: &#39;https://www.cnblogs.com/machangwei-8/p/10388883.html&#39;, title: &#39;strace命令详解&#39; })">举报</a></div>
+	</div>
+	
+	
+</div><!--end: topics 文章、评论容器-->
+
+<script>
+    var cb_entryId = 10388883, cb_entryCreatedDate = '2019-02-16 19:30', cb_postType = 1, cb_postTitle = 'strace命令详解';
+    var allowComments = true, cb_blogId = 412391, cb_blogApp = 'machangwei-8', cb_blogUserGuid = '67eb649c-b9ec-451f-2de8-08d52fc34315';
+    mermaidRender.render()
+    markdown_highlight()
+    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");
+    updatePostStats(
+            [cb_entryId],
+            function(id, count) { $("#post_view_count").text(count) },
+            function(id, count) { $("#post_comment_count").text(count) })
+</script>
+<a id="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="https://www.cnblogs.com/machangwei-8/p/10388883.html#" onclick="return RefreshPage();">刷新页面</a><a href="https://www.cnblogs.com/machangwei-8/p/10388883.html#top">返回顶部</a></div>
+    <div id="comment_form_container" style="visibility: visible;"><div class="login_tips">
+    登录后才能查看或发表评论，立即 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return account.login(&#39;!comments&#39;);">登录</a> 或者
+    <a href="https://www.cnblogs.com/">逛逛</a> 博客园首页
+</div>
+</div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+        <div id="cnblogs_ch"></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="under-post-card">
+            <div id="div-gpt-ad-1592365906576-0" style="width: 300px; height: 250px;" data-google-query-id="COfqi-mPl_0CFWiA6QUdD6gEpg"><div id="google_ads_iframe_/1090369/C1_0__container__" style="border: 0pt none; display: inline-block; width: 300px; height: 250px;"><iframe frameborder="0" src="./strace命令详解_files/container.html" id="google_ads_iframe_/1090369/C1_0" title="3rd party ad content" name="" scrolling="no" marginwidth="0" marginheight="0" width="300" height="250" data-is-safeframe="true" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" role="region" aria-label="Advertisement" tabindex="0" data-google-container-id="1" style="border: 0px; vertical-align: bottom;" data-load-complete="true"></iframe></div></div>
+    </div>
+    <div id="under_post_card1"><div class="under-post-card">
+<b>编辑推荐：</b>
+<br>
+
+· <a href="https://www.cnblogs.com/huangxincheng/p/17115916.html" target="_blank">记一次 .NET 某游戏网站 CPU 爆高分析</a>
+    <br>
+· <a href="https://www.cnblogs.com/jackyfei/p/17107742.html" target="_blank">探索 ABP 基础架构的横切关注点</a>
+    <br>
+· <a href="https://www.cnblogs.com/eryuan/p/17109391.html" target="_blank">一次生产环境 CPU 占用高的排查 </a>
+    <br>
+· <a href="https://www.cnblogs.com/coco1s/p/17107807.html" target="_blank">现代图片性能优化及体验优化指南</a>
+    <br>
+· <a href="https://www.cnblogs.com/s0611163/p/17098841.html" target="_blank">探索：优雅地实现异步方法的并行执行</a>
+    <br>
+</div></div>
+    <div id="under_post_card2"><div class="itnews under-post-card">
+    <b>阅读排行：</b>
+    <br>
+ ·          <a href="https://www.cnblogs.com/teach/p/17118100.html" target="_blank">周末折腾了两天，踩了无数个坑，终于把win7装成了centos7</a>
+        <br>
+ ·          <a href="https://www.cnblogs.com/stulzq/p/17118904.html" target="_blank">从 Newtonsoft.Json 迁移到 System.Text.Json</a>
+        <br>
+ ·          <a href="https://www.cnblogs.com/linvanda/p/17120205.html" target="_blank">我已经受够了“系统异常”！</a>
+        <br>
+ ·          <a href="https://www.cnblogs.com/niumoo/p/17121504.html" target="_blank">你好 ChatGPT, 帮我看下这段代码有什么问题？</a>
+        <br>
+ ·          <a href="https://www.cnblogs.com/newbe36524/p/0x01B-dotnet-8-preview-is-coming-soon.html" target="_blank">dotnet 8 preview 1 即将发布</a>
+        <br>
+</div></div>
+    <div id="HistoryToday" class="under-post-card"></div>
+    <script type="text/javascript">
+        var commentManager = new blogCommentManager();
+        commentManager.renderComments(0);
+        fixPostBody();
+        window.footnoteTipManager.generateFootnoteTips();
+
+            window.tocManager.displayDisableTocTips = false;
+            window.tocManager.generateToc();
+            
+                setTimeout(function() { countViews(cb_blogId, cb_entryId); }, 50);
+            
+            deliverT2();
+            deliverC1C2();
+            loadNewsAndKb();
+            
+                LoadPostCategoriesTags(cb_blogId, cb_entryId);
+            
+            LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+            GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+            loadOptUnderPost();
+            GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+                </script>
+</div>
+
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			<div id="sidebar_news" class="newsItem"><!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	
+<div id="blog-news">
+    
+    <div id="profile_block">
+        昵称：
+        <a href="https://home.cnblogs.com/u/machangwei-8/">
+            马昌伟
+        </a>
+        <br>
+        园龄：
+        <a href="https://home.cnblogs.com/u/machangwei-8/" title="入园时间：2017-11-24">
+            5年2个月
+        </a>
+        <br>
+        粉丝：
+        <a class="follower-count" href="https://home.cnblogs.com/u/machangwei-8/followers/">
+            205
+        </a>
+        <br>
+        关注：
+        <a class="folowing-count" href="https://home.cnblogs.com/u/machangwei-8/followees/">
+            38
+        </a>
+        <div id="p_b_follow" class="follow-tip">
+<a href="javascript:void(0)" onclick="follow(&#39;67eb649c-b9ec-451f-2de8-08d52fc34315&#39;)">+加关注</a></div>
+        <script>getFollowStatus('67eb649c-b9ec-451f-2de8-08d52fc34315');</script>
+    </div>
+</div>
+</div>
+
+</div>
+<div id="sidebar_c3"></div>
+			<div id="calendar"><div id="blog-calendar" style="">
+
+<table id="blogCalendar" class="Cal" cellspacing="0" cellpadding="0" title="Calendar" border="0">
+    <tbody>
+        <tr>
+            <td colspan="7">
+                <table class="CalTitle" cellspacing="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2023/01/15&#39;); return false;">&lt;</a>
+                            </td>
+                            <td align="center">2023年2月</td>
+                            <td align="right" class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2023/03/15&#39;); return false;">&gt;</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    <tr>
+        <th class="CalDayHeader" align="center" abbr="日" scope="col">日</th>
+        <th class="CalDayHeader" align="center" abbr="一" scope="col">一</th>
+        <th class="CalDayHeader" align="center" abbr="二" scope="col">二</th>
+        <th class="CalDayHeader" align="center" abbr="三" scope="col">三</th>
+        <th class="CalDayHeader" align="center" abbr="四" scope="col">四</th>
+        <th class="CalDayHeader" align="center" abbr="五" scope="col">五</th>
+        <th class="CalDayHeader" align="center" abbr="六" scope="col">六</th>
+    </tr>
+            <tr>
+                            <td class="CalOtherMonthDay" align="center">29</td>
+                            <td class="CalOtherMonthDay" align="center">30</td>
+                            <td class="CalOtherMonthDay" align="center">31</td>
+                        <td class="" align="center">
+                            1
+                        </td>
+                        <td class="" align="center">
+                            2
+                        </td>
+                        <td class="" align="center">
+                            3
+                        </td>
+                    <td class="CalWeekendDay" align="center">
+                        4
+                    </td>
+            </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            5
+                        </td>
+                            <td class="" align="center">
+                                6
+                            </td>
+                            <td class="" align="center">
+                                7
+                            </td>
+                            <td class="" align="center">
+                                8
+                            </td>
+                            <td class="" align="center">
+                                9
+                            </td>
+                            <td class="" align="center">
+                                10
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            11
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            12
+                        </td>
+                            <td class="" align="center">
+                                13
+                            </td>
+                            <td class="" align="center">
+                                14
+                            </td>
+                            <td class="CalTodayDay" align="center">
+                                15
+                            </td>
+                            <td class="" align="center">
+                                16
+                            </td>
+                            <td class="" align="center">
+                                17
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            18
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            19
+                        </td>
+                            <td class="" align="center">
+                                20
+                            </td>
+                            <td class="" align="center">
+                                21
+                            </td>
+                            <td class="" align="center">
+                                22
+                            </td>
+                            <td class="" align="center">
+                                23
+                            </td>
+                            <td class="" align="center">
+                                24
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            25
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            26
+                        </td>
+                            <td class="" align="center">
+                                27
+                            </td>
+                            <td class="" align="center">
+                                28
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                1
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                2
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                3
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            4
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalOtherMonthDay" align="center">
+                            5
+                        </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                6
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                7
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                8
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                9
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                10
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            11
+                        </td>
+                </tr>
+    </tbody>
+</table></div><script>loadBlogDefaultCalendar();</script></div>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"><!-- 搜索 -->
+<div id="sidebar_search" class="sidebar-block">
+    <div id="sidebar_search" class="mySearch">
+        <h3 class="catListTitle">搜索</h3>
+        <div id="sidebar_search_box">
+            <div id="widget_my_zzk" class="div_my_zzk">
+                <input type="text" id="q" onkeydown="return zzk_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="zzk_go()" type="button" value="找找看" id="btnZzk" class="btn_my_zzk">
+            </div>
+            <div id="widget_my_google" class="div_my_zzk">
+                <input type="text" name="google_q" id="google_q" onkeydown="return google_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="google_go()" type="button" value="谷歌搜索" class="btn_my_zzk">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 常用链接 -->
+<div id="sidebar_shortcut" class="sidebar-block"><div class="catListLink">
+<h3 class="catListTitle">
+常用链接
+</h3>
+<ul>
+    <li><a href="https://www.cnblogs.com/machangwei-8/p/" title="我的博客的随笔列表">我的随笔</a></li>
+<li><a href="https://www.cnblogs.com/machangwei-8/MyComments.html" title="我的发表过的评论列表">我的评论</a></li>
+<li><a href="https://www.cnblogs.com/machangwei-8/OtherPosts.html" title="我评论过的随笔列表">我的参与</a></li>
+<li><a href="https://www.cnblogs.com/machangwei-8/comments" title="我的博客的评论列表">最新评论</a></li>
+<li><a href="https://www.cnblogs.com/machangwei-8/tag/" title="我的博客的标签列表">我的标签</a></li>
+
+    <li><a id="itemListLink" onclick="this.blur();WarpClass(&#39;itemListLink&#39;, &#39;itemListLin_con&#39;);return false;" href="https://www.cnblogs.com/machangwei-8/p/10388883.html#">更多链接</a></li>
+</ul>
+</div>
+
+</div>
+
+<!-- 最新随笔 -->
+
+
+<!-- 我的标签 -->
+<div id="sidebar_toptags" class="sidebar-block"><div class="catListTag">
+    <h3 class="catListTitle"><a href="https://www.cnblogs.com/machangwei-8/tag/" class="sidebar-card-title-a">我的标签</a></h3>
+<ul>
+        <li>
+            <a href="https://www.cnblogs.com/machangwei-8/tag/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%A6%82%E5%BF%B5/">计算机概念<span class="tag-count">(2)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/machangwei-8/tag/%E7%BD%91%E7%BB%9C/">网络<span class="tag-count">(1)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/machangwei-8/tag/%E8%BF%90%E7%BB%B4/">运维<span class="tag-count">(1)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/machangwei-8/tag/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/">网络协议<span class="tag-count">(1)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/machangwei-8/tag/Linux%E5%91%BD%E4%BB%A4/">Linux命令<span class="tag-count">(1)</span></a>
+        </li>
+    
+
+</ul>
+</div>
+
+</div>
+
+<!-- 积分与排名 -->
+
+
+<!-- 随笔分类、随笔档案、文章分类、新闻分类、相册、链接 -->
+<div id="sidebar_categories">
+
+    <div class="catListPostCategory">
+        <h3 class="catListTitle">
+            
+    <a class="sidebar-card-title-a" href="https://www.cnblogs.com/machangwei-8/post-categories">随笔分类</a>
+
+
+
+        </h3>
+
+        <ul>
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/category/1164779.html" class="category-item-link" rel="" target="">Python(115)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/category/1252524.html" class="category-item-link" rel="" target="">目录(20)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/category/1164783.html" class="category-item-link" rel="" target="">Linux各种知识(61)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/category/1164784.html" class="category-item-link" rel="" target="">Linux命令(163)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/category/1164786.html" class="category-item-link" rel="" target="">云计算docker/k8s/openstack(31)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/category/1164792.html" class="category-item-link" rel="" target="">html,css(10)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/category/1164793.html" class="category-item-link" rel="" target="">js-jquery-vue等(20)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/category/1164781.html" class="category-item-link" rel="" target="">各种数据库(27)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/category/1167557.html" class="category-item-link" rel="" target="">非公开笔记(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/category/1405334.html" class="category-item-link" rel="" target="">非技术篇章(18)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/category/1164842.html" class="category-item-link" rel="" target="">计算机相关概念总结(12)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/category/1164778.html" class="category-item-link" rel="" target="">shell(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/category/1255131.html" class="category-item-link" rel="" target="">java(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/category/1247188.html" class="category-item-link" rel="" target="">go语言(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/category/1164796.html" class="category-item-link" rel="" target="">爬虫(6)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/category/1164797.html" class="category-item-link" rel="" target="">网络知识(6)</a>
+ 
+                </li>                
+            <li><a href="javascript:void(0)" onclick="sideColumnManager.loadMore(this)">更多</a></li>
+        </ul>
+    </div>    
+    <div class="catListPostArchive">
+        <h3 class="catListTitle">
+            
+随笔档案
+
+
+        </h3>
+
+        <ul>
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2023/01.html" class="category-item-link" rel="" target="">2023年1月(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2022/12.html" class="category-item-link" rel="" target="">2022年12月(15)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2022/11.html" class="category-item-link" rel="" target="">2022年11月(17)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2022/10.html" class="category-item-link" rel="" target="">2022年10月(14)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2022/09.html" class="category-item-link" rel="" target="">2022年9月(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2022/03.html" class="category-item-link" rel="" target="">2022年3月(19)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2022/02.html" class="category-item-link" rel="" target="">2022年2月(13)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2022/01.html" class="category-item-link" rel="" target="">2022年1月(17)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2021/12.html" class="category-item-link" rel="" target="">2021年12月(22)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2021/11.html" class="category-item-link" rel="" target="">2021年11月(17)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2021/10.html" class="category-item-link" rel="" target="">2021年10月(13)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2021/09.html" class="category-item-link" rel="" target="">2021年9月(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2021/08.html" class="category-item-link" rel="" target="">2021年8月(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2021/07.html" class="category-item-link" rel="" target="">2021年7月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2019/09.html" class="category-item-link" rel="" target="">2019年9月(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2019/08.html" class="category-item-link" rel="" target="">2019年8月(13)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2019/07.html" class="category-item-link" rel="" target="">2019年7月(9)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2019/06.html" class="category-item-link" rel="" target="">2019年6月(25)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2019/05.html" class="category-item-link" rel="" target="">2019年5月(23)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2019/04.html" class="category-item-link" rel="" target="">2019年4月(27)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2019/03.html" class="category-item-link" rel="" target="">2019年3月(18)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2019/02.html" class="category-item-link" rel="" target="">2019年2月(143)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2019/01.html" class="category-item-link" rel="" target="">2019年1月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2018/12.html" class="category-item-link" rel="" target="">2018年12月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2018/10.html" class="category-item-link" rel="" target="">2018年10月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2018/09.html" class="category-item-link" rel="" target="">2018年9月(37)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2018/08.html" class="category-item-link" rel="" target="">2018年8月(23)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2018/07.html" class="category-item-link" rel="" target="">2018年7月(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2018/04.html" class="category-item-link" rel="" target="">2018年4月(9)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2018/03.html" class="category-item-link" rel="" target="">2018年3月(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/machangwei-8/archive/2018/02.html" class="category-item-link" rel="" target="">2018年2月(20)</a>
+ 
+                </li>                
+            <li><a href="javascript:void(0)" onclick="sideColumnManager.loadMore(this)">更多</a></li>
+        </ul>
+    </div>    
+</div>
+
+<!-- 最新评论 -->
+<!-- 阅读排行榜 -->
+<div id="sidebar_topviewedposts" class="sidebar-block"><div class="catListView">
+    <h3 class="catListTitle">
+        <a href="https://www.cnblogs.com/machangwei-8/most-viewed" class="sidebar-card-title-a">
+    阅读排行榜
+</a>
+
+    </h3>
+    <div id="TopViewPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/machangwei-8/p/10352725.html">
+                            1. ssh命令详解(94978)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/machangwei-8/p/10350824.html">
+                            2. ipmitool命令详解(76451)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/machangwei-8/p/10388883.html">
+                            3. strace命令详解(74634)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/machangwei-8/p/10353137.html">
+                            4. nslookup命令详解(65715)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/machangwei-8/p/10353279.html">
+                            5. traceroute命令详解(62573)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div></div>
+
+<!-- 评论排行榜 -->
+<div id="sidebar_topcommentedposts" class="sidebar-block"><div class="catListFeedback">
+    <h3 class="catListTitle">
+        <a href="https://www.cnblogs.com/machangwei-8/most-commented" class="sidebar-card-title-a">评论排行榜</a>
+
+    </h3>
+    <div id="TopFeedbackPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/machangwei-8/p/10738244.html">
+                            1. Python模块xlwt对excel进行写入操作(3)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/machangwei-8/p/10388883.html">
+                            2. strace命令详解(3)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/machangwei-8/p/11023394.html">
+                            3. Django图书管理系统(前端对有外键的数据表增删改查)(2)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/machangwei-8/p/10976535.html">
+                            4. js节点的创建添加删除(2)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/machangwei-8/p/10403533.html">
+                            5. lsblk命令详解(2)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div></div>
+
+<!-- 推荐排行榜 -->
+<div id="sidebar_topdiggedposts" class="sidebar-block"><div id="topdigg_posts_wrap">
+    <div class="catListView">
+        <h3 class="catListTitle">
+            <a href="https://www.cnblogs.com/machangwei-8/most-liked" class="sidebar-card-title-a">推荐排行榜</a>
+
+        </h3>
+        <div id="TopDiggPostsBlock">
+            <ul style="word-break: break-all">
+                        <li>
+                            <a href="https://www.cnblogs.com/machangwei-8/p/10388883.html">
+                                1. strace命令详解(14)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/machangwei-8/p/10353004.html">
+                                2. nmap命令详解(9)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/machangwei-8/p/10738244.html">
+                                3. Python模块xlwt对excel进行写入操作(5)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/machangwei-8/p/9299013.html">
+                                4. 基础命令学习目录首页(5)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/machangwei-8/p/10403533.html">
+                                5. lsblk命令详解(4)
+                            </a>
+                        </li>
+            </ul>
+        </div>
+    </div>
+</div></div><div id="sidebar_recentcomments" class="sidebar-block"><div class="catListComment">
+<h3 class="catListTitle"><a href="https://www.cnblogs.com/machangwei-8/comments" class="sidebar-card-title-a">最新评论</a></h3>
+    <div class="RecentCommentBlock">
+        <ul>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/machangwei-8/p/15925358.html">1. Re:kubernetes之python调用</a></li>
+                <li class="recent_comment_body">def list_pod(namespace="kube-system"): api_response = Api_Instance.list_namespaced_pod(namespace) re...</li>
+                <li class="recent_comment_author">--顿珠</li>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/machangwei-8/p/15485438.html">2. Re:码云仓库中获取单个文件的超链接</a></li>
+                <li class="recent_comment_body"><p>感谢分享，帮里我大忙了</p>
+</li>
+                <li class="recent_comment_author">--befoucs</li>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/machangwei-8/p/10352620.html">3. Re:useradd命令详解</a></li>
+                <li class="recent_comment_body"><p>非常好，把计算机代码翻译成人可以理解的语句，通俗易懂，加油</p>
+</li>
+                <li class="recent_comment_author">--VickyStudio</li>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/machangwei-8/p/8456888.html">4. Re:计算机相关概念总结（1）</a></li>
+                <li class="recent_comment_body"><p>大佬这文章是挨个敲的吗？好多内容啊</p>
+</li>
+                <li class="recent_comment_author">--时间的风景</li>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/machangwei-8/p/10352808.html">5. Re:ping命令详解</a></li>
+                <li class="recent_comment_body"><p>ping -t 在win里是长ping的意思。作者最好说明一下讲的是Win还是Linux。话说-t在win里来源于哪个单词呀？till?</p>
+</li>
+                <li class="recent_comment_author">--westsnowwzb</li>
+        </ul>
+    </div>
+</div>
+
+</div>
+
+
+</div>
+                    <script>loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright © 2023 马昌伟
+<br><span id="poweredby">Powered by .NET 7.0 on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+
+    <div id="page_end_html">
+        博主链接地址：https://www.cnblogs.com/machangwei-8/
+
+<script language="javascript" type="text/javascript">
+// 生成目录索引列表
+// ref: http://www.cnblogs.com/wangqiguo/p/4355032.html
+// modified by: zzq
+function GenerateContentList()
+{
+    var mainContent = $('#cnblogs_post_body');
+    var h2_list = $('#cnblogs_post_body h2');//如果你的章节标题不是h2,只需要将这里的h2换掉即可
+
+    if(mainContent.length < 1)
+        return;
+ 
+    if(h2_list.length>0)
+    {
+        var content = '<a rel="nofollow noopener"  name="_labelTop"></a>';
+        content += '<div id="navCategory" style="color:#152e97;">';
+        content += '<p style="font-size:18px;"><b>目录</b></p>';
+        content += '<ul>';
+        for(var i=0; i<h2_list.length; i++)
+        {
+            var go_to_top = '<div style="text-align: right;"><a rel="nofollow noopener"  href="#_labelTop" style="color:#f68a33">回到顶部</a><a rel="nofollow noopener"  name="_label' + i + '"></a></div>';
+            $(h2_list[i]).before(go_to_top);
+            
+            var h3_list = $(h2_list[i]).nextAll("h3");
+            var li3_content = '';
+            for(var j=0; j<h3_list.length; j++)
+            {
+                var tmp = $(h3_list[j]).prevAll('h2').first();
+                if(!tmp.is(h2_list[i]))
+                    break;
+                var li3_anchor = '<a rel="nofollow noopener"  name="_label' + i + '_' + j + '"></a>';
+                $(h3_list[j]).before(li3_anchor);
+                li3_content += '<li><a rel="nofollow noopener"  href="#_label' + i + '_' + j + '">' + $(h3_list[j]).text() + '</a></li>';
+            }
+            
+            var li2_content = '';
+            if(li3_content.length > 0)
+                li2_content = '<li><a rel="nofollow noopener"  href="#_label' + i + '">' + $(h2_list[i]).text() + '</a><ul>' + li3_content + '</ul></li>';
+            else
+                li2_content = '<li><a rel="nofollow noopener"  href="#_label' + i + '">' + $(h2_list[i]).text() + '</a></li>';
+            content += li2_content;
+        }
+        content += '</ul>';
+        content += '</div><p>&nbsp;</p>';
+        content += '<hr style="height:1px;border:none;border-top:1px dashed #0066CC;"/>';
+        if($('#cnblogs_post_body').length != 0 )
+        {
+            $($('#cnblogs_post_body')[0]).prepend(content);
+        }
+    }   
+}
+
+GenerateContentList();
+</script>
+    </div>
+
+    <input type="hidden" id="antiforgery_token" value="CfDJ8GXQNXLgcs5PrnWvMs4xAGO7rFLKJNbieeeluMUiah2JejZNku2O9vx2mEk_IQ1ZokmFPgoQQGB9Ye87k2I67tGjkEaLz-UqC6E_IjVDSJVu4pTWxEczYwO0eMoGWNgDCJMYttf_v7k9-30fo-1W9FA">
+    <script async="" src="./strace命令详解_files/js"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    var kv = getGACustom();
+    if (kv) {
+        gtag('set', kv);
+    }
+    gtag('config', 'UA-476124-1');
+</script>
+<script defer="" src="./strace命令详解_files/hm.js"></script><iframe src="./strace命令详解_files/container(1).html" style="visibility: hidden; display: none;"></iframe>
+
+<div class="uprightsideBar" id="uprightsideBar"><div id="sideBarTab"><h2>目录导航</h2></div><div id="sideBarContents" style="display: none;"><dl><dd name="0">strace是什么？</dd><dd name="1">strace能做什么？</dd><dd name="2">strace怎么用？</dd><dd name="3">strace问题定位案例</dd><dt name="4">!/bin/bash</dt><dt name="5">!/bin/bash</dt><dd name="6">总结</dd></dl></div></div><iframe src="./strace命令详解_files/aframe.html" width="0" height="0" style="display: none;"></iframe></body></html>
