@@ -1,0 +1,1557 @@
+<!DOCTYPE html>
+<!-- saved from url=(0047)https://www.cnblogs.com/sparkdev/p/9015312.html -->
+<html lang="zh-cn" style="--olcb-folder-code-block-max-height:80vh;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin-when-cross-origin">
+    <meta name="description" content="mount 命令用来挂载文件系统。其基本命令格式为：mount -t type [-o options] device dirdevice：指定要挂载的设备，比如磁盘、光驱等。dir：指定把文件系统挂">
+    <meta property="og:description" content="mount 命令用来挂载文件系统。其基本命令格式为：mount -t type [-o options] device dirdevice：指定要挂载的设备，比如磁盘、光驱等。dir：指定把文件系统挂">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Linux mount 命令 - sparkdev - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="https://common.cnblogs.com/favicon.svg" type="image/svg+xml">
+    
+    <style>#home :not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]):not([class*="brush:"]) code:not(.hljs), :not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]):not([class*="brush:"]) code:not(.hljs) {background: rgb(245, 245, 245);
+        padding: 12px;
+        border: 1px solid rgb(204, 204, 204);
+        border-radius: 3px;
+        border-color: transparent;
+        color: rgb(68, 68, 68);
+        font-family: "Courier New", sans-serif;
+        font-size: 12px</style><link rel="stylesheet" href="./Linux mount 命令_files/blog-common.min.css">
+    
+
+    <link id="MainCss" rel="stylesheet" href="./Linux mount 命令_files/bundle-red_autumnal_leaves.min.css">
+        <link id="highlighter-theme-cnblogs" type="text/css" rel="stylesheet" href="./Linux mount 命令_files/cnblogs.css">
+    <link type="text/css" rel="stylesheet" href="./Linux mount 命令_files/custom.css">
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./Linux mount 命令_files/bundle-red_autumnal_leaves-mobile.min.css">
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/sparkdev/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/sparkdev/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/sparkdev/wlwmanifest.xml">
+    <script type="text/javascript" async="" src="./Linux mount 命令_files/analytics.js"></script><script type="text/javascript" src="./Linux mount 命令_files/encoder.js"></script><script>
+        var currentBlogId = 287522;
+        var currentBlogApp = 'sparkdev';
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'red_autumnal_leaves';
+        var visitorUserId = '';
+        var hasCustomScript = false;
+        try {
+            if (hasCustomScript && document.referrer && document.referrer.indexOf('baidu.com') >= 0) {
+                Object.defineProperty(document, 'referrer', { value: '' });
+                Object.defineProperty(Document.prototype, 'referrer', { get: function () { return ''; } });
+            }
+        } catch (error) { }
+        window.cb_enable_mathjax = false;
+        window.mathEngine = 0;
+        window.codeHighlightEngine = 1;
+        window.enableCodeLineNumber = false;
+        window.codeHighlightTheme = 'cnblogs';
+        window.darkModeCodeHighlightTheme = 'vs2015';
+        window.isDarkCodeHighlightTheme = false;
+        window.isDarkModeCodeHighlightThemeDark = true;
+        window.isDisableCodeHighlighter = false;
+        window.enableCodeThemeTypeFollowSystem = false;
+    </script>
+        <script>
+            var currentPostDateAdded = '2018-05-09 17:10';
+        </script>
+    <script src="./Linux mount 命令_files/jquery-2.2.0.min.js"></script>
+    <script src="./Linux mount 命令_files/blog-common.min.js"></script><style>.medium-zoom-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 300ms;
+  will-change: opacity;
+}
+
+.medium-zoom--opened .medium-zoom-overlay {
+  cursor: pointer;
+  cursor: zoom-out;
+  opacity: 1;
+}
+
+.medium-zoom-image {
+  cursor: pointer;
+  cursor: zoom-in;
+  /*
+    The `transition` is marked as "!important" for the animation to happen
+    even though it's overriden by another inline `transition` style attribute.
+
+    This is problematic with frameworks that generate inline styles on their
+    images (e.g. Gatsby).
+
+    See https://github.com/francoischalifour/medium-zoom/issues/110
+   */
+  transition: transform 300ms cubic-bezier(0.2, 0, 0.2, 1) !important;
+}
+
+.medium-zoom-image--hidden {
+  visibility: hidden;
+}
+
+.medium-zoom-image--opened {
+  position: relative;
+  cursor: pointer;
+  cursor: zoom-out;
+  will-change: transform;
+}
+</style><script id="hljs-script" src="./Linux mount 命令_files/highlight.min.js" type="text/javascript" async=""></script>
+    
+
+    
+<meta http-equiv="origin-trial" content="Az6AfRvI8mo7yiW5fLfj04W21t0ig6aMsGYpIqMTaX60H+b0DkO1uDr+7BrzMcimWzv/X7SXR8jI+uvbV0IJlwYAAACFeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjgwNjUyNzk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A+USTya+tNvDPaxUgJooz+LaVk5hPoAxpLvSxjogX4Mk8awCTQ9iop6zJ9d5ldgU7WmHqBlnQB41LHHRFxoaBwoAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjgwNjUyNzk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A7FovoGr67TUBYbnY+Z0IKoJbbmRmB8fCyirUGHavNDtD91CiGyHHSA2hDG9r9T3NjUKFi6egL3RbgTwhhcVDwUAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjgwNjUyNzk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><script src="./Linux mount 命令_files/pubads_impl_2023021301.js" async=""></script><link rel="preload" href="./Linux mount 命令_files/f(6).txt" as="script"><script type="text/javascript" src="./Linux mount 命令_files/f(6).txt"></script></head>
+<body class="skin-red_autumnal_leaves has-navbar">
+    <a name="top"></a>
+    <div id="top_nav" class="navbar forpc">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding">
+                    <a href="https://www.cnblogs.com/" title="开发者的网上家园" role="banner">
+                            <img src="./Linux mount 命令_files/logo.svg" alt="博客园Logo">
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.cnblogs.com/" onclick="countClicks(&#39;skin-navbar-sitehome&#39;)">首页</a>
+                </li>
+                <li>
+                    <a href="https://news.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-news&#39;)">新闻</a>
+                </li>
+                <li>
+                    <a href="https://q.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-q&#39;)">博问</a>
+                </li>
+                <li>
+                    <a id="nav_brandzone" href="https://brands.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-brands&#39;)">专区</a>
+                </li>
+                <li>
+                    <a href="https://ing.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-ing&#39;)">闪存</a>
+                </li>
+                <li>
+                    <a href="https://edu.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-edu&#39;)">班级</a>
+                </li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search dropdown" action="https://zzk.cnblogs.com/s" method="get" role="search">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="search" tabindex="3" autocomplete="off">
+                        <button id="zzk_search_button" onclick="window.navbarSearchManager.triggerActiveOption()">
+                            <img id="search_icon" class="focus-hidden" src="./Linux mount 命令_files/search.svg" alt="搜索">
+                            <img class="hidden focus-visible" src="./Linux mount 命令_files/enter.svg" alt="搜索">
+                        </button>
+                        <ul id="navbar_search_options" class="dropdown-menu quick-search-menu">
+                            <li tabindex="0" class="active" onclick="zzkSearch(event, document.getElementById(&#39;zzk_search_input&#39;).value)">
+                                <div class="keyword-wrapper">
+                                    <img src="./Linux mount 命令_files/search.svg" alt="搜索">
+                                    <div class="keyword"></div>
+                                </div>
+                                <span class="search-area">所有博客</span>
+                            </li>
+                                    <li tabindex="1" onclick="zzkBlogSearch(event, &#39;sparkdev&#39;, document.getElementById(&#39;zzk_search_input&#39;).value)">
+                                        <div class="keyword-wrapper">
+                                            <img src="./Linux mount 命令_files/search.svg" alt="搜索">
+                                            <div class="keyword"></div>
+                                        </div>
+                                        <span class="search-area">当前博客</span>
+                                    </li>
+                        </ul>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔" style="display: none;">
+                        <img id="new_post_icon" class="navbar-icon" src="./Linux mount 命令_files/newpost.svg" alt="写随笔">
+                    </a>
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客" style="display: none;">
+                        <img id="myblog_icon" class="navbar-icon" src="./Linux mount 命令_files/myblog.svg" alt="我的博客">
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息" style="display: none;">
+                        <img id="msg_icon" class="navbar-icon" src="./Linux mount 命令_files/message.svg" alt="短消息">
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <a id="navbar_lite_mode_indicator" data-current-page="blog" style="display: none" href="javascript:void(0)" alt="简洁模式" title="简洁模式启用，您在访问他人博客时会使用简洁款皮肤展示">
+                        <img class="navbar-icon" src="./Linux mount 命令_files/lite-mode-on.svg" alt="简洁模式">
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown" style="display: none;">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="./Linux mount 命令_files/avatar-default.svg" alt="用户头像">
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <img id="navbar_lite_mode_on" src="./Linux mount 命令_files/lite-mode-check.svg" class="hide"><span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+                            <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup" style="display: inline;">注册</a>
+                    <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()" style="display: inline;">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    
+
+    <!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/sparkdev/"><img id="blogLogo" src="./Linux mount 命令_files/logo.gif" alt="返回主页"></a>		
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/sparkdev/">sparkdev</a>
+</h1>
+<h2></h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/sparkdev/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/sparkdev">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/sparkdev/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			<span id="stats_post_count">随笔 - 231&nbsp; </span>
+<span id="stats_article_count">文章 - 0&nbsp; </span>
+<span id="stats-comment_count">评论 - 1615&nbsp; </span>
+<span id="stats-total-view-count">阅读 - 
+<span title="总阅读数: 5923950">
+592万</span></span>
+
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    <!--done-->
+    <div id="topics">
+        <div class="post">
+            <h1 class="postTitle">
+                
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/sparkdev/p/9015312.html">
+    <span role="heading" aria-level="2">Linux mount 命令</span>
+    
+</a><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                <div id="cnblogs_post_body" class="blogpost-body blogpost-body-html">
+<p><span style="font-family: Microsoft YaHei; font-size: 15px">mount 命令用来挂载文件系统。其基本命令格式为：</span><br><span style="color: rgba(255, 0, 0, 1)"><strong><span style="font-family: Microsoft YaHei; font-size: 15px">mount -t type [-o options] device dir</span></strong></span><br><span style="font-family: Microsoft YaHei; font-size: 15px"><strong>device</strong>：指定要挂载的设备，比如磁盘、光驱等。</span><br><span style="font-family: Microsoft YaHei; font-size: 15px"><strong>dir</strong>：指定把文件系统挂载到哪个目录。</span><br><span style="font-family: Microsoft YaHei; font-size: 15px"><strong>type</strong>：指定挂载的文件系统类型，一般不用指定，mount 命令能够自行判断。</span><br><span style="font-family: Microsoft YaHei; font-size: 15px"><strong>options</strong>：指定挂载参数，比如 ro 表示以只读方式挂载文件系统。</span></p>
+<h1><span style="font-family: Microsoft YaHei; font-size: 18pt">Help</span><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<p><span style="font-family: Microsoft YaHei; font-size: 15px">可以通过 man page 和 -h 选项来获得最直接的帮助文档：</span></p>
+<div class="cnblogs_code">
+<pre>$ <span style="color: rgba(0, 0, 255, 1)">man</span> <span style="color: rgba(0, 0, 255, 1)">mount</span><span style="color: rgba(0, 0, 0, 1)">
+$ </span><span style="color: rgba(0, 0, 255, 1)">mount</span> -h</pre>
+</div>
+<h1><span style="font-family: Microsoft YaHei; font-size: 18pt">文件系统的类型</span><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<p><span style="font-family: Microsoft YaHei; font-size: 15px">虽然多数情况下我们不用指定 -t 参数显式地说明文件系统的类型，但文件系统的类型对 mount 命令来说确实是非常重要的。原因是假如你要挂载一个当前系统不支持的文件系统，它是没办法工作的。当前系统支持的文件系统类型是由内核来决定的，比如 ext2、ext3、ext4、sysfs 和 proc 等常见的文件系统默认都是被支持的。我们可以通过查看 /proc/filesystems 文件来观察当前系统具体都支持哪些文件系统：</span></p>
+<div class="cnblogs_code">
+<pre>$ <span style="color: rgba(0, 0, 255, 1)">cat</span> /proc/filesystems</pre>
+</div>
+<p><span style="font-family: Microsoft YaHei; font-size: 15px"><img src="./Linux mount 命令_files/952033-20180509144209666-153848859.png" alt="" class="medium-zoom-image"></span></p>
+<p><span style="font-family: Microsoft YaHei; font-size: 15px">第一列说明文件系统是否需要挂载在一个块设备上， nodev 表明后面的文件系统不需要挂接在块设备上。 第二列是内核支持的文件系统。</span></p>
+<h1><span style="font-family: Microsoft YaHei; font-size: 18pt">看懂输出的文件系统信息</span><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<p><span style="font-family: Microsoft YaHei; font-size: 15px">通过 mount 命令查看已挂载的文件系统，会输出丰富的信息，如下图所示：</span></p>
+<p><span style="font-family: Microsoft YaHei; font-size: 15px"><img src="./Linux mount 命令_files/952033-20180509144320553-350001490.png" alt="" class="medium-zoom-image"></span></p>
+<p><span style="font-family: Microsoft YaHei; font-size: 15px">让我们先来解释一下输出信息的格式和含义。输出中的每行代表挂载的一个文件系统，其格式为：</span><br><strong><span style="font-family: Microsoft YaHei; font-size: 15px">fs_spec on fs_file type fs_vfstype (fs_mntopts)</span></strong><br><span style="font-family: Microsoft YaHei; font-size: 15px"><strong>fs_spec</strong>：挂载的块设备或远程文件系统</span><br><span style="font-family: Microsoft YaHei; font-size: 15px"><strong>fs_file</strong>：文件系统的挂载点</span><br><span style="font-family: Microsoft YaHei; font-size: 15px"><strong>fs_vfstype</strong>：文件系统的类型</span><br><span style="font-family: Microsoft YaHei; font-size: 15px"><strong>fs_mntopts</strong>：与文件系统相关的更多选项，不同的文件系统其选项也不太一样</span><br><span style="font-family: Microsoft YaHei; font-size: 15px">比如上图中的第一行含义为：挂载的设备为 sysfs，挂载点为 /sys，文件系统的类型为 sysfs。括号中的 rw 表示以可读写的方式挂载文件系统，noexec 表示不能在该文件系统上直接运行程序。</span></p>
+<h1><span style="font-family: Microsoft YaHei; font-size: 18pt">与 mount 命令相关的文件</span><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<p><strong><span style="font-family: Microsoft YaHei; font-size: 15px">/etc/fstab</span></strong><br><strong><span style="font-family: Microsoft YaHei; font-size: 15px">/etc/mtab</span></strong><br><strong><span style="font-family: Microsoft YaHei; font-size: 15px">/proc/mounts</span></strong></p>
+<p><span style="font-family: Microsoft YaHei; font-size: 15px">mount -a 会将 /etc/fstab 中定义的所有挂载点都挂上(一般是在系统启动时的脚本中调用，自己最好别用！)。</span></p>
+<p><span style="font-family: Microsoft YaHei; font-size: 15px">mount 和 umount 命令会在 /etc/mtab 文件中维护当前挂载的文件系统的列表，这个文件在目前的系统中还是被支持的。但是更好的方式是用链接文件 /proc/mounts 代替 /etc/mtab 文件。这是因为在用户空间中维护的普通文件 /etc/mtab 很难稳定可靠的与 namespaces、containers 等 Linux 的高级功能协作。在 ubuntu 16.04 上， /etc/mtab 和&nbsp; /proc/mounts 一样，都是指向 /proc/self/mounts 的链接文件。</span></p>
+<p><span style="font-family: Microsoft YaHei; font-size: 15px">下面我们介绍一些 mount 命令的常见用例。</span></p>
+<h1><span style="font-family: Microsoft YaHei; font-size: 18pt">查看挂载的文件系统</span><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<p><strong><span style="font-family: Microsoft YaHei; font-size: 15px">输出系统挂载的所有文件系统</span></strong><br><span style="font-family: Microsoft YaHei; font-size: 15px">如果执行 mount 命令时不加任何参数，就会输出系统挂载的所有文件系统：</span></p>
+<div class="cnblogs_code">
+<pre>$ <span style="color: rgba(0, 0, 255, 1)">mount</span></pre>
+</div>
+<p><strong><span style="font-family: Microsoft YaHei; font-size: 15px">输出指定类型的文件系统</span></strong><br><span style="font-family: Microsoft YaHei; font-size: 15px">通过 -t 参数可以只输出指定类型的文件系统，比如下面的命令只会输出 tmpfs 类型的文件系统：</span></p>
+<div class="cnblogs_code">
+<pre>$ <span style="color: rgba(0, 0, 255, 1)">mount</span> -t tmpfs</pre>
+</div>
+<h1><span style="font-family: Microsoft YaHei; font-size: 18pt">格式化并挂载磁盘</span><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<p><span style="font-family: Microsoft YaHei; font-size: 15px">对于一个磁盘分区，我们可以使用 mkfs 命令把磁盘分区格式化为指定的文件系统，比如 ext4：</span></p>
+<div class="cnblogs_code">
+<pre>$ <span style="color: rgba(0, 0, 255, 1)">sudo</span> mkfs -t ext4 /dev/sdb1</pre>
+</div>
+<p><span style="font-family: Microsoft YaHei; font-size: 15px">然后把该分区挂载到 /mnt 目录：</span></p>
+<div class="cnblogs_code">
+<pre>$ <span style="color: rgba(0, 0, 255, 1)">sudo</span> <span style="color: rgba(0, 0, 255, 1)">mount</span> /dev/sdb1 /mnt</pre>
+</div>
+<h1><span style="font-family: Microsoft YaHei; font-size: 18pt">挂载光驱</span><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<p><span style="font-family: Microsoft YaHei; font-size: 15px">现在偶尔还还需要使用一下光驱，挂载光驱的命令如下：</span></p>
+<div class="cnblogs_code">
+<pre>$ <span style="color: rgba(0, 0, 255, 1)">sudo</span> <span style="color: rgba(0, 0, 255, 1)">mount</span> /dev/cdrom /mnt</pre>
+</div>
+<p><span style="font-family: Microsoft YaHei; font-size: 15px"><img src="./Linux mount 命令_files/952033-20180509144745229-501878753.png" alt="" class="medium-zoom-image"></span></p>
+<p><span style="font-family: Microsoft YaHei; font-size: 15px">该命令把设备 /dev/cdrom 挂载在 /mnt 目录中，然后我们就可以在 /mnt 目录下访问光驱中的内容了。</span></p>
+<h1><span style="font-family: Microsoft YaHei; font-size: 18pt">以只读的方式挂载</span><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<p><span style="font-family: Microsoft YaHei; font-size: 15px">可以把文件系统挂载为只读模式，从而保护数据。比如将 /dev/sdb1 用只读模式挂在 /mnt 目录：</span></p>
+<div class="cnblogs_code">
+<pre>$ <span style="color: rgba(0, 0, 255, 1)">sudo</span> <span style="color: rgba(0, 0, 255, 1)">mount</span> -o ro /dev/sdb1 /mnt</pre>
+</div>
+<p><span style="font-family: Microsoft YaHei; font-size: 15px"><img src="./Linux mount 命令_files/952033-20180509144856382-1739228804.png" alt="" class="medium-zoom-image"></span></p>
+<p><span style="font-family: Microsoft YaHei; font-size: 15px">这样 /mnt 目录下的文件都是只读的。</span></p>
+<h1><span style="font-family: Microsoft YaHei; font-size: 18pt">把只读的挂载重新挂载为读写模式</span><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<p><span style="font-family: Microsoft YaHei; font-size: 15px">当系统出现故障进入单用户模式时，通常 / 根目录会以只读方式挂载，这时如果想要修改文件，会发现所有文件都是只读状态，无法修改。好在 Linux 下的 mount 命令支持一个remount 选项，只需要执行如下命令：</span></p>
+<div class="cnblogs_code">
+<pre>$ <span style="color: rgba(0, 0, 255, 1)">mount</span> / -o rw,remount</pre>
+</div>
+<p><span style="font-family: Microsoft YaHei; font-size: 15px">就可以将根分区重新挂载为读写状态。</span></p>
+<p><span style="font-family: Microsoft YaHei; font-size: 15px">除了根目录，重新挂载其它挂载点也是一样的，比如我们把前面挂载的 sdb1 分区重新挂载为读写模式：</span></p>
+<div class="cnblogs_code">
+<pre>$ <span style="color: rgba(0, 0, 255, 1)">sudo</span> <span style="color: rgba(0, 0, 255, 1)">mount</span> /mnt -o rw,remount</pre>
+</div>
+<p><span style="font-family: Microsoft YaHei; font-size: 15px"><img src="./Linux mount 命令_files/952033-20180509145002642-2132655512.png" alt="" class="medium-zoom-image"></span></p>
+<h1><span style="font-family: Microsoft YaHei; font-size: 18pt">挂载 windows 共享文件</span><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<p><span style="font-family: Microsoft YaHei; font-size: 15px">局域网中一般都是 windows 系统和 Linux 系统共存的，如果能轻松的从 Linux 系统中访问 windows 的文件共享将是一件很开心的事情。其实这也很简单，在 windows 上共享文件时指定一个本机的用户，然后在 mount 命令中指定这个用户及其密码就可以了：</span></p>
+<div class="cnblogs_code">
+<pre>$ <span style="color: rgba(0, 0, 255, 1)">sudo</span> <span style="color: rgba(0, 0, 255, 1)">mount</span> -t cifs -o username=nick,password=Test123456 <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">10.32.2.30/doc /mnt</span></pre>
+</div>
+<p><span style="font-family: Microsoft YaHei; font-size: 15px"><img src="./Linux mount 命令_files/952033-20180509145055351-1230118124.png" alt="" class="medium-zoom-image"></span></p>
+<p><span style="font-family: Microsoft YaHei; font-size: 15px">注意，-t cifs 是可以省略的，mount 命令能够自动识别。一定要使用 IP 代替 windows 主机的名称。</span></p>
+<h1><span style="font-family: Microsoft YaHei; font-size: 18pt">挂载虚拟文件系统</span><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<p><span style="font-family: Microsoft YaHei; font-size: 15px">proc、tmpfs、sysfs、devpts 等都是 Linux 内核映射到用户空间的虚拟文件系统，它们不和具体的物理设备关联，但它们具有普通文件系统的特征，应用层程序可以像访问普通文件系统一样来访问他们。</span><br><span style="font-family: Microsoft YaHei; font-size: 15px">比如内核的 proc 文件系统默认被挂载到了 /proc 目录，当然我们也可以再把它挂载到其它的目录，比如 /mnt 目录下：</span></p>
+<div class="cnblogs_code">
+<pre>$ <span style="color: rgba(0, 0, 255, 1)">sudo</span> <span style="color: rgba(0, 0, 255, 1)">mount</span> -t proc none /mnt</pre>
+</div>
+<p><span style="font-family: Microsoft YaHei; font-size: 15px">由于 proc 是内核虚拟的一个文件系统，并没有对应的设备，所以这里的 -t 参数不能省略。由于没有对应的源设备，这里的 none 可以是任意字符串，取个有意义的名字就可以了，因为用 mount 命令查看挂载点信息时第一列显示的就是这个字符串。</span></p>
+<p><span style="font-family: Microsoft YaHei; font-size: 15px">在 Linux 上我们还可以通过 tmpfs 文件系统轻松地构建出内存磁盘来。比如在内存中创建一个 512M 的 tmpfs 文件系统，并挂载到 /mnt 下，这样所有写到 /mnt 目录下的文件都存储在内存中，速度非常快，不过要注意，由于数据存储在内存中，所以断电后数据会丢失掉：</span></p>
+<div class="cnblogs_code">
+<pre>$ <span style="color: rgba(0, 0, 255, 1)">sudo</span> <span style="color: rgba(0, 0, 255, 1)">mount</span> -t tmpfs -o size=512m tmpfs /mnt</pre>
+</div>
+<h1><span style="font-family: Microsoft YaHei; font-size: 18pt">挂载 loop 设备</span><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<p><span style="font-family: Microsoft YaHei; font-size: 15px">在 Linux中，硬盘、光盘、软盘等都是常见的块设备，他们在 Linux 下的目录一般是 /dev/sda1、/dev/cdrom、 /dev/fd0 这样的。而 loop device 是虚拟的块设备，主要目的是让用户可以像访问上述块设备那样访问一个文件。 loop device 设备的路径一般是 /dev/loop0、dev/loop1 等，具体的个数跟内核的配置有关。</span></p>
+<p><strong><span style="font-family: Microsoft YaHei; font-size: 15px">挂载 ISO 文件</span></strong><br><span style="font-family: Microsoft YaHei; font-size: 15px">需要用到 loop device 的最常见的场景是挂载一个 ISO 文件。比如将 /tmp/test.iso 这个光盘镜像文件使用 loop 模式挂载到 /mnt 下，这样就不需要把 ISO 文件刻录到光盘上了，当然也不需要光驱了。</span><br><span style="font-family: Microsoft YaHei; font-size: 15px">下面的命令把 projects 目录下的内容打包到 test.iso 文件中：</span></p>
+<div class="cnblogs_code">
+<pre>$ mkisofs -o test.iso projects/</pre>
+</div>
+<p><span style="font-family: Microsoft YaHei; font-size: 15px">然后把这个 ISO 文件挂载到 /mnt 目录下：</span></p>
+<div class="cnblogs_code">
+<pre>$ <span style="color: rgba(0, 0, 255, 1)">sudo</span> <span style="color: rgba(0, 0, 255, 1)">mount</span> test.iso /mnt</pre>
+</div>
+<p><span style="font-family: Microsoft YaHei; font-size: 15px"><img src="./Linux mount 命令_files/952033-20180509145308380-934494437.png" alt="" class="medium-zoom-image"></span></p>
+<p><span style="font-family: Microsoft YaHei; font-size: 15px">挂载 test.iso 文件使用了虚拟设备 /dev/loop0，并且是只读的模式。</span></p>
+<p><strong><span style="font-family: Microsoft YaHei; font-size: 15px">虚拟硬盘</span></strong><br><span style="font-family: Microsoft YaHei; font-size: 15px">loop 设备另一种常见的用法是虚拟一个硬盘，比如我想玩儿一下 btrfs 这个文件系统，但系统中目前的所有分区都已经用了，里面都是有用的数据，不想格式化他们，这时虚拟硬盘就有用武之地了。</span></p>
+<p><span style="font-family: Microsoft YaHei; font-size: 15px">我们先通过 dd 命令创建一个 512M 的文件：</span></p>
+<div class="cnblogs_code">
+<pre>$ <span style="color: rgba(0, 0, 255, 1)">dd</span> <span style="color: rgba(0, 0, 255, 1)">if</span>=/dev/zero bs=1M count=<span style="color: rgba(128, 0, 128, 1)">512</span> of=./vdisk.img</pre>
+</div>
+<p><span style="font-family: Microsoft YaHei; font-size: 15px">然后在这个文件里面创建 btrfs 文件系统：</span></p>
+<div class="cnblogs_code">
+<pre>$ <span style="color: rgba(0, 0, 255, 1)">sudo</span> apt <span style="color: rgba(0, 0, 255, 1)">install</span> btrfs-<span style="color: rgba(0, 0, 0, 1)">progs
+$ mkfs.btrfs vdisk.img</span></pre>
+</div>
+<p><span style="font-family: Microsoft YaHei; font-size: 15px">最后把它挂载到 /mnt ：</span></p>
+<div class="cnblogs_code">
+<pre>$ <span style="color: rgba(0, 0, 255, 1)">sudo</span> <span style="color: rgba(0, 0, 255, 1)">mount</span> vdisk.img /mnt</pre>
+</div>
+<h1><span style="font-family: Microsoft YaHei; font-size: 18pt">把多个设备挂载到同一个目录</span><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<p><span style="font-family: Microsoft YaHei; font-size: 15px">在 Linux 中可以把多个设备挂载到同一个目录。默认后面挂载的内容会让前面挂载的内容隐藏掉，只有 unmount 了后面挂载的内容，才会显示原来的内容。</span></p>
+<h1><span style="font-family: Microsoft YaHei; font-size: 18pt">挂载一个设备到多个目录</span><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<p><span style="font-family: Microsoft YaHei; font-size: 15px">我们也可以把同一个设备挂载到不同的目录，这样在不同的目录中看到的是同样的内容。还可以在不同的目录中控制挂载的权限，比如以只读方式挂载：</span></p>
+<div class="cnblogs_code">
+<pre>$ <span style="color: rgba(0, 0, 255, 1)">sudo</span> <span style="color: rgba(0, 0, 255, 1)">mount</span> -o ro vdisk.img ./testdir</pre>
+</div>
+<p><span style="font-family: Microsoft YaHei; font-size: 15px">这样从不同的目录访问相同的文件系统时就具有了不同的访问权限。</span></p>
+<h1><span style="font-family: Microsoft YaHei; font-size: 18pt">总结</span><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<p><span style="font-family: Microsoft YaHei; font-size: 15px">mount 是 Linux 系统中非常重要的一个命令，因为离开 mount 挂载的文件系统我们几乎什么也干不了。本文介绍了一些 mount 命令的基础用法 ，日常使用应该是够了。mount 命令还有一些相关的复杂概念和用法，比如 bind mount 和 shared subtree 等，笔者会在今后写专门的文章进行介绍。</span></p>
+<p><strong><span style="font-family: Microsoft YaHei; font-size: 15px">参考：</span></strong><br><a href="http://man7.org/linux/man-pages/man8/mount.8.html" target="_blank" rel="noopener"><span style="font-family: Microsoft YaHei; font-size: 15px">Man page</span></a><br><a href="https://segmentfault.com/a/1190000006878392" target="_blank" rel="noopener"><span style="font-family: Microsoft YaHei; font-size: 15px">Linux mount （第一部分）</span></a></p>
+</div>
+<div id="MySignature" role="contentinfo">
+    <div>作者：<a href="http://www.cnblogs.com/sparkdev/" target="_blank">sparkdev</a></div>
+<div>出处：<a href="http://www.cnblogs.com/sparkdev/" target="_blank">http://www.cnblogs.com/sparkdev/</a></div>
+<div>本文版权归作者和博客园共有，欢迎转载，但未经作者同意必须保留此段声明，且在文章页面明显位置给出原文连接，否则保留追究法律责任的权利。</div>
+</div>
+<div class="clear"></div>
+<div id="blog_post_info_block" role="contentinfo"><div id="BlogPostCategory">
+    分类: 
+            <a href="https://www.cnblogs.com/sparkdev/category/834899.html" target="_blank">Linux</a></div>
+<div id="EntryTag">
+    标签: 
+            <a href="https://www.cnblogs.com/sparkdev/tag/Linux/">Linux</a></div>
+
+    <div id="blog_post_info">
+<div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(9015312,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+        <a id="green_channel_follow" onclick="follow(&#39;636ea2f4-ca14-e611-9fc1-ac853d9f53cc&#39;);" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="./Linux mount 命令_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="./Linux mount 命令_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/sparkdev/" target="_blank"><img src="./Linux mount 命令_files/20160916141655.png" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/sparkdev/">sparkdev</a><br>
+            <a href="https://home.cnblogs.com/u/sparkdev/followers/">粉丝 - <span class="follower-count">1044</span></a>
+            <a href="https://home.cnblogs.com/u/sparkdev/followees/">关注 - <span class="following-count">32</span></a><br>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor">推荐博客</div>
+    <div id="author_profile_follow" class="follow-tip">
+                <a href="javascript:void(0);" onclick="follow(&#39;636ea2f4-ca14-e611-9fc1-ac853d9f53cc&#39;);return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(9015312,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">16</span>
+    </div>
+    <div class="buryit" onclick="votePost(9015312,&#39;Bury&#39;)">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+    <div class="clear"></div>
+    <div id="post_next_prev">
+
+    <a href="https://www.cnblogs.com/sparkdev/p/8998546.html" class="p_n_p_prefix">« </a> 上一篇：    <a href="https://www.cnblogs.com/sparkdev/p/8998546.html" data-featured-image="" title="发布于 2018-05-07 07:08">Docker 生态概览</a>
+    <br>
+    <a href="https://www.cnblogs.com/sparkdev/p/9032209.html" class="p_n_p_prefix">» </a> 下一篇：    <a href="https://www.cnblogs.com/sparkdev/p/9032209.html" data-featured-image="" title="发布于 2018-05-14 08:21">RunC 简介</a>
+
+</div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date" data-date-updated-tip="enable" data-date-updated="2018-07-20 14:58" aria-expanded="false">2018-05-09 17:10</span>&nbsp;
+<a href="https://www.cnblogs.com/sparkdev/">sparkdev</a>&nbsp;
+阅读(<span id="post_view_count">91680</span>)&nbsp;
+评论(<span id="post_comment_count">9</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=9015312" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(9015312);return false;">收藏</a>&nbsp;
+<a href="javascript:void(0)" onclick="reportManager.report({ currentUserId: &#39;&#39;, targetType: &#39;blogPost&#39;, targetId: &#39;9015312&#39;, targetLink: &#39;https://www.cnblogs.com/sparkdev/p/9015312.html&#39;, title: &#39;Linux mount 命令&#39; })">举报</a></div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+
+<script>
+    var cb_entryId = 9015312, cb_entryCreatedDate = '2018-05-09 17:10', cb_postType = 1, cb_postTitle = 'Linux mount 命令';
+    var allowComments = true, cb_blogId = 287522, cb_blogApp = 'sparkdev', cb_blogUserGuid = '636ea2f4-ca14-e611-9fc1-ac853d9f53cc';
+    mermaidRender.render()
+    markdown_highlight()
+    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");
+    updatePostStats(
+            [cb_entryId],
+            function(id, count) { $("#post_view_count").text(count) },
+            function(id, count) { $("#post_comment_count").text(count) })
+</script>
+<a id="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="https://www.cnblogs.com/sparkdev/p/9015312.html#" onclick="return RefreshPage();">刷新页面</a><a href="https://www.cnblogs.com/sparkdev/p/9015312.html#top">返回顶部</a></div>
+    <div id="comment_form_container" style="visibility: visible;"><div class="login_tips">
+    登录后才能查看或发表评论，立即 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return account.login(&#39;!comments&#39;);">登录</a> 或者
+    <a href="https://www.cnblogs.com/">逛逛</a> 博客园首页
+</div>
+</div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+        <div id="cnblogs_ch"></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="under-post-card">
+            <div id="div-gpt-ad-1592365906576-0" style="width: 300px; height: 250px;" data-google-query-id="CLSGvv-Zl_0CFXeH6QUd1xUK2Q"><div id="google_ads_iframe_/1090369/C1_0__container__" style="border: 0pt none; display: inline-block; width: 300px; height: 250px;"><iframe frameborder="0" src="./Linux mount 命令_files/container.html" id="google_ads_iframe_/1090369/C1_0" title="3rd party ad content" name="" scrolling="no" marginwidth="0" marginheight="0" width="300" height="250" data-is-safeframe="true" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" role="region" aria-label="Advertisement" tabindex="0" data-google-container-id="1" style="border: 0px; vertical-align: bottom;" data-load-complete="true"></iframe></div></div>
+    </div>
+    <div id="under_post_card1"><div class="under-post-card">
+<b>编辑推荐：</b>
+<br>
+
+· <a href="https://www.cnblogs.com/huangxincheng/p/17115916.html" target="_blank">记一次 .NET 某游戏网站 CPU 爆高分析</a>
+    <br>
+· <a href="https://www.cnblogs.com/jackyfei/p/17107742.html" target="_blank">探索 ABP 基础架构的横切关注点</a>
+    <br>
+· <a href="https://www.cnblogs.com/eryuan/p/17109391.html" target="_blank">一次生产环境 CPU 占用高的排查 </a>
+    <br>
+· <a href="https://www.cnblogs.com/coco1s/p/17107807.html" target="_blank">现代图片性能优化及体验优化指南</a>
+    <br>
+· <a href="https://www.cnblogs.com/s0611163/p/17098841.html" target="_blank">探索：优雅地实现异步方法的并行执行</a>
+    <br>
+</div></div>
+    <div id="under_post_card2"><div class="itnews under-post-card">
+    <b>阅读排行：</b>
+    <br>
+ ·          <a href="https://www.cnblogs.com/teach/p/17118100.html" target="_blank">周末折腾了两天，踩了无数个坑，终于把win7装成了centos7</a>
+        <br>
+ ·          <a href="https://www.cnblogs.com/stulzq/p/17118904.html" target="_blank">从 Newtonsoft.Json 迁移到 System.Text.Json</a>
+        <br>
+ ·          <a href="https://www.cnblogs.com/linvanda/p/17120205.html" target="_blank">我已经受够了“系统异常”！</a>
+        <br>
+ ·          <a href="https://www.cnblogs.com/niumoo/p/17121504.html" target="_blank">你好 ChatGPT, 帮我看下这段代码有什么问题？</a>
+        <br>
+ ·          <a href="https://www.cnblogs.com/strick/p/17060135.html" target="_blank">我好像找到了点学习英文的技巧</a>
+        <br>
+</div></div>
+    <div id="HistoryToday" class="under-post-card"></div>
+    <script type="text/javascript">
+        var commentManager = new blogCommentManager();
+        commentManager.renderComments(0);
+        fixPostBody();
+        window.footnoteTipManager.generateFootnoteTips();
+
+            window.tocManager.displayDisableTocTips = false;
+            window.tocManager.generateToc();
+            
+                setTimeout(function() { countViews(cb_blogId, cb_entryId); }, 50);
+            
+            deliverT2();
+            deliverC1C2();
+            loadNewsAndKb();
+            
+                LoadPostCategoriesTags(cb_blogId, cb_entryId);
+            
+            LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+            GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+            loadOptUnderPost();
+            GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+                </script>
+</div>
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+	<div id="sideBar">
+		<div id="sideBarMain">
+			<div id="sidebar_news" class="newsItem"><!--done-->
+<h3 class="catListTitle">公告</h3>
+
+<div id="blog-news">
+    
+    <div id="profile_block">
+        昵称：
+        <a href="https://home.cnblogs.com/u/sparkdev/">
+            sparkdev
+        </a>
+        <br>
+        园龄：
+        <a href="https://home.cnblogs.com/u/sparkdev/" title="入园时间：2016-05-08">
+            6年9个月
+        </a>
+        <br>
+荣誉：            <a href="https://www.cnblogs.com/expert/">推荐博客</a>
+            <br>
+        粉丝：
+        <a class="follower-count" href="https://home.cnblogs.com/u/sparkdev/followers/">
+            1044
+        </a>
+        <br>
+        关注：
+        <a class="folowing-count" href="https://home.cnblogs.com/u/sparkdev/followees/">
+            32
+        </a>
+        <div id="p_b_follow" class="follow-tip">
+<a href="javascript:void(0)" onclick="follow(&#39;636ea2f4-ca14-e611-9fc1-ac853d9f53cc&#39;)">+加关注</a></div>
+        <script>getFollowStatus('636ea2f4-ca14-e611-9fc1-ac853d9f53cc');</script>
+    </div>
+</div>
+
+</div>
+<div id="sidebar_c3"></div>
+			<div id="blog-calendar" style="">
+
+<table id="blogCalendar" class="Cal" cellspacing="0" cellpadding="0" title="Calendar" border="0">
+    <tbody>
+        <tr>
+            <td colspan="7">
+                <table class="CalTitle" cellspacing="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2023/01/15&#39;); return false;">&lt;</a>
+                            </td>
+                            <td align="center">2023年2月</td>
+                            <td align="right" class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2023/03/15&#39;); return false;">&gt;</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    <tr>
+        <th class="CalDayHeader" align="center" abbr="日" scope="col">日</th>
+        <th class="CalDayHeader" align="center" abbr="一" scope="col">一</th>
+        <th class="CalDayHeader" align="center" abbr="二" scope="col">二</th>
+        <th class="CalDayHeader" align="center" abbr="三" scope="col">三</th>
+        <th class="CalDayHeader" align="center" abbr="四" scope="col">四</th>
+        <th class="CalDayHeader" align="center" abbr="五" scope="col">五</th>
+        <th class="CalDayHeader" align="center" abbr="六" scope="col">六</th>
+    </tr>
+            <tr>
+                            <td class="CalOtherMonthDay" align="center">29</td>
+                            <td class="CalOtherMonthDay" align="center">30</td>
+                            <td class="CalOtherMonthDay" align="center">31</td>
+                        <td class="" align="center">
+                            1
+                        </td>
+                        <td class="" align="center">
+                            2
+                        </td>
+                        <td class="" align="center">
+                            3
+                        </td>
+                    <td class="CalWeekendDay" align="center">
+                        4
+                    </td>
+            </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            5
+                        </td>
+                            <td class="" align="center">
+                                6
+                            </td>
+                            <td class="" align="center">
+                                7
+                            </td>
+                            <td class="" align="center">
+                                8
+                            </td>
+                            <td class="" align="center">
+                                9
+                            </td>
+                            <td class="" align="center">
+                                10
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            11
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            12
+                        </td>
+                            <td class="" align="center">
+                                13
+                            </td>
+                            <td class="" align="center">
+                                14
+                            </td>
+                            <td class="CalTodayDay" align="center">
+                                15
+                            </td>
+                            <td class="" align="center">
+                                16
+                            </td>
+                            <td class="" align="center">
+                                17
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            18
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            19
+                        </td>
+                            <td class="" align="center">
+                                20
+                            </td>
+                            <td class="" align="center">
+                                21
+                            </td>
+                            <td class="" align="center">
+                                22
+                            </td>
+                            <td class="" align="center">
+                                23
+                            </td>
+                            <td class="" align="center">
+                                24
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            25
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            26
+                        </td>
+                            <td class="" align="center">
+                                27
+                            </td>
+                            <td class="" align="center">
+                                28
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                1
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                2
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                3
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            4
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalOtherMonthDay" align="center">
+                            5
+                        </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                6
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                7
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                8
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                9
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                10
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            11
+                        </td>
+                </tr>
+    </tbody>
+</table></div><script>loadBlogDefaultCalendar();</script>			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"><!-- 搜索 -->
+<div id="sidebar_search" class="sidebar-block">
+    <div id="sidebar_search" class="mySearch">
+        <h3 class="catListTitle">搜索</h3>
+        <div id="sidebar_search_box">
+            <div id="widget_my_zzk" class="div_my_zzk">
+                <input type="text" id="q" onkeydown="return zzk_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="zzk_go()" type="button" value="找找看" id="btnZzk" class="btn_my_zzk">
+            </div>
+            <div id="widget_my_google" class="div_my_zzk">
+                <input type="text" name="google_q" id="google_q" onkeydown="return google_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="google_go()" type="button" value="谷歌搜索" class="btn_my_zzk">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 常用链接 -->
+
+
+<!-- 最新随笔 -->
+<div id="sidebar_recentposts" class="sidebar-block"><div class="catListEssay">
+<h3 class="catListTitle">最新随笔</h3>
+    <ul>
+                <li>
+                    
+<a href="https://www.cnblogs.com/sparkdev/p/12714790.html">1.创建 SysV 风格的 linux daemon 程序</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/sparkdev/p/12146305.html">2.Linux session(会话)</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/sparkdev/p/11980732.html">3.Linux job control</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/sparkdev/p/11605804.html">4.Linux 伪终端(pty)</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/sparkdev/p/11460821.html">5.Linux 终端(TTY)</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/sparkdev/p/11417781.html">6.Linux Capabilities 简介</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/sparkdev/p/11384824.html">7.用什么监控我们的容器?</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/sparkdev/p/11376560.html">8.Ubuntu Server : 自动更新</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/sparkdev/p/11357343.html">9.Ubuntu : apt 命令</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/sparkdev/p/11339231.html">10.Ubuntu : apt-get 命令</a>
+
+                </li>
+    </ul>
+</div>
+
+</div>
+
+<!-- 我的标签 -->
+<div id="sidebar_toptags" class="sidebar-block"><div class="catListTag">
+    <h3 class="catListTitle"><a href="https://www.cnblogs.com/sparkdev/tag/" class="sidebar-card-title-a">我的标签</a></h3>
+<ul>
+        <li>
+            <a href="https://www.cnblogs.com/sparkdev/tag/Linux/">Linux<span class="tag-count">(80)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/sparkdev/tag/docker/">docker<span class="tag-count">(38)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/sparkdev/tag/Azure/">Azure<span class="tag-count">(28)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/sparkdev/tag/Golang/">Golang<span class="tag-count">(16)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/sparkdev/tag/PowerShell/">PowerShell<span class="tag-count">(15)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/sparkdev/tag/jenkins/">jenkins<span class="tag-count">(12)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/sparkdev/tag/ubuntu/">ubuntu<span class="tag-count">(10)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/sparkdev/tag/CI%2FCD/">CI/CD<span class="tag-count">(10)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/sparkdev/tag/log/">log<span class="tag-count">(9)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/sparkdev/tag/teamcity/">teamcity<span class="tag-count">(9)</span></a>
+        </li>
+    <li>
+        <a href="https://www.cnblogs.com/sparkdev/tag/">更多</a>
+    </li>
+
+</ul>
+</div>
+
+</div>
+
+<!-- 积分与排名 -->
+<div id="sidebar_scorerank" class="sidebar-block"><div class="catListBlogRank">
+<h3 class="catListTitle">积分与排名</h3>
+<ul>
+	<li class="liScore">
+		积分 -	
+707369
+	</li>
+	<li class="liRank">
+		排名 -	
+618
+	</li>
+</ul>
+</div>
+
+
+
+</div>
+
+<!-- 随笔分类、随笔档案、文章分类、新闻分类、相册、链接 -->
+<div id="sidebar_categories">
+
+    <div id="sidebar_postcategory" class="catListPostCategory sidebar-block">
+        <h3 class="catListTitle">
+            
+    <a class="sidebar-card-title-a" href="https://www.cnblogs.com/sparkdev/post-categories">随笔分类</a>
+<span class="sidebar-category-item-count">
+    (346)
+</span>
+
+
+        </h3>
+
+        <ul>
+
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/sparkdev/category/1199380.html" class="category-item-link" rel="" target="">AI(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/sparkdev/category/1334540.html" class="category-item-link" rel="" target="">Ansible(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/sparkdev/category/941996.html" class="category-item-link" rel="" target="">Azure(28)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/sparkdev/category/1033123.html" class="category-item-link" rel="" target="">Bash(8)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/sparkdev/category/886992.html" class="category-item-link" rel="" target="">C#(9)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/sparkdev/category/1148886.html" class="category-item-link" rel="" target="">cgroups(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/sparkdev/category/1027411.html" class="category-item-link" rel="" target="">CI/CD(20)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/sparkdev/category/1092445.html" class="category-item-link" rel="" target="">DevOps(16)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/sparkdev/category/927855.html" class="category-item-link" rel="" target="">Docker(39)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/sparkdev/category/1484344.html" class="category-item-link" rel="" target="">ElasticSearch(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/sparkdev/category/1422585.html" class="category-item-link" rel="" target="">elk(9)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/sparkdev/category/905066.html" class="category-item-link" rel="" target="">Git(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/sparkdev/category/1433797.html" class="category-item-link" rel="" target="">Golang(16)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/sparkdev/category/1233554.html" class="category-item-link" rel="" target="">https(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/sparkdev/category/1027410.html" class="category-item-link" rel="" target="">Jenkins(12)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/category/834899.html" class="category-item-link" rel="" target="">Linux(87)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/category/1186872.html" class="category-item-link" rel="" target="">Linux C dev(9)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/category/1388800.html" class="category-item-link" rel="" target="">LoadBalance(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/category/1422586.html" class="category-item-link" rel="" target="">log(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/category/882712.html" class="category-item-link" rel="" target="">Network(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/category/1233555.html" class="category-item-link" rel="" target="">nginx(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/category/853926.html" class="category-item-link" rel="" target="">Other(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/category/941997.html" class="category-item-link" rel="" target="">PowerShell(17)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/category/1016792.html" class="category-item-link" rel="" target="">Python(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/category/890615.html" class="category-item-link" rel="" target="">Setup(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/category/1153436.html" class="category-item-link" rel="" target="">socket(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/category/1000572.html" class="category-item-link" rel="" target="">SSH(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/category/1397858.html" class="category-item-link" rel="" target="">SSL(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/category/1169329.html" class="category-item-link" rel="" target="">systemd(6)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/category/889958.html" class="category-item-link" rel="" target="">TeamCity(9)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/category/842997.html" class="category-item-link" rel="" target="">Tool(15)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/category/1410871.html" class="category-item-link" rel="" target="">UbuntuDesktop(1)</a>
+ 
+                </li>                
+            <li>
+                <a href="javascript:void(0)" onclick="sideColumnManager.loadMore(this)">更多</a>
+            </li>
+        </ul>
+
+
+    </div>    
+    <div id="sidebar_postarchive" class="catListPostArchive sidebar-block">
+        <h3 class="catListTitle">
+            
+随笔档案<span class="sidebar-category-item-count">
+    (231)
+</span>
+
+
+        </h3>
+
+        <ul>
+
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2020/04.html" class="category-item-link" rel="" target="">2020年4月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2020/01.html" class="category-item-link" rel="" target="">2020年1月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2019/12.html" class="category-item-link" rel="" target="">2019年12月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2019/09.html" class="category-item-link" rel="" target="">2019年9月(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2019/08.html" class="category-item-link" rel="" target="">2019年8月(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2019/07.html" class="category-item-link" rel="" target="">2019年7月(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2019/06.html" class="category-item-link" rel="" target="">2019年6月(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2019/05.html" class="category-item-link" rel="" target="">2019年5月(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2019/04.html" class="category-item-link" rel="" target="">2019年4月(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2019/03.html" class="category-item-link" rel="" target="">2019年3月(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2019/02.html" class="category-item-link" rel="" target="">2019年2月(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2019/01.html" class="category-item-link" rel="" target="">2019年1月(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2018/12.html" class="category-item-link" rel="" target="">2018年12月(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2018/11.html" class="category-item-link" rel="" target="">2018年11月(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2018/10.html" class="category-item-link" rel="" target="">2018年10月(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2018/09.html" class="category-item-link" rel="" target="">2018年9月(8)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2018/08.html" class="category-item-link" rel="" target="">2018年8月(8)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2018/07.html" class="category-item-link" rel="" target="">2018年7月(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2018/06.html" class="category-item-link" rel="" target="">2018年6月(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2018/05.html" class="category-item-link" rel="" target="">2018年5月(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2018/04.html" class="category-item-link" rel="" target="">2018年4月(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2018/03.html" class="category-item-link" rel="" target="">2018年3月(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2018/02.html" class="category-item-link" rel="" target="">2018年2月(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2018/01.html" class="category-item-link" rel="" target="">2018年1月(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2017/12.html" class="category-item-link" rel="" target="">2017年12月(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2017/11.html" class="category-item-link" rel="" target="">2017年11月(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2017/10.html" class="category-item-link" rel="" target="">2017年10月(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2017/09.html" class="category-item-link" rel="" target="">2017年9月(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2017/08.html" class="category-item-link" rel="" target="">2017年8月(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2017/07.html" class="category-item-link" rel="" target="">2017年7月(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2017/06.html" class="category-item-link" rel="" target="">2017年6月(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2017/05.html" class="category-item-link" rel="" target="">2017年5月(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2017/04.html" class="category-item-link" rel="" target="">2017年4月(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2017/03.html" class="category-item-link" rel="" target="">2017年3月(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2017/02.html" class="category-item-link" rel="" target="">2017年2月(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2017/01.html" class="category-item-link" rel="" target="">2017年1月(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2016/12.html" class="category-item-link" rel="" target="">2016年12月(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2016/11.html" class="category-item-link" rel="" target="">2016年11月(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2016/10.html" class="category-item-link" rel="" target="">2016年10月(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2016/09.html" class="category-item-link" rel="" target="">2016年9月(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2016/08.html" class="category-item-link" rel="" target="">2016年8月(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2016/07.html" class="category-item-link" rel="" target="">2016年7月(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2016/06.html" class="category-item-link" rel="" target="">2016年6月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/sparkdev/archive/2016/05.html" class="category-item-link" rel="" target="">2016年5月(1)</a>
+ 
+                </li>                
+            <li>
+                <a href="javascript:void(0)" onclick="sideColumnManager.loadMore(this)">更多</a>
+            </li>
+        </ul>
+
+
+    </div>    
+</div>
+
+<!-- 最新评论 -->
+<!-- 阅读排行榜 -->
+<div id="sidebar_topviewedposts" class="sidebar-block"><div class="catListView">
+    <h3 class="catListTitle">
+        <a href="https://www.cnblogs.com/sparkdev/most-viewed" class="sidebar-card-title-a">
+    阅读排行榜
+</a>
+
+    </h3>
+    <div id="TopViewPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/sparkdev/p/9573248.html">
+                            1. Dockerfile 中的 COPY 与 ADD 命令(268932)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/sparkdev/p/6842805.html">
+                            2. SSH 远程执行任务(149543)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/sparkdev/p/6189196.html">
+                            3. linux sudo 命令(113604)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/sparkdev/p/8052522.html">
+                            4. Docker: 限制容器可用的 CPU(113269)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/sparkdev/p/8032330.html">
+                            5. Docker: 限制容器可用的内存(110427)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/sparkdev/p/10166061.html">
+                            6. Windows 支持 OpenSSH 了！(110105)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/sparkdev/p/9826520.html">
+                            7. Docker Compose 引用环境变量(101377)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/sparkdev/p/9015312.html">
+                            8. Linux mount 命令(91673)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/sparkdev/p/8461576.html">
+                            9. Dockerfile 中的 CMD 与 ENTRYPOINT(87367)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/sparkdev/p/5823353.html">
+                            10. linux useradd 命令基本用法(86452)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div></div>
+
+<!-- 评论排行榜 -->
+<div id="sidebar_topcommentedposts" class="sidebar-block"><div class="catListFeedback">
+    <h3 class="catListTitle">
+        <a href="https://www.cnblogs.com/sparkdev/most-commented" class="sidebar-card-title-a">评论排行榜</a>
+
+    </h3>
+    <div id="TopFeedbackPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/sparkdev/p/10166061.html">
+                            1. Windows 支持 OpenSSH 了！(42)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/sparkdev/p/7066789.html">
+                            2. Docker Machine 详解(37)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/sparkdev/p/7044950.html">
+                            3. Docker Machine 简介(34)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/sparkdev/p/7077333.html">
+                            4. 用 Docker Machine 创建 Azure 虚拟主机(29)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/sparkdev/p/6842805.html">
+                            5. SSH 远程执行任务(29)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/sparkdev/p/6826948.html">
+                            6. C# 创建压缩文件(28)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/sparkdev/p/6890995.html">
+                            7. 局域网内部署 Docker Registry(27)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/sparkdev/p/6979802.html">
+                            8. Python 操作 Azure Blob Storage(24)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/sparkdev/p/5906272.html">
+                            9. C# BackgroundWorker 详解(23)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/sparkdev/p/7200004.html">
+                            10. PowerShell 远程执行任务(22)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div></div>
+
+<!-- 推荐排行榜 -->
+<div id="sidebar_topdiggedposts" class="sidebar-block">
+<div id="topdigg_posts_wrap">
+    <div class="catListView">
+        <h3 class="catListTitle">
+            <a href="https://www.cnblogs.com/sparkdev/most-liked" class="sidebar-card-title-a">推荐排行榜</a>
+
+        </h3>
+        <div id="TopDiggPostsBlock">
+            <ul style="word-break: break-all">
+                        <li>
+                            <a href="https://www.cnblogs.com/sparkdev/p/6842805.html">
+                                1. SSH 远程执行任务(64)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/sparkdev/p/8461576.html">
+                                2. Dockerfile 中的 CMD 与 ENTRYPOINT(56)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/sparkdev/p/10166061.html">
+                                3. Windows 支持 OpenSSH 了！(53)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/sparkdev/p/7066789.html">
+                                4. Docker Machine 详解(43)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/sparkdev/p/9129334.html">
+                                5. 从 docker 到 runC(41)
+                            </a>
+                        </li>
+            </ul>
+        </div>
+    </div>
+</div></div><div id="sidebar_recentcomments" class="sidebar-block"><div class="catListComment">
+<h3 class="catListTitle"><a href="https://www.cnblogs.com/sparkdev/comments" class="sidebar-card-title-a">最新评论</a></h3>
+    <div class="RecentCommentBlock">
+        <ul>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/sparkdev/p/11460821.html">1. Re:Linux 终端(TTY)</a></li>
+                <li class="recent_comment_body">@JZLZLZL 控制台只有一个，终端有很多，控制台会连接到某个终端，通过Ctrl+Alt+Fn切换，大多数时候这个区别可以忽略...</li>
+                <li class="recent_comment_author">--shian</li>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/sparkdev/p/8242167.html">2. Re:PowerShell 函数</a></li>
+                <li class="recent_comment_body"><p>在函数文件顶部的位置定义参数是什么样的操作行为？</p>
+<p>Param(<br>
+[switch]$k1<br>
+)</p>
+<p>function xxx</p>
+</li>
+                <li class="recent_comment_author">--咒语</li>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/sparkdev/p/9121188.html">3. Re:Docker 镜像之存储管理</a></li>
+                <li class="recent_comment_body">假如我有一堆基于相同基础镜像的docker镜像，需要导入到离线环境。导出tar包太大了，因为包含基础镜像的重复数据，有什么纯文件系统操作方法（cp,mv这些）可以把这个层分离出来，在目标离线机器成功导...</li>
+                <li class="recent_comment_author">--Oneslide</li>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/sparkdev/p/9121188.html">4. Re:Docker 镜像之存储管理</a></li>
+                <li class="recent_comment_body"><p>目前存储系统的接口已经有 aufs、btrfs、devicemapper、voerlay2（overlay2）&lt;- 这里有个错别字</p>
+</li>
+                <li class="recent_comment_author">--Oneslide</li>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/sparkdev/p/10130934.html">5. Re:LVM : 简介</a></li>
+                <li class="recent_comment_body"><blockquote>
+<p>m</p>
+</blockquote>
+</li>
+                <li class="recent_comment_author">--Edwin_Xu</li>
+        </ul>
+    </div>
+</div>
+
+</div>
+
+
+</div>
+                    <script>loadBlogSideColumn();</script>
+			</div>			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright © 2023 sparkdev
+<br><span id="poweredby">Powered by .NET 7.0 on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+
+    
+
+    <input type="hidden" id="antiforgery_token" value="CfDJ8GXQNXLgcs5PrnWvMs4xAGOUY9J3yPBKjt20SUfsc0j5fbRc9cDvCZNIBqxi3Zy-1sQT9gI3lrZ-fXbbEQyNAUNO-qExUqL5BOBcQg-rxCx1lC8ej1l8l8vJ_8rDXKmv-fxFtfOQYFnePAPdRpegLik">
+    <script async="" src="./Linux mount 命令_files/js"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    var kv = getGACustom();
+    if (kv) {
+        gtag('set', kv);
+    }
+    gtag('config', 'UA-476124-1');
+</script>
+<script defer="" src="./Linux mount 命令_files/hm.js"></script><iframe src="./Linux mount 命令_files/container(1).html" style="visibility: hidden; display: none;"></iframe>
+
+<iframe src="./Linux mount 命令_files/aframe.html" width="0" height="0" style="display: none;"></iframe></body></html>
