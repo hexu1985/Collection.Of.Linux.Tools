@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<!-- saved from url=(0051)https://www.cnblogs.com/fanpl/articles/8794720.html -->
+<html lang="zh-cn" style="--olcb-folder-code-block-max-height:80vh;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin-when-cross-origin">
+    <meta name="description" content="其他详情可使用：man nicstat进行了解">
+    <meta property="og:description" content="其他详情可使用：man nicstat进行了解">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Linux监控命令---nicstat（网络流量监控利器） - pretend_smile - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="https://common.cnblogs.com/favicon.svg" type="image/svg+xml">
+    
+    <style>#home :not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]):not([class*="brush:"]) code:not(.hljs), :not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]):not([class*="brush:"]) code:not(.hljs) {background: rgb(245, 245, 245);
+        padding: 12px;
+        border: 1px solid rgb(204, 204, 204);
+        border-radius: 3px;
+        border-color: transparent;
+        color: rgb(68, 68, 68);
+        font-family: "Courier New", sans-serif;
+        font-size: 12px</style><link rel="stylesheet" href="./Linux监控命令---nicstat_files/blog-common.min.css">
+    
+
+    <link id="MainCss" rel="stylesheet" href="./Linux监控命令---nicstat_files/bundle-blacklowkey.min.css">
+        <link id="highlighter-theme-cnblogs" type="text/css" rel="stylesheet" href="./Linux监控命令---nicstat_files/cnblogs.css">
+    
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./Linux监控命令---nicstat_files/bundle-blacklowkey-mobile.min.css">
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/fanpl/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/fanpl/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/fanpl/wlwmanifest.xml">
+    <script type="text/javascript" async="" src="./Linux监控命令---nicstat_files/analytics.js"></script><script>
+        var currentBlogId = 420797;
+        var currentBlogApp = 'fanpl';
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'BlackLowKey';
+        var visitorUserId = '';
+        var hasCustomScript = false;
+        try {
+            if (hasCustomScript && document.referrer && document.referrer.indexOf('baidu.com') >= 0) {
+                Object.defineProperty(document, 'referrer', { value: '' });
+                Object.defineProperty(Document.prototype, 'referrer', { get: function () { return ''; } });
+            }
+        } catch (error) { }
+        window.cb_enable_mathjax = false;
+        window.mathEngine = 0;
+        window.codeHighlightEngine = 1;
+        window.enableCodeLineNumber = false;
+        window.codeHighlightTheme = 'cnblogs';
+        window.darkModeCodeHighlightTheme = 'vs2015';
+        window.isDarkCodeHighlightTheme = false;
+        window.isDarkModeCodeHighlightThemeDark = true;
+        window.isDisableCodeHighlighter = false;
+        window.enableCodeThemeTypeFollowSystem = false;
+    </script>
+        <script>
+            var currentPostDateAdded = '2018-04-11 11:35';
+        </script>
+    <script src="./Linux监控命令---nicstat_files/jquery-2.2.0.min.js"></script>
+    <script src="./Linux监控命令---nicstat_files/blog-common.min.js"></script><style>.medium-zoom-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 300ms;
+  will-change: opacity;
+}
+
+.medium-zoom--opened .medium-zoom-overlay {
+  cursor: pointer;
+  cursor: zoom-out;
+  opacity: 1;
+}
+
+.medium-zoom-image {
+  cursor: pointer;
+  cursor: zoom-in;
+  /*
+    The `transition` is marked as "!important" for the animation to happen
+    even though it's overriden by another inline `transition` style attribute.
+
+    This is problematic with frameworks that generate inline styles on their
+    images (e.g. Gatsby).
+
+    See https://github.com/francoischalifour/medium-zoom/issues/110
+   */
+  transition: transform 300ms cubic-bezier(0.2, 0, 0.2, 1) !important;
+}
+
+.medium-zoom-image--hidden {
+  visibility: hidden;
+}
+
+.medium-zoom-image--opened {
+  position: relative;
+  cursor: pointer;
+  cursor: zoom-out;
+  will-change: transform;
+}
+</style><script id="hljs-script" src="./Linux监控命令---nicstat_files/highlight.min.js" type="text/javascript" async=""></script>
+    
+
+    
+<meta http-equiv="origin-trial" content="A0VQgOQvA+kwCj319NCwgf8+syUgEQ8/LLpB8RxxlRC3AkJ9xx8IAvVuQ/dcwy0ok7sGKufLLu6WhsXbQR9/UwwAAACFeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjg4MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A6kRo9zXJhOvsR4D/VeZ9CiApPAxnOGzBkW88d8eIt9ex2oOzlX+AoUk/BS50Y9Ysy2jwyHR49Mb7XwP+l9yygIAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjg4MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A3mbHZoS4VJtJ8j1aE8+Z9vaGf/oMV1eTNIWMrvGqWgNnOmvaxnRGliqKIZU2eiTzCj5Qpz8B1/UTTLuony5bAAAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjg4MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="As0hBNJ8h++fNYlkq8cTye2qDLyom8NddByiVytXGGD0YVE+2CEuTCpqXMDxdhOMILKoaiaYifwEvCRlJ/9GcQ8AAAB8eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiV2ViVmlld1hSZXF1ZXN0ZWRXaXRoRGVwcmVjYXRpb24iLCJleHBpcnkiOjE3MTk1MzI3OTksImlzU3ViZG9tYWluIjp0cnVlfQ=="><meta http-equiv="origin-trial" content="AgRYsXo24ypxC89CJanC+JgEmraCCBebKl8ZmG7Tj5oJNx0cmH0NtNRZs3NB5ubhpbX/bIt7l2zJOSyO64NGmwMAAACCeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiV2ViVmlld1hSZXF1ZXN0ZWRXaXRoRGVwcmVjYXRpb24iLCJleHBpcnkiOjE3MTk1MzI3OTksImlzU3ViZG9tYWluIjp0cnVlfQ=="><script src="./Linux监控命令---nicstat_files/pubads_impl_2023032001.js" async=""></script><link rel="preload" href="./Linux监控命令---nicstat_files/f(6).txt" as="script"><script type="text/javascript" src="./Linux监控命令---nicstat_files/f(6).txt"></script></head>
+<body class="skin-blacklowkey has-navbar">
+    <a name="top"></a>
+    <div id="top_nav" class="navbar forpc">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding">
+                    <a href="https://www.cnblogs.com/" title="开发者的网上家园" role="banner">
+                            <img src="./Linux监控命令---nicstat_files/logo.svg" alt="博客园Logo">
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.cnblogs.com/" onclick="countClicks(&#39;skin-navbar-sitehome&#39;)">首页</a>
+                </li>
+                <li>
+                    <a href="https://news.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-news&#39;)">新闻</a>
+                </li>
+                <li>
+                    <a href="https://q.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-q&#39;)">博问</a>
+                </li>
+                <li>
+                    <a id="nav_brandzone" href="https://brands.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-brands&#39;)">专区</a>
+                </li>
+                <li>
+                    <a href="https://ing.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-ing&#39;)">闪存</a>
+                </li>
+                <li>
+                    <a href="https://edu.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-edu&#39;)">班级</a>
+                </li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search dropdown" action="https://zzk.cnblogs.com/s" method="get" role="search">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="search" tabindex="3" autocomplete="off">
+                        <button id="zzk_search_button" onclick="window.navbarSearchManager.triggerActiveOption()">
+                            <img id="search_icon" class="focus-hidden" src="./Linux监控命令---nicstat_files/search.svg" alt="搜索">
+                            <img class="hidden focus-visible" src="./Linux监控命令---nicstat_files/enter.svg" alt="搜索">
+                        </button>
+                        <ul id="navbar_search_options" class="dropdown-menu quick-search-menu">
+                            <li tabindex="0" class="active" onclick="zzkSearch(event, document.getElementById(&#39;zzk_search_input&#39;).value)">
+                                <div class="keyword-wrapper">
+                                    <img src="./Linux监控命令---nicstat_files/search.svg" alt="搜索">
+                                    <div class="keyword"></div>
+                                </div>
+                                <span class="search-area">所有博客</span>
+                            </li>
+                                    <li tabindex="1" onclick="zzkBlogSearch(event, &#39;fanpl&#39;, document.getElementById(&#39;zzk_search_input&#39;).value)">
+                                        <div class="keyword-wrapper">
+                                            <img src="./Linux监控命令---nicstat_files/search.svg" alt="搜索">
+                                            <div class="keyword"></div>
+                                        </div>
+                                        <span class="search-area">当前博客</span>
+                                    </li>
+                        </ul>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔" style="display: none;">
+                        <img id="new_post_icon" class="navbar-icon" src="./Linux监控命令---nicstat_files/newpost.svg" alt="写随笔">
+                    </a>
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客" style="display: none;">
+                        <img id="myblog_icon" class="navbar-icon" src="./Linux监控命令---nicstat_files/myblog.svg" alt="我的博客">
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息" style="display: none;">
+                        <img id="msg_icon" class="navbar-icon" src="./Linux监控命令---nicstat_files/message.svg" alt="短消息">
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <a id="navbar_lite_mode_indicator" data-current-page="blog" style="display: none" href="javascript:void(0)" alt="简洁模式" title="简洁模式启用，您在访问他人博客时会使用简洁款皮肤展示">
+                        <img class="navbar-icon" src="./Linux监控命令---nicstat_files/lite-mode-on.svg" alt="简洁模式">
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown" style="display: none;">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="./Linux监控命令---nicstat_files/avatar-default.svg" alt="用户头像">
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <img id="navbar_lite_mode_on" src="./Linux监控命令---nicstat_files/lite-mode-check.svg" class="hide"><span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+                            <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup" style="display: inline;">注册</a>
+                    <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()" style="display: inline;">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    
+
+    <!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/fanpl/"><img id="blogLogo" src="./Linux监控命令---nicstat_files/logo.gif" alt="返回主页"></a>		
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/fanpl/">pretend_smile</a>
+</h1>
+<h2></h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/fanpl/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/pretend_smile">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/fanpl/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			<span id="stats_post_count">随笔 - 6&nbsp; </span>
+<span id="stats_article_count">文章 - 165&nbsp; </span>
+<span id="stats-comment_count">评论 - 6&nbsp; </span>
+<span id="stats-total-view-count">阅读 - 
+<span title="总阅读数: 166768">
+16万</span></span>
+
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    <!--done-->
+    <div id="topics">
+        <div class="post">
+            <h1 class="postTitle">
+                
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/fanpl/articles/8794720.html">
+    <span role="heading" aria-level="2">Linux监控命令---nicstat（网络流量监控利器）</span>
+    
+</a>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                <div id="cnblogs_post_body" class="blogpost-body blogpost-body-html">
+<pre><strong>nicstat:网络流量监控利器&nbsp;</strong></pre>
+<pre>nicstat prints out network statistics for all network cards (NICs), including packets, kilobytes per second, average packet sizes and more.</pre>
+<pre><strong>官网地址</strong>:<a href="https://blogs.oracle.com/timc/entry/nicstat_the_solaris_and_linux" target="_blank" rel="noopener">https://blogs.oracle.com/timc/entry/nicstat_the_solaris_and_linux</a></pre>
+<pre><strong>下载地址</strong>:<a href="http://sourceforge.net/projects/nicstat/files/" target="_blank" rel="noopener">http://sourceforge.net/projects/nicstat/files/</a></pre>
+<pre><strong>官网摘要:</strong>
+nicstat is to network interfaces as "iostat" is to disks, or "prstat" is to processes. It is designed as a much better version of "netstat -i". Its differences include:
+* Reports bytes in &amp; out as well as packets.
+* Normalizes these values to per-second rates.
+* Reports on all interfaces (while iterating)
+* Reports Utilization (rough calculation as of now)
+* Reports Saturation (also rough)
+* Prefixes statistics with the current time</pre>
+<pre><strong>如何安装:</strong>（OS：ubuntu12.04 server x86_64）</pre>
+<pre>1:安装编译环境：
+$ sudo apt-get install build-essential</pre>
+<pre>2:下载源码包：
+$ wget http://sourceforge.net/projects/nicstat/files/nicstat-1.92.tar.gz</pre>
+<pre>3:解压：
+$ tar -zxvf nicstat-1.92.tar.gz</pre>
+<pre>4:安装：
+$ <strong><span style="color: rgba(51, 153, 102, 1)">cd nicstat-1.92/</span></strong>
+$ cat README.txt				#可根据此文本安装
+$<strong><span style="color: rgba(51, 153, 102, 1)"> cp Makefile.Linux Makefile</span></strong>
+$ uname -a
+  Linux ubuntu-s2 3.2.0-23-generic #36-Ubuntu SMP Tue Apr 10 20:39:51 UTC 2012 x86_64 GNU/Linux
+$ sudo<strong><span style="color: rgba(51, 153, 102, 1)"> vim Makefile</span></strong>
+  CFLAGS =	  $(COPT) -m32		        #将此行修改为如下：
+  CFLAGS =        $(COPT)
+$ sudo <strong><span style="color: rgba(51, 153, 102, 1)">make</span></strong>
+$ sudo mkdir /usr/local/share/man/man1          #如若无此步会报如下错：
+  install:cannot create regular file `/usr/local/share/man/man1/nicstat.1': No such file or directory
+$ sudo <strong><span style="color: rgba(51, 153, 102, 1)">make install</span></strong></pre>
+<pre><strong>如何使用：</strong></pre>
+<pre>概要：（enicstat和nicstat使用方法一致）
+nicstat [-hvnsxpztualkM] [-iinterface] [-Sint:mbps[fd|hd]] [interval [count]]</pre>
+<pre>选项：
+-h	#显示简单的用法
+-v	#显示nicstat版本
+-n	#只统计非本地（即非回环）接口
+-s	#显示摘要输出（只是接收和发送的数据量）
+-x	#显示扩展的输出
+-M	#以Mbps显示吞吐量,而不是默认的KB/s
+-p	#以解析后的输出格式显示
+-z	#跳过采样周期内是零流量的接口
+-t	#tcp流量统计
+-u	#ucp流量统计
+-a	#等同于'-x -t -u'
+-l	#只显示端口状态
+-i interface[,interface...]	#指定接口</pre>
+<pre><strong>字段描述：</strong></pre>
+<pre><span style="color: rgba(51, 204, 204, 1)"> Time				#抽样结束的时间 
+ Int				#网卡名
+ rKB/s,InKB			#每秒读的千字节数(received)
+ wKB/s,OutKB			#每秒写的千字节数(transmitted)
+ rMbps,RdMbps			#每秒读的百万字节数K(received)
+ wMbps,WrMbps			#每秒写的百万字节数M(transmitted)
+ rPk/s,InSeg,InDG	        #每秒读的数据包
+ wPk/s,OutSeg,OutDG             #每秒写的数据包
+ rAvs				#平均读的数据包大小
+ wAvs				#平均写的数据包大小
+<span style="color: rgba(255, 0, 0, 1)"> %Util				#接口的利用率百分比</span>
+ Sat				#每秒的错误数，接口接近饱和的一个指标</span>
+更多请参考手册</pre>
+<pre><strong>示例：</strong>
+$ nicstat 3         #每3秒显示一次
+$ nicstat 3 5       #每3秒显示一次共显示5次
+$ nicstat -i eth0   #只显示eth0的状态
+$ nicstat -M        #以Mbps为单位显示吞吐量<br><br><strong>$ <span style="color: rgba(0, 0, 255, 1)">nicstat -i ens160 1s &gt; test_1tread_30min_101net.txt</span>    #&nbsp;将网卡饱和度写入文件中：</strong></pre>
+<p>　　<img src="./Linux监控命令---nicstat_files/1356750-20180411114105677-1771705071.png" alt="" class="medium-zoom-image"></p>
+<p>&nbsp;其他详情可使用：<span style="color: rgba(0, 0, 255, 1)"><strong>man nicstat</strong></span>进行了解</p>
+<pre>转自：http://blog.51cto.com/xuclv/1157208</pre>
+</div>
+<div class="clear"></div>
+<div id="blog_post_info_block" role="contentinfo"><div id="BlogPostCategory">
+    分类: 
+            <a href="https://www.cnblogs.com/fanpl/category/1183142.html" target="_blank">Linux</a>,             <a href="https://www.cnblogs.com/fanpl/category/1266158.html" target="_blank">性能测试</a></div>
+
+
+    <div id="blog_post_info">
+<div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(8794720,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+        <a id="green_channel_follow" onclick="follow(&#39;a74cb273-231f-43b0-a3fd-08d5866282ce&#39;);" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="./Linux监控命令---nicstat_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="./Linux监控命令---nicstat_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/fanpl/" target="_blank"><img src="./Linux监控命令---nicstat_files/sample_face.gif" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/fanpl/">pretend_smile</a><br>
+            <a href="https://home.cnblogs.com/u/fanpl/followers/">粉丝 - <span class="follower-count">10</span></a>
+            <a href="https://home.cnblogs.com/u/fanpl/followees/">关注 - <span class="following-count">4</span></a><br>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow" class="follow-tip">
+                <a href="javascript:void(0);" onclick="follow(&#39;a74cb273-231f-43b0-a3fd-08d5866282ce&#39;);return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(8794720,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">0</span>
+    </div>
+    <div class="buryit" onclick="votePost(8794720,&#39;Bury&#39;)">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+    <div class="clear"></div>
+    <div id="post_next_prev"></div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date" data-last-update-days="1672.1622069080347" data-date-created="BlogServer.Application.Dto.BlogPost.BlogPostDto" data-date-updated="2018-08-24 13:32" aria-expanded="false">2018-04-11 11:35</span>&nbsp;
+<a href="https://www.cnblogs.com/fanpl/">pretend_smile</a>&nbsp;
+阅读(<span id="post_view_count">1076</span>)&nbsp;
+评论(<span id="post_comment_count">0</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditArticles.aspx?postid=8794720" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(8794720);return false;">收藏</a>&nbsp;
+<a href="javascript:void(0)" onclick="reportManager.report({ currentUserId: &#39;&#39;, targetType: &#39;blogPost&#39;, targetId: &#39;8794720&#39;, targetLink: &#39;https://www.cnblogs.com/fanpl/articles/8794720.html&#39;, title: &#39;Linux监控命令---nicstat（网络流量监控利器）&#39; })">举报</a>
+</div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+
+<script>
+    var cb_entryId = 8794720, cb_entryCreatedDate = '2018-04-11 11:35', cb_postType = 2, cb_postTitle = 'Linux监控命令---nicstat（网络流量监控利器）';
+    var allowComments = true, cb_blogId = 420797, cb_blogApp = 'fanpl', cb_blogUserGuid = 'a74cb273-231f-43b0-a3fd-08d5866282ce';
+    mermaidRender.render()
+    markdown_highlight()
+    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");
+    updatePostStats(
+            [cb_entryId],
+            function(id, count) { $("#post_view_count").text(count) },
+            function(id, count) { $("#post_comment_count").text(count) })
+</script>
+<a id="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="https://www.cnblogs.com/fanpl/articles/8794720.html#" onclick="return RefreshPage();">刷新页面</a><a href="https://www.cnblogs.com/fanpl/articles/8794720.html#top">返回顶部</a></div>
+    <div id="comment_form_container" style="visibility: visible;"><div class="login_tips">
+    登录后才能查看或发表评论，立即 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return account.login(&#39;!comments&#39;);">登录</a> 或者
+    <a href="https://www.cnblogs.com/">逛逛</a> 博客园首页
+</div>
+</div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+        <div id="cnblogs_ch"><a href="https://click.aliyun.com/m/1000369037/" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-阿里云-上云采购季&#39;})">【推荐】阿里云2核2G云服务器低至99元/年，百款云产品优惠享不停</a><br></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="under-post-card">
+            <div id="div-gpt-ad-1592365906576-0" style="width: 300px; height: 250px;" data-google-query-id="CPO2ht_d8f0CFULCvQodYIkMYw"><div id="google_ads_iframe_/1090369/C1_0__container__" style="border: 0pt none; display: inline-block; width: 300px; height: 250px;"><iframe frameborder="0" src="./Linux监控命令---nicstat_files/container.html" id="google_ads_iframe_/1090369/C1_0" title="3rd party ad content" name="" scrolling="no" marginwidth="0" marginheight="0" width="300" height="250" data-is-safeframe="true" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" role="region" aria-label="Advertisement" tabindex="0" data-google-container-id="1" style="border: 0px; vertical-align: bottom;" data-load-complete="true"></iframe></div></div>
+    </div>
+    <div id="under_post_card1"><div class="under-post-card">
+<b>编辑推荐：</b>
+<br>
+
+· <a href="https://www.cnblogs.com/cicada-smile/p/17234387.html" target="_blank">聊一聊系统重构</a>
+    <br>
+· <a href="https://www.cnblogs.com/coco1s/p/17238999.html" target="_blank">CSS 高阶小技巧 - 角向渐变的妙用！</a>
+    <br>
+· <a href="https://www.cnblogs.com/dragonir/p/17235128.html" target="_blank"> Three.js 进阶之旅：物理效果-3D乒乓球小游戏</a>
+    <br>
+· <a href="https://www.cnblogs.com/netry/p/aspnetcore-prevent-duplicate-requests-filter-redis.html" target="_blank">ASP.NET Core 使用 filter 和 redis 实现接口防重</a>
+    <br>
+· <a href="https://www.cnblogs.com/cicada-smile/p/17225344.html" target="_blank">聊聊「订单」业务的设计与实现 </a>
+    <br>
+</div></div>
+    <div id="under_post_card2"><div class="itnews under-post-card">
+    <b>即构专区：</b>
+    <br>
+ ·          <a href="https://brands.cnblogs.com/zego/p/15597" target="_blank" onclick="countCreativeClicks(&#39;zego_articles_promotion&#39;)">【活动回顾】后疫情时代，教育行业的增量和变量</a>
+        <br>
+ ·          <a href="https://brands.cnblogs.com/zego/p/15689" target="_blank" onclick="countCreativeClicks(&#39;zego_articles_promotion&#39;)">红松：构建全新的中老年兴趣社交平台</a>
+        <br>
+ ·          <a href="https://brands.cnblogs.com/zego/p/15628" target="_blank" onclick="countCreativeClicks(&#39;zego_articles_promotion&#39;)">活动回顾：Flutter实时音视频应用场景实践</a>
+        <br>
+ ·          <a href="https://brands.cnblogs.com/zego/p/15681" target="_blank" onclick="countCreativeClicks(&#39;zego_articles_promotion&#39;)">为语音社交平台加一个防护罩，即构上线实时语音安全方案</a>
+        <br>
+ ·          <a href="https://brands.cnblogs.com/zego/p/15717" target="_blank" onclick="countCreativeClicks(&#39;zego_articles_promotion&#39;)">音视频开发进阶——YUV与RGB的采样与存储格式</a>
+        <br>
+</div></div>
+    <div id="HistoryToday" class="under-post-card"></div>
+    <script type="text/javascript">
+        var commentManager = new blogCommentManager();
+        commentManager.renderComments(0);
+        fixPostBody();
+        window.footnoteTipManager.generateFootnoteTips();
+
+            window.tocManager.displayDisableTocTips = false;
+            window.tocManager.generateToc();
+            
+                setTimeout(function() { countViews(cb_blogId, cb_entryId); }, 50);
+            
+            deliverT2();
+            deliverC1C2();
+            loadNewsAndKb();
+            
+                LoadPostCategoriesTags(cb_blogId, cb_entryId);
+            
+            LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+            GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+            loadOptUnderPost();
+            GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+                </script>
+</div>
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+	<div id="sideBar">
+		<div id="sideBarMain">
+			<div id="sidebar_news" class="newsItem">
+    <h3 class="catListTitle">公告</h3>
+<div id="blog-news">    
+    <div id="sidebar_news_content">
+<div id="profile_block">
+    昵称：
+    <a href="https://home.cnblogs.com/u/fanpl/">
+        pretend_smile
+    </a>
+    <br>
+    园龄：
+    <a href="https://home.cnblogs.com/u/fanpl/" title="入园时间：2018-03-20">
+        5年
+    </a>
+    <br>
+    粉丝：
+    <a class="follower-count" href="https://home.cnblogs.com/u/fanpl/followers/">
+        10
+    </a>
+    <br>
+    关注：
+    <a class="folowing-count" href="https://home.cnblogs.com/u/fanpl/followees/">
+        4
+    </a>
+    <div id="p_b_follow" class="follow-tip">
+<a href="javascript:void(0)" onclick="follow(&#39;a74cb273-231f-43b0-a3fd-08d5866282ce&#39;)">+加关注</a></div>
+    <script>getFollowStatus('a74cb273-231f-43b0-a3fd-08d5866282ce');</script>
+</div>
+</div>
+</div>
+<script>loadBlogNews();</script>
+
+ 
+</div>
+<div id="sidebar_c3"></div>
+			<div id="blog-calendar" style="">
+
+<table id="blogCalendar" class="Cal" cellspacing="0" cellpadding="0" title="Calendar" border="0">
+    <tbody>
+        <tr>
+            <td colspan="7">
+                <table class="CalTitle" cellspacing="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2023/02/23&#39;); return false;">&lt;</a>
+                            </td>
+                            <td align="center">2023年3月</td>
+                            <td align="right" class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2023/04/23&#39;); return false;">&gt;</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    <tr>
+        <th class="CalDayHeader" align="center" abbr="日" scope="col">日</th>
+        <th class="CalDayHeader" align="center" abbr="一" scope="col">一</th>
+        <th class="CalDayHeader" align="center" abbr="二" scope="col">二</th>
+        <th class="CalDayHeader" align="center" abbr="三" scope="col">三</th>
+        <th class="CalDayHeader" align="center" abbr="四" scope="col">四</th>
+        <th class="CalDayHeader" align="center" abbr="五" scope="col">五</th>
+        <th class="CalDayHeader" align="center" abbr="六" scope="col">六</th>
+    </tr>
+            <tr>
+                            <td class="CalOtherMonthDay" align="center">26</td>
+                            <td class="CalOtherMonthDay" align="center">27</td>
+                            <td class="CalOtherMonthDay" align="center">28</td>
+                        <td class="" align="center">
+                            1
+                        </td>
+                        <td class="" align="center">
+                            2
+                        </td>
+                        <td class="" align="center">
+                            3
+                        </td>
+                    <td class="CalWeekendDay" align="center">
+                        4
+                    </td>
+            </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            5
+                        </td>
+                            <td class="" align="center">
+                                6
+                            </td>
+                            <td class="" align="center">
+                                7
+                            </td>
+                            <td class="" align="center">
+                                8
+                            </td>
+                            <td class="" align="center">
+                                9
+                            </td>
+                            <td class="" align="center">
+                                10
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            11
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            12
+                        </td>
+                            <td class="" align="center">
+                                13
+                            </td>
+                            <td class="" align="center">
+                                14
+                            </td>
+                            <td class="" align="center">
+                                15
+                            </td>
+                            <td class="" align="center">
+                                16
+                            </td>
+                            <td class="" align="center">
+                                17
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            18
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            19
+                        </td>
+                            <td class="" align="center">
+                                20
+                            </td>
+                            <td class="" align="center">
+                                21
+                            </td>
+                            <td class="" align="center">
+                                22
+                            </td>
+                            <td class="CalTodayDay" align="center">
+                                23
+                            </td>
+                            <td class="" align="center">
+                                24
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            25
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            26
+                        </td>
+                            <td class="" align="center">
+                                27
+                            </td>
+                            <td class="" align="center">
+                                28
+                            </td>
+                            <td class="" align="center">
+                                29
+                            </td>
+                            <td class="" align="center">
+                                30
+                            </td>
+                            <td class="" align="center">
+                                31
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            1
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalOtherMonthDay" align="center">
+                            2
+                        </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                3
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                4
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                5
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                6
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                7
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            8
+                        </td>
+                </tr>
+    </tbody>
+</table></div><script>loadBlogDefaultCalendar();</script>			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"><!-- 搜索 -->
+<div id="sidebar_search" class="sidebar-block">
+    <div id="sidebar_search" class="mySearch">
+        <h3 class="catListTitle">搜索</h3>
+        <div id="sidebar_search_box">
+            <div id="widget_my_zzk" class="div_my_zzk">
+                <input type="text" id="q" onkeydown="return zzk_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="zzk_go()" type="button" value="找找看" id="btnZzk" class="btn_my_zzk">
+            </div>
+            <div id="widget_my_google" class="div_my_zzk">
+                <input type="text" name="google_q" id="google_q" onkeydown="return google_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="google_go()" type="button" value="谷歌搜索" class="btn_my_zzk">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 常用链接 -->
+<div id="sidebar_shortcut" class="sidebar-block"><div class="catListLink">
+<h3 class="catListTitle">
+常用链接
+</h3>
+<ul>
+    <li><a href="https://www.cnblogs.com/fanpl/p/" title="我的博客的随笔列表">我的随笔</a></li>
+<li><a href="https://www.cnblogs.com/fanpl/MyComments.html" title="我的发表过的评论列表">我的评论</a></li>
+<li><a href="https://www.cnblogs.com/fanpl/OtherPosts.html" title="我评论过的随笔列表">我的参与</a></li>
+<li><a href="https://www.cnblogs.com/fanpl/comments" title="我的博客的评论列表">最新评论</a></li>
+<li><a href="https://www.cnblogs.com/fanpl/tag/" title="我的博客的标签列表">我的标签</a></li>
+
+</ul>
+</div>
+
+</div>
+
+<!-- 最新随笔 -->
+
+
+<!-- 我的标签 -->
+<div id="sidebar_toptags" class="sidebar-block"></div>
+
+<!-- 积分与排名 -->
+
+
+<!-- 随笔分类、随笔档案、文章分类、新闻分类、相册、链接 -->
+<div id="sidebar_categories">
+
+    <div id="sidebar_postcategory" class="catListPostCategory sidebar-block">
+        <h3 class="catListTitle">
+            
+    <a class="sidebar-card-title-a" href="https://www.cnblogs.com/fanpl/post-categories">随笔分类</a>
+
+
+
+        </h3>
+
+        <ul>
+
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/fanpl/category/1594837.html" class="category-item-link" rel="" target="">jmeter(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/fanpl/category/1273708.html" class="category-item-link" rel="" target="">mysql(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/fanpl/category/1272454.html" class="category-item-link" rel="" target="">环境部署(1)</a>
+ 
+                </li>                
+            
+        </ul>
+
+
+    </div>    
+    <div id="sidebar_postarchive" class="catListPostArchive sidebar-block">
+        <h3 class="catListTitle">
+            
+随笔档案
+
+
+        </h3>
+
+        <ul>
+
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/fanpl/archive/2020/12.html" class="category-item-link" rel="" target="">2020年12月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/fanpl/archive/2019/11.html" class="category-item-link" rel="" target="">2019年11月(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/fanpl/archive/2018/08.html" class="category-item-link" rel="" target="">2018年8月(2)</a>
+ 
+                </li>                
+            
+        </ul>
+
+
+    </div>    
+    <div id="sidebar_articlecategory" class="catListArticleCategory sidebar-block">
+        <h3 class="catListTitle">
+            
+    <a class="sidebar-card-title-a" href="https://www.cnblogs.com/fanpl/article-categories">文章分类</a>
+
+
+
+        </h3>
+
+        <ul>
+
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/fanpl/category/1186089.html" class="category-item-link" rel="" target="">jmeter性能测试(14)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/fanpl/category/1207736.html" class="category-item-link" rel="" target="">katalon(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/fanpl/category/1183142.html" class="category-item-link" rel="" target="">Linux(12)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/fanpl/category/1472459.html" class="category-item-link" rel="" target="">mongodb(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/fanpl/category/1202750.html" class="category-item-link" rel="" target="">mysql(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/fanpl/category/1186361.html" class="category-item-link" rel="" target="">oracle(12)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/fanpl/category/1183144.html" class="category-item-link" rel="" target="">Python(30)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/fanpl/category/1214925.html" class="category-item-link" rel="" target="">Selenium+webdriver(24)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/fanpl/category/1412647.html" class="category-item-link" rel="" target="">大数据测试(6)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/fanpl/category/1240769.html" class="category-item-link" rel="" target="">单元测试(8)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/fanpl/category/1247841.html" class="category-item-link" rel="" target="">工具(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/fanpl/category/1388424.html" class="category-item-link" rel="" target="">功能测试(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/fanpl/category/1232462.html" class="category-item-link" rel="" target="">接口测试(9)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/fanpl/category/1214943.html" class="category-item-link" rel="" target="">前端(22)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/fanpl/category/1266158.html" class="category-item-link" rel="" target="">性能测试(11)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/fanpl/category/1434380.html" class="category-item-link" rel="" target="">移动端(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/fanpl/category/1279519.html" class="category-item-link" rel="" target="">中间件(5)</a>
+ 
+                </li>                
+            <li>
+                <a href="javascript:void(0)" onclick="sideColumnManager.loadMore(this)">更多</a>
+            </li>
+        </ul>
+
+
+    </div>    
+</div>
+
+<!-- 最新评论 -->
+<!-- 阅读排行榜 -->
+<div id="sidebar_topviewedposts" class="sidebar-block"><div class="catListView">
+    <h3 class="catListTitle">
+        <a href="https://www.cnblogs.com/fanpl/most-viewed" class="sidebar-card-title-a">
+    阅读排行榜
+</a>
+
+    </h3>
+    <div id="TopViewPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/fanpl/p/9441547.html">
+                            1. MySQL 创建用户赋权(3910)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/fanpl/p/11949861.html">
+                            2. jmeter取样器☞OS Process Sampler(OS进程取样器)(2116)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/fanpl/p/11946977.html">
+                            3. Jmeter- Beanshell语法和常用内置对象(1990)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/fanpl/p/11956021.html">
+                            4. 安装Scala(461)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/fanpl/p/9466385.html">
+                            5. mysql 安装部署(198)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div></div>
+
+<!-- 评论排行榜 -->
+<div id="sidebar_topcommentedposts" class="sidebar-block"><div class="catListFeedback">
+    <h3 class="catListTitle">
+        <a href="https://www.cnblogs.com/fanpl/most-commented" class="sidebar-card-title-a">评论排行榜</a>
+
+    </h3>
+    <div id="TopFeedbackPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/fanpl/p/9466385.html">
+                            1. mysql 安装部署(3)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/fanpl/p/9441547.html">
+                            2. MySQL 创建用户赋权(1)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div></div>
+
+<!-- 推荐排行榜 -->
+<div id="sidebar_topdiggedposts" class="sidebar-block"></div><div id="sidebar_recentcomments" class="sidebar-block"><div class="catListComment">
+<h3 class="catListTitle"><a href="https://www.cnblogs.com/fanpl/comments" class="sidebar-card-title-a">最新评论</a></h3>
+    <div class="RecentCommentBlock">
+        <ul>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/fanpl/articles/12875989.html">1. Re:jenkins 构建成功后，钉钉通知</a></li>
+                <li class="recent_comment_body"><p>点击“增加构建后操作步骤”-&gt;没有“钉钉通知配置器”怎么处理呀，插件提示安装成功了，重启了很多遍</p>
+</li>
+                <li class="recent_comment_author">--木梦</li>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/fanpl/p/9441547.html">2. Re:MySQL 创建用户赋权</a></li>
+                <li class="recent_comment_body">非常好用</li>
+                <li class="recent_comment_author">--PHP进行曲</li>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/fanpl/articles/8649626.html">3. Re:jmeter压测之 监控--nmon</a></li>
+                <li class="recent_comment_body">这个命令很有用，监控资源,比top  sar都好</li>
+                <li class="recent_comment_author">--张刚强</li>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/fanpl/p/9466385.html">4. Re:mysql 安装部署</a></li>
+                <li class="recent_comment_body">要坚持下去</li>
+                <li class="recent_comment_author">--pretend_smile</li>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/fanpl/p/9466385.html">5. Re:mysql 安装部署</a></li>
+                <li class="recent_comment_body">自动化接口测试入门门</li>
+                <li class="recent_comment_author">--pretend_smile</li>
+        </ul>
+    </div>
+</div>
+
+</div>
+
+
+</div>
+                    <script>loadBlogSideColumn();</script>
+			</div>			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright © 2023 pretend_smile
+<br><span id="poweredby">Powered by .NET 7.0 on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+
+    
+
+    <input type="hidden" id="antiforgery_token" value="CfDJ8M-opqJn5c1MsCC_BxLIULn5lzZH94mkIVkic10nRIwXIJq-xAl3luah6_FLIcD5Da8VSWjy-joGHUFeI-Y8h4_Q1VESyZE1h2xG8sCOZmxMWr0gBIMJ-Y7bCcuCUh2s8l3m4mA5AtnUq1D4ODi3O00">
+    <script async="" src="./Linux监控命令---nicstat_files/js"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    var kv = getGACustom();
+    if (kv) {
+        gtag('set', kv);
+    }
+    gtag('config', 'UA-476124-1');
+</script>
+<script defer="" src="./Linux监控命令---nicstat_files/hm.js"></script><iframe src="./Linux监控命令---nicstat_files/container(1).html" style="visibility: hidden; display: none;"></iframe>
+
+<iframe src="./Linux监控命令---nicstat_files/aframe.html" width="0" height="0" style="display: none;"></iframe></body></html>
