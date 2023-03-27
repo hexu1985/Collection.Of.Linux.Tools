@@ -1,0 +1,176 @@
+
+/*******************************************
+1.生成博客目录的CSS
+******************************************/
+/*#uprightsideBar{
+    font-size:12px;
+    font-family:Arial, Helvetica, sans-serif;
+    text-align:left;
+    position:fixed;/*将div的位置固定到距离top:50px，right:0px的位置，这样div就会处在最右边的位置，距离顶部50px*/
+    top:50px;
+    right:0px;
+    width: auto;
+    height: auto; 
+}
+#sideBarTab{
+    float:left;
+    width:30px; 
+    border:1px solid #e5e5e5;
+    border-right:none;
+    text-align:center;
+    background:#ffffff;
+}
+/*******************************************
+2.生成的目录样式
+******************************************/
+
+<!--此处修改主题透明度（主页面）-->
+#home {
+    margin: 0 auto;
+    width: 65%;
+    min-width: 950px;
+    background-color: rgba(255, 255, 255, 0.3);
+    padding: 30px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    box-shadow: 0 2px 6px rgba(100, 100, 100, 0.3);
+}*/
+
+
+<!--此处自定义背景图片-->
+body {
+background: url(https://images.cnblogs.com/cnblogs_com/chenxiaomeng/1960271/o_210412072850u=2853310808,3734123085&fm=26&gp=0.jpg) no-repeat fixed;
+    background-size: cover;
+}
+
+/*
+<!--此处修改主题透明度（侧边栏）-->
+.newsItem, .catListEssay, .catListLink, .catListNoteBook, .catListTag, .catListPostCategory, .catListPostArchive, .catListImageCategory, .catListArticleArchive, .catListView, .catListFeedback, .mySearch, .catListComment, .catListBlogRank, .catList, .catListArticleCategory {
+    background: rgba(255, 255, 255, 0);
+    margin-bottom: 35px;
+    word-wrap: break-word;
+}
+
+　<!--此处自定义标题背景色-->
+
+#cnblogs_post_body h1 {
+background: #265B8A;
+border-radius: 6px 6px 6px 6px;
+color: #FFFFFF;
+font-family: FZShuTi；
+font-size: 23px;
+font-weight: bold;
+height: 25px;
+line-height: 25px;
+margin: 18px 0 !important;
+padding: 12px 0 8px 5px;
+text-shadow: 2px 2px 3px #222222;
+text-align:center;
+margin-bottom: 20px;
+}
+#cnblogs_post_body h2 {
+background-color: #008FC6;
+border-radius: 3px;
+text-align:center;
+color: white;
+text-shadow: 1px 1px 2px #222222;
+padding-left: 15px;
+margin-bottom: 12px;
+}
+#cnblogs_post_body h3 {
+background-color: #51C332;
+border-radius: 3px;
+text-align:center;
+color: white;
+text-shadow: 1px 1px 2px #222222;
+padding: 5px 15px;
+margin-bottom: 10px;
+width:50%
+}
+
+#cnblogs_post_body h4 {
+    background-color: #5bc0de;
+    border-radius: 3px;
+    text-align:center;
+    color: white;
+    text-shadow: 1px 1px 2px #222222;
+    padding: 5px 15px;
+    margin-bottom: 10px;
+    width:25%
+}
+
+code {
+padding: 1px 3px;
+margin: 0 3px;
+background: #ddd;
+border: 1px solid #ccc;
+font-family: Menlo,Monaco,Andale Mono,lucida console,Courier New,monospace;
+word-wrap: break-word;
+font-size: 14px;
+}
+#cnblogs_post_body table {
+text-align: center;
+width: 100%;
+border: 1px solid #dedede;
+margin: 15px 0;
+border-collapse: collapse;
+}
+#cnblogs_post_body table thead tr {
+background: #f8f8f8;
+}
+#cnblogs_post_body table tbody tr:hover {
+background: #efefef;
+}
+#sideBarContents{
+    float:left;
+    overflow:auto; 
+    overflow-x:hidden;!important;
+    width:200px;
+    min-height:108px;
+    max-height:460px;
+    border:1px solid #e5e5e5;
+    border-right:none; 
+    background:#ffffff;
+}
+#sideBarContents dl{
+    margin:0;
+    padding:0;
+}
+
+#sideBarContents dt{
+    margin-top:5px;
+    margin-left:5px;
+}
+
+#sideBarContents dd, dt {
+    cursor: pointer;
+}
+
+#sideBarContents dd:hover, dt:hover {
+    color:#A7995A;
+}
+#sideBarContents dd{
+    margin-left:20px;
+}
+*/
+
+
+
+
+
+
+/*******************************************
+3.背景图片设置
+******************************************/
+body { 
+     background-color: #efefef;
+     //background-image: url(https://images.cnblogs.com/cnblogs_com/2979100039-qq- 
+   // con/1650464/t_2002190550137.jpg?a=1582542727623);
+background-image: url(https://images.cnblogs.com/cnblogs_com/chenxiaomeng/1960271/o_210412072850u=2853310808,3734123085&fm=26&gp=0.jpg);
+     background-repeat: no-repeat; 
+     background-attachment: fixed; 
+     background-position: center 0; 
+     background-size: cover; 
+  }
+
+

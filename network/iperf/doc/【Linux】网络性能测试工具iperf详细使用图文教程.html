@@ -1,0 +1,2560 @@
+<!DOCTYPE html>
+<!-- saved from url=(0051)https://www.cnblogs.com/chenxiaomeng/p/9509670.html -->
+<html lang="zh-cn" style="--olcb-folder-code-block-max-height:80vh;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="never">
+    <meta name="description" content="参考链接:https://www.cnblogs.com/yingsong/p/5682080.html Iperf是一个网络性能测试工具。Iperf可以测试TCP和UDP带宽质量。 Iperf可以测">
+    <meta property="og:description" content="参考链接:https://www.cnblogs.com/yingsong/p/5682080.html Iperf是一个网络性能测试工具。Iperf可以测试TCP和UDP带宽质量。 Iperf可以测">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>【Linux】网络性能测试工具iperf详细使用图文教程【转】 - 陈晓猛 - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="https://common.cnblogs.com/favicon.svg" type="image/svg+xml">
+    
+    <style>#home :not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]):not([class*="brush:"]) code:not(.hljs), :not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]):not([class*="brush:"]) code:not(.hljs) {background: rgb(245, 245, 245);
+        padding: 12px;
+        border: 1px solid rgb(204, 204, 204);
+        border-radius: 3px;
+        border-color: transparent;
+        color: rgb(68, 68, 68);
+        font-family: "Courier New", sans-serif;
+        font-size: 12px</style><link rel="stylesheet" href="./【Linux】网络性能测试工具iperf详细使用图文教程_files/blog-common.min.css">
+    
+
+    <link id="MainCss" rel="stylesheet" href="./【Linux】网络性能测试工具iperf详细使用图文教程_files/bundle-simplememory.min.css">
+        <link id="highlighter-theme-cnblogs" type="text/css" rel="stylesheet" href="./【Linux】网络性能测试工具iperf详细使用图文教程_files/cnblogs.css">
+    <link type="text/css" rel="stylesheet" href="./【Linux】网络性能测试工具iperf详细使用图文教程_files/custom.css">
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./【Linux】网络性能测试工具iperf详细使用图文教程_files/bundle-simplememory-mobile.min.css">
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/chenxiaomeng/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/chenxiaomeng/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/chenxiaomeng/wlwmanifest.xml">
+    <script type="text/javascript" async="" src="./【Linux】网络性能测试工具iperf详细使用图文教程_files/analytics.js"></script><script>
+        var currentBlogId = 294007;
+        var currentBlogApp = 'chenxiaomeng';
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'SimpleMemory';
+        var visitorUserId = '';
+        var hasCustomScript = true;
+        try {
+            if (hasCustomScript && document.referrer && document.referrer.indexOf('baidu.com') >= 0) {
+                Object.defineProperty(document, 'referrer', { value: '' });
+                Object.defineProperty(Document.prototype, 'referrer', { get: function () { return ''; } });
+            }
+        } catch (error) { }
+        window.cb_enable_mathjax = false;
+        window.mathEngine = 0;
+        window.codeHighlightEngine = 1;
+        window.enableCodeLineNumber = false;
+        window.codeHighlightTheme = 'cnblogs';
+        window.darkModeCodeHighlightTheme = 'vs2015';
+        window.isDarkCodeHighlightTheme = false;
+        window.isDarkModeCodeHighlightThemeDark = true;
+        window.isDisableCodeHighlighter = false;
+        window.enableCodeThemeTypeFollowSystem = false;
+    </script>
+        <script>
+            var currentPostDateAdded = '2018-08-21 09:53';
+        </script>
+    <script src="./【Linux】网络性能测试工具iperf详细使用图文教程_files/jquery-2.2.0.min.js"></script>
+    <script src="./【Linux】网络性能测试工具iperf详细使用图文教程_files/blog-common.min.js"></script><style>.medium-zoom-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 300ms;
+  will-change: opacity;
+}
+
+.medium-zoom--opened .medium-zoom-overlay {
+  cursor: pointer;
+  cursor: zoom-out;
+  opacity: 1;
+}
+
+.medium-zoom-image {
+  cursor: pointer;
+  cursor: zoom-in;
+  /*
+    The `transition` is marked as "!important" for the animation to happen
+    even though it's overriden by another inline `transition` style attribute.
+
+    This is problematic with frameworks that generate inline styles on their
+    images (e.g. Gatsby).
+
+    See https://github.com/francoischalifour/medium-zoom/issues/110
+   */
+  transition: transform 300ms cubic-bezier(0.2, 0, 0.2, 1) !important;
+}
+
+.medium-zoom-image--hidden {
+  visibility: hidden;
+}
+
+.medium-zoom-image--opened {
+  position: relative;
+  cursor: pointer;
+  cursor: zoom-out;
+  will-change: transform;
+}
+</style><script id="hljs-script" src="./【Linux】网络性能测试工具iperf详细使用图文教程_files/highlight.min.js" type="text/javascript" async=""></script>
+    
+
+    
+<meta http-equiv="origin-trial" content="A0VQgOQvA+kwCj319NCwgf8+syUgEQ8/LLpB8RxxlRC3AkJ9xx8IAvVuQ/dcwy0ok7sGKufLLu6WhsXbQR9/UwwAAACFeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjg4MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A6kRo9zXJhOvsR4D/VeZ9CiApPAxnOGzBkW88d8eIt9ex2oOzlX+AoUk/BS50Y9Ysy2jwyHR49Mb7XwP+l9yygIAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjg4MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A3mbHZoS4VJtJ8j1aE8+Z9vaGf/oMV1eTNIWMrvGqWgNnOmvaxnRGliqKIZU2eiTzCj5Qpz8B1/UTTLuony5bAAAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjg4MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="As0hBNJ8h++fNYlkq8cTye2qDLyom8NddByiVytXGGD0YVE+2CEuTCpqXMDxdhOMILKoaiaYifwEvCRlJ/9GcQ8AAAB8eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiV2ViVmlld1hSZXF1ZXN0ZWRXaXRoRGVwcmVjYXRpb24iLCJleHBpcnkiOjE3MTk1MzI3OTksImlzU3ViZG9tYWluIjp0cnVlfQ=="><meta http-equiv="origin-trial" content="AgRYsXo24ypxC89CJanC+JgEmraCCBebKl8ZmG7Tj5oJNx0cmH0NtNRZs3NB5ubhpbX/bIt7l2zJOSyO64NGmwMAAACCeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiV2ViVmlld1hSZXF1ZXN0ZWRXaXRoRGVwcmVjYXRpb24iLCJleHBpcnkiOjE3MTk1MzI3OTksImlzU3ViZG9tYWluIjp0cnVlfQ=="><script src="./【Linux】网络性能测试工具iperf详细使用图文教程_files/pubads_impl_2023032101.js" async=""></script><link rel="preload" href="./【Linux】网络性能测试工具iperf详细使用图文教程_files/f(6).txt" as="script"><script type="text/javascript" src="./【Linux】网络性能测试工具iperf详细使用图文教程_files/f(6).txt"></script></head>
+<body class="skin-simplememory no-navbar">
+    <a name="top"></a>
+    <div id="top_nav" class="navbar forpc navbar-custom">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding">
+                    <a href="https://www.cnblogs.com/" title="开发者的网上家园" role="banner">
+                            <img src="./【Linux】网络性能测试工具iperf详细使用图文教程_files/logo.svg" alt="博客园Logo">
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.cnblogs.com/" onclick="countClicks(&#39;skin-navbar-sitehome&#39;)">首页</a>
+                </li>
+                <li>
+                    <a href="https://news.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-news&#39;)">新闻</a>
+                </li>
+                <li>
+                    <a href="https://q.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-q&#39;)">博问</a>
+                </li>
+                <li>
+                    <a id="nav_brandzone" href="https://brands.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-brands&#39;)">专区</a>
+                </li>
+                <li>
+                    <a href="https://ing.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-ing&#39;)">闪存</a>
+                </li>
+                <li>
+                    <a href="https://edu.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-edu&#39;)">班级</a>
+                </li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search dropdown" action="https://zzk.cnblogs.com/s" method="get" role="search">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="search" tabindex="3" autocomplete="off">
+                        <button id="zzk_search_button" onclick="window.navbarSearchManager.triggerActiveOption()">
+                            <img id="search_icon" class="focus-hidden" src="./【Linux】网络性能测试工具iperf详细使用图文教程_files/search.svg" alt="搜索">
+                            <img class="hidden focus-visible" src="./【Linux】网络性能测试工具iperf详细使用图文教程_files/enter.svg" alt="搜索">
+                        </button>
+                        <ul id="navbar_search_options" class="dropdown-menu quick-search-menu">
+                            <li tabindex="0" class="active" onclick="zzkSearch(event, document.getElementById(&#39;zzk_search_input&#39;).value)">
+                                <div class="keyword-wrapper">
+                                    <img src="./【Linux】网络性能测试工具iperf详细使用图文教程_files/search.svg" alt="搜索">
+                                    <div class="keyword"></div>
+                                </div>
+                                <span class="search-area">所有博客</span>
+                            </li>
+                                    <li tabindex="1" onclick="zzkBlogSearch(event, &#39;chenxiaomeng&#39;, document.getElementById(&#39;zzk_search_input&#39;).value)">
+                                        <div class="keyword-wrapper">
+                                            <img src="./【Linux】网络性能测试工具iperf详细使用图文教程_files/search.svg" alt="搜索">
+                                            <div class="keyword"></div>
+                                        </div>
+                                        <span class="search-area">当前博客</span>
+                                    </li>
+                        </ul>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔" style="display: none;">
+                        <img id="new_post_icon" class="navbar-icon" src="./【Linux】网络性能测试工具iperf详细使用图文教程_files/newpost.svg" alt="写随笔">
+                    </a>
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客" style="display: none;">
+                        <img id="myblog_icon" class="navbar-icon" src="./【Linux】网络性能测试工具iperf详细使用图文教程_files/myblog.svg" alt="我的博客">
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息" style="display: none;">
+                        <img id="msg_icon" class="navbar-icon" src="./【Linux】网络性能测试工具iperf详细使用图文教程_files/message.svg" alt="短消息">
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <a id="navbar_lite_mode_indicator" data-current-page="blog" style="display: none" href="javascript:void(0)" alt="简洁模式" title="简洁模式启用，您在访问他人博客时会使用简洁款皮肤展示">
+                        <img class="navbar-icon" src="./【Linux】网络性能测试工具iperf详细使用图文教程_files/lite-mode-on.svg" alt="简洁模式">
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown" style="display: none;">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="./【Linux】网络性能测试工具iperf详细使用图文教程_files/avatar-default.svg" alt="用户头像">
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <img id="navbar_lite_mode_on" src="./【Linux】网络性能测试工具iperf详细使用图文教程_files/lite-mode-check.svg" class="hide"><span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+                            <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup" style="display: inline;">注册</a>
+                    <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()" style="display: inline;">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div id="page_begin_html">
+        <script type="text/javascript">
+/*
+    1.生成博客目录的JS工具,IE8，火狐，google测试通过
+*/
+var BlogDirectory = {
+    /*
+        获取元素位置，距浏览器左边界的距离（left）和距浏览器上边界的距离（top）
+    */
+    getElementPosition:function (ele) {        
+        var topPosition = 0;
+        var leftPosition = 0;
+        while (ele){              
+            topPosition += ele.offsetTop;
+            leftPosition += ele.offsetLeft;        
+            ele = ele.offsetParent;     
+        }  
+        return {top:topPosition, left:leftPosition}; 
+    },
+
+    /*
+    获取滚动条当前位置
+    */
+    getScrollBarPosition:function () {
+        var scrollBarPosition = document.body.scrollTop || document.documentElement.scrollTop;
+        return  scrollBarPosition;
+    },
+    
+    /*
+    移动滚动条，finalPos 为目的位置，internal 为移动速度
+    */
+    moveScrollBar:function(finalpos, interval) {
+
+        //若不支持此方法，则退出
+        if(!window.scrollTo) {
+            return false;
+        }
+
+        //窗体滚动时，禁用鼠标滚轮
+        window.onmousewheel = function(){
+            return false;
+        };
+          
+        //清除计时
+        if (document.body.movement) { 
+            clearTimeout(document.body.movement); 
+        } 
+
+        var currentpos =BlogDirectory.getScrollBarPosition();//获取滚动条当前位置
+
+        var dist = 0; 
+        if (currentpos == finalpos) {//到达预定位置，则解禁鼠标滚轮，并退出
+            window.onmousewheel = function(){
+                return true;
+            }
+            return true; 
+        } 
+        if (currentpos < finalpos) {//未到达，则计算下一步所要移动的距离
+            dist = Math.ceil((finalpos - currentpos)/10); 
+            currentpos += dist; 
+        } 
+        if (currentpos > finalpos) { 
+            dist = Math.ceil((currentpos - finalpos)/10); 
+            currentpos -= dist; 
+        }
+        
+        var scrTop = BlogDirectory.getScrollBarPosition();//获取滚动条当前位置
+        window.scrollTo(0, currentpos);//移动窗口
+        if(BlogDirectory.getScrollBarPosition() == scrTop)//若已到底部，则解禁鼠标滚轮，并退出
+        {
+            window.onmousewheel = function(){
+                return true;
+            }
+            return true;
+        }
+        
+        //进行下一步移动
+        var repeat = "BlogDirectory.moveScrollBar(" + finalpos + "," + interval + ")"; 
+        document.body.movement = setTimeout(repeat, interval); 
+    },
+    
+    htmlDecode:function (text){
+        var temp = document.createElement("div");
+        temp.innerHTML = text;
+        var output = temp.innerText || temp.textContent;
+        temp = null;
+        return output;
+    },
+
+    /*
+    创建博客目录，
+    id表示包含博文正文的 div 容器的 id，
+    mt 和 st 分别表示主标题和次级标题的标签名称（如 H2、H3，大写或小写都可以！），
+    interval 表示移动的速度
+    */
+    createBlogDirectory:function (id, mt, st, interval){
+         //获取博文正文div容器
+        var elem = document.getElementById(id);
+        if(!elem) return false;
+        //获取div中所有元素结点
+        var nodes = elem.getElementsByTagName("*");
+        //创建博客目录的div容器
+        var divSideBar = document.createElement('DIV');
+        divSideBar.className = 'uprightsideBar';
+        divSideBar.setAttribute('id', 'uprightsideBar');
+        var divSideBarTab = document.createElement('DIV');
+        divSideBarTab.setAttribute('id', 'sideBarTab');
+        divSideBar.appendChild(divSideBarTab);
+        var h2 = document.createElement('H2');
+        divSideBarTab.appendChild(h2);
+        var txt = document.createTextNode('目录导航');
+        h2.appendChild(txt);
+        var divSideBarContents = document.createElement('DIV');
+        divSideBarContents.style.display = 'none';
+        divSideBarContents.setAttribute('id', 'sideBarContents');
+        divSideBar.appendChild(divSideBarContents);
+        //创建自定义列表
+        var dlist = document.createElement("dl");
+        divSideBarContents.appendChild(dlist);
+        var num = 0;//统计找到的mt和st
+        mt = mt.toUpperCase();//转化成大写
+        st = st.toUpperCase();//转化成大写
+        //遍历所有元素结点
+        for(var i=0; i<nodes.length; i++)
+        {
+            if(nodes[i].nodeName == mt|| nodes[i].nodeName == st)    
+            {
+                //获取标题文本
+                var nodetext = nodes[i].innerHTML.replace(/<\/?[^>]+>/g,"");//innerHTML里面的内容可能有HTML标签，所以用正则表达式去除HTML的标签
+                nodetext = nodetext.replace(/ /ig, "");//替换掉所有的 
+                nodetext = BlogDirectory.htmlDecode(nodetext);
+                //插入锚        
+                nodes[i].setAttribute("id", "blogTitle" + num);
+                var item;
+                switch(nodes[i].nodeName)
+                {
+                    case mt:    //若为主标题 
+                        item = document.createElement("dt");
+                        break;
+                    case st:    //若为子标题
+                        item = document.createElement("dd");
+                        break;
+                }
+                
+                //创建锚链接
+                var itemtext = document.createTextNode(nodetext);
+                item.appendChild(itemtext);
+                item.setAttribute("name", num);
+                item.onclick = function(){        //添加鼠标点击触发函数
+                    var pos = BlogDirectory.getElementPosition(document.getElementById("blogTitle" + this.getAttribute("name")));
+                    if(!BlogDirectory.moveScrollBar(pos.top, interval)) return false;
+                };            
+                
+                //将自定义表项加入自定义列表中
+                dlist.appendChild(item);
+                num++;
+            }
+        }
+        
+        if(num == 0) return false; 
+        /*鼠标进入时的事件处理*/
+        divSideBarTab.onmouseenter = function(){
+            divSideBarContents.style.display = 'block';
+        }
+        /*鼠标离开时的事件处理*/
+        divSideBar.onmouseleave = function() {
+            divSideBarContents.style.display = 'none';
+        }
+
+        document.body.appendChild(divSideBar);
+    }
+    
+};
+
+window.onload=function(){
+    /*页面加载完成之后生成博客目录*/
+    BlogDirectory.createBlogDirectory("cnblogs_post_body","h2","h3",20);
+}
+</script>
+
+
+    </div>
+
+    <!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/chenxiaomeng/"><img id="blogLogo" src="./【Linux】网络性能测试工具iperf详细使用图文教程_files/logo.gif" alt="返回主页"></a>		
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/chenxiaomeng/">零点六一八</a>
+</h1>
+<h2></h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/chenxiaomeng/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/%E9%99%88%E6%99%93%E7%8C%9B">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/chenxiaomeng/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			<span id="stats_post_count">随笔 - 701&nbsp; </span>
+<span id="stats_article_count">文章 - 1&nbsp; </span>
+<span id="stats-comment_count">评论 - 28&nbsp; </span>
+<span id="stats-total-view-count">阅读 - 
+<span title="总阅读数: 1039703">
+103万</span></span>
+
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    <!--done-->
+    <div id="topics">
+        <div class="post">
+            <h1 class="postTitle">
+                
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/chenxiaomeng/p/9509670.html">
+    <span role="heading" aria-level="2">【Linux】网络性能测试工具iperf详细使用图文教程【转】</span>
+    
+</a><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                <div id="cnblogs_post_body" class="blogpost-body blogpost-body-html">
+<p>参考链接:https://www.cnblogs.com/yingsong/p/5682080.html</p>
+<p>Iperf是一个网络性能测试工具。Iperf可以测试TCP和UDP带宽质量。</p>
+<p>Iperf可以测量最大TCP带宽，具有多种参数和UDP特性。</p>
+<p>Iperf可以报告<span style="color: rgba(255, 0, 0, 1)">带宽</span>，<span style="color: rgba(255, 0, 0, 1)">延迟抖动</span>和<span style="color: rgba(255, 0, 0, 1)">数据包</span>丢失。</p>
+<p>Iperf这一特性，可以用来测试一些网络设备如路由器，防火墙，交换机等的性能。</p>
+<p>Iperf有两种版本，windows版和linux版本。</p>
+<p>linux版本更新快，最新版本为iperf 3.0，下载地址为<a href="http://code.google.com/p/iperf/downloads/list" rel="noopener">http://code.google.com/p/iperf/downloads/list</a>&nbsp;，</p>
+<p>windows版本官方更新的最新版本为1.7（打包在jperf中），下载地址为：<a href="http://sourceforge.net/projects/iperf/files/jperf/jperf%202.0.0/" rel="noopener">http://sourceforge.net/projects/iperf/files/jperf/jperf%202.0.0/</a>&nbsp;，</p>
+<p>不过在网络上找到了移植版本iperf2.5。Iperf还有一个图形界面程序叫做Jperf，使用JPerf程序能简化了复杂命令行参数的构造，而且 它还保存测试结果,同时实时图形化显示结果。当然，JPerf可以测试TCP和UDP带宽质量。JPerf可以测量最大TCP带宽，具有多种参数和UDP 特性。JPerf可以报告带宽，延迟抖动和数据包丢失。为了测试的准确性，尽量使用linux环境测试。</p>
+<p>Iperf的主要功能如下：</p>
+<h2 id="blogTitle0">TCP<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h2>
+<ul>
+<li>
+<div>测量网络带宽</div>
+</li>
+<li>
+<div>报告MSS/MTU值的大小和观测值</div>
+</li>
+<li>
+<div>支持TCP窗口值通过套接字缓冲</div>
+</li>
+<li>
+<div>当P线程或Win32线程可用时，支持多线程。客户端与服务端支持同时多重连接</div>
+</li>
+</ul>
+<h2 id="blogTitle1">UDP<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h2>
+<ul>
+<li>
+<div>客户端可以创建指定带宽的UDP流</div>
+</li>
+<li>
+<div>测量丢包</div>
+</li>
+<li>
+<div>测量延迟</div>
+</li>
+<li>
+<div>支持多播</div>
+</li>
+<li>
+<div>当P线程可用时，支持多线程。客户端与服务端支持同时多重连接（不支持Windows）</div>
+</li>
+</ul>
+<h2 id="blogTitle2">其他<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h2>
+<ul>
+<li>
+<div>在适当的地方，选项中可以使用K（kilo-）和M（mega-）。例如131072字节可以用128K代替。</div>
+</li>
+<li>
+<div>可以指定运行的总时间，甚至可以设置传输的数据总量。</div>
+</li>
+<li>
+<div>在报告中，为数据选用最合适的单位。</div>
+</li>
+<li>
+<div>服务器支持多重连接，而不是等待一个单线程测试。</div>
+</li>
+<li>
+<div>在指定时间间隔重复显示网络带宽，波动和丢包情况。</div>
+</li>
+<li>
+<div>服务器端可作为后台程序运行。</div>
+</li>
+<li>
+<div>服务器端可作为Windows 服务运行。</div>
+</li>
+<li>
+<div>使用典型数据流来测试链接层压缩对于可用带宽的影响。</div>
+</li>
+<li>
+<div>支持传送指定文件，可以定性和定量测试</div>
+</li>
+</ul>
+<h2 id="blogTitle3">Iperf使用方法<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h2>
+<ol>
+<li>
+<div>安装Iperf</div>
+<ol>
+<li>
+<div>对于windows版的Iperf，直接将解压出来的iperf.exe和cygwin1.dll复制到%systemroot%目录即可</div>
+</li>
+<li>
+<div>对于linux版的Iperf，请使用如下命令安装</div>
+<p>gunzip -c iperf-&lt;version&gt;.tar.gz | tar -xvf -</p>
+<p>cd iperf-&lt;version&gt;</p>
+<p>./configure</p>
+<p>make</p>
+<p>make install</p>
+<p>&nbsp;</p>
+</li>
+</ol></li>
+<li>
+<p>以windows端为例，在命令提示符中输入iperf命令即可运行Iperf，使用命令Iperf –help可以查看iperf的帮助</p>
+<p><img src="./【Linux】网络性能测试工具iperf详细使用图文教程_files/3171378562699005273.jpg" alt=""></p>
+</li>
+<li>Iperf参数介绍
+<div>
+<div class="table-wrapper"><table border="0"><colgroup><col><col></colgroup>
+<tbody valign="top">
+<tr>
+<td valign="center">
+<p><strong>命令行选项</strong></p>
+</td>
+<td valign="center">
+<p><strong>描述</strong></p>
+</td>
+</tr>
+<tr>
+<td colspan="2" valign="center">
+<p>客户端与服务器共用选项</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>-f, --format [bkmaBKMA]</p>
+</td>
+<td>
+<p>格式化带宽数输出。支持的格式有：&nbsp;<br>'b' = bits/sec 'B' = Bytes/sec&nbsp;<br>'k' = Kbits/sec 'K' = KBytes/sec&nbsp;<br>'m' = Mbits/sec 'M' = MBytes/sec&nbsp;<br>'g' = Gbits/sec 'G' = GBytes/sec&nbsp;<br>'a' = adaptive bits/sec 'A' = adaptive Bytes/sec&nbsp;<br>自适应格式是kilo-和mega-二者之一。除了带宽之外的字段都输出为字节，除非指定输出的格式，默认的参数是a。&nbsp;<br>注意：在计算字节byte时，Kilo = 1024， Mega = 1024^2，Giga = 1024^3。通常，在网络中，Kilo = 1000， Mega = 1000^2， and Giga = 1000^3，所以，Iperf也按此来计算比特（位）。如果这些困扰了你，那么请使用-f b参数，然后亲自计算一下。</p>
+
+</td>
+
+</tr>
+<tr>
+<td>
+<p>-i, --interval #</p>
+
+</td>
+<td>
+<p>设置<span style="color: rgba(255, 0, 0, 1)">每次报告之间的时间间隔</span>，单位为秒。如果设置为非零值，就会按照此时间间隔输出测试报告。默认值为零。</p>
+
+</td>
+
+</tr>
+<tr>
+<td>
+<p>-l, --len #[KM]</p>
+
+</td>
+<td>
+<p>设置读写缓冲区的长度。TCP方式默认为8KB，UDP方式默认为1470字节。</p>
+
+</td>
+
+</tr>
+<tr>
+<td>
+<p>-m, --print_mss</p>
+
+</td>
+<td>
+<p>输出TCP MSS值（通过TCP_MAXSEG支持）。MSS值一般比MTU值小40字节。通常情况</p>
+
+</td>
+
+</tr>
+<tr>
+<td>
+<p>-p, --port #</p>
+
+</td>
+<td>
+<p>设置端口，与服务器端的监听端口一致。默认是5001端口，与ttcp的一样。</p>
+
+</td>
+
+</tr>
+<tr>
+<td>
+<p>-u, --udp</p>
+
+</td>
+<td>
+<p>使用UDP方式而不是TCP方式。参看-b选项。</p>
+
+</td>
+
+</tr>
+<tr>
+<td>
+<p>-w, --window #[KM]</p>
+
+</td>
+<td>
+<p>设置套接字缓冲区为指定大小。对于TCP方式，此设置为TCP窗口大小。对于UDP方式，此设置为接受UDP数据包的缓冲区大小，限制可以接受数据包的最大值。</p>
+
+</td>
+
+</tr>
+<tr>
+<td>
+<p>-B, --bind host</p>
+
+</td>
+<td>
+<p>绑定到主机的多个地址中的一个。对于客户端来说，这个参数设置了出栈接口。对于服务器端来说，这个参数设置入栈接口。这个参数只用于具有多网络接口的主机。在Iperf的UDP模式下，此参数用于绑定和加入一个多播组。使用范围在224.0.0.0至239.255.255.255的多播地址。参考-T参数。</p>
+
+</td>
+
+</tr>
+<tr>
+<td>
+<p>-C, --compatibility</p>
+
+</td>
+<td>
+<p>与低版本的Iperf使用时，可以使用兼容模式。不需要两端同时使用兼容模式，但是强烈推荐两端同时使用兼容模式。某些情况下，使用某些数据流可以引起1.7版本的服务器端崩溃或引起非预期的连接尝试。</p>
+
+</td>
+
+</tr>
+<tr>
+<td>
+<p>-M, --mss #[KM}</p>
+
+</td>
+<td>
+<p>通过TCP_MAXSEG选项尝试设置TCP最大信息段的值。MSS值的大小通常是TCP/IP头减去40字节。在以太网中，MSS值 为1460字节（MTU1500字节）。许多<a class="replace_word" title="操作系统知识库" href="http://lib.csdn.net/base/operatingsystem" target="_blank" rel="noopener">操作系统</a>不支持此选项。</p>
+
+</td>
+
+</tr>
+<tr>
+<td>
+<p>-N, --nodelay</p>
+
+</td>
+<td>
+<p>设置TCP无延迟选项，禁用Nagle's运<a class="replace_word" title="算法与数据结构知识库" href="http://lib.csdn.net/base/datastructure" target="_blank" rel="noopener">算法</a>则。通常情况此选项对于交互程序，例如telnet，是禁用的。</p>
+
+</td>
+
+</tr>
+<tr>
+<td>
+<p>-V (from v1.6 or higher)</p>
+
+</td>
+<td>
+<p>绑定一个IPv6地址。&nbsp;<br>服务端：$ iperf -s –V&nbsp;<br>客户端：$ iperf -c &lt;Server IPv6 Address&gt; -V&nbsp;<br>注意：在1.6.3或更高版本中，指定IPv6地址不需要使用-B参数绑定，在1.6之前的版本则需要。在大多数操作系统中，将响应IPv4客户端映射的IPv4地址。</p>
+
+</td>
+
+</tr>
+<tr>
+<td colspan="2" valign="center">
+<p>服务器端专用选项</p>
+
+</td>
+
+</tr>
+<tr>
+<td>
+<p>-s, --server</p>
+
+</td>
+<td>
+<p>Iperf服务器模式</p>
+
+</td>
+
+</tr>
+<tr>
+<td>
+<p>-D (v1.2或更高版本)</p>
+
+</td>
+<td>
+<p>Unix平台下Iperf作为后台守护进程运行。在Win32平台下，Iperf将作为服务运行。</p>
+
+</td>
+
+</tr>
+<tr>
+<td>
+<p>-R(v1.2或更高版本，仅用于Windows)</p>
+
+</td>
+<td>
+<p>卸载Iperf服务（如果它在运行）。</p>
+
+</td>
+
+</tr>
+<tr>
+<td>
+<p>-o(v1.2或更高版本，仅用于Windows)</p>
+
+</td>
+<td>
+<p>重定向输出到指定文件</p>
+
+</td>
+
+</tr>
+<tr>
+<td>
+<p>-c, --client host</p>
+
+</td>
+<td>
+<p>如果Iperf运行在服务器模式，并且用-c参数指定一个主机，那么Iperf将只接受指定主机的连接。此参数不能工作于UDP模式。</p>
+
+</td>
+
+</tr>
+<tr>
+<td>
+<p>-P, --parallel #</p>
+
+</td>
+<td>
+<p>服务器关闭之前保持的连接数。默认是0，这意味着永远接受连接。</p>
+
+</td>
+
+</tr>
+<tr>
+<td colspan="2" valign="center">
+<p>客户端专用选项</p>
+
+</td>
+
+</tr>
+<tr>
+<td>
+<p>-b, --bandwidth #[KM]</p>
+
+</td>
+<td>
+<p>UDP模式使用的带宽，单位bits/sec。此选项与-u选项相关。默认值是1 Mbit/sec。</p>
+
+</td>
+
+</tr>
+<tr>
+<td>
+<p>-c, --client host</p>
+
+</td>
+<td>
+<p>运行Iperf的客户端模式，连接到指定的Iperf服务器端。</p>
+
+</td>
+
+</tr>
+<tr>
+<td>
+<p>-d, --dualtest</p>
+
+</td>
+<td>
+<p>运行双测试模式。这将使服务器端反向连接到客户端，使用-L 参数中指定的端口（或默认使用客户端连接到服务器端的端口）。这些在操作的同时就立即完成了。如果你想要一个交互的测试，请尝试-r参数。</p>
+
+</td>
+
+</tr>
+<tr>
+<td>
+<p>-n, --num #[KM]</p>
+
+</td>
+<td>
+<p>传送的缓冲器数量。通常情况，Iperf按照10秒钟发送数据。-n参数跨越此限制，按照指定次数发送指定长度的数据，而不论该操作耗费多少时间。参考-l与-t选项。</p>
+
+</td>
+
+</tr>
+<tr>
+<td>
+<p>-r, --tradeoff</p>
+
+</td>
+<td>
+<p>往复测试模式。当客户端到服务器端的测试结束时，服务器端通过-l选项指定的端口（或默认为客户端连接到服务器端的端口），反向连接至客户端。当客户端连接终止时，反向连接随即开始。如果需要同时进行双向测试，请尝试-d参数。</p>
+
+</td>
+
+</tr>
+<tr>
+<td>
+<p>-t, --time #</p>
+
+</td>
+<td>
+<p>设置传输的总时间。Iperf在指定的时间内，重复的发送指定长度的数据包。默认是10秒钟。参考-l与-n选项。</p>
+
+</td>
+
+</tr>
+<tr>
+<td>
+<p>-L, --listenport #</p>
+
+</td>
+<td>
+<p>指定服务端反向连接到客户端时使用的端口。默认使用客户端连接至服务端的端口。</p>
+
+</td>
+
+</tr>
+<tr>
+<td>
+<p>-P, --parallel #</p>
+
+</td>
+<td>
+<p>线程数。指定客户端与服务端之间使用的线程数。默认是1线程。需要客户端与服务器端同时使用此参数。</p>
+
+</td>
+
+</tr>
+<tr>
+<td>
+<p>-S, --tos #</p>
+
+</td>
+<td>
+<p>出栈数据包的服务类型。许多路由器忽略TOS字段。你可以指定这个值，使用以"0x"开始的16进制数，或以"0"开始的8进制数或10进制数。&nbsp;<br>例如，16进制'0x10' = 8进制'020' = 十进制'16'。TOS值1349就是：<br>IPTOS_LOWDELAY minimize delay 0x10&nbsp;<br>IPTOS_THROUGHPUT maximize throughput 0x08&nbsp;<br>IPTOS_RELIABILITY maximize reliability 0x04&nbsp;<br>IPTOS_LOWCOST minimize cost 0x02</p>
+
+</td>
+
+</tr>
+<tr>
+<td>
+<p>-T, --ttl #</p>
+
+</td>
+<td>
+<p>出栈多播数据包的TTL值。这本质上就是数据通过路由器的跳数。默认是1，链接本地。</p>
+
+</td>
+
+</tr>
+<tr>
+<td>
+<p>-F (from v1.2 or higher)</p>
+
+</td>
+<td>
+<p>使用特定的数据流测量带宽，例如指定的文件。&nbsp;<br>$ iperf -c &lt;server address&gt; -F &lt;file-name&gt;</p>
+
+</td>
+
+</tr>
+<tr>
+<td>
+<p>-I (from v1.2 or higher)</p>
+
+</td>
+<td>
+<p>与-F一样，由标准输入输出文件输入数据。</p>
+
+</td>
+
+</tr>
+<tr>
+<td colspan="2" valign="center">
+<p>杂项</p>
+
+</td>
+
+</tr>
+<tr>
+<td>
+<p>-h, --help</p>
+
+</td>
+<td>
+<p>显示命令行参考并退出 。</p>
+
+</td>
+
+</tr>
+<tr>
+<td>
+<p>-v, --version</p>
+
+</td>
+<td>
+<p>显示版本信息和编译信息并退出。</p>
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+</div>
+<p>&nbsp;</p>
+</li>
+<li>用Iperf测试路由器的性能&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <strong><span style="color: rgba(255, 0, 0, 1)">&nbsp;eg1:&nbsp; &nbsp;</span></strong> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<ol>
+<li><strong>测试单线程TCP</strong></li>
+</ol>
+<ul>
+<li>
+<div>在服务端运行iperf，输入命令iperf –s –p 12345 –i 1 –M 以在本机端口12345上启用iperf</div>
+<p><img src="./【Linux】网络性能测试工具iperf详细使用图文教程_files/6597302863122534214.jpg" alt=""></p>
+</li>
+<li>
+<div>在客户端运行iperf，输入命令iperf –c&nbsp;<em>server-ip</em>&nbsp;–p&nbsp;<em>server-port&nbsp;</em>–i 1 –t 10 –w 20K，其中参数说明如下：</div>
+<p>-c：客户端模式，后接服务器ip</p>
+<p>-p：后接服务端监听的端口</p>
+<p>-i：设置带宽报告的时间间隔，单位为秒</p>
+<p>-t：设置测试的时长，单位为秒</p>
+<p>-w：设置tcp窗口大小，一般可以不用设置，默认即可</p>
+</li>
+</ul>
+<p>&nbsp;</p>
+<p>测试后截图如下：</p>
+<p><img src="./【Linux】网络性能测试工具iperf详细使用图文教程_files/1935984889915935720.jpg" alt=""></p>
+<p>客户端截图</p>
+<p><img src="./【Linux】网络性能测试工具iperf详细使用图文教程_files/1682094460922930116.jpg" alt=""></p>
+<p>服务端截图</p>
+<p>其中：Interval表示时间间隔。Transfer表示时间间隔里面转输的数据量。Bandwidth是时间间隔里的传输速率。最后一行是本次测试的统计。测试可知带宽平均为89.9Mbit/s。</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<ol>
+<li>
+<div><strong>测试多线程TCP</strong></div>
+<p>在客户端添加-P参即可测试多线程的TCP性能，如下为使用两个线程的测试情况</p>
+<p><img src="./【Linux】网络性能测试工具iperf详细使用图文教程_files/6597793245309021740.jpg" alt=""></p>
+<p>客户端</p>
+<p><img src="./【Linux】网络性能测试工具iperf详细使用图文教程_files/288511851228466648.jpg" alt=""></p>
+<p>&nbsp;</p>
+</li>
+<li><strong>测试单线程UDP（默认带宽）</strong></li>
+</ol>
+<ul>
+<li>在服务端运行iperf，输入命令iperf –s -u –p 12345 –i 1 以在本机端口12345上启用iperf，并运行于udp模式</li>
+<li>
+<div>在客户端运行iperf，输入命令iperf -c server-ip -p server-port -i 1 -t 10 -b，其中参数说明如下：</div>
+<p>-c：客户端模式，后接服务器ip</p>
+<p>-p：后接服务端监听的端口</p>
+<p>-i：设置带宽报告的时间间隔，单位为秒</p>
+<p>-t：设置测试的时长，单位为秒</p>
+<p>-b：设置udp的发送带宽，单位bit/s</p>
+</li>
+</ul>
+<p><img src="./【Linux】网络性能测试工具iperf详细使用图文教程_files/1883349069271049615.jpg" alt=""></p>
+<p>客户端</p>
+<p><img src="./【Linux】网络性能测试工具iperf详细使用图文教程_files/6597722876564840099.jpg" alt=""></p>
+<p>服务端</p>
+<p>其中，Jitter为抖动，lost/total为丢包数量，Datagrams为包数量。</p>
+<ol>
+<li>
+<div><strong>测试单线程UDP（带宽为10Mbit/s）</strong></div>
+<p>设置客户端带宽为10M即可，使用参数-b指定</p>
+</li>
+</ol>
+<p><img src="./【Linux】网络性能测试工具iperf详细使用图文教程_files/3381358895325141868.jpg" alt=""></p>
+<p>客户端</p>
+<p><img src="./【Linux】网络性能测试工具iperf详细使用图文教程_files/1884756444154596553.jpg" alt=""></p>
+<p>服务端</p>
+<p>&nbsp;</p>
+<ol>
+<li>
+<div><strong>测试多线程UDP</strong></div>
+<p>与多线程TCP类似，只需要客户端使用-P参数指定线程个数即可</p>
+</li>
+</ol>
+<p>&nbsp;</p>
+<ol>
+<li>
+<div><strong>测试UDP的双向传输</strong></div>
+<p>客户端使用参数-d以运行双测试模式，客户端会与服务端进行udp往返测试。可以使用-L参数指定本端双测试监听的端口。</p>
+</li>
+</ol>
+<p><img src="./【Linux】网络性能测试工具iperf详细使用图文教程_files/3154490064096366291.jpg" alt=""></p>
+<p>客户端</p>
+<p><img src="./【Linux】网络性能测试工具iperf详细使用图文教程_files/3169126762885320009.jpg" alt="">服务端</p>
+<ol>
+<li>
+<div><strong>测试UDP往复传输</strong></div>
+<p>与双向传输类似，使用参数-r以运行交互模式，仍然可以使用-L参数指定交互的端口。</p>
+</li>
+</ol>
+<p><img src="./【Linux】网络性能测试工具iperf详细使用图文教程_files/6598107705634352961.jpg" alt=""></p>
+<p>客户端</p>
+<p><img src="./【Linux】网络性能测试工具iperf详细使用图文教程_files/1982146786096484775.jpg" alt=""></p>
+<p>服务端</p>
+<p>&nbsp;</p>
+<ol>
+<li>
+<div><strong>分布式测试</strong></div>
+<p>使用多台电脑或使用一台电脑的多个IP地址测试。当使用一台电脑的多个iP地址测试时，可以使用-B命令绑定网卡的某一个ip地址以测试&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <strong><span style="color: rgba(255, 0, 0, 1)">eg2：&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span></strong></p>
+<p>一、路由器上使用<br>   1、将iperf上传到 /usr/sbin文件下，命令：tftp -gr iperf ip（iperf所在主机ip）<br>   2、将库文件上传到lib目录下，命令：tftp -gr libuClibc++.so.0 ip（文件所在主机ip）</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>root@ROUTER:~# cd /usr/sbin<br>root@ROUTER:/usr/sbin# tftp -gr iperf 192.168.23.40<br>root@ROUTER:/usr/sbin# ls | grep iperf<br>iperf<br>root@ROUTER:/usr/sbin# cd<br>root@ROUTER:~# cd /lib<br>root@ROUTER:/lib# tftp -gr libuClibc++.so.0 192.168.23.40<br>root@ROUTER:/lib# ls | grep libuClibc++.so.0<br>libuClibc++.so.0</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><br>要让文件能够正常上传需要路由器能够ping得通主机ip</p>
+<p>&nbsp;</p>
+<p>二、iperf的使用参数说明：<br>    可用iperf -h或iperf -help来查看具体命令<br>    -s 以server模式启动，eg：iperf -s<br>    -c host 以client模式启动，host是server端地址，eg：iperf -c 222.35.11.23通用参数<br>    -f [k|m|K|M] 分别表示以Kbits, Mbits, KBytes, MBytes显示报告，默认以Mbits为单位,eg:iperf -c 222.35.11.23 -f K<br>    -i sec 以秒为单位显示报告间隔，eg:iperf -c 222.35.11.23 -i 2<br>    -l 缓冲区大小，默认是8KB,eg:iperf -c 222.35.11.23 -l 16<br>    -m 显示tcp最大mtu值<br>    -o 将报告和错误信息输出到文件eg:iperf -c 222.35.11.23 -o c:\iperflog.txt<br>    -p 指定服务器端使用的端口或客户端所连接的端口eg:iperf -s -p 9999;iperf -c 222.35.11.23 -p 9999<br>    -u 使用udp协议<br>    -w 指定TCP窗口大小，默认是8KB<br>    -B 绑定一个主机地址或接口（当主机有多个地址或接口时使用该参数）<br>    -C 兼容旧版本（当server端和client端版本不一样时使用）<br>    -M 设定TCP数据包的最大mtu值<br>    -N 设定TCP不延时<br>    -V 传输ipv6数据包</p>
+<p>&nbsp;</p>
+<p>server专用参数<br>    -D 以服务方式运行ipserf，eg:iperf -s -D<br>    -R 停止iperf服务，针对-D，eg:iperf -s -R</p>
+<p>&nbsp;</p>
+<p>client端专用参数<br>    -d 同时进行双向传输测试<br>    -n 指定传输的字节数，eg:iperf -c 222.35.11.23 -n 100000<br>    -r 单独进行双向传输测试<br>    -t 测试时间，默认10秒,eg:iperf -c 222.35.11.23 -t 5<br>    -F 指定需要传输的文件<br>    -T 指定ttl值</p>
+<p>&nbsp;</p>
+<p><br>操作举例：<br>1）TCP测试<br>服务器执行：#iperf -s -i 1 -w 1M<br>客户端执行：#iperf -c host -i 1 -w 1M<br>其中-w表示TCP window size，host需替换成服 务器地址。 <br>2）UDP测试<br>服务器执行：#iperf -u -s<br>客户端执行：#iperf -u -c 10.32.0.254 -b 900M  -i 1  -w 1M  -t 60<br>其中-b表示 使用带宽数量，千兆链路使用90%容量进行测试就可以了。</p>
+<p>&nbsp;</p>
+<p>几个命令参数：<br>#iperf -c 10.1.1.1        //客户端命令<br>iperf -s                      //服务端命令<br>-f [b|B|k|K|m|M|g|G]  //f参数表示单位<br>-r                             //r参数表示双向数据测试，但要先测c到s的带宽<br>-d                             //d参数和r近似，并且功能更强，可同时测试双向数据<br>-w [2000]                  //w参数后跟数字，单位是byte，<br>-p [12000]                  //p参数可指定端口号<br>-t [20]                       //t参数默认表示测试10次，后加数字可以自己定义<br>-i [2]                         //i参数表示测试开始到结束的间隔时间，单位s<br>-u -b 10m                   //udp 10mbps 测试<br>-m                             //最大mpu测试<br>-P                              //并行测试<br>-h                              //帮助</p>
+</li>
+<li>
+<p>iperf -c 192.168.X.X -i 5 -t 60 -b 8192M -l 1024 -u (要两边运行一边为客户端运行 一边作为服务端运行)&nbsp;</p>
+</li>
+<li>
+<p>&nbsp;</p>
+</li>
+</ol></li>
+</ol>
+<p>&nbsp;</p>
+</div>
+<div id="MySignature" role="contentinfo">
+    声明 欢迎转载,但请保留文章原始出处:) 博客园:https://www.cnblogs.com/chenxiaomeng/
+如出现转载未声明 将追究法律责任~谢谢合作
+</div>
+<div class="clear"></div>
+<div id="blog_post_info_block" role="contentinfo"><div id="BlogPostCategory">
+    分类: 
+            <a href="https://www.cnblogs.com/chenxiaomeng/category/1145136.html" target="_blank">Linux</a></div>
+
+
+    <div id="blog_post_info">
+<div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(9509670,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+        <a id="green_channel_follow" onclick="follow(&#39;23257ced-e129-e611-9fc1-ac853d9f53cc&#39;);" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="./【Linux】网络性能测试工具iperf详细使用图文教程_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="./【Linux】网络性能测试工具iperf详细使用图文教程_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/chenxiaomeng/" target="_blank"><img src="./【Linux】网络性能测试工具iperf详细使用图文教程_files/20210219134720.png" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/chenxiaomeng/">陈晓猛</a><br>
+            <a href="https://home.cnblogs.com/u/chenxiaomeng/followers/">粉丝 - <span class="follower-count">48</span></a>
+            <a href="https://home.cnblogs.com/u/chenxiaomeng/followees/">关注 - <span class="following-count">89</span></a><br>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow" class="follow-tip">
+                <a href="javascript:void(0);" onclick="follow(&#39;23257ced-e129-e611-9fc1-ac853d9f53cc&#39;);return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(9509670,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">0</span>
+    </div>
+    <div class="buryit" onclick="votePost(9509670,&#39;Bury&#39;)">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+    <div class="clear"></div>
+    <div id="post_next_prev">
+
+    <a href="https://www.cnblogs.com/chenxiaomeng/p/9497166.html" class="p_n_p_prefix">« </a> 上一篇：    <a href="https://www.cnblogs.com/chenxiaomeng/p/9497166.html" data-featured-image="" title="发布于 2018-08-18 14:04">【VirtualBox】快照</a>
+    <br>
+    <a href="https://www.cnblogs.com/chenxiaomeng/p/9533772.html" class="p_n_p_prefix">» </a> 下一篇：    <a href="https://www.cnblogs.com/chenxiaomeng/p/9533772.html" data-featured-image="" title="发布于 2018-08-25 13:47">【Linux】time+dd测试硬盘读写速度</a>
+
+</div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date" data-last-update-days="1679.193130123449" data-date-created="BlogServer.Application.Dto.BlogPost.BlogPostDto" data-date-updated="2018-08-21 09:53" aria-expanded="false">2018-08-21 09:53</span>&nbsp;
+<a href="https://www.cnblogs.com/chenxiaomeng/">陈晓猛</a>&nbsp;
+阅读(<span id="post_view_count">3249</span>)&nbsp;
+评论(<span id="post_comment_count">0</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=9509670" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(9509670);return false;">收藏</a>&nbsp;
+<a href="javascript:void(0)" onclick="reportManager.report({ currentUserId: &#39;&#39;, targetType: &#39;blogPost&#39;, targetId: &#39;9509670&#39;, targetLink: &#39;https://www.cnblogs.com/chenxiaomeng/p/9509670.html&#39;, title: &#39;【Linux】网络性能测试工具iperf详细使用图文教程【转】&#39; })">举报</a>
+</div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+
+<script>
+    var cb_entryId = 9509670, cb_entryCreatedDate = '2018-08-21 09:53', cb_postType = 1, cb_postTitle = '【Linux】网络性能测试工具iperf详细使用图文教程【转】';
+    var allowComments = true, cb_blogId = 294007, cb_blogApp = 'chenxiaomeng', cb_blogUserGuid = '23257ced-e129-e611-9fc1-ac853d9f53cc';
+    mermaidRender.render()
+    markdown_highlight()
+    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");
+    updatePostStats(
+            [cb_entryId],
+            function(id, count) { $("#post_view_count").text(count) },
+            function(id, count) { $("#post_comment_count").text(count) })
+</script>
+<a id="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="https://www.cnblogs.com/chenxiaomeng/p/9509670.html#" onclick="return RefreshPage();">刷新页面</a><a href="https://www.cnblogs.com/chenxiaomeng/p/9509670.html#top">返回顶部</a></div>
+    <div id="comment_form_container" style="visibility: visible;"><div class="login_tips">
+    登录后才能查看或发表评论，立即 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return account.login(&#39;!comments&#39;);">登录</a> 或者
+    <a href="https://www.cnblogs.com/">逛逛</a> 博客园首页
+</div>
+</div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+        <div id="cnblogs_ch"><a href="https://click.aliyun.com/m/1000369037/" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-阿里云-上云采购季&#39;})">【推荐】阿里云2核2G云服务器低至99元/年，百款云产品优惠享不停</a><br><a href="https://brands.cnblogs.com/haoron/" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-brands-haoron&#39;})">【推荐】博客园联合日本好融社，推出日本IT人才国际移民直通车项目</a><br></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="under-post-card">
+            <div id="div-gpt-ad-1592365906576-0" style="width: 300px; height: 250px;" data-google-query-id="CKuOrZq--_0CFSKE6QUdao4HGw"><div id="google_ads_iframe_/1090369/C1_0__container__" style="border: 0pt none; display: inline-block; width: 300px; height: 250px;"><iframe frameborder="0" src="./【Linux】网络性能测试工具iperf详细使用图文教程_files/container.html" id="google_ads_iframe_/1090369/C1_0" title="3rd party ad content" name="" scrolling="no" marginwidth="0" marginheight="0" width="300" height="250" data-is-safeframe="true" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" role="region" aria-label="Advertisement" tabindex="0" data-google-container-id="1" style="border: 0px; vertical-align: bottom;" data-load-complete="true"></iframe></div></div>
+    </div>
+    <div id="under_post_card1"><div class="under-post-card">
+<b>编辑推荐：</b>
+<br>
+
+· <a href="https://www.cnblogs.com/coco1s/p/17250230.html" target="_blank">六芒星能力图动画是如何制作的？</a>
+    <br>
+· <a href="https://www.cnblogs.com/cicada-smile/p/17250200.html" target="_blank">如何将「知识」体系化管理</a>
+    <br>
+· <a href="https://www.cnblogs.com/huangxincheng/p/17250240.html" target="_blank">如何提取 x64 程序那些易失的方法参数</a>
+    <br>
+· <a href="https://www.cnblogs.com/cgli/p/17241899.html" target="_blank">企业低成本万能架构</a>
+    <br>
+· <a href="https://www.cnblogs.com/cicada-smile/p/17234387.html" target="_blank">聊一聊系统重构</a>
+    <br>
+</div></div>
+    <div id="under_post_card2"><div class="itnews under-post-card">
+    <b>即构专区：</b>
+    <br>
+ ·          <a href="https://brands.cnblogs.com/zego/p/15617" target="_blank" onclick="countCreativeClicks(&#39;zego_articles_promotion&#39;)">教师节专题：AI互动课来了，即构方案助推在线教育创新升级</a>
+        <br>
+ ·          <a href="https://brands.cnblogs.com/zego/p/15608" target="_blank" onclick="countCreativeClicks(&#39;zego_articles_promotion&#39;)">线上狼人杀太卡？快试试这个新功能</a>
+        <br>
+ ·          <a href="https://brands.cnblogs.com/zego/p/15615" target="_blank" onclick="countCreativeClicks(&#39;zego_articles_promotion&#39;)">技术干货：在线教育平台如何保障课件数据安全</a>
+        <br>
+ ·          <a href="https://brands.cnblogs.com/zego/p/15652" target="_blank" onclick="countCreativeClicks(&#39;zego_articles_promotion&#39;)">零基础通过直播小程序组件实现电商带货</a>
+        <br>
+ ·          <a href="https://brands.cnblogs.com/zego/p/15710" target="_blank" onclick="countCreativeClicks(&#39;zego_articles_promotion&#39;)">快速实现 CDN 直播</a>
+        <br>
+</div></div>
+    <div id="HistoryToday" class="under-post-card"></div>
+    <script type="text/javascript">
+        var commentManager = new blogCommentManager();
+        commentManager.renderComments(0);
+        fixPostBody();
+        window.footnoteTipManager.generateFootnoteTips();
+
+            window.tocManager.displayDisableTocTips = false;
+            window.tocManager.generateToc();
+            
+                setTimeout(function() { countViews(cb_blogId, cb_entryId); }, 50);
+            
+            deliverT2();
+            deliverC1C2();
+            loadNewsAndKb();
+            
+                LoadPostCategoriesTags(cb_blogId, cb_entryId);
+            
+            LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+            GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+            loadOptUnderPost();
+            GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+                </script>
+</div>
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+	<div id="sideBar">
+		<div id="sideBarMain">
+			<div id="sidebar_news" class="newsItem">
+    <h3 class="catListTitle">公告</h3>
+<div id="blog-news">    
+    <div id="sidebar_news_content"><!-- 侧边小女孩 -->
+<div>
+  <div>
+    
+    <title>Live2d Test Env</title>
+    
+    
+  </div>
+  <div>
+  
+  <script type="text/javascript">window['__document_write_ajax_callbacks__']['3']();</script><script type="text/javascript">window['__document_write_ajax_callbacks__']['1']();</script>
+  </div>
+</div>
+
+
+
+
+<div id="profile_block">
+    昵称：
+    <a href="https://home.cnblogs.com/u/chenxiaomeng/">
+        陈晓猛
+    </a>
+    <br>
+    园龄：
+    <a href="https://home.cnblogs.com/u/chenxiaomeng/" title="入园时间：2016-06-04">
+        6年9个月
+    </a>
+    <br>
+    粉丝：
+    <a class="follower-count" href="https://home.cnblogs.com/u/chenxiaomeng/followers/">
+        48
+    </a>
+    <br>
+    关注：
+    <a class="folowing-count" href="https://home.cnblogs.com/u/chenxiaomeng/followees/">
+        89
+    </a>
+    <div id="p_b_follow" class="follow-tip">
+<a href="javascript:void(0)" onclick="follow(&#39;23257ced-e129-e611-9fc1-ac853d9f53cc&#39;)">+加关注</a></div>
+    <script type="text/javascript">window['__document_write_ajax_callbacks__']['4']();</script><script>window['__document_write_ajax_callbacks__']['2']();</script>
+</div>
+</div>
+</div>
+<script>loadBlogNews();</script>
+
+ 
+</div>
+<div id="sidebar_c3"></div>
+			<div id="blog-calendar" style="">
+
+<table id="blogCalendar" class="Cal" cellspacing="0" cellpadding="0" title="Calendar" border="0">
+    <tbody>
+        <tr>
+            <td colspan="7">
+                <table class="CalTitle" cellspacing="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2023/02/27&#39;); return false;">&lt;</a>
+                            </td>
+                            <td align="center">2023年3月</td>
+                            <td align="right" class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2023/04/27&#39;); return false;">&gt;</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    <tr>
+        <th class="CalDayHeader" align="center" abbr="日" scope="col">日</th>
+        <th class="CalDayHeader" align="center" abbr="一" scope="col">一</th>
+        <th class="CalDayHeader" align="center" abbr="二" scope="col">二</th>
+        <th class="CalDayHeader" align="center" abbr="三" scope="col">三</th>
+        <th class="CalDayHeader" align="center" abbr="四" scope="col">四</th>
+        <th class="CalDayHeader" align="center" abbr="五" scope="col">五</th>
+        <th class="CalDayHeader" align="center" abbr="六" scope="col">六</th>
+    </tr>
+            <tr>
+                            <td class="CalOtherMonthDay" align="center">26</td>
+                            <td class="CalOtherMonthDay" align="center">27</td>
+                            <td class="CalOtherMonthDay" align="center">28</td>
+                        <td class="" align="center">
+                            1
+                        </td>
+                        <td class="" align="center">
+                            2
+                        </td>
+                        <td class="" align="center">
+                            3
+                        </td>
+                    <td class="CalWeekendDay" align="center">
+                        4
+                    </td>
+            </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            5
+                        </td>
+                            <td class="" align="center">
+                                <a href="https://www.cnblogs.com/chenxiaomeng/archive/2023/03/06.html"><u>6</u></a>
+                            </td>
+                            <td class="" align="center">
+                                <a href="https://www.cnblogs.com/chenxiaomeng/archive/2023/03/07.html"><u>7</u></a>
+                            </td>
+                            <td class="" align="center">
+                                8
+                            </td>
+                            <td class="" align="center">
+                                9
+                            </td>
+                            <td class="" align="center">
+                                10
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            11
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            12
+                        </td>
+                            <td class="" align="center">
+                                13
+                            </td>
+                            <td class="" align="center">
+                                14
+                            </td>
+                            <td class="" align="center">
+                                15
+                            </td>
+                            <td class="" align="center">
+                                16
+                            </td>
+                            <td class="" align="center">
+                                <a href="https://www.cnblogs.com/chenxiaomeng/archive/2023/03/17.html"><u>17</u></a>
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            18
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            19
+                        </td>
+                            <td class="" align="center">
+                                20
+                            </td>
+                            <td class="" align="center">
+                                21
+                            </td>
+                            <td class="" align="center">
+                                22
+                            </td>
+                            <td class="" align="center">
+                                23
+                            </td>
+                            <td class="" align="center">
+                                24
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            25
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            26
+                        </td>
+                            <td class="CalTodayDay" align="center">
+                                27
+                            </td>
+                            <td class="" align="center">
+                                28
+                            </td>
+                            <td class="" align="center">
+                                29
+                            </td>
+                            <td class="" align="center">
+                                30
+                            </td>
+                            <td class="" align="center">
+                                31
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            1
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalOtherMonthDay" align="center">
+                            2
+                        </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                3
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                4
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                5
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                6
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                7
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            8
+                        </td>
+                </tr>
+    </tbody>
+</table></div><script>loadBlogDefaultCalendar();</script>			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"><!-- 搜索 -->
+<div id="sidebar_search" class="sidebar-block">
+    <div id="sidebar_search" class="mySearch">
+        <h3 class="catListTitle">搜索</h3>
+        <div id="sidebar_search_box">
+            <div id="widget_my_zzk" class="div_my_zzk">
+                <input type="text" id="q" onkeydown="return zzk_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="zzk_go()" type="button" value="找找看" id="btnZzk" class="btn_my_zzk">
+            </div>
+            <div id="widget_my_google" class="div_my_zzk">
+                <input type="text" name="google_q" id="google_q" onkeydown="return google_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="google_go()" type="button" value="谷歌搜索" class="btn_my_zzk">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 常用链接 -->
+<div id="sidebar_shortcut" class="sidebar-block"><div class="catListLink">
+<h3 class="catListTitle">
+常用链接
+</h3>
+<ul>
+    <li><a href="https://www.cnblogs.com/chenxiaomeng/p/" title="我的博客的随笔列表">我的随笔</a></li>
+<li><a href="https://www.cnblogs.com/chenxiaomeng/MyComments.html" title="我的发表过的评论列表">我的评论</a></li>
+<li><a href="https://www.cnblogs.com/chenxiaomeng/OtherPosts.html" title="我评论过的随笔列表">我的参与</a></li>
+<li><a href="https://www.cnblogs.com/chenxiaomeng/comments" title="我的博客的评论列表">最新评论</a></li>
+<li><a href="https://www.cnblogs.com/chenxiaomeng/tag/" title="我的博客的标签列表">我的标签</a></li>
+
+</ul>
+</div>
+
+</div>
+
+<!-- 最新随笔 -->
+
+
+<!-- 我的标签 -->
+<div id="sidebar_toptags" class="sidebar-block"><div class="catListTag">
+    <h3 class="catListTitle"><a href="https://www.cnblogs.com/chenxiaomeng/tag/" class="sidebar-card-title-a">我的标签</a></h3>
+<ul>
+        <li>
+            <a href="https://www.cnblogs.com/chenxiaomeng/tag/SpringMvc/">SpringMvc<span class="tag-count">(2)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/chenxiaomeng/tag/mui/">mui<span class="tag-count">(1)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/chenxiaomeng/tag/7.SpringMVC%E6%B3%A8%E8%A7%A3%E4%BC%98%E5%8C%96/">7.SpringMVC注解优化<span class="tag-count">(1)</span></a>
+        </li>
+    
+
+</ul>
+</div>
+
+</div>
+
+<!-- 积分与排名 -->
+<div id="sidebar_scorerank" class="sidebar-block"><div class="catListBlogRank">
+<h3 class="catListTitle">积分与排名</h3>
+<ul>
+	<li class="liScore">
+		积分 -	
+574836
+	</li>
+	<li class="liRank">
+		排名 -	
+918
+	</li>
+</ul>
+</div>
+
+
+
+</div>
+
+<!-- 随笔分类、随笔档案、文章分类、新闻分类、相册、链接 -->
+<div id="sidebar_categories">
+
+    <div id="sidebar_postcategory" class="catListPostCategory sidebar-block">
+        <h3 class="catListTitle">
+            
+    <a class="sidebar-card-title-a" href="https://www.cnblogs.com/chenxiaomeng/post-categories">随笔分类</a>
+
+
+
+        </h3>
+
+        <ul>
+
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/2181374.html" class="category-item-link" rel="" target="">adb(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/881991.html" class="category-item-link" rel="" target="">Android(9)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/2201003.html" class="category-item-link" rel="" target="">Android-uiautomator(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/2197912.html" class="category-item-link" rel="" target="">appium(8)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1390157.html" class="category-item-link" rel="" target="">App测试(9)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/2005574.html" class="category-item-link" rel="" target="">BDD- cucumber(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/2005923.html" class="category-item-link" rel="" target="">CI/CD(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/924869.html" class="category-item-link" rel="" target="">CSS(14)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/872203.html" class="category-item-link" rel="" target="">easyui(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/881990.html" class="category-item-link" rel="" target="">eclipse(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/2070968.html" class="category-item-link" rel="" target="">ElasticSearch(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1954332.html" class="category-item-link" rel="" target="">Git(18)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/2035192.html" class="category-item-link" rel="" target="">Gradle/Maven/Ant(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/939019.html" class="category-item-link" rel="" target="">HBuilder(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/2018967.html" class="category-item-link" rel="" target="">IDE-Webstorm(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1607438.html" class="category-item-link" rel="" target="">iptables(9)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/875321.html" class="category-item-link" rel="" target="">JavaScript(39)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/869863.html" class="category-item-link" rel="" target="">Java-SpringMVC(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1411056.html" class="category-item-link" rel="" target="">Java基础(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1955355.html" class="category-item-link" rel="" target="">leetcode刷题(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1145136.html" class="category-item-link" rel="" target="">Linux(56)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1938691.html" class="category-item-link" rel="" target="">modbus(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/2045558.html" class="category-item-link" rel="" target="">ND(8)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1923875.html" class="category-item-link" rel="" target="">node(14)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/967727.html" class="category-item-link" rel="" target="">PS(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/2011170.html" class="category-item-link" rel="" target="">puppeteer(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1222788.html" class="category-item-link" rel="" target="">Python(54)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1954939.html" class="category-item-link" rel="" target="">python-pytest(16)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1808533.html" class="category-item-link" rel="" target="">python-unittest(16)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/2228342.html" class="category-item-link" rel="" target="">Quiker(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/2053136.html" class="category-item-link" rel="" target="">redis(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1813213.html" class="category-item-link" rel="" target="">RobotFramework(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1176805.html" class="category-item-link" rel="" target="">Router(35)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/2035240.html" class="category-item-link" rel="" target="">scrcpy(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/2008215.html" class="category-item-link" rel="" target="">scrum(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1262581.html" class="category-item-link" rel="" target="">shell(26)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/2178835.html" class="category-item-link" rel="" target="">uni-app(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1278572.html" class="category-item-link" rel="" target="">VMware&amp;Xshell(8)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1147525.html" class="category-item-link" rel="" target="">VPN(6)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/2185246.html" class="category-item-link" rel="" target="">Vue(8)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1911625.html" class="category-item-link" rel="" target="">Web(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1982897.html" class="category-item-link" rel="" target="">web测试相关(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1254180.html" class="category-item-link" rel="" target="">Wlan(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1411718.html" class="category-item-link" rel="" target="">安全测试(9)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1289091.html" class="category-item-link" rel="" target="">安装系统(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/2004121.html" class="category-item-link" rel="" target="">编辑器-VScode(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/870902.html" class="category-item-link" rel="" target="">操作系统(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1220881.html" class="category-item-link" rel="" target="">测试(10)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1962283.html" class="category-item-link" rel="" target="">测试框架-Appium(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/2009338.html" class="category-item-link" rel="" target="">测试框架-artillery(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/2009329.html" class="category-item-link" rel="" target="">测试框架-cypress(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/2005567.html" class="category-item-link" rel="" target="">测试框架-mocha(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1267463.html" class="category-item-link" rel="" target="">测试框架-Selenium Java(18)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1278535.html" class="category-item-link" rel="" target="">测试框架-Selenium Python(8)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/2003975.html" class="category-item-link" rel="" target="">测试框架-webdriver.io(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1962196.html" class="category-item-link" rel="" target="">测试驱动(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1933293.html" class="category-item-link" rel="" target="">工具-Airtest(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1978584.html" class="category-item-link" rel="" target="">工具-badboy(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/2038808.html" class="category-item-link" rel="" target="">工具-Bamboo(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1962282.html" class="category-item-link" rel="" target="">工具-Charles(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1959868.html" class="category-item-link" rel="" target="">工具-Fiddler(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1303734.html" class="category-item-link" rel="" target="">工具-Jmeter(11)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1962286.html" class="category-item-link" rel="" target="">工具-locust(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1964745.html" class="category-item-link" rel="" target="">工具-Monkey(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1303735.html" class="category-item-link" rel="" target="">工具-postman(11)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1324731.html" class="category-item-link" rel="" target="">工具-SoapUI(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1176803.html" class="category-item-link" rel="" target="">工作(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1954420.html" class="category-item-link" rel="" target="">功能测试(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1932737.html" class="category-item-link" rel="" target="">互联网概念笔记(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/2049438.html" class="category-item-link" rel="" target="">剑指offer(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1300767.html" class="category-item-link" rel="" target="">接口测试(12)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/2246367.html" class="category-item-link" rel="" target="">跨境电商(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1228775.html" class="category-item-link" rel="" target="">蓝牙(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1176804.html" class="category-item-link" rel="" target="">路由器(11)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/2152193.html" class="category-item-link" rel="" target="">埋点(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1970666.html" class="category-item-link" rel="" target="">面试(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/2064284.html" class="category-item-link" rel="" target="">面试逻辑题(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/2104498.html" class="category-item-link" rel="" target="">契约测试(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1965855.html" class="category-item-link" rel="" target="">设计模式(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/873690.html" class="category-item-link" rel="" target="">数据库(14)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1309279.html" class="category-item-link" rel="" target="">网络(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1411727.html" class="category-item-link" rel="" target="">网络协议(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/2049421.html" class="category-item-link" rel="" target="">微服务-docker(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/2049425.html" class="category-item-link" rel="" target="">微服务-duboo(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1527658.html" class="category-item-link" rel="" target="">问题解决case(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1239475.html" class="category-item-link" rel="" target="">项目流程(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1986383.html" class="category-item-link" rel="" target="">协议(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1254566.html" class="category-item-link" rel="" target="">性能测试(25)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/2181234.html" class="category-item-link" rel="" target="">游戏测试(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1962278.html" class="category-item-link" rel="" target="">云计算(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/2270234.html" class="category-item-link" rel="" target="">证书(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1992318.html" class="category-item-link" rel="" target="">中间件(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1787680.html" class="category-item-link" rel="" target="">抓包工具(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/category/1958724.html" class="category-item-link" rel="" target="">装饰cnblogs(2)</a>
+ 
+                </li>                
+            <li>
+                <a href="javascript:void(0)" onclick="sideColumnManager.loadMore(this)">更多</a>
+            </li>
+        </ul>
+
+
+    </div>    
+    <div id="sidebar_postarchive" class="catListPostArchive sidebar-block">
+        <h3 class="catListTitle">
+            
+随笔档案
+
+
+        </h3>
+
+        <ul>
+
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2023/03.html" class="category-item-link" rel="" target="">2023年3月(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2023/02.html" class="category-item-link" rel="" target="">2023年2月(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2023/01.html" class="category-item-link" rel="" target="">2023年1月(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2022/12.html" class="category-item-link" rel="" target="">2022年12月(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2022/11.html" class="category-item-link" rel="" target="">2022年11月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2022/10.html" class="category-item-link" rel="" target="">2022年10月(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2022/09.html" class="category-item-link" rel="" target="">2022年9月(9)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2022/08.html" class="category-item-link" rel="" target="">2022年8月(17)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2022/07.html" class="category-item-link" rel="" target="">2022年7月(12)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2022/06.html" class="category-item-link" rel="" target="">2022年6月(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2022/05.html" class="category-item-link" rel="" target="">2022年5月(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2022/04.html" class="category-item-link" rel="" target="">2022年4月(10)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2022/03.html" class="category-item-link" rel="" target="">2022年3月(16)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2022/02.html" class="category-item-link" rel="" target="">2022年2月(13)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2022/01.html" class="category-item-link" rel="" target="">2022年1月(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2021/12.html" class="category-item-link" rel="" target="">2021年12月(10)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2021/11.html" class="category-item-link" rel="" target="">2021年11月(15)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2021/10.html" class="category-item-link" rel="" target="">2021年10月(26)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2021/09.html" class="category-item-link" rel="" target="">2021年9月(20)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2021/08.html" class="category-item-link" rel="" target="">2021年8月(30)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2021/07.html" class="category-item-link" rel="" target="">2021年7月(16)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2021/06.html" class="category-item-link" rel="" target="">2021年6月(58)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2021/05.html" class="category-item-link" rel="" target="">2021年5月(42)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2021/04.html" class="category-item-link" rel="" target="">2021年4月(33)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2021/03.html" class="category-item-link" rel="" target="">2021年3月(20)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2021/02.html" class="category-item-link" rel="" target="">2021年2月(10)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2021/01.html" class="category-item-link" rel="" target="">2021年1月(9)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2020/12.html" class="category-item-link" rel="" target="">2020年12月(6)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2020/11.html" class="category-item-link" rel="" target="">2020年11月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2020/10.html" class="category-item-link" rel="" target="">2020年10月(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2020/08.html" class="category-item-link" rel="" target="">2020年8月(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2020/07.html" class="category-item-link" rel="" target="">2020年7月(21)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2020/06.html" class="category-item-link" rel="" target="">2020年6月(15)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2020/05.html" class="category-item-link" rel="" target="">2020年5月(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2020/04.html" class="category-item-link" rel="" target="">2020年4月(10)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2020/03.html" class="category-item-link" rel="" target="">2020年3月(8)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2020/02.html" class="category-item-link" rel="" target="">2020年2月(16)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2020/01.html" class="category-item-link" rel="" target="">2020年1月(9)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2019/12.html" class="category-item-link" rel="" target="">2019年12月(10)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2019/10.html" class="category-item-link" rel="" target="">2019年10月(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2019/09.html" class="category-item-link" rel="" target="">2019年9月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2019/08.html" class="category-item-link" rel="" target="">2019年8月(6)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2019/07.html" class="category-item-link" rel="" target="">2019年7月(10)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2019/06.html" class="category-item-link" rel="" target="">2019年6月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2019/05.html" class="category-item-link" rel="" target="">2019年5月(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2019/04.html" class="category-item-link" rel="" target="">2019年4月(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2019/03.html" class="category-item-link" rel="" target="">2019年3月(10)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2019/02.html" class="category-item-link" rel="" target="">2019年2月(9)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2019/01.html" class="category-item-link" rel="" target="">2019年1月(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2018/12.html" class="category-item-link" rel="" target="">2018年12月(11)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2018/11.html" class="category-item-link" rel="" target="">2018年11月(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2018/10.html" class="category-item-link" rel="" target="">2018年10月(10)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2018/09.html" class="category-item-link" rel="" target="">2018年9月(18)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2018/08.html" class="category-item-link" rel="" target="">2018年8月(24)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2018/07.html" class="category-item-link" rel="" target="">2018年7月(11)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2018/06.html" class="category-item-link" rel="" target="">2018年6月(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2018/05.html" class="category-item-link" rel="" target="">2018年5月(10)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2018/03.html" class="category-item-link" rel="" target="">2018年3月(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2018/01.html" class="category-item-link" rel="" target="">2018年1月(6)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2017/07.html" class="category-item-link" rel="" target="">2017年7月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2017/05.html" class="category-item-link" rel="" target="">2017年5月(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2017/03.html" class="category-item-link" rel="" target="">2017年3月(10)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2017/02.html" class="category-item-link" rel="" target="">2017年2月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2017/01.html" class="category-item-link" rel="" target="">2017年1月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2016/12.html" class="category-item-link" rel="" target="">2016年12月(9)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2016/10.html" class="category-item-link" rel="" target="">2016年10月(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2016/09.html" class="category-item-link" rel="" target="">2016年9月(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2016/08.html" class="category-item-link" rel="" target="">2016年8月(17)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chenxiaomeng/archive/2016/07.html" class="category-item-link" rel="" target="">2016年7月(4)</a>
+ 
+                </li>                
+            <li>
+                <a href="javascript:void(0)" onclick="sideColumnManager.loadMore(this)">更多</a>
+            </li>
+        </ul>
+
+
+    </div>    
+</div>
+
+<!-- 最新评论 -->
+<!-- 阅读排行榜 -->
+<div id="sidebar_topviewedposts" class="sidebar-block"><div class="catListView">
+    <h3 class="catListTitle">
+        <a href="https://www.cnblogs.com/chenxiaomeng/most-viewed" class="sidebar-card-title-a">
+    阅读排行榜
+</a>
+
+    </h3>
+    <div id="TopViewPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/chenxiaomeng/p/10066821.html">
+                            1. 【Shell】shell截取字符串方式（cut、awk、sed命令）(64620)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/chenxiaomeng/p/9435860.html">
+                            2. 【软件安装】Xshell出现要继续使用此程序必须应用到最新的更新或使用新版本(60075)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/chenxiaomeng/p/10064622.html">
+                            3. 用ping命令简单的测试 延时、抖动、丢包率(37763)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/chenxiaomeng/p/9572883.html">
+                            4. （二） 修改IDEA自带的 maven 仓库(30623)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/chenxiaomeng/p/12234836.html">
+                            5. Pycharm 更换默认工作路径(21341)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div></div>
+
+<!-- 评论排行榜 -->
+<div id="sidebar_topcommentedposts" class="sidebar-block"><div class="catListFeedback">
+    <h3 class="catListTitle">
+        <a href="https://www.cnblogs.com/chenxiaomeng/most-commented" class="sidebar-card-title-a">评论排行榜</a>
+
+    </h3>
+    <div id="TopFeedbackPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/chenxiaomeng/p/9435860.html">
+                            1. 【软件安装】Xshell出现要继续使用此程序必须应用到最新的更新或使用新版本(8)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/chenxiaomeng/p/14159934.html">
+                            2. RobotFramework（1）：python2.7+RobotFramework环境搭建(3)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/chenxiaomeng/p/16575926.html">
+                            3. Xposed下载与安装(2)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/chenxiaomeng/p/11268034.html">
+                            4. ping加上时间信息(2)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/chenxiaomeng/p/15325744.html">
+                            5. appium(1)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div></div>
+
+<!-- 推荐排行榜 -->
+<div id="sidebar_topdiggedposts" class="sidebar-block">
+<div id="topdigg_posts_wrap">
+    <div class="catListView">
+        <h3 class="catListTitle">
+            <a href="https://www.cnblogs.com/chenxiaomeng/most-liked" class="sidebar-card-title-a">推荐排行榜</a>
+
+        </h3>
+        <div id="TopDiggPostsBlock">
+            <ul style="word-break: break-all">
+                        <li>
+                            <a href="https://www.cnblogs.com/chenxiaomeng/p/9435860.html">
+                                1. 【软件安装】Xshell出现要继续使用此程序必须应用到最新的更新或使用新版本(9)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/chenxiaomeng/p/10369389.html">
+                                2. Xshell记录日志的方法(2)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/chenxiaomeng/p/10066821.html">
+                                3. 【Shell】shell截取字符串方式（cut、awk、sed命令）(2)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/chenxiaomeng/p/16736024.html">
+                                4. （二）redis怎么测试(1)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/chenxiaomeng/p/16728734.html">
+                                5. （一）Radis基础知识(1)
+                            </a>
+                        </li>
+            </ul>
+        </div>
+    </div>
+</div></div><div id="sidebar_recentcomments" class="sidebar-block"><div class="catListComment">
+<h3 class="catListTitle"><a href="https://www.cnblogs.com/chenxiaomeng/comments" class="sidebar-card-title-a">最新评论</a></h3>
+    <div class="RecentCommentBlock">
+        <ul>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/chenxiaomeng/p/11268034.html">1. Re:ping加上时间信息</a></li>
+                <li class="recent_comment_body"><p>这个用来作什么呢</p>
+</li>
+                <li class="recent_comment_author">--zhuanke</li>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/chenxiaomeng/p/16575926.html">2. Re:Xposed下载与安装</a></li>
+                <li class="recent_comment_body">@素人岳 大概凉了吧...</li>
+                <li class="recent_comment_author">--尝尝手指</li>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/chenxiaomeng/p/16575926.html">3. Re:Xposed下载与安装</a></li>
+                <li class="recent_comment_body"><p><a href="https://www.cnblogs.com/chenxiaomeng/p/9509670.html" target="_blank"></a>  用梯子居然都进不去</p>
+</li>
+                <li class="recent_comment_author">--素人岳</li>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/chenxiaomeng/p/11268034.html">4. Re:ping加上时间信息</a></li>
+                <li class="recent_comment_body"><p>非常有用，就是这个最好，直接实时显示</p>
+</li>
+                <li class="recent_comment_author">--刀来</li>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/chenxiaomeng/p/14760855.html">5. Re:接口测试</a></li>
+                <li class="recent_comment_body">接口测试工具还有个最近挺火的apipost，满足所有接口调试工作还可以生成各种样式的接口文档。 比Postman好用，文档也很清晰。 链接：...</li>
+                <li class="recent_comment_author">--小寒爱研</li>
+        </ul>
+    </div>
+</div>
+
+</div>
+
+
+</div>
+                    <script>loadBlogSideColumn();</script>
+			</div>			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright © 2023 陈晓猛
+<br><span id="poweredby">Powered by .NET 7.0 on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+
+    
+
+    <input type="hidden" id="antiforgery_token" value="CfDJ8M-opqJn5c1MsCC_BxLIULmZRVBR1v__ZJmoinVSdwY_IORjvnBib5G173X1eGx-ESClrHxAy2qr1wiPU7eA8tiV4RSVHjQnn-zKtcWg3qjnS2wW3F5i1t7ukXciko21soYm_KqliIBX8RLAm3sq8oY">
+    <script async="" src="./【Linux】网络性能测试工具iperf详细使用图文教程_files/js"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    var kv = getGACustom();
+    if (kv) {
+        gtag('set', kv);
+    }
+    gtag('config', 'UA-476124-1');
+</script>
+<script defer="" src="./【Linux】网络性能测试工具iperf详细使用图文教程_files/hm.js"></script><iframe src="./【Linux】网络性能测试工具iperf详细使用图文教程_files/container(1).html" style="visibility: hidden; display: none;"></iframe>
+
+<script type="text/javascript">
+    L2Dwidget.init();
+  </script><script type="text/javascript">getFollowStatus('23257ced-e129-e611-9fc1-ac853d9f53cc');</script><div class="uprightsideBar" id="uprightsideBar"><div id="sideBarTab"><h2>目录导航</h2></div><div id="sideBarContents" style="display: none;"><dl><dt name="0">TCP</dt><dt name="1">UDP</dt><dt name="2">其他</dt><dt name="3">Iperf使用方法</dt></dl></div></div><iframe src="./【Linux】网络性能测试工具iperf详细使用图文教程_files/aframe.html" width="0" height="0" style="display: none;"></iframe></body></html>
