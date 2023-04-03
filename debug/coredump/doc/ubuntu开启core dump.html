@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<!-- saved from url=(0049)https://www.cnblogs.com/cong-wang/p/15026524.html -->
+<html lang="zh-cn" style="--olcb-folder-code-block-max-height:80vh;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="never">
+    <meta name="description" content="ubuntu开启core dump 1. ubuntu默认core dump是关闭的 通过命令$ ulimit -a查看： core file size这一项为0，说明不生成core dump文件。 ">
+    <meta property="og:description" content="ubuntu开启core dump 1. ubuntu默认core dump是关闭的 通过命令$ ulimit -a查看： core file size这一项为0，说明不生成core dump文件。 ">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>ubuntu开启core dump - TruthHell - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="https://common.cnblogs.com/favicon.svg" type="image/svg+xml">
+    
+    <style>#home :not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]):not([class*="brush:"]) code:not(.hljs), :not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]):not([class*="brush:"]) code:not(.hljs) {background: rgb(245, 245, 245);
+        padding: 12px;
+        border: 1px solid rgb(204, 204, 204);
+        border-radius: 3px;
+        border-color: transparent;
+        color: rgb(68, 68, 68);
+        font-family: "Courier New", sans-serif;
+        font-size: 12px</style><link rel="stylesheet" href="./ubuntu开启core dump_files/blog-common.min.css">
+    
+
+    <link id="MainCss" rel="stylesheet" href="./ubuntu开启core dump_files/bundle-simpleblue.min.css">
+        <link id="highlighter-theme-cnblogs" type="text/css" rel="stylesheet" href="./ubuntu开启core dump_files/cnblogs.css">
+    
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./ubuntu开启core dump_files/bundle-simpleblue-mobile.min.css">
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cong-wang/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cong-wang/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cong-wang/wlwmanifest.xml">
+    <script type="text/javascript" async="" src="./ubuntu开启core dump_files/analytics.js"></script><script>
+        var currentBlogId = 694774;
+        var currentBlogApp = 'cong-wang';
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'SimpleBlue';
+        var visitorUserId = '';
+        var hasCustomScript = false;
+        try {
+            if (hasCustomScript && document.referrer && document.referrer.indexOf('baidu.com') >= 0) {
+                Object.defineProperty(document, 'referrer', { value: '' });
+                Object.defineProperty(Document.prototype, 'referrer', { get: function () { return ''; } });
+            }
+        } catch (error) { }
+        window.cb_enable_mathjax = false;
+        window.mathEngine = 0;
+        window.codeHighlightEngine = 1;
+        window.enableCodeLineNumber = false;
+        window.codeHighlightTheme = 'cnblogs';
+        window.darkModeCodeHighlightTheme = 'vs2015';
+        window.isDarkCodeHighlightTheme = false;
+        window.isDarkModeCodeHighlightThemeDark = true;
+        window.isDisableCodeHighlighter = false;
+        window.enableCodeThemeTypeFollowSystem = false;
+    </script>
+        <script>
+            var currentPostDateAdded = '2021-07-18 14:32';
+        </script>
+    <script src="./ubuntu开启core dump_files/jquery-2.2.0.min.js"></script>
+    <script src="./ubuntu开启core dump_files/blog-common.min.js"></script><style>.medium-zoom-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 300ms;
+  will-change: opacity;
+}
+
+.medium-zoom--opened .medium-zoom-overlay {
+  cursor: pointer;
+  cursor: zoom-out;
+  opacity: 1;
+}
+
+.medium-zoom-image {
+  cursor: pointer;
+  cursor: zoom-in;
+  /*
+    The `transition` is marked as "!important" for the animation to happen
+    even though it's overriden by another inline `transition` style attribute.
+
+    This is problematic with frameworks that generate inline styles on their
+    images (e.g. Gatsby).
+
+    See https://github.com/francoischalifour/medium-zoom/issues/110
+   */
+  transition: transform 300ms cubic-bezier(0.2, 0, 0.2, 1) !important;
+}
+
+.medium-zoom-image--hidden {
+  visibility: hidden;
+}
+
+.medium-zoom-image--opened {
+  position: relative;
+  cursor: pointer;
+  cursor: zoom-out;
+  will-change: transform;
+}
+</style><script id="hljs-script" src="./ubuntu开启core dump_files/highlight.min.js" type="text/javascript" async=""></script>
+    
+
+    
+<meta http-equiv="origin-trial" content="A0VQgOQvA+kwCj319NCwgf8+syUgEQ8/LLpB8RxxlRC3AkJ9xx8IAvVuQ/dcwy0ok7sGKufLLu6WhsXbQR9/UwwAAACFeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjg4MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A6kRo9zXJhOvsR4D/VeZ9CiApPAxnOGzBkW88d8eIt9ex2oOzlX+AoUk/BS50Y9Ysy2jwyHR49Mb7XwP+l9yygIAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjg4MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A3mbHZoS4VJtJ8j1aE8+Z9vaGf/oMV1eTNIWMrvGqWgNnOmvaxnRGliqKIZU2eiTzCj5Qpz8B1/UTTLuony5bAAAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjg4MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="As0hBNJ8h++fNYlkq8cTye2qDLyom8NddByiVytXGGD0YVE+2CEuTCpqXMDxdhOMILKoaiaYifwEvCRlJ/9GcQ8AAAB8eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiV2ViVmlld1hSZXF1ZXN0ZWRXaXRoRGVwcmVjYXRpb24iLCJleHBpcnkiOjE3MTk1MzI3OTksImlzU3ViZG9tYWluIjp0cnVlfQ=="><meta http-equiv="origin-trial" content="AgRYsXo24ypxC89CJanC+JgEmraCCBebKl8ZmG7Tj5oJNx0cmH0NtNRZs3NB5ubhpbX/bIt7l2zJOSyO64NGmwMAAACCeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiV2ViVmlld1hSZXF1ZXN0ZWRXaXRoRGVwcmVjYXRpb24iLCJleHBpcnkiOjE3MTk1MzI3OTksImlzU3ViZG9tYWluIjp0cnVlfQ=="><script src="./ubuntu开启core dump_files/f.txt" async=""></script><link rel="preload" href="./ubuntu开启core dump_files/f(1).txt" as="script"><script type="text/javascript" src="./ubuntu开启core dump_files/f(1).txt"></script></head>
+<body class="skin-simpleblue has-navbar hljs-engine">
+    <a name="top"></a>
+        <div id="bannerbar" class="bannerbar-mobile formobile">
+            <a href="https://brands.cnblogs.com/haoron/" onclick="countCreativeClicks(&#39;M2-HAORON&#39;)" rel="nofollow">
+                <img src="./ubuntu开启core dump_files/haoron-it-m1m2.jpg" alt="" onload="countCreativeImpressionsOnMobile(&#39;M2-HAORON&#39;)">
+                <span id="m2_impression" style="display:none"></span>
+            </a>
+        </div>
+    <div id="top_nav" class="navbar forpc">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding">
+                    <a href="https://www.cnblogs.com/" title="开发者的网上家园" role="banner">
+                            <img src="./ubuntu开启core dump_files/logo.svg" alt="博客园Logo">
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.cnblogs.com/" onclick="countClicks(&#39;skin-navbar-sitehome&#39;)">首页</a>
+                </li>
+                <li>
+                    <a href="https://news.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-news&#39;)">新闻</a>
+                </li>
+                <li>
+                    <a href="https://q.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-q&#39;)">博问</a>
+                </li>
+                    <li><a href="https://www.cnblogs.com/cmt/p/17277640.html" target="_blank">出海</a></li>
+                <li>
+                    <a href="https://ing.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-ing&#39;)">闪存</a>
+                </li>
+                <li>
+                    <a href="https://edu.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-edu&#39;)">班级</a>
+                </li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search dropdown" action="https://zzk.cnblogs.com/s" method="get" role="search">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="search" tabindex="3" autocomplete="off">
+                        <button id="zzk_search_button" onclick="window.navbarSearchManager.triggerActiveOption()">
+                            <img id="search_icon" class="focus-hidden" src="./ubuntu开启core dump_files/search.svg" alt="搜索">
+                            <img class="hidden focus-visible" src="./ubuntu开启core dump_files/enter.svg" alt="搜索">
+                        </button>
+                        <ul id="navbar_search_options" class="dropdown-menu quick-search-menu">
+                            <li tabindex="0" class="active" onclick="zzkSearch(event, document.getElementById(&#39;zzk_search_input&#39;).value)">
+                                <div class="keyword-wrapper">
+                                    <img src="./ubuntu开启core dump_files/search.svg" alt="搜索">
+                                    <div class="keyword"></div>
+                                </div>
+                                <span class="search-area">所有博客</span>
+                            </li>
+                                    <li tabindex="1" onclick="zzkBlogSearch(event, &#39;cong-wang&#39;, document.getElementById(&#39;zzk_search_input&#39;).value)">
+                                        <div class="keyword-wrapper">
+                                            <img src="./ubuntu开启core dump_files/search.svg" alt="搜索">
+                                            <div class="keyword"></div>
+                                        </div>
+                                        <span class="search-area">当前博客</span>
+                                    </li>
+                        </ul>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔" style="display: none;">
+                        <img id="new_post_icon" class="navbar-icon" src="./ubuntu开启core dump_files/newpost.svg" alt="写随笔">
+                    </a>
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客" style="display: none;">
+                        <img id="myblog_icon" class="navbar-icon" src="./ubuntu开启core dump_files/myblog.svg" alt="我的博客">
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息" style="display: none;">
+                        <img id="msg_icon" class="navbar-icon" src="./ubuntu开启core dump_files/message.svg" alt="短消息">
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <a id="navbar_lite_mode_indicator" data-current-page="blog" style="display: none" href="javascript:void(0)" alt="简洁模式" title="简洁模式启用，您在访问他人博客时会使用简洁款皮肤展示">
+                        <img class="navbar-icon" src="./ubuntu开启core dump_files/lite-mode-on.svg" alt="简洁模式">
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown" style="display: none;">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="./ubuntu开启core dump_files/avatar-default.svg" alt="用户头像">
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <img id="navbar_lite_mode_on" src="./ubuntu开启core dump_files/lite-mode-check.svg" class="hide"><span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+                            <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup" style="display: inline;">注册</a>
+                    <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()" style="display: inline;">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    
+
+    <div id="home">
+    <div id="header">
+        <div id="blogTitle">
+            <div class="title"><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/cong-wang/">TruthHell</a>
+</div>
+<div class="subtitle"></div>
+
+        </div>
+        <div id="navigator">
+            
+<ul id="navList">
+    <li id="nav_sitehome"><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+    <li id="nav_myhome">
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cong-wang/">
+首页</a>
+</li>
+    <li id="nav_newpost">
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+    <li id="nav_contact">
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/TruthHell">
+联系</a></li>
+    <li id="nav_rss">
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/cong-wang/rss/">
+订阅</a></li>
+    <li id="nav_admin">
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+            <div class="blogStats">
+                
+<span id="stats_post_count">随笔 - 29&nbsp;</span>
+<span id="stats_article_count">文章 - 0&nbsp;</span>
+<span id="stats_comment_count">评论 - 2&nbsp;</span>
+<span id="stats_total_view_count">阅读 - 
+<span title="总阅读数: 46680">
+46680</span></span>
+            </div>
+        </div>
+    </div>
+    <div id="main">
+        <div id="mainContent">
+            <div class="forFlow">
+                <div id="post_detail">
+    <div id="topics">
+        <div class="post">
+            <h1 class="postTitle">
+                
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/cong-wang/p/15026524.html">
+    <span role="heading" aria-level="2">ubuntu开启core dump</span>
+    
+</a><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                <div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+<h1 id="ubuntu开启core-dump">ubuntu开启core dump<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<h2 id="1-ubuntu默认core-dump是关闭的">1. ubuntu默认core dump是关闭的<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h2>
+<p>通过命令<code>$ ulimit -a</code>查看：</p>
+<p><img src="./ubuntu开启core dump_files/6411513-45bfd351b9ec4e58.png" alt="$ ulimit -a" loading="lazy" class="medium-zoom-image"></p>
+<blockquote>
+<p>core file size这一项为0，说明不生成core dump文件。</p>
+</blockquote>
+<h2 id="2-打开方法">2. 打开方法<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h2>
+<p>通过命令<code>$ ulimit -c unlimited</code>设置生成的core文件大小不限，也可以按自己的需求设置大小，设置完成后：</p>
+<p><img src="./ubuntu开启core dump_files/6411513-b651aa5bc42c27e1.png" alt="$ ulimit -a" loading="lazy" class="medium-zoom-image"></p>
+<p>但是，这样设置会有一个问题，就是这个命令只在当前打开的shell中生效，关闭后就失效了。</p>
+<h2 id="3-每次打开shell能够自动打开">3. 每次打开shell能够自动打开<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h2>
+<p>可以在<code>~/.bashrc</code>（只对当前用户生效）文件末尾添加<code>ulimit -c unlimited</code>，这样每次打开shell都会生效，可以使用编辑器或者输入命令<code>$ echo 'ulimit -c unlimited' &gt;&gt; ~/.bashrc</code>进行添加。</p>
+<h2 id="4-测试">4. 测试<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h2>
+<p>源文件<code>test.cpp</code>：</p>
+<pre class="highlighter-hljs" highlighted="true"><code class="language-c++ highlighter-hljs hljs language-c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+using namespace <span class="hljs-built_in">std</span>;
+
+<span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span> {
+    <span class="hljs-type">int</span> *p = nullptr;
+    *p = <span class="hljs-number">0</span>; <span class="hljs-comment">// 给空指针指向的地址赋值，引发core dump</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+<p>编译：<code>$ g++ -g test.cpp -o test</code>（-g添加调试信息）<br>
+运行：<code>$ ./test</code><br>
+结果：</p>
+<blockquote>
+<p>Segmentation fault (core dumped)</p>
+</blockquote>
+<p>在与源文件相同目录下会生成名为<code>core</code>的core dump文件，使用gdb查看调用栈<code>$ gdb test core</code>：</p>
+<p><img src="./ubuntu开启core dump_files/6411513-f8de0043f505e077.png" alt="$ gdb test core" loading="lazy" class="medium-zoom-image"></p>
+<p>通过gdb可以定位到发生core dump的位置为test.cpp文件的main()函数，具体在源文件的第6行，符合预期。</p>
+<p><strong>2021.1.11更新：</strong></p>
+<p>默认生成的core dump文件的名称为core，不够直观，可通过以下命令修改：<br>
+<code>$ sudo sysctl -w kernel.core_pattern=core.%p.%s.%c.%d.%P.%E</code><br>
+其中每个%开头的符号含义如下（来自man，命令:<code>man 5 core</code>）：</p>
+<pre class="highlighter-hljs" highlighted="true"><code class="language-shell highlighter-hljs hljs">   Naming of core dump files
+       By default, a core dump file is named core, but the /proc/sys/kernel/core_pattern file (since  Linux  2.6  and
+       2.4.21)  can  be  set  to  define a template that is used to name core dump files.  The template can contain %
+       specifiers which are substituted by the following values when a core file is created:
+
+           %%  a single % character
+           %c  core file size soft resource limit of crashing process (since Linux 2.6.24)
+           %d  dump mode—same as value returned by prctl(2) PR_GET_DUMPABLE (since Linux 3.7)
+           %e  executable filename (without path prefix)
+           %E  pathname of executable, with slashes ('/') replaced by exclamation marks ('!') (since Linux 3.0).
+           %g  (numeric) real GID of dumped process
+           %h  hostname (same as nodename returned by uname(2))
+           %i  TID of thread that triggered core dump, as seen in the PID  namespace  in  which  the  thread  resides
+               (since Linux 3.18)
+           %I  TID of thread that triggered core dump, as seen in the initial PID namespace (since Linux 3.18)
+           %p  PID of dumped process, as seen in the PID namespace in which the process resides
+           %P  PID of dumped process, as seen in the initial PID namespace (since Linux 3.12)
+           %s  number of signal causing dump
+           %t  time of dump, expressed as seconds since the Epoch, 1970-01-01 00:00:00 +0000 (UTC)
+           %u  (numeric) real UID of dumped process
+</code></pre>
+<blockquote>
+<p>参考：<a href="https://stackoverflow.com/questions/17965/how-to-generate-a-core-dump-in-linux-on-a-segmentation-fault" target="_blank" rel="noopener">https://stackoverflow.com/questions/17965/how-to-generate-a-core-dump-in-linux-on-a-segmentation-fault</a></p>
+</blockquote>
+
+</div>
+<div class="clear"></div>
+<div id="blog_post_info_block" role="contentinfo"><div id="BlogPostCategory">
+    分类: 
+            <a href="https://www.cnblogs.com/cong-wang/category/2001662.html" target="_blank">Linux</a></div>
+
+
+    <div id="blog_post_info">
+<div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(15026524,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+        <a id="green_channel_follow" onclick="follow(&#39;c6016e38-1756-4f4c-17b9-08d946b6fb4b&#39;);" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="./ubuntu开启core dump_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="./ubuntu开启core dump_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/cong-wang/" target="_blank"><img src="./ubuntu开启core dump_files/20210718001804.png" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/cong-wang/">TruthHell</a><br>
+            <a href="https://home.cnblogs.com/u/cong-wang/followers/">粉丝 - <span class="follower-count">2</span></a>
+            <a href="https://home.cnblogs.com/u/cong-wang/followees/">关注 - <span class="following-count">1</span></a><br>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow" class="follow-tip">
+                <a href="javascript:void(0);" onclick="follow(&#39;c6016e38-1756-4f4c-17b9-08d946b6fb4b&#39;);return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(15026524,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">2</span>
+    </div>
+    <div class="buryit" onclick="votePost(15026524,&#39;Bury&#39;)">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+    <div class="clear"></div>
+    <div id="post_next_prev">
+
+    <a href="https://www.cnblogs.com/cong-wang/p/15026522.html" class="p_n_p_prefix">« </a> 上一篇：    <a href="https://www.cnblogs.com/cong-wang/p/15026522.html" data-featured-image="" title="发布于 2021-07-18 14:31">Sublime Text 3打开中文乱码问题解决</a>
+    <br>
+    <a href="https://www.cnblogs.com/cong-wang/p/15026530.html" class="p_n_p_prefix">» </a> 下一篇：    <a href="https://www.cnblogs.com/cong-wang/p/15026530.html" data-featured-image="" title="发布于 2021-07-18 14:33">vscode使用compile_commands.json</a>
+
+</div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date" data-last-update-days="623.826818457081" data-date-created="BlogServer.Application.Dto.BlogPost.BlogPostDto" data-date-updated="2021-07-18 14:32" aria-expanded="false">2021-07-18 14:32</span>&nbsp;
+<a href="https://www.cnblogs.com/cong-wang/">TruthHell</a>&nbsp;
+阅读(<span id="post_view_count">3556</span>)&nbsp;
+评论(<span id="post_comment_count">0</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=15026524" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(15026524);return false;">收藏</a>&nbsp;
+<a href="javascript:void(0)" onclick="reportManager.report({ currentUserId: &#39;&#39;, targetType: &#39;blogPost&#39;, targetId: &#39;15026524&#39;, targetLink: &#39;https://www.cnblogs.com/cong-wang/p/15026524.html&#39;, title: &#39;ubuntu开启core dump&#39; })">举报</a>
+</div>
+        </div>
+        
+<script>
+    var cb_entryId = 15026524, cb_entryCreatedDate = '2021-07-18 14:32', cb_postType = 1, cb_postTitle = 'ubuntu开启core dump';
+    var allowComments = true, cb_blogId = 694774, cb_blogApp = 'cong-wang', cb_blogUserGuid = 'c6016e38-1756-4f4c-17b9-08d946b6fb4b';
+    mermaidRender.render()
+    markdown_highlight()
+    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");
+    updatePostStats(
+            [cb_entryId],
+            function(id, count) { $("#post_view_count").text(count) },
+            function(id, count) { $("#post_comment_count").text(count) })
+</script>
+        <a id="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="https://www.cnblogs.com/cong-wang/p/15026524.html#" onclick="return RefreshPage();">刷新页面</a><a href="https://www.cnblogs.com/cong-wang/p/15026524.html#top">返回顶部</a></div>
+    <div id="comment_form_container" style="visibility: visible;"><div class="login_tips">
+    登录后才能查看或发表评论，立即 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return account.login(&#39;!comments&#39;);">登录</a> 或者
+    <a href="https://www.cnblogs.com/">逛逛</a> 博客园首页
+</div>
+</div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+        <div id="cnblogs_ch"><a href="https://brands.cnblogs.com/haoron/" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-人才出海&#39;})">【推荐】博客园人才出海服务第一站，联合日本好融社推出日本IT人才移民直通车</a><br></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="under-post-card">
+            <div id="div-gpt-ad-1592365906576-0" style="width: 300px; height: 250px;" data-google-query-id="COXjwdzTjP4CFcLKfAod2a0GuA"><div id="google_ads_iframe_/1090369/C1_0__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/1090369/C1_0" name="google_ads_iframe_/1090369/C1_0" title="3rd party ad content" width="300" height="250" scrolling="no" marginwidth="0" marginheight="0" frameborder="0" role="region" aria-label="Advertisement" tabindex="0" style="border: 0px; vertical-align: bottom;" data-load-complete="true" data-google-container-id="1" src="./ubuntu开启core dump_files/saved_resource.html"></iframe></div></div>
+    </div>
+    <div id="under_post_card1"><div class="under-post-card">
+<b>编辑推荐：</b>
+<br>
+
+· <a href="https://www.cnblogs.com/ioriwellings/p/17272752.html" target="_blank">Windows 服务器高物理内存占用问题排察</a>
+    <br>
+· <a href="https://www.cnblogs.com/codelogs/p/17278811.html" target="_blank">一次线上OOM问题的个人复盘</a>
+    <br>
+· <a href="https://www.cnblogs.com/huangxincheng/p/17272068.html" target="_blank">记一次 .NET 某传感器采集系统 线程爆高分析</a>
+    <br>
+· <a href="https://www.cnblogs.com/viter/p/17268272.html" target="_blank">亿万级分库分表后如何进行跨表分页查询 </a>
+    <br>
+· <a href="https://www.cnblogs.com/dragonir/p/17263717.html" target="_blank">Three.js 进阶之旅：全景漫游-初阶移动相机版</a>
+    <br>
+</div></div>
+    <div id="under_post_card2"><div class="itnews under-post-card">
+    <b>即构专区：</b>
+    <br>
+ ·          <a href="https://brands.cnblogs.com/zego/p/15621" target="_blank" onclick="countCreativeClicks(&#39;zego_articles_promotion&#39;)">【活动预告】实战解读，超多人实时音视频互动方案的探索与实现</a>
+        <br>
+ ·          <a href="https://brands.cnblogs.com/zego/p/15717" target="_blank" onclick="countCreativeClicks(&#39;zego_articles_promotion&#39;)">音视频开发进阶——YUV与RGB的采样与存储格式</a>
+        <br>
+ ·          <a href="https://brands.cnblogs.com/zego/p/15674" target="_blank" onclick="countCreativeClicks(&#39;zego_articles_promotion&#39;)">零基础实现Java直播（二）：实现流程</a>
+        <br>
+ ·          <a href="https://brands.cnblogs.com/zego/p/15718" target="_blank" onclick="countCreativeClicks(&#39;zego_articles_promotion&#39;)">元宇宙场景技术实践｜实现“虚拟人”自由</a>
+        <br>
+ ·          <a href="https://brands.cnblogs.com/zego/p/15679" target="_blank" onclick="countCreativeClicks(&#39;zego_articles_promotion&#39;)">【活动回顾】4步2小时，搭建爆火的语音聊天室</a>
+        <br>
+</div></div>
+    <div id="HistoryToday" class="under-post-card"></div>
+    <script type="text/javascript">
+        var commentManager = new blogCommentManager();
+        commentManager.renderComments(0);
+        fixPostBody();
+        window.footnoteTipManager.generateFootnoteTips();
+
+            window.tocManager.displayDisableTocTips = false;
+            window.tocManager.generateToc();
+            
+                setTimeout(function() { countViews(cb_blogId, cb_entryId); }, 50);
+            
+            deliverT2();
+            deliverC1C2();
+            loadNewsAndKb();
+            
+                LoadPostCategoriesTags(cb_blogId, cb_entryId);
+            
+            LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+            GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+            loadOptUnderPost();
+            GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+                </script>
+</div>
+
+    </div>
+</div>
+            </div>
+        </div>
+
+        <div id="sideBar">
+            <div id="sideBarMain">
+                <div id="sidebar_news" class="newsItem">
+    
+<h3 class="catListTitle">公告</h3>
+<div id="blog-news">    
+    <div id="sidebar_news_content">
+<div id="profile_block">
+    昵称：
+    <a href="https://home.cnblogs.com/u/cong-wang/">
+        TruthHell
+    </a>
+    <br>
+    园龄：
+    <a href="https://home.cnblogs.com/u/cong-wang/" title="入园时间：2021-07-18">
+        1年8个月
+    </a>
+    <br>
+    粉丝：
+    <a class="follower-count" href="https://home.cnblogs.com/u/cong-wang/followers/">
+        2
+    </a>
+    <br>
+    关注：
+    <a class="folowing-count" href="https://home.cnblogs.com/u/cong-wang/followees/">
+        1
+    </a>
+    <div id="p_b_follow" class="follow-tip">
+<a href="javascript:void(0)" onclick="follow(&#39;c6016e38-1756-4f4c-17b9-08d946b6fb4b&#39;)">+加关注</a></div>
+    <script>getFollowStatus('c6016e38-1756-4f4c-17b9-08d946b6fb4b');</script>
+</div>
+</div>
+</div>
+<script>loadBlogNews();</script> 
+</div>
+<div id="sidebar_c3"></div>
+                <div id="calendar"><div id="blog-calendar" style="">
+
+<table id="blogCalendar" class="Cal" cellspacing="0" cellpadding="0" title="Calendar" border="0">
+    <tbody>
+        <tr>
+            <td colspan="7">
+                <table class="CalTitle" cellspacing="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2023/03/03&#39;); return false;">&lt;</a>
+                            </td>
+                            <td align="center">2023年4月</td>
+                            <td align="right" class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2023/05/03&#39;); return false;">&gt;</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    <tr>
+        <th class="CalDayHeader" align="center" abbr="日" scope="col">日</th>
+        <th class="CalDayHeader" align="center" abbr="一" scope="col">一</th>
+        <th class="CalDayHeader" align="center" abbr="二" scope="col">二</th>
+        <th class="CalDayHeader" align="center" abbr="三" scope="col">三</th>
+        <th class="CalDayHeader" align="center" abbr="四" scope="col">四</th>
+        <th class="CalDayHeader" align="center" abbr="五" scope="col">五</th>
+        <th class="CalDayHeader" align="center" abbr="六" scope="col">六</th>
+    </tr>
+            <tr>
+                            <td class="CalOtherMonthDay" align="center">26</td>
+                            <td class="CalOtherMonthDay" align="center">27</td>
+                            <td class="CalOtherMonthDay" align="center">28</td>
+                            <td class="CalOtherMonthDay" align="center">29</td>
+                            <td class="CalOtherMonthDay" align="center">30</td>
+                            <td class="CalOtherMonthDay" align="center">31</td>
+                    <td class="CalWeekendDay" align="center">
+                        1
+                    </td>
+            </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            2
+                        </td>
+                            <td class="CalTodayDay" align="center">
+                                3
+                            </td>
+                            <td class="" align="center">
+                                4
+                            </td>
+                            <td class="" align="center">
+                                5
+                            </td>
+                            <td class="" align="center">
+                                6
+                            </td>
+                            <td class="" align="center">
+                                7
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            8
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            9
+                        </td>
+                            <td class="" align="center">
+                                10
+                            </td>
+                            <td class="" align="center">
+                                11
+                            </td>
+                            <td class="" align="center">
+                                12
+                            </td>
+                            <td class="" align="center">
+                                13
+                            </td>
+                            <td class="" align="center">
+                                14
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            15
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            16
+                        </td>
+                            <td class="" align="center">
+                                17
+                            </td>
+                            <td class="" align="center">
+                                18
+                            </td>
+                            <td class="" align="center">
+                                19
+                            </td>
+                            <td class="" align="center">
+                                20
+                            </td>
+                            <td class="" align="center">
+                                21
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            22
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            23
+                        </td>
+                            <td class="" align="center">
+                                24
+                            </td>
+                            <td class="" align="center">
+                                25
+                            </td>
+                            <td class="" align="center">
+                                26
+                            </td>
+                            <td class="" align="center">
+                                27
+                            </td>
+                            <td class="" align="center">
+                                28
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            29
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            30
+                        </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                1
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                2
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                3
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                4
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                5
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            6
+                        </td>
+                </tr>
+    </tbody>
+</table></div></div>                
+                <script>loadBlogDefaultCalendar();</script>
+                <div id="leftcontentcontainer">
+                    <!-- begin:SingleColumn -->
+                    <div id="blog-sidecolumn"><!-- 搜索 -->
+<div id="sidebar_search" class="sidebar-block">
+    <div id="sidebar_search" class="mySearch">
+        <h3 class="catListTitle">搜索</h3>
+        <div id="sidebar_search_box">
+            <div id="widget_my_zzk" class="div_my_zzk">
+                <input type="text" id="q" onkeydown="return zzk_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="zzk_go()" type="button" value="找找看" id="btnZzk" class="btn_my_zzk">
+            </div>
+            <div id="widget_my_google" class="div_my_zzk">
+                <input type="text" name="google_q" id="google_q" onkeydown="return google_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="google_go()" type="button" value="谷歌搜索" class="btn_my_zzk">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 常用链接 -->
+<div id="sidebar_shortcut" class="sidebar-block">
+<h3 class="catListTitle">
+常用链接
+</h3>
+<ul>
+    <li><a href="https://www.cnblogs.com/cong-wang/p/" title="我的博客的随笔列表">我的随笔</a></li>
+<li><a href="https://www.cnblogs.com/cong-wang/MyComments.html" title="我的发表过的评论列表">我的评论</a></li>
+<li><a href="https://www.cnblogs.com/cong-wang/OtherPosts.html" title="我评论过的随笔列表">我的参与</a></li>
+<li><a href="https://www.cnblogs.com/cong-wang/comments" title="我的博客的评论列表">最新评论</a></li>
+<li><a href="https://www.cnblogs.com/cong-wang/tag/" title="我的博客的标签列表">我的标签</a></li>
+
+</ul>
+</div>
+
+<!-- 最新随笔 -->
+
+
+<!-- 我的标签 -->
+<div id="sidebar_toptags" class="sidebar-block"></div>
+
+<!-- 积分与排名 -->
+
+
+<!-- 随笔分类、随笔档案、文章分类、新闻分类、相册、链接 -->
+<div id="sidebar_categories">
+
+    <div class="catListPostCategory">
+        <h3 class="catListTitle">
+            
+    <a class="sidebar-card-title-a" href="https://www.cnblogs.com/cong-wang/post-categories">随笔分类</a>
+
+
+
+        </h3>
+        <ul>
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/cong-wang/category/2029349.html" class="category-item-link" rel="" target="">C#(2)</a>
+
+                    
+                </li>
+                                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/cong-wang/category/2001659.html" class="category-item-link" rel="" target="">C++(1)</a>
+
+                    
+                </li>
+                                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/cong-wang/category/2001661.html" class="category-item-link" rel="" target="">Java(2)</a>
+
+                    
+                </li>
+                                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/cong-wang/category/2001662.html" class="category-item-link" rel="" target="">Linux(2)</a>
+
+                    
+                </li>
+                                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/cong-wang/category/2001664.html" class="category-item-link" rel="" target="">ML&amp;DL(4)</a>
+
+                    
+                </li>
+                                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/cong-wang/category/2036085.html" class="category-item-link" rel="" target="">PowerShell(1)</a>
+
+                    
+                </li>
+                                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/cong-wang/category/2001660.html" class="category-item-link" rel="" target="">Python(6)</a>
+
+                    
+                </li>
+                                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/cong-wang/category/2036286.html" class="category-item-link" rel="" target="">WPF(1)</a>
+
+                    
+                </li>
+                                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/cong-wang/category/2001663.html" class="category-item-link" rel="" target="">其他(11)</a>
+
+                    
+                </li>
+                                        
+        </ul>
+    </div>    <div class="catListPostArchive">
+        <h3 class="catListTitle">
+            
+随笔档案
+
+
+        </h3>
+        <ul>
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/cong-wang/archive/2023/01.html" class="category-item-link" rel="" target="">2023年1月(1)</a>
+
+                    
+                </li>
+                                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/cong-wang/archive/2022/10.html" class="category-item-link" rel="" target="">2022年10月(1)</a>
+
+                    
+                </li>
+                                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/cong-wang/archive/2022/08.html" class="category-item-link" rel="" target="">2022年8月(1)</a>
+
+                    
+                </li>
+                                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/cong-wang/archive/2022/02.html" class="category-item-link" rel="" target="">2022年2月(1)</a>
+
+                    
+                </li>
+                                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/cong-wang/archive/2021/10.html" class="category-item-link" rel="" target="">2021年10月(2)</a>
+
+                    
+                </li>
+                                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/cong-wang/archive/2021/09.html" class="category-item-link" rel="" target="">2021年9月(3)</a>
+
+                    
+                </li>
+                                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/cong-wang/archive/2021/07.html" class="category-item-link" rel="" target="">2021年7月(20)</a>
+
+                    
+                </li>
+                                        
+        </ul>
+    </div></div>
+
+<!-- 最新评论 -->
+<!-- 阅读排行榜 -->
+<div id="sidebar_topviewedposts" class="sidebar-block">
+<div id="topview_posts_wrap">
+    <h3 class="catListTitle">
+        <a href="https://www.cnblogs.com/cong-wang/most-viewed" class="sidebar-card-title-a">
+    阅读排行榜
+</a>
+
+    </h3>
+    <div id="TopViewPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/cong-wang/p/15026530.html">
+                            1. vscode使用compile_commands.json(10354)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/cong-wang/p/15414978.html">
+                            2. 微软官方绕过TPM和CPU限制安装Windows 11的方法(5657)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/cong-wang/p/15026535.html">
+                            3. Windows Terminal添加Git Bash支持(5183)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/cong-wang/p/15026493.html">
+                            4. matplotlib设置宋体和Times New Roman体(3580)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/cong-wang/p/15026524.html">
+                            5. ubuntu开启core dump(3550)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div></div>
+
+<!-- 评论排行榜 -->
+<div id="sidebar_topcommentedposts" class="sidebar-block"><div id="topfeedback_posts_wrap">
+    <h3 class="catListTitle">
+        <a href="https://www.cnblogs.com/cong-wang/most-commented" class="sidebar-card-title-a">评论排行榜</a>
+
+    </h3>
+    <div id="TopFeedbackPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/cong-wang/p/15026493.html">
+                            1. matplotlib设置宋体和Times New Roman体(2)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div></div>
+
+<!-- 推荐排行榜 -->
+<div id="sidebar_topdiggedposts" class="sidebar-block">
+<div id="topdigg_posts_wrap">
+    <div class="catListView">
+        <h3 class="catListTitle">
+            <a href="https://www.cnblogs.com/cong-wang/most-liked" class="sidebar-card-title-a">推荐排行榜</a>
+
+        </h3>
+        <div id="TopDiggPostsBlock">
+            <ul style="word-break: break-all">
+                        <li>
+                            <a href="https://www.cnblogs.com/cong-wang/p/15026535.html">
+                                1. Windows Terminal添加Git Bash支持(3)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/cong-wang/p/15026524.html">
+                                2. ubuntu开启core dump(2)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/cong-wang/p/15255322.html">
+                                3. C#使用PerformanceCounter获取CPU和内存利用率(1)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/cong-wang/p/15026530.html">
+                                4. vscode使用compile_commands.json(1)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/cong-wang/p/15026475.html">
+                                5. C++20中的jthread和stop_token(1)
+                            </a>
+                        </li>
+            </ul>
+        </div>
+    </div>
+</div></div><div id="sidebar_recentcomments" class="sidebar-block"><div id="recent_comments_wrap" class="RecentComment">
+    <h3 class="catListTitle"><a href="https://www.cnblogs.com/cong-wang/comments" class="sidebar-card-title-a">最新评论</a></h3>    
+    <div class="RecentCommentBlock">
+        <ul>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/cong-wang/p/15026493.html">1. Re:matplotlib设置宋体和Times New Roman体</a></li>
+                <li class="recent_comment_body">@pirate~ 感谢提醒，已更正...</li>
+                <li class="recent_comment_author">--TruthHell</li>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/cong-wang/p/15026493.html">2. Re:matplotlib设置宋体和Times New Roman体</a></li>
+                <li class="recent_comment_body"><p>这句话错了<br>
+在Windows中找到SimSun字体文件，默认在C:\Windows\Fonts\simsun.tcc<br>
+后缀为ttc</p>
+</li>
+                <li class="recent_comment_author">--pirate~</li>
+        </ul>
+    </div>
+</div></div>
+
+
+</div>
+                    <script>loadBlogSideColumn();</script>
+                    <!-- end:  SingleColumn -->
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+    <div id="footer">
+        <!--done-->
+Copyright © 2023 TruthHell
+<br><span id="poweredby">Powered by .NET 7.0 on Kubernetes</span>
+
+    </div>
+</div>
+
+
+    
+
+    <input type="hidden" id="antiforgery_token" value="CfDJ8M-opqJn5c1MsCC_BxLIULl2c7dfA0CaIl0k8_1KNZzU6MdDBzKSdYN6j04nM5wZ7sKqVjbi4yxE-ItkpEfNF2Ijb-ux_l4UP01B5vMCNgHUtX_v7NePRbxZJSd3iYgRuREOogjoZkzVeHYZhSPGYEU">
+    <script async="" src="./ubuntu开启core dump_files/js"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    var kv = getGACustom();
+    if (kv) {
+        gtag('set', kv);
+    }
+    gtag('config', 'UA-476124-1');
+</script>
+<script defer="" src="./ubuntu开启core dump_files/hm.js"></script><iframe src="./ubuntu开启core dump_files/container.html" style="visibility: hidden; display: none;"></iframe>
+
+<iframe name="google_ads_top_frame" id="google_ads_top_frame" style="display: none; position: fixed; left: -999px; top: -999px; width: 0px; height: 0px;" src="./ubuntu开启core dump_files/saved_resource(1).html"></iframe><iframe src="./ubuntu开启core dump_files/aframe.html" width="0" height="0" style="display: none;"></iframe></body></html>
