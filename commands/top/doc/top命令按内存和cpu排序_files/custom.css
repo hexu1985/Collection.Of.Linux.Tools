@@ -1,0 +1,186 @@
+#cnblogs_post_body h1{
+    background-color: #CC3366;
+    color: white;
+    font-weight: bold;
+    font-size: 2rem;
+    margin: 15px 0px 15px 0;
+    padding: 5px;
+    border-radius: 6px 6px 6px 6px !important;
+}
+#cnblogs_post_body h2{
+    background-color: #33CCCC;
+    color: white;
+    font-weight: bold;
+    font-size: 1.5rem;
+    margin: 15px 0px 15px 0;
+    padding: 5px 5px 5px 15px;
+    border-radius: 6px 6px 6px 6px !important;
+}
+#cnblogs_post_body h3{
+    background-color: #CCCCFF;
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    margin: 15px 0px 15px 0;
+    padding: 5px 5px 5px 30px;
+    border-radius: 6px 6px 6px 6px !important;
+}
+
+#cnblogs_post_body h4{
+    background-color: #FFCC66;
+    color: white;
+    font-weight: bold;
+    font-size:0.8rem ;
+    margin: 15px 0px 15px 0;
+    padding: 5px 5px 5px 45px;
+    border-radius: 6px 6px 6px 6px !important;
+}
+
+
+
+.c_ad_block {
+    display:none;
+}
+
+p {
+    font-size:0.95rem!important;
+    font-family: "lucida grande", "lucida sans unicode", lucida, helvetica, "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+}
+
+/* #green_channel {
+    position: fixed;
+    right: 290px;
+    bottom:140px;
+    margin: 10px;
+} */
+
+
+
+
+pre {
+    /*控制代码不换行*/
+    /*white-space: pre;
+    word-wrap: normal;*/
+}
+.cnblogs-markdown 
+
+.hljs {
+  display: block!important;
+  overflow-x: auto!important;
+  padding: 0.5em!important;
+  color: #abb2bf!important;
+  background: #282c34!important;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: #5c6370!important;
+  font-style: italic!important;
+}
+
+.hljs-doctag,
+.hljs-keyword,
+.hljs-formula {
+  color: #c678dd!important;
+}
+
+.hljs-section,
+.hljs-name,
+.hljs-selector-tag,
+.hljs-deletion,
+.hljs-subst {
+  color: #e06c75!important;
+}
+
+.hljs-literal {
+  color: #56b6c2!important;
+}
+
+.hljs-string,
+.hljs-regexp,
+.hljs-addition,
+.hljs-attribute,
+.hljs-meta-string {
+  color: #98c379!important;
+}
+
+.hljs-built_in,
+.hljs-class .hljs-title {
+  color: #e6c07b!important;
+}
+
+.hljs-attr,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-type,
+.hljs-selector-class,
+.hljs-selector-attr,
+.hljs-selector-pseudo,
+.hljs-number {
+  color: #d19a66!important;
+}
+
+.hljs-symbol,
+.hljs-bullet,
+.hljs-link,
+.hljs-meta,
+.hljs-selector-id,
+.hljs-title {
+  color: #61aeee!important;
+}
+
+.hljs-emphasis {
+  font-style: italic!important;
+}
+
+.hljs-strong {
+  font-weight: bold!important;
+}
+
+.hljs-link {
+  text-decoration: underline!important;
+}
+
+
+#cnblogs-markdown img {
+   width:400px!important;
+}
+
+
+
+/* ignore反对 */
+.buryit {
+    display: none;
+}
+
+
+/*推荐框 悬浮 */
+/* #div_digg {
+    position: fixed;
+    bottom: 5px;
+    width: 50px;
+    right: 10px;
+    border: 2px solid #edd7b2;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 5px 5px 5px 5px !important;
+    box-shadow: 0 0 0 1px #ecd7b1, 1px 1px 6px 1px rgba(10, 10, 0, 0.5);
+} */
+
+
+.icon_favorite {
+    background: transparent url('https://files.cnblogs.com/files/jackson0714/kj.gif') no-repeat 0 0;
+    padding-left: 16px;
+}
+
+
+#back-to-top {
+    background-color: #00CD00;
+    bottom: 0;
+    box-shadow: 0 0 6px #00CD00;
+    color: #444444;
+    padding: 10px 10px;
+    position: fixed;
+    right: 290px;
+    cursor: pointer;
+}
