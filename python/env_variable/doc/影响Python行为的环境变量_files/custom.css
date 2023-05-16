@@ -1,0 +1,24 @@
+.postBody h1 {
+    background-color: #586e75;
+    color: beige;
+    padding-left: 15px;
+}
+
+.postBody h2 {
+    background-color: #eee8d5;
+    padding: 5px 10px;
+    color: darkslategrey;
+}
+
+
+.postBody h3 {
+    background: #fdf6e3;
+    padding: 3px 15px;
+    color: darkcyan;
+}
+
+.postBody h4 {
+    background-color: #fdf6e3;
+    padding: 3px 20px;
+    color: #93a1a1;
+}
