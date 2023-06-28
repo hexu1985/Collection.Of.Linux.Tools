@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<!-- saved from url=(0045)https://www.cnblogs.com/Sabre/p/12432554.html -->
+<html lang="zh-cn" style="--olcb-folder-code-block-max-height:80vh; --cnb-code-bg:rgb(245, 245, 245); --cnb-code-font-size:12px; --cnb-code-color:rgb(68, 68, 68);"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin-when-cross-origin">
+    <meta name="description" content="ffmpeg -i&amp;#160;源文件名 -vcodec copy -acodec copy -ss 00:00:10 -to 00:00:15&amp;#160;目标文件名 -y -ss time_off set the start time offset 设置从视频的哪个时间点开始截取，00:00:10是">
+    <meta property="og:description" content="ffmpeg -i&amp;#160;源文件名 -vcodec copy -acodec copy -ss 00:00:10 -to 00:00:15&amp;#160;目标文件名 -y -ss time_off set the start time offset 设置从视频的哪个时间点开始截取，00:00:10是">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>使用ffmpeg截取视频 - 火军刀 - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="https://common.cnblogs.com/favicon.svg" type="image/svg+xml">
+    
+    <style>#home :not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]):not([class*="brush:"]) code:not(.hljs), :not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]):not([class*="brush:"]) code:not(.hljs) {background: rgb(245, 245, 245);
+        padding: 12px;
+        border: 1px solid rgb(204, 204, 204);
+        border-radius: 3px;
+        border-color: transparent;
+        color: rgb(68, 68, 68);
+        font-family: "Courier New", sans-serif;
+        font-size: 12px</style><link rel="stylesheet" href="./使用ffmpeg截取视频 - 博客园_files/blog-common.min.css">
+    
+
+    <link id="MainCss" rel="stylesheet" href="./使用ffmpeg截取视频 - 博客园_files/bundle-lessismoreright.min.css">
+        <link id="highlighter-theme-cnblogs" type="text/css" rel="stylesheet" href="./使用ffmpeg截取视频 - 博客园_files/cnblogs.css">
+    
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./使用ffmpeg截取视频 - 博客园_files/bundle-lessismoreright-mobile.min.css">
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/Sabre/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/Sabre/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/Sabre/wlwmanifest.xml">
+    <script type="text/javascript" async="" src="./使用ffmpeg截取视频 - 博客园_files/analytics.js"></script><script async="" src="./使用ffmpeg截取视频 - 博客园_files/f.txt"></script><script>
+        var currentBlogId = 13244;
+        var currentBlogApp = 'Sabre';
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'LessIsMoreRight';
+        var visitorUserId = '';
+        var hasCustomScript = false;
+        try {
+            if (hasCustomScript && document.referrer && document.referrer.indexOf('baidu.com') >= 0) {
+                Object.defineProperty(document, 'referrer', { value: '' });
+                Object.defineProperty(Document.prototype, 'referrer', { get: function () { return ''; } });
+            }
+        } catch (error) { }
+        window.cb_enable_mathjax = false;
+        window.mathEngine = 0;
+        window.codeHighlightEngine = 1;
+        window.enableCodeLineNumber = false;
+        window.codeHighlightTheme = 'cnblogs';
+        window.darkModeCodeHighlightTheme = 'vs2015';
+        window.isDarkCodeHighlightTheme = false;
+        window.isDarkModeCodeHighlightThemeDark = true;
+        window.isDisableCodeHighlighter = false;
+        window.enableCodeThemeTypeFollowSystem = false;
+        window.enableMacStyleCodeBlock = false
+    </script>
+        <script>
+            var currentPostDateAdded = '2020-03-07 09:20';
+        </script>
+    <script src="./使用ffmpeg截取视频 - 博客园_files/jquery-2.2.0.min.js"></script>
+    <script src="./使用ffmpeg截取视频 - 博客园_files/blog-common.min.js"></script><style>.medium-zoom-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 300ms;
+  will-change: opacity;
+}
+
+.medium-zoom--opened .medium-zoom-overlay {
+  cursor: pointer;
+  cursor: zoom-out;
+  opacity: 1;
+}
+
+.medium-zoom-image {
+  cursor: pointer;
+  cursor: zoom-in;
+  /*
+    The `transition` is marked as "!important" for the animation to happen
+    even though it's overriden by another inline `transition` style attribute.
+
+    This is problematic with frameworks that generate inline styles on their
+    images (e.g. Gatsby).
+
+    See https://github.com/francoischalifour/medium-zoom/issues/110
+   */
+  transition: transform 300ms cubic-bezier(0.2, 0, 0.2, 1) !important;
+}
+
+.medium-zoom-image--hidden {
+  visibility: hidden;
+}
+
+.medium-zoom-image--opened {
+  position: relative;
+  cursor: pointer;
+  cursor: zoom-out;
+  will-change: transform;
+}
+</style><script id="hljs-script" src="./使用ffmpeg截取视频 - 博客园_files/highlight.min.js" type="text/javascript" async=""></script>
+    
+
+    
+<meta http-equiv="origin-trial" content="A7CQXglZzTrThjGTBEn1rWTxHOEtkWivwzgea+NjyardrwlieSjVuyG44PkYgIPGs8Q9svD8sF3Yedn0BBBjXAkAAACFeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjk1MTY3OTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A3vKT9yxRPjmXN3DpIiz58f5JykcWHjUo/W7hvmtjgh9jPpQgem9VbADiNovG8NkO6mRmk70Kex8/KUqAYWVWAEAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjk1MTY3OTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A4A26Ymj79UVY7C7JGUS4BG1s7MdcDokAQf/RP0paks+RoTYbXHxceT/5L4iKcsleFCngi75YfNRGW2+SpVv1ggAAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjk1MTY3OTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="As0hBNJ8h++fNYlkq8cTye2qDLyom8NddByiVytXGGD0YVE+2CEuTCpqXMDxdhOMILKoaiaYifwEvCRlJ/9GcQ8AAAB8eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiV2ViVmlld1hSZXF1ZXN0ZWRXaXRoRGVwcmVjYXRpb24iLCJleHBpcnkiOjE3MTk1MzI3OTksImlzU3ViZG9tYWluIjp0cnVlfQ=="><meta http-equiv="origin-trial" content="AgRYsXo24ypxC89CJanC+JgEmraCCBebKl8ZmG7Tj5oJNx0cmH0NtNRZs3NB5ubhpbX/bIt7l2zJOSyO64NGmwMAAACCeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiV2ViVmlld1hSZXF1ZXN0ZWRXaXRoRGVwcmVjYXRpb24iLCJleHBpcnkiOjE3MTk1MzI3OTksImlzU3ViZG9tYWluIjp0cnVlfQ=="><script src="./使用ffmpeg截取视频 - 博客园_files/f(1).txt" async=""></script><link rel="preload" href="./使用ffmpeg截取视频 - 博客园_files/f(2).txt" as="script"><script type="text/javascript" src="./使用ffmpeg截取视频 - 博客园_files/f(2).txt"></script><script esp-signal="true" src="./使用ffmpeg截取视频 - 博客园_files/sync.min.js"></script><script esp-signal="true" src="./使用ffmpeg截取视频 - 博客园_files/uid2SecureSignal.js"></script></head>
+<body class="skin-lessismoreright has-navbar">
+    <a name="top"></a>
+        <div id="bannerbar" class="bannerbar-mobile bannerbar-text-mobile formobile">
+                <a href="https://www.cnblogs.com/cmt/p/17510065.html" onclick="countCreativeClicks(&#39;M2-行行-直播第4期&#39;)" rel="nofollow">
+                    <img src="./使用ffmpeg截取视频 - 博客园_files/35695-20230628114647423-1541586245.jpg" alt="" onload="countCreativeImpressionsOnMobile(&#39;M2-行行-直播第4期&#39;)">
+                    <span id="m2_impression" style="display:none"></span>
+                </a>
+        </div>
+    <div id="top_nav" class="navbar forpc">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding">
+                    <a href="https://www.cnblogs.com/" title="开发者的网上家园" role="banner">
+                        <img src="./使用ffmpeg截取视频 - 博客园_files/logo.svg" alt="博客园Logo">
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.cnblogs.com/" onclick="countClicks(&#39;skin-navbar-sitehome&#39;)">首页</a>
+                </li>
+                <li>
+                    <a href="https://news.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-news&#39;)">新闻</a>
+                </li>
+                <li>
+                    <a href="https://q.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-q&#39;)">博问</a>
+                </li>
+                    <li><a href="https://www.cnblogs.com/cmt/p/17510065.html">直播</a></li>
+                <li>
+                    <a href="https://ing.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-ing&#39;)">闪存</a>
+                </li>
+                <li>
+                    <a href="https://edu.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-edu&#39;)">班级</a>
+                </li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search dropdown" action="https://zzk.cnblogs.com/s" method="get" role="search">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="search" tabindex="3" autocomplete="off">
+                        <button id="zzk_search_button" onclick="window.navbarSearchManager.triggerActiveOption()">
+                            <img id="search_icon" class="focus-hidden" src="./使用ffmpeg截取视频 - 博客园_files/search.svg" alt="搜索">
+                            <img class="hidden focus-visible" src="./使用ffmpeg截取视频 - 博客园_files/enter.svg" alt="搜索">
+                        </button>
+                        <ul id="navbar_search_options" class="dropdown-menu quick-search-menu">
+                            <li tabindex="0" class="active" onclick="zzkSearch(event, document.getElementById(&#39;zzk_search_input&#39;).value)">
+                                <div class="keyword-wrapper">
+                                    <img src="./使用ffmpeg截取视频 - 博客园_files/search.svg" alt="搜索">
+                                    <div class="keyword"></div>
+                                </div>
+                                <span class="search-area">所有博客</span>
+                            </li>
+                                    <li tabindex="1" onclick="zzkBlogSearch(event, &#39;Sabre&#39;, document.getElementById(&#39;zzk_search_input&#39;).value)">
+                                        <div class="keyword-wrapper">
+                                            <img src="./使用ffmpeg截取视频 - 博客园_files/search.svg" alt="搜索">
+                                            <div class="keyword"></div>
+                                        </div>
+                                        <span class="search-area">当前博客</span>
+                                    </li>
+                        </ul>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔" style="display: none;">
+                        <img id="new_post_icon" class="navbar-icon" src="./使用ffmpeg截取视频 - 博客园_files/newpost.svg" alt="写随笔">
+                    </a>
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客" style="display: none;">
+                        <img id="myblog_icon" class="navbar-icon" src="./使用ffmpeg截取视频 - 博客园_files/myblog.svg" alt="我的博客">
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息" style="display: none;">
+                        <img id="msg_icon" class="navbar-icon" src="./使用ffmpeg截取视频 - 博客园_files/message.svg" alt="短消息">
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <a id="navbar_lite_mode_indicator" data-current-page="blog" style="display: none" href="javascript:void(0)" alt="简洁模式" title="简洁模式启用，您在访问他人博客时会使用简洁款皮肤展示">
+                        <img class="navbar-icon" src="./使用ffmpeg截取视频 - 博客园_files/lite-mode-on.svg" alt="简洁模式">
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown" style="display: none;">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="./使用ffmpeg截取视频 - 博客园_files/avatar-default.svg" alt="用户头像">
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <img id="navbar_lite_mode_on" src="./使用ffmpeg截取视频 - 博客园_files/lite-mode-check.svg" class="hide" style="display: none;"><span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+                            <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup" style="display: inline;">注册</a>
+                    <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()" style="display: inline;">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    
+
+    <div id="home">
+    <div id="header">
+        <div id="blogTitle">
+            <div class="title"><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/Sabre/">火军刀的部落</a>
+</div>
+<div class="subtitle"></div>
+
+        </div>
+        <div id="navigator">
+            
+<ul id="navList">
+    <li id="nav_sitehome"><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+    <li id="nav_myhome">
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/Sabre/">
+首页</a>
+</li>
+    <li id="nav_newpost">
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+    <li id="nav_contact">
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/%E7%81%AB%E5%86%9B%E5%88%80">
+联系</a></li>
+    <li id="nav_rss">
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/Sabre/rss/">
+订阅</a></li>
+    <li id="nav_admin">
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+            <div class="blogStats">
+                
+<span id="stats_post_count">随笔 - 386&nbsp;</span>
+<span id="stats_article_count">文章 - 4&nbsp;</span>
+<span id="stats_comment_count">评论 - 60&nbsp;</span>
+<span id="stats_total_view_count">阅读 - 
+<span title="总阅读数: 978475">
+97万</span></span>
+            </div>
+        </div>
+    </div>
+    <div id="main">
+        <div id="mainContent">
+            <div class="forFlow">
+                <div id="post_detail">
+    <div id="topics">
+        <div class="post">
+            <h1 class="postTitle">
+                
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/Sabre/p/12432554.html">
+    <span role="heading" aria-level="2">使用ffmpeg截取视频</span>
+    
+
+</a>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                <div id="cnblogs_post_body" class="blogpost-body blogpost-body-html">
+<p><span style="font-size: 18px">ffmpeg &nbsp;-i&nbsp;源文件名 -vcodec copy -acodec copy -ss 00:00:10 -to 00:00:15&nbsp;目标文件名 -y</span></p>
+<p><span style="font-size: 18px">-ss time_off &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set the start time offset 设置从视频的哪个时间点开始截取，00:00:10是从视频的第10s开始截取</span></p>
+<p><span style="font-size: 18px">-to 截到视频的哪个时间点结束。00:00:15是到视频的第15s结束。</span></p>
+<p><span style="font-size: 18px">如果用-t 表示截取多长的时间如 上文-to 换位-t则是截取从视频的第10s开始，截取15s时长的视频。即截出来的视频共15s.</span></p>
+<p><span style="font-size: 18px">注意的地方是：</span></p>
+<p><span style="font-size: 18px">如果将-ss放在“-i&nbsp;源文件名”后面则-to的作用就没了，跟-t一样的效果了，变成了截取多长视频。一定要注意-ss的位置。</span></p>
+<p><span style="font-size: 18px">参数解析</span></p>
+<p><span style="font-size: 18px">-vcodec copy表示使用跟原视频一样的视频编解码器。</span></p>
+<p><span style="font-size: 18px">-acodec copy表示使用跟原视频一样的音频编解码器。</span></p>
+<p><span style="font-size: 18px">-i 表示源视频文件</span></p>
+<p><span style="font-size: 18px">-y 表示如果输出文件已存在则覆盖。</span></p>
+<p><span style="font-size: 18px">&nbsp;如：</span></p>
+<p><span style="font-size: 18px">ffmpeg &nbsp;-i D:/abc.avi -vcodec copy -acodec copy -ss 00:00:10 -to 00:00:15 D:/abc_clip.mp4 -y</span><br><br></p>
+</div>
+<div class="clear"></div>
+<div id="blog_post_info_block" role="contentinfo">
+
+
+
+
+    <div id="blog_post_info">
+<div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(12432554,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+        <a id="green_channel_follow" onclick="follow(&#39;9aa2310b-63cf-dd11-9e4d-001cf0cd104b&#39;);" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="./使用ffmpeg截取视频 - 博客园_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="./使用ffmpeg截取视频 - 博客园_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/Sabre/" target="_blank"><img src="./使用ffmpeg截取视频 - 博客园_files/20220105004616.png" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/Sabre/">火军刀</a>
+            <br>
+            <a href="https://home.cnblogs.com/u/Sabre/followers/">粉丝 - <span class="follower-count">40</span></a>
+            <a href="https://home.cnblogs.com/u/Sabre/followees/">关注 - <span class="following-count">57</span></a><br>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow" class="follow-tip">
+                <a href="javascript:void(0);" onclick="follow(&#39;9aa2310b-63cf-dd11-9e4d-001cf0cd104b&#39;);return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(12432554,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">0</span>
+    </div>
+    <div class="buryit" onclick="votePost(12432554,&#39;Bury&#39;)">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+    <div class="clear"></div>
+    <div id="post_next_prev">
+
+    <a href="https://www.cnblogs.com/Sabre/p/12424716.html" class="p_n_p_prefix">« </a> 上一篇：    <a href="https://www.cnblogs.com/Sabre/p/12424716.html" data-featured-image="" title="发布于 2020-03-06 08:43">VS code的tab键变成控件间切换</a>
+    <br>
+    <a href="https://www.cnblogs.com/Sabre/p/12636276.html" class="p_n_p_prefix">» </a> 下一篇：    <a href="https://www.cnblogs.com/Sabre/p/12636276.html" data-featured-image="" title="发布于 2020-04-05 11:03">NUnit</a>
+
+</div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date" data-last-update-days="1208.3106608948808" data-date-created="BlogServer.Application.Dto.BlogPost.BlogPostDto" data-date-updated="2020-03-07 09:21" aria-expanded="false">2020-03-07 09:20</span>&nbsp;
+<a href="https://www.cnblogs.com/Sabre/">火军刀</a>&nbsp;
+阅读(<span id="post_view_count">8034</span>)&nbsp;
+评论(<span id="post_comment_count">0</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=12432554" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(12432554);return false;">收藏</a>&nbsp;
+<a href="javascript:void(0)" onclick="reportManager.report({ currentUserId: &#39;&#39;, targetType: &#39;blogPost&#39;, targetId: &#39;12432554&#39;, targetLink: &#39;https://www.cnblogs.com/Sabre/p/12432554.html&#39;, title: &#39;使用ffmpeg截取视频&#39; })">举报</a>
+</div>
+        </div>
+        
+<script>
+    var cb_entryId = 12432554, cb_entryCreatedDate = '2020-03-07 09:20', cb_postType = 1, cb_postTitle = '使用ffmpeg截取视频';
+    var allowComments = true, cb_blogId = 13244, cb_blogApp = 'Sabre', cb_blogUserGuid = '9aa2310b-63cf-dd11-9e4d-001cf0cd104b';
+    mermaidRender.render()
+    markdown_highlight()
+    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");
+    updatePostStats(
+            [cb_entryId],
+            function(id, count) { $("#post_view_count").text(count) },
+            function(id, count) { $("#post_comment_count").text(count) });
+</script>
+        <a id="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="https://www.cnblogs.com/Sabre/p/12432554.html#" onclick="return RefreshPage();">刷新页面</a><a href="https://www.cnblogs.com/Sabre/p/12432554.html#top">返回顶部</a></div>
+    <div id="comment_form_container" style="visibility: visible;"><div class="login_tips">
+    登录后才能查看或发表评论，立即 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return account.login(&#39;!comments&#39;);">登录</a> 或者
+    <a href="https://www.cnblogs.com/">逛逛</a> 博客园首页
+</div>
+</div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+        <div id="cnblogs_ch"><a href="https://www.cnblogs.com/cmt/p/17510065.html" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-行行AI人才-直播第4期&#39;})">【推荐】行行AI人才直播第4期（周四20:30）： 如何定制企业专属AI大模型？</a><br><a href="https://cloud.tencent.com/act/cps/redirect?redirect=5049&amp;cps_key=6a15b90f1178f38fb09b07f16943cf3e&amp;from=console" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-腾讯云&#39;})">【推荐】腾讯云爆款云服务器首年95元，领折上折代金券最高再省1120元</a><br><a href="https://www.cnblogs.com/cmt/p/17477579.html" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-阿里云云市场&#39;})">【推荐】园子的商业化努力-阿里云云市场合作-第一期优惠活动发布上线</a><br><a href="https://click.aliyun.com/m/1000374205/" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-阿里云&#39;})">【推荐】阿里云-持续降低用云成本：云服务器全面降价，低至0.3元/天</a><br></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="under-post-card">
+            <div id="div-gpt-ad-1592365906576-0" style="width: 300px; height: 250px;" data-google-query-id="CJbAhavK5f8CFRGM6QUd_awKmQ"><div id="google_ads_iframe_/1090369/C1_0__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/1090369/C1_0" name="google_ads_iframe_/1090369/C1_0" title="3rd party ad content" width="300" height="250" scrolling="no" marginwidth="0" marginheight="0" frameborder="0" role="region" aria-label="Advertisement" tabindex="0" style="border: 0px; vertical-align: bottom;" data-load-complete="true" data-google-container-id="1" src="./使用ffmpeg截取视频 - 博客园_files/saved_resource.html"></iframe></div></div>
+    </div>
+    <div id="under_post_card1"><div class="under-post-card">
+<b>编辑推荐：</b>
+<br>
+
+· <a href="https://www.cnblogs.com/niexianda/p/17506382.html" target="_blank">闲来无事-树莓派控制风扇启停</a>
+    <br>
+· <a href="https://www.cnblogs.com/artech/p/inside-asp-net-core-6-40.html" target="_blank">ASP.NET Core 6框架揭秘实例演示[40]：基于角色的授权</a>
+    <br>
+· <a href="https://www.cnblogs.com/youzhibing/p/17384635.html" target="_blank">记一次字符串末尾空白丢失的排查，MySQL 是会玩的！</a>
+    <br>
+· <a href="https://www.cnblogs.com/huangxincheng/p/17490807.html" target="_blank">记一次 .NET 某旅行社审批系统 崩溃分析</a>
+    <br>
+· <a href="https://www.cnblogs.com/tangyanzhi1111/p/17489381.html" target="_blank">C#/.Net的多播委托到底是啥？彻底剖析下</a>
+    <br>
+</div></div>
+    <div id="under_post_card2"><div class="itnews under-post-card">
+    <b>阅读排行：</b>
+    <br>
+ ·          <a href="https://www.cnblogs.com/xueweihan/p/17504304.html" target="_blank">11k+ Star 一款更适合中国用户的开源 BI 工具</a>
+        <br>
+ ·          <a href="https://www.cnblogs.com/skychen1218/p/17508657.html" target="_blank">三年，能否成为一名真正的架构师</a>
+        <br>
+ ·          <a href="https://www.cnblogs.com/niexianda/p/17506382.html" target="_blank">闲来无事-树莓派控制风扇启停</a>
+        <br>
+ ·          <a href="https://www.cnblogs.com/chaego/p/17507817.html" target="_blank">记一次.net加密神器 Eazfuscator.NET 2023.2  最新版 使用尝试</a>
+        <br>
+ ·          <a href="https://www.cnblogs.com/SaoJian/p/17509392.html" target="_blank">如何在.net6webapi中记录每次接口请求的日志</a>
+        <br>
+</div></div>
+    <div id="HistoryToday" class="under-post-card"></div>
+    <script type="text/javascript">
+        var commentManager = new blogCommentManager();
+        commentManager.renderComments(0);
+        fixPostBody();
+        window.footnoteTipManager.generateFootnoteTips();
+
+            window.tocManager.displayDisableTocTips = false;
+            window.tocManager.generateToc();
+            
+                setTimeout(function() { countViews(cb_blogId, cb_entryId); }, 50);
+            
+            deliverT2();
+            deliverC1C2();
+            loadNewsAndKb();
+            
+                LoadPostCategoriesTags(cb_blogId, cb_entryId);
+            
+            LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+            GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+            loadOptUnderPost();
+            GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+                </script>
+</div>
+
+    </div>
+</div>
+            </div>
+        </div>
+
+        <div id="sideBar">
+            <div id="sideBarMain">
+                <div id="sidebar_news" class="newsItem">
+    
+<h3 class="catListTitle">公告</h3>
+<div id="blog-news">    
+    <div id="sidebar_news_content">
+<div id="profile_block">
+    昵称：
+    <a href="https://home.cnblogs.com/u/Sabre/">
+        火军刀
+    </a>
+    <br>
+    园龄：
+    <a href="https://home.cnblogs.com/u/Sabre/" title="入园时间：2005-08-12">
+        17年10个月
+    </a>
+    <br>
+    粉丝：
+    <a class="follower-count" href="https://home.cnblogs.com/u/Sabre/followers/">
+        40
+    </a>
+    <br>
+    关注：
+    <a class="folowing-count" href="https://home.cnblogs.com/u/Sabre/followees/">
+        57
+    </a>
+    <div id="p_b_follow" class="follow-tip">
+<a href="javascript:void(0)" onclick="follow(&#39;9aa2310b-63cf-dd11-9e4d-001cf0cd104b&#39;)">+加关注</a></div>
+    <script>getFollowStatus('9aa2310b-63cf-dd11-9e4d-001cf0cd104b');</script>
+</div>
+</div>
+</div>
+<script>loadBlogNews();</script> 
+</div>
+<div id="sidebar_c3" style="display: block;"><a href="https://www.cnblogs.com/cmt/p/17510065.html" target="_blank"><img width="300" height="250" src="./使用ffmpeg截取视频 - 博客园_files/35695-20230628103321222-1077976656.jpg" alt="行行AI人才-直播第4期" onclick="countClicks(&#39;ad&#39;, &#39;C3-行行AI人才-直播第4期&#39;);"></a></div>
+                <div id="calendar"><div id="blog-calendar" style="">
+
+<table id="blogCalendar" class="Cal" cellspacing="0" cellpadding="0" title="Calendar" border="0">
+    <tbody>
+        <tr>
+            <td colspan="7">
+                <table class="CalTitle" cellspacing="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2023/05/28&#39;); return false;">&lt;</a>
+                            </td>
+                            <td align="center">2023年6月</td>
+                            <td align="right" class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2023/07/28&#39;); return false;">&gt;</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    <tr>
+        <th class="CalDayHeader" align="center" abbr="日" scope="col">日</th>
+        <th class="CalDayHeader" align="center" abbr="一" scope="col">一</th>
+        <th class="CalDayHeader" align="center" abbr="二" scope="col">二</th>
+        <th class="CalDayHeader" align="center" abbr="三" scope="col">三</th>
+        <th class="CalDayHeader" align="center" abbr="四" scope="col">四</th>
+        <th class="CalDayHeader" align="center" abbr="五" scope="col">五</th>
+        <th class="CalDayHeader" align="center" abbr="六" scope="col">六</th>
+    </tr>
+            <tr>
+                            <td class="CalOtherMonthDay" align="center">28</td>
+                            <td class="CalOtherMonthDay" align="center">29</td>
+                            <td class="CalOtherMonthDay" align="center">30</td>
+                            <td class="CalOtherMonthDay" align="center">31</td>
+                        <td class="" align="center">
+                            1
+                        </td>
+                        <td class="" align="center">
+                            2
+                        </td>
+                    <td class="CalWeekendDay" align="center">
+                        3
+                    </td>
+            </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            4
+                        </td>
+                            <td class="" align="center">
+                                5
+                            </td>
+                            <td class="" align="center">
+                                6
+                            </td>
+                            <td class="" align="center">
+                                7
+                            </td>
+                            <td class="" align="center">
+                                8
+                            </td>
+                            <td class="" align="center">
+                                9
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            10
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            11
+                        </td>
+                            <td class="" align="center">
+                                12
+                            </td>
+                            <td class="" align="center">
+                                13
+                            </td>
+                            <td class="" align="center">
+                                14
+                            </td>
+                            <td class="" align="center">
+                                15
+                            </td>
+                            <td class="" align="center">
+                                16
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            17
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            18
+                        </td>
+                            <td class="" align="center">
+                                19
+                            </td>
+                            <td class="" align="center">
+                                20
+                            </td>
+                            <td class="" align="center">
+                                21
+                            </td>
+                            <td class="" align="center">
+                                22
+                            </td>
+                            <td class="" align="center">
+                                23
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            24
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            25
+                        </td>
+                            <td class="" align="center">
+                                26
+                            </td>
+                            <td class="" align="center">
+                                27
+                            </td>
+                            <td class="CalTodayDay" align="center">
+                                28
+                            </td>
+                            <td class="" align="center">
+                                29
+                            </td>
+                            <td class="" align="center">
+                                30
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            1
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalOtherMonthDay" align="center">
+                            2
+                        </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                3
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                4
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                5
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                6
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                7
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            8
+                        </td>
+                </tr>
+    </tbody>
+</table></div></div>                
+                <script>loadBlogDefaultCalendar();</script>
+                <div id="leftcontentcontainer">
+                    <!-- begin:SingleColumn -->
+                    <div id="blog-sidecolumn"><!-- 搜索 -->
+<div id="sidebar_search" class="sidebar-block">
+    <div id="sidebar_search" class="mySearch">
+        <h3 class="catListTitle">搜索</h3>
+        <div id="sidebar_search_box">
+            <div id="widget_my_zzk" class="div_my_zzk">
+                <input type="text" id="q" onkeydown="return zzk_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="zzk_go()" type="button" value="找找看" id="btnZzk" class="btn_my_zzk">
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<!-- 常用链接 -->
+<div id="sidebar_shortcut" class="sidebar-block">
+<h3 class="catListTitle">
+常用链接
+</h3>
+<ul>
+    <li><a href="https://www.cnblogs.com/Sabre/p/" title="我的博客的随笔列表">我的随笔</a></li>
+<li><a href="https://www.cnblogs.com/Sabre/MyComments.html" title="我的发表过的评论列表">我的评论</a></li>
+<li><a href="https://www.cnblogs.com/Sabre/OtherPosts.html" title="我评论过的随笔列表">我的参与</a></li>
+<li><a href="https://www.cnblogs.com/Sabre/comments" title="我的博客的评论列表">最新评论</a></li>
+<li><a href="https://www.cnblogs.com/Sabre/tag/" title="我的博客的标签列表">我的标签</a></li>
+
+</ul>
+</div>
+
+<!-- 最新随笔 -->
+<div id="sidebar_recentposts" class="sidebar-block">
+<div class="catListEssay">
+    <h3 class="catListTitle">最新随笔</h3>
+    <ul>
+                <li>
+                    
+<a href="https://www.cnblogs.com/Sabre/p/17217053.html">1.怎样理解C#中的委托代理机制</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/Sabre/p/17176283.html">2.解决IIS7.5及以后中URL文件名有加号或空格导致显示404错误的问题</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/Sabre/p/17091228.html">3.创建Mave项目时遇到的问题</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/Sabre/p/17025075.html">4.SQL Server最耗时的语句统计</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/Sabre/p/16993281.html">5.关于SQL Server中的xml path的简单用法</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/Sabre/p/16883470.html">6.优秀的网站模板网站</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/Sabre/p/16859936.html">7.安装MySQL时需要配置的Microsoft Visual C++ Redistributable</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/Sabre/p/16784581.html">8.NHibernate中的小数精度问题</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/Sabre/p/16744237.html">9.开发工具中快速检索一个文件的方法</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/Sabre/p/16483157.html">10.解决 vscode 中 叹号加tab 键无法创建html模板问题</a>
+
+                </li>
+    </ul>
+</div>
+</div>
+
+<!-- 我的标签 -->
+<div id="sidebar_toptags" class="sidebar-block"><div class="catListTag">
+    <h3 class="catListTitle"><a href="https://www.cnblogs.com/Sabre/tag/" class="sidebar-card-title-a">我的标签</a></h3>
+    <ul>
+                <li>
+            <a href="https://www.cnblogs.com/Sabre/tag/PHP/">PHP<span class="tag-count">(2)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/Sabre/tag/ERWin/">ERWin<span class="tag-count">(1)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/Sabre/tag/SQL%20Server/">SQL Server<span class="tag-count">(1)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/Sabre/tag/%E5%AD%97%E6%AE%B5%E6%8F%8F%E8%BF%B0/">字段描述<span class="tag-count">(1)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/Sabre/tag/%E6%97%A0%E6%B3%95%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6%E5%A4%B9/">无法删除文件夹<span class="tag-count">(1)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/Sabre/tag/%E8%AE%BF%E9%97%AE%E8%A2%AB%E6%8B%92%E7%BB%9D/">访问被拒绝<span class="tag-count">(1)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/Sabre/tag/%E5%8C%97%E4%BA%AC%20%E6%88%B7%E5%8F%A3%20%E5%87%86%E7%94%9F%E8%AF%81/">北京 户口 准生证<span class="tag-count">(1)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/Sabre/tag/301%E8%B7%B3%E8%BD%AC/">301跳转<span class="tag-count">(1)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/Sabre/tag/Office%202007/">Office 2007<span class="tag-count">(1)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/Sabre/tag/Word%202007/">Word 2007<span class="tag-count">(1)</span></a>
+        </li>
+    <li>
+        <a href="https://www.cnblogs.com/Sabre/tag/">更多</a>
+    </li>
+
+    </ul>
+</div>
+</div>
+
+<!-- 积分与排名 -->
+<div id="sidebar_scorerank" class="sidebar-block">
+<div class="catListBlogRank">
+    <h3 class="catListTitle">积分与排名</h3>
+    <ul>
+        <li class="liScore">
+            积分 - 
+374128
+        </li>
+        <li class="liRank">
+            排名 - 
+2026
+        </li>
+    </ul>
+</div></div>
+
+<!-- 随笔分类、随笔档案、文章分类、新闻分类、相册、链接 -->
+<div id="sidebar_categories">
+
+    <div class="catListPostCategory">
+        <h3 class="catListTitle">
+            
+    <a class="sidebar-card-title-a" href="https://www.cnblogs.com/Sabre/post-categories">随笔分类</a>
+<span class="sidebar-category-item-count">
+    (249)
+</span>
+
+
+        </h3>
+        <ul>
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Sabre/category/35423.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">.net技术(51)</a>
+
+                    
+                </li>
+                                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Sabre/category/987248.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">Apache(4)</a>
+
+                    
+                </li>
+                                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Sabre/category/35424.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">Database(26)</a>
+
+                    
+                </li>
+                                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Sabre/category/1397082.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">Hadoop(12)</a>
+
+                    
+                </li>
+                                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Sabre/category/175750.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">IT硬件(4)</a>
+
+                    
+                </li>
+                                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Sabre/category/1077982.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">Java(23)</a>
+
+                    
+                </li>
+                                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Sabre/category/599948.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">Javascript(2)</a>
+
+                    
+                </li>
+                                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Sabre/category/1397080.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">Linux(15)</a>
+
+                    
+                </li>
+                                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Sabre/category/1154777.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">machine learing(1)</a>
+
+                    
+                </li>
+                                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Sabre/category/987247.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">MySql(5)</a>
+
+                    
+                </li>
+                                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Sabre/category/293827.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">Office(4)</a>
+
+                    
+                </li>
+                                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Sabre/category/862229.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">PHP(12)</a>
+
+                    
+                </li>
+                                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Sabre/category/1141013.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">Python(27)</a>
+
+                    
+                </li>
+                                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Sabre/category/2109438.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">SQL Server(2)</a>
+
+                    
+                </li>
+                                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Sabre/category/1399051.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">Ubuntu(7)</a>
+
+                    
+                </li>
+                                            <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/Sabre/category/1408062.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">vim(1)</a>
+
+                    
+                </li>
+                                            <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/Sabre/category/1231387.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">Web服务器(1)</a>
+
+                    
+                </li>
+                                            <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/Sabre/category/177753.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">操作系统(14)</a>
+
+                    
+                </li>
+                                            <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/Sabre/category/1402195.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">大数据(2)</a>
+
+                    
+                </li>
+                                            <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/Sabre/category/175861.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">定理定律(1)</a>
+
+                    
+                </li>
+                                            <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/Sabre/category/1154776.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">机器学习(13)</a>
+
+                    
+                </li>
+                                            <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/Sabre/category/134280.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">乱七八糟(5)</a>
+
+                    
+                </li>
+                                            <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/Sabre/category/600215.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">密码学(2)</a>
+
+                    
+                </li>
+                                            <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/Sabre/category/86878.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">人在江湖(3)</a>
+
+                    
+                </li>
+                                            <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/Sabre/category/86877.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">项目管理(12)</a>
+
+                    
+                </li>
+                                        <li><a href="javascript:void(0)" onclick="sideColumnManager.loadMore(this)">更多</a></li>
+        </ul>
+    </div>    <div class="catList友情链接">
+        <h3 class="catListTitle">
+            
+友情链接
+
+
+        </h3>
+        <ul>
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="http://wayfarer.cnblogs.com/" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="nofollow noopener noreferrer" target="">Bruce Zhang's Blog</a>
+
+                    
+                </li>
+                <li class="c_b_p_link_desc">关于面向对象编程及项目管理</li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="http://onlytiancai.cnblogs.com/" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="nofollow noopener noreferrer" target="">蛙蛙池塘</a>
+
+                    
+                </li>
+                                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="http://ibmfm.cnblogs.com/" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="nofollow noopener noreferrer" target="">阳春三月</a>
+
+                    
+                </li>
+                                        
+        </ul>
+    </div></div>
+
+<!-- 最新评论 -->
+<!-- 阅读排行榜 -->
+<div id="sidebar_topviewedposts" class="sidebar-block">
+<div id="topview_posts_wrap">
+    <h3 class="catListTitle">
+        <a href="https://www.cnblogs.com/Sabre/most-viewed" class="sidebar-card-title-a">
+    阅读排行榜
+</a>
+
+    </h3>
+    <div id="TopViewPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/Sabre/p/6721180.html">
+                            1. ORA-12638: 身份证明检索失败的解决方法(59817)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/Sabre/archive/2011/04/13/2014489.html">
+                            2. 使用命令行启动服务(59075)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/Sabre/p/3924522.html">
+                            3. 事件查看器事件ID部分说明(38854)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/Sabre/p/6728818.html">
+                            4. WampServer的下载方法(37065)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/Sabre/p/10365395.html">
+                            5. tar命令参数详解(33999)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div></div>
+
+<!-- 评论排行榜 -->
+<div id="sidebar_topcommentedposts" class="sidebar-block"><div id="topfeedback_posts_wrap">
+    <h3 class="catListTitle">
+        <a href="https://www.cnblogs.com/Sabre/most-commented" class="sidebar-card-title-a">评论排行榜</a>
+
+    </h3>
+    <div id="TopFeedbackPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/Sabre/p/6728818.html">
+                            1. WampServer的下载方法(9)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/Sabre/p/3640190.html">
+                            2. 警告: 程序集绑定日志记录被关闭(IIS7 64位系统)(6)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/Sabre/p/7513645.html">
+                            3. Only a type can be imported. classname resolves to a package的解决(5)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/Sabre/p/3932149.html">
+                            4. SQLLocalDB 11.0持续报错，这是泥马德什么问题啊！！！(5)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/Sabre/p/3674531.html">
+                            5. VS2013，asp.net网站转换为web应用程序(3)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div></div>
+
+<!-- 推荐排行榜 -->
+<div id="sidebar_topdiggedposts" class="sidebar-block">
+<div id="topdigg_posts_wrap">
+    <div class="catListView">
+        <h3 class="catListTitle">
+            <a href="https://www.cnblogs.com/Sabre/most-liked" class="sidebar-card-title-a">推荐排行榜</a>
+
+        </h3>
+        <div id="TopDiggPostsBlock">
+            <ul style="word-break: break-all">
+                        <li>
+                            <a href="https://www.cnblogs.com/Sabre/p/6728818.html">
+                                1. WampServer的下载方法(11)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/Sabre/p/6721180.html">
+                                2. ORA-12638: 身份证明检索失败的解决方法(9)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/Sabre/p/10365395.html">
+                                3. tar命令参数详解(4)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/Sabre/archive/2011/04/13/2014489.html">
+                                4. 使用命令行启动服务(4)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/Sabre/p/4264060.html">
+                                5. sqlserver中判断表或临时表是否存在(3)
+                            </a>
+                        </li>
+            </ul>
+        </div>
+    </div>
+</div></div><div id="sidebar_recentcomments" class="sidebar-block"><div id="recent_comments_wrap" class="RecentComment">
+    <h3 class="catListTitle"><a href="https://www.cnblogs.com/Sabre/comments" class="sidebar-card-title-a">最新评论</a></h3>    
+    <div class="RecentCommentBlock">
+        <ul>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/Sabre/p/3932149.html">1. Re:SQLLocalDB 11.0持续报错，这是泥马德什么问题啊！！！</a></li>
+                <li class="recent_comment_body">我的错误提示跟你的一样，但此前的解决方法不适用。 我使用以下方法解决： Windows 11 and Windows Server 2022 do not report compatible Phys...</li>
+                <li class="recent_comment_author">--VAllen</li>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/Sabre/p/11517782.html">2. Re:vscode-tab按键失效变为切换功能的解决方法</a></li>
+                <li class="recent_comment_body"><p>感谢！有用</p>
+</li>
+                <li class="recent_comment_author">--迪迦CCC</li>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/Sabre/p/3785699.html">3. Re:安装VisualSvn Server时遇到的问题</a></li>
+                <li class="recent_comment_body">大佬，能说的详细一点吗？我现在死活安装不了SVN服务器端，事件查看器就一直在报函数错误，您说的把https改成http这个是在安装前哪里操作的？本人手机号15269395320，论坛很少上，还希望请求...</li>
+                <li class="recent_comment_author">--0612276</li>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/Sabre/p/6728818.html">4. Re:WampServer的下载方法</a></li>
+                <li class="recent_comment_body"><p>感谢博主，么么哒</p>
+</li>
+                <li class="recent_comment_author">--SeilfeeMi</li>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/Sabre/p/7639529.html">5. Re:Java编程思想第四版勘误</a></li>
+                <li class="recent_comment_body"><p>好，支持开源</p>
+</li>
+                <li class="recent_comment_author">--模糊计算士</li>
+        </ul>
+    </div>
+</div></div>
+
+
+</div>
+                    <script>loadBlogSideColumn();</script>
+                    <!-- end:  SingleColumn -->
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+    <div id="footer">
+        <!--done-->
+Copyright © 2023 火军刀
+<br><span id="poweredby">Powered by .NET 7.0 on Kubernetes</span>
+
+    </div>
+</div>
+
+
+    
+
+    <input type="hidden" id="antiforgery_token" value="CfDJ8DuWIYDefEVJtUW7VadsHY8qMpt8MwU49lKYSg7xgd28VCNaBZSFzRlkQYt3klZARWodEWugFRXeNjqthJS_HioZPXs_Cr79mFmhjhFTYc7d2QYYgQu3EkANLVdU7YP_D5YiLDFHIjkEu_zPtePe_P4">
+    <script async="" src="./使用ffmpeg截取视频 - 博客园_files/js"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    var kv = getGACustom();
+    if (kv) {
+        gtag('set', kv);
+    }
+    gtag('config', 'UA-476124-1');
+</script>
+<script defer="" src="./使用ffmpeg截取视频 - 博客园_files/hm.js"></script><iframe src="./使用ffmpeg截取视频 - 博客园_files/container.html" style="visibility: hidden; display: none;"></iframe>
+
+<iframe src="./使用ffmpeg截取视频 - 博客园_files/aframe.html" width="0" height="0" style="display: none;"></iframe></body></html>
