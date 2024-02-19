@@ -1,0 +1,81 @@
+blockquote {
+  font: 14px/20px italic Times, serif;
+  padding: 8px;
+  background-color: #faebbc;
+  border-top: 1px solid #e1cc89;
+  border-bottom: 1px solid #e1cc89;
+  margin: 5px;
+  background-image: url(images/openquote1.gif);
+  background-position: top left;
+  background-repeat: no-repeat;
+  text-indent: 23px;
+}
+blockquote span {
+  display: block;
+  background-image: url(images/closequote1.gif);
+  background-repeat: no-repeat;
+  background-position: bottom right;
+}
+
+/* 版权声明 */
+blockquote.copyright{
+  display:block;
+  background: #fff;
+  padding: 15px 20px 15px 65px;
+  margin: 0 0 20px;
+  position: relative;
+  
+  /*Font*/
+  font-family: Arial, Helvetica, sans-serif;
+  font-style: italic;
+  font-weight: bold;
+  font-size: 28px;
+  line-height: 1.2;
+  color: #666;
+  text-align: justify;
+  
+  /*Borders - (Optional)*/
+  border-left: 15px solid #c76c0c;
+  border-right: 2px solid #c76c0c;
+  
+  /*Box Shadow - (Optional)*/
+  -moz-box-shadow: 2px 2px 15px #ccc;
+  -webkit-box-shadow: 2px 2px 15px #ccc;
+  box-shadow: 2px 2px 15px #ccc;
+}
+
+blockquote.copyright::before{
+  content: "\201C"; /*Unicode for Left Double Quote*/
+  
+  /*Font*/
+  font-family: Georgia, serif;
+  font-size: 60px;
+  font-weight: bold;
+  color: #999;
+  
+  /*Positioning*/
+  position: absolute;
+  left: 5px;
+  top:5px;
+}
+
+blockquote.copyright::after{
+  /*Reset to make sure*/
+  content: "";
+}
+
+blockquote.copyright a{
+  text-decoration: none;
+  background: #eee;
+  cursor: pointer;
+  padding: 0 3px;
+  color: #c76c0c;
+}
+
+blockquote.copyright a:hover{
+ color: #666;
+}
+
+blockquote.copyright em{
+  font-style: italic;
+}
