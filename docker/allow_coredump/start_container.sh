@@ -22,11 +22,12 @@ MOUNT_SRC_DIR=${MOUNT_SRC_DIR:-/home/hexu}
 MOUNT_DST_DIR=${MOUNT_DST_DIR:-/home/hexu}
 ((debug)) && echo "MOUNT_DST_DIR: $MOUNT_DST_DIR"
 
+mkdir -p /tmp/corefile
 
 docker run -itd \
     --name ${CONTAINER_TAG} \
     --mount type=bind,src=${MOUNT_SRC_DIR},dst=${MOUNT_DST_DIR} \
-    --mount type=bind,src=/tmp/corefile,dst=/home/hexu/corefile \
+    --mount type=bind,src=/tmp/corefile,dst=${HOME}/corefile \
     --ulimit core=-1 \
     --rm ${IMAGE_TAG}
 
