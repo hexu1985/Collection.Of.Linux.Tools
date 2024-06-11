@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg  version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1080 360">
+<defs>
+  <style>.bg{fill:#222}.fg{fill:#FFF;}.red{fill:#ff0000;}.green{fill:#26a13b;}.blue{fill:#1493d1;}.gray{fill:#444;}</style>
+</defs>
+<rect class="bg" x="0" y="0" width="1080" height="360"/>
+<g transform="translate(67.5,0)">
+  <g class="fg">
+    <path id="l" class="gray" d="M0,270h45l60,-180h-45Z"/>    
+    <path id="L" d="M0,90v180h120l15,-45h-90v-135Z"/>
+    <g id="i">
+      <path d="M165,270h45l15,-45h-45Z"/>
+      <path d="M195,180h45l15,-45h-45Z"/>
+    </g>
+    <g id="N">
+      <path class="gray" d="M315,90h45l30,180h-45Z"/>
+      <path d="M255,270h45l60,-180h-45Z"/>
+      <path d="M345,270h45l60,-180h-45Z"/>
+    </g>
+    <g id="u">
+      <path d="M450,135h45v67.5a22.5,22.5,0,0,0,45,0v-67.5h45v67.5a67.5,67.5,0,1,1,-135,0Z"/>
+    </g>
+    <g id="x">
+      <path d="M585,270h45l90,-135h-45Z"/>
+      <path d="M675,270h45l-90,-135h-45Z"/>
+    </g>
+    <path class="red" d="M675,270h45l-22.5,-33.75Z"/>
+  </g>
+  <g id="c" class="green">
+    <path d="M787.5,135h15v45h-15a22.5,22.5,0,1,0,22.5,30h45a67.5,67.5,0,1,1,-67.5,-75Z"/>
+  </g>
+  <g id="n" class="blue">
+    <path d="M810,202.5a67.5,67.5,0,1,1,135,0h-45a22.5,22.5,0,0,0,-45,0Z"/>
+    <rect x="810" y="135" width="45" height="67.5"/>
+    <rect x="900" y="202.5" width="45" height="67.5"/>
+  </g>
+</g>
+</svg>
