@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<!-- saved from url=(0056)https://www.cnblogs.com/wangtianning1223/p/17236281.html -->
+<html lang="zh-cn" style="--olcb-folder-code-block-max-height: 80vh; --cnb-code-bg: rgb(245, 245, 245); --cnb-code-font-size: 12px; --cnb-code-color: rgb(68, 68, 68);"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin-when-cross-origin">
+    <meta name="keywords" content="环境配置">
+    <meta name="description" content="官方那个文档上有很多中安装方法，这里采用压缩包安装，解压后直接将lib和include文件配置在环境变量里就ok了，对于c++来说是最方便的 首先下载TensorRT：https://developer.nvidia.com/tensorrt 注意安装TensorRT之前要事先装好cuda和cudn">
+    <meta property="og:description" content="官方那个文档上有很多中安装方法，这里采用压缩包安装，解压后直接将lib和include文件配置在环境变量里就ok了，对于c++来说是最方便的 首先下载TensorRT：https://developer.nvidia.com/tensorrt 注意安装TensorRT之前要事先装好cuda和cudn">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>ubuntu20.04 安装TensorRT c++库 - Wangtn - 博客园</title>
+    <link rel="canonical" href="https://www.cnblogs.com/wangtianning1223/p/17236281.html">
+    <link rel="shortcut icon" id="favicon" href="https://assets.cnblogs.com/favicon.svg?v=2" type="image/svg+xml">
+    
+    <style>#home :not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]):not([class*="brush:"]) code:not(.hljs), :not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]):not([class*="brush:"]) code:not(.hljs) {background: rgb(245, 245, 245);
+        padding: 12px;
+        border: 0.8px solid rgb(204, 204, 204);
+        border-radius: 3px;
+        border-color: transparent;
+        color: rgb(68, 68, 68);
+        font-family: "Courier New", sans-serif;
+        font-size: 12px</style><link rel="stylesheet" href="./ubuntu20.04 安装TensorRT c++库 - Wangtn - 博客园_files/blog-common.min.css">
+    
+
+    <link id="MainCss" rel="stylesheet" href="./ubuntu20.04 安装TensorRT c++库 - Wangtn - 博客园_files/bundle-darkgreentrip.min.css">
+        <link id="highlighter-theme-cnblogs" type="text/css" rel="stylesheet" href="./ubuntu20.04 安装TensorRT c++库 - Wangtn - 博客园_files/cnblogs.css">
+    
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./ubuntu20.04 安装TensorRT c++库 - Wangtn - 博客园_files/bundle-darkgreentrip-mobile.min.css">
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/wangtianning1223/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/wangtianning1223/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/wangtianning1223/wlwmanifest.xml">
+    <script type="text/javascript" src="./ubuntu20.04 安装TensorRT c++库 - Wangtn - 博客园_files/encoder.js"></script><script>
+        var currentBlogId = 270129;
+        var currentBlogApp = 'wangtianning1223';
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'darkgreentrip';
+        var visitorUserId = '';
+        var hasCustomScript = false;
+        window.cb_enable_mathjax = false;
+        window.mathEngine = 0;
+        window.codeHighlightEngine = 1;
+        window.enableCodeLineNumber = false;
+        window.codeHighlightTheme = 'cnblogs';
+        window.darkModeCodeHighlightTheme = 'vs2015';
+        window.isDarkCodeHighlightTheme = false;
+        window.isDarkModeCodeHighlightThemeDark = true;
+        window.isDisableCodeHighlighter = false;
+        window.enableCodeThemeTypeFollowSystem = false;
+        window.enableMacStyleCodeBlock = false;
+    </script>
+        <script>
+            window.currentPostId = 17236281;
+            window.currentPostDateAdded = '2023-03-20 14:46';
+        </script>
+    <script src="./ubuntu20.04 安装TensorRT c++库 - Wangtn - 博客园_files/jquery-3.3.1.min.js"></script>
+    <script src="./ubuntu20.04 安装TensorRT c++库 - Wangtn - 博客园_files/blog-common.min.js"></script><style>.medium-zoom-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 300ms;
+  will-change: opacity;
+}
+
+.medium-zoom--opened .medium-zoom-overlay {
+  cursor: pointer;
+  cursor: zoom-out;
+  opacity: 1;
+}
+
+.medium-zoom-image {
+  cursor: pointer;
+  cursor: zoom-in;
+  /*
+    The `transition` is marked as "!important" for the animation to happen
+    even though it's overriden by another inline `transition` style attribute.
+
+    This is problematic with frameworks that generate inline styles on their
+    images (e.g. Gatsby).
+
+    See https://github.com/francoischalifour/medium-zoom/issues/110
+   */
+  transition: transform 300ms cubic-bezier(0.2, 0, 0.2, 1) !important;
+}
+
+.medium-zoom-image--hidden {
+  visibility: hidden;
+}
+
+.medium-zoom-image--opened {
+  position: relative;
+  cursor: pointer;
+  cursor: zoom-out;
+  will-change: transform;
+}
+</style><script id="hljs-script" src="./ubuntu20.04 安装TensorRT c++库 - Wangtn - 博客园_files/highlight.min.js" type="text/javascript" async=""></script>
+    
+<meta property="og:image" content="https://img2023.cnblogs.com/blog/901097/202303/901097-20230320143602225-858602020.png"></head>
+<body class="skin-darkgreentrip has-navbar">
+    <a name="top"></a>
+    <div id="top_nav" class="navbar forpc">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding">
+                    <a href="https://www.cnblogs.com/" title="开发者的网上家园" role="banner">
+                        <img src="./ubuntu20.04 安装TensorRT c++库 - Wangtn - 博客园_files/logo.svg" alt="博客园Logo">
+                    </a>
+                </li>
+                <li><a href="https://cnblogs.vip/">会员</a></li>
+                <li><a href="https://www.cnblogs.com/cmt/articles/18197617">众包</a></li>
+                <li>
+                    <a href="https://news.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-news&#39;)">新闻</a>
+                </li>
+                <li>
+                    <a href="https://q.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-q&#39;)">博问</a>
+                </li>
+                    <li>
+                        <a href="https://ai.hanghang.com/page/4649915" target="_blank">AI培训</a>
+                    </li>
+                <li><a href="https://market.cnblogs.com/" target="_blank">云市场</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search dropdown" action="https://zzk.cnblogs.com/s" method="get" role="search">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="search" tabindex="3" autocomplete="off">
+                        <button id="zzk_search_button" onclick="window.navbarSearchManager.triggerActiveOption()">
+                            <img id="search_icon" class="focus-hidden" src="./ubuntu20.04 安装TensorRT c++库 - Wangtn - 博客园_files/search.svg" alt="搜索">
+                            <img class="hidden focus-visible" src="./ubuntu20.04 安装TensorRT c++库 - Wangtn - 博客园_files/enter.svg" alt="搜索">
+                        </button>
+                        <ul id="navbar_search_options" class="dropdown-menu quick-search-menu">
+                            <li tabindex="0" class="active" onclick="zzkSearch(event, document.getElementById(&#39;zzk_search_input&#39;).value)">
+                                <div class="keyword-wrapper">
+                                    <img src="./ubuntu20.04 安装TensorRT c++库 - Wangtn - 博客园_files/search.svg" alt="搜索">
+                                    <div class="keyword"></div>
+                                </div>
+                                <span class="search-area">所有博客</span>
+                            </li>
+                                    <li tabindex="1" onclick="zzkBlogSearch(event, &#39;wangtianning1223&#39;, document.getElementById(&#39;zzk_search_input&#39;).value)">
+                                        <div class="keyword-wrapper">
+                                            <img src="./ubuntu20.04 安装TensorRT c++库 - Wangtn - 博客园_files/search.svg" alt="搜索">
+                                            <div class="keyword"></div>
+                                        </div>
+                                        <span class="search-area">当前博客</span>
+                                    </li>
+                        </ul>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔" style="display: none;">
+                        <img id="new_post_icon" class="navbar-icon" src="./ubuntu20.04 安装TensorRT c++库 - Wangtn - 博客园_files/newpost.svg" alt="写随笔">
+                    </a>
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客" style="display: none;">
+                        <img id="myblog_icon" class="navbar-icon" src="./ubuntu20.04 安装TensorRT c++库 - Wangtn - 博客园_files/myblog.svg" alt="我的博客">
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息" style="display: none;">
+                        <img id="msg_icon" class="navbar-icon" src="./ubuntu20.04 安装TensorRT c++库 - Wangtn - 博客园_files/message.svg" alt="短消息">
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <a id="navbar_lite_mode_indicator" data-current-page="blog" style="display: none" href="javascript:void(0)" alt="简洁模式" title="简洁模式启用，您在访问他人博客时会使用简洁款皮肤展示">
+                        <img class="navbar-icon" src="./ubuntu20.04 安装TensorRT c++库 - Wangtn - 博客园_files/lite-mode-on.svg" alt="简洁模式">
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown" style="display: none;">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="./ubuntu20.04 安装TensorRT c++库 - Wangtn - 博客园_files/avatar-default.svg" alt="用户头像">
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <img id="navbar_lite_mode_on" src="./ubuntu20.04 安装TensorRT c++库 - Wangtn - 博客园_files/lite-mode-check.svg" class="hide" style="display: none;"><span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+                            <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup" style="display: inline;">注册</a>
+                    <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()" style="display: inline;">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    
+
+    <!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/wangtianning1223/"><img id="blogLogo" src="./ubuntu20.04 安装TensorRT c++库 - Wangtn - 博客园_files/logo.gif" alt="返回主页"></a>		
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/wangtianning1223">Wangtn</a>
+</h1>
+<h2></h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/wangtianning1223/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/Wangtn">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/wangtianning1223/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			<span id="stats_post_count">随笔 - 205&nbsp; </span>
+<span id="stats_article_count">文章 - 0&nbsp; </span>
+<span id="stats-comment_count">评论 - 41&nbsp; </span>
+<span id="stats-total-view-count">阅读 - 
+<span title="总阅读数: 176255">
+17万</span></span>
+
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    <!--done-->
+    <div id="topics">
+        <div class="post">
+            <h1 class="postTitle">
+                <a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/wangtianning1223/p/17236281.html" title="发布于 2023-03-20 14:46">
+    <span role="heading" aria-level="2">ubuntu20.04 安装TensorRT c++库</span>
+    
+
+</a>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                <div id="cnblogs_post_body" class="blogpost-body blogpost-body-html">
+<p>官方那个文档上有很多中安装方法，这里采用压缩包安装，解压后直接将lib和include文件配置在环境变量里就ok了，对于c++来说是最方便的</p>
+<p>首先下载TensorRT：<a class="xref" href="https://developer.nvidia.com/tensorrt" shape="rect" target="_blank" rel="noopener">https://developer.nvidia.com/tensorrt</a></p>
+<p><img src="./ubuntu20.04 安装TensorRT c++库 - Wangtn - 博客园_files/901097-20230320143602225-858602020.png" alt="" loading="lazy" class="medium-zoom-image"></p>
+<p>&nbsp;</p>
+<p>&nbsp;注意安装TensorRT之前要事先装好cuda和cudnn，注意cuda和cudnn的对应版本</p>
+<p>下载完成后按照官方教程进行解压，将文件解压到自己想要安装的路径下&nbsp;<a href="https://docs.nvidia.com/deeplearning/tensorrt/install-guide/index.html#installing-tar" target="_blank" rel="noopener">https://docs.nvidia.com/deeplearning/tensorrt/install-guide/index.html#installing-tar</a></p>
+<p>我的路径是 /usr/local，因为是系统路径，所以在这个路径下进行操作要使用管理员权限。解压好之后如下图</p>
+<p><img src="./ubuntu20.04 安装TensorRT c++库 - Wangtn - 博客园_files/901097-20230320143947943-730681059.png" alt="" loading="lazy" class="medium-zoom-image"></p>
+<p>&nbsp;</p>
+<p>&nbsp;然后将tensorrt的头文件和库文件加入到环境变量中，配置～/.bashrc文件</p>
+<div class="cnblogs_code">
+<pre>export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/TensorRT-<span style="color: rgba(128, 0, 128, 1)">8.5</span>.<span style="color: rgba(128, 0, 128, 1)">3.1</span>/<span style="color: rgba(0, 0, 0, 1)">lib
+export C_INCLUDE_PATH</span>=$C_INCLUDE_PATH:/usr/local/TensorRT-<span style="color: rgba(128, 0, 128, 1)">8.5</span>.<span style="color: rgba(128, 0, 128, 1)">3.1</span>/<span style="color: rgba(0, 0, 0, 1)">include
+export CPLUS_INCLUDE_PATH</span>=$CPLUS_INCLUDE_PATH:/usr/local/TensorRT-<span style="color: rgba(128, 0, 128, 1)">8.5</span>.<span style="color: rgba(128, 0, 128, 1)">3.1</span>/include</pre>
+</div>
+<p>添加完路径后source ～/.bashrc</p>
+<p>然后验证安装是否成功，进入到 /usr/local/TensorRT-8.5.3.1/samples/sampleOnnxMNIST路径下，执行</p>
+<div class="cnblogs_code">
+<pre>sudo make</pre>
+</div>
+<p>编译成功后显示可执行那个文件在如下目录</p>
+<p><img src="./ubuntu20.04 安装TensorRT c++库 - Wangtn - 博客园_files/901097-20230320144311450-1926430915.png" alt="" loading="lazy"></p>
+<p>&nbsp;</p>
+<p>&nbsp;进入/usr/local/TensorRT-8.5.3.1/bin目录，运行可执行文件sample_onnx_mnist，如果编译和运行过程都没有问题则说明tensorrt安装成功，运行结果如下</p>
+<p><img src="./ubuntu20.04 安装TensorRT c++库 - Wangtn - 博客园_files/901097-20230320144511082-1716001025.png" alt="" loading="lazy" class="medium-zoom-image"></p>
+<p>&nbsp;</p>
+</div>
+<div id="MySignature" role="contentinfo">
+    无情的摸鱼机器
+</div>
+<div class="clear"></div>
+<div id="blog_post_info_block" role="contentinfo">
+
+
+<div id="BlogPostCategory">
+    分类: 
+            <a href="https://www.cnblogs.com/wangtianning1223/category/1796924.html" target="_blank">环境配置</a>
+</div>
+
+    <div id="blog_post_info">
+<div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(17236281,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+        <a id="green_channel_follow" onclick="follow(&#39;6b659cc1-acdf-e511-9fc1-ac853d9f53cc&#39;);" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_wechat" href="javascript:void(0);" onclick="shareManager.wechatShare()">微信分享</a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/wangtianning1223/" target="_blank"><img src="./ubuntu20.04 安装TensorRT c++库 - Wangtn - 博客园_files/20160309095758.png" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/wangtianning1223/">Wangtn</a>
+            <br>
+            <a href="https://home.cnblogs.com/u/wangtianning1223/followers/">粉丝 - <span class="follower-count">28</span></a>
+            <a href="https://home.cnblogs.com/u/wangtianning1223/followees/">关注 - <span class="following-count">18</span></a><br>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow" class="follow-tip">
+                <a href="javascript:void(0);" onclick="follow(&#39;6b659cc1-acdf-e511-9fc1-ac853d9f53cc&#39;);return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(17236281,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">0</span>
+    </div>
+    <div class="buryit" onclick="votePost(17236281,&#39;Bury&#39;)">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+        <div id="vip_tip"><a class="tip" href="https://cnblogs.vip/" target="_blank">升级成为会员</a></div>
+</div>
+
+<script type="text/javascript">
+    currentDiggType = 0;
+</script>
+</div>
+    <div class="clear"></div>
+    <div id="post_next_prev">
+
+    <a href="https://www.cnblogs.com/wangtianning1223/p/17190661.html" class="p_n_p_prefix">« </a> 上一篇：    <a href="https://www.cnblogs.com/wangtianning1223/p/17190661.html" data-featured-image="" title="发布于 2023-03-08 08:57">cmake编译cuda</a>
+    <br>
+    <a href="https://www.cnblogs.com/wangtianning1223/p/17265138.html" class="p_n_p_prefix">» </a> 下一篇：    <a href="https://www.cnblogs.com/wangtianning1223/p/17265138.html" data-featured-image="" title="发布于 2023-03-28 14:50">tensorflow checkpoint转savedmodel</a>
+
+</div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date" data-last-update-days="450.0926727464074" data-date-created="BlogServer.Application.Dto.BlogPost.BlogPostDto" data-date-updated="2023-03-20 14:46" aria-expanded="false">2023-03-20 14:46</span>&nbsp;
+<a href="https://www.cnblogs.com/wangtianning1223">Wangtn</a>&nbsp;
+阅读(<span id="post_view_count">1379</span>)&nbsp;
+评论(<span id="post_comment_count">0</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=17236281" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(17236281);return false;">收藏</a>&nbsp;
+<a href="javascript:void(0)" onclick="reportManager.report({ currentUserId: &#39;&#39;, targetType: &#39;blogPost&#39;, targetId: &#39;17236281&#39;, targetLink: &#39;https://www.cnblogs.com/wangtianning1223/p/17236281.html&#39;, title: &#39;ubuntu20.04 安装TensorRT c++库&#39; })">举报</a>
+</div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+<script>
+    var cb_entryId = 17236281, cb_entryCreatedDate = '2023-03-20 14:46', cb_postType = 1, cb_postTitle = 'ubuntu20.04 安装TensorRT c++库';
+    var allowComments = true, cb_blogId = 270129, cb_blogApp = 'wangtianning1223', cb_blogUserGuid = '6b659cc1-acdf-e511-9fc1-ac853d9f53cc';
+    mermaidRender.render()
+    markdown_highlight()
+    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");    
+</script>
+<a id="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav">
+            <a class="comment-nav-left forpc" href="https://cnblogs.vip/" target="_blank">会员力量，点亮园子希望</a>
+        <div class="comment-nav-right">
+            <span id="span_refresh_tips"></span><a href="https://www.cnblogs.com/wangtianning1223/p/17236281.html#" onclick="return RefreshPage();">刷新页面</a><a href="https://www.cnblogs.com/wangtianning1223/p/17236281.html#top">返回顶部</a>
+        </div>
+    </div>
+    <div id="comment_form_container"><div class="login_tips">
+    登录后才能查看或发表评论，立即 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return account.login(&#39;!comments&#39;);">登录</a> 或者
+    <a href="https://www.cnblogs.com/">逛逛</a> 博客园首页
+</div>
+</div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+        <div id="cnblogs_ch"><a href="https://www.cnblogs.com/cmt/p/18239927" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-阿里云-通义灵码&#39;})">【推荐】「指间灵动，快码加编」：通义灵码，再次降临博客园</a><br><a href="https://www.cnblogs.com/sanshi/p/18186007" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-三生石上&#39;})">【推荐】三生石上：ASP.NET Core中运行WebForms业务代码</a><br><a href="https://www.cnblogs.com/cmt/p/18226431" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-阿里云-征文&#39;})">【推荐】这场阿里云开发者社区有奖征文活动，期待您出文相助</a><br><a href="https://www.finclip.com/?channel=cnblog2024" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-凡泰极客&#39;})">【推荐】凡泰极客：跨越技术“鸿”沟，小程序一键生成鸿蒙App</a><br><a href="https://click.aliyun.com/m/1000394160/" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-阿里云-618&#39;})">【推荐】阿里云创新加速季，5亿补贴享不停，上云礼包抢先领</a><br></div>
+    <div id="opt_under_post"></div>
+        <div id="cnblogs_c1" class="under-post-card">
+            <a href="https://www.cnblogs.com/cmt/p/18219378" rel="nofollow" target="_blank" onclick="countCreativeClicks(&#39;C1-博客园-T恤&#39;)">
+                <img src="./ubuntu20.04 安装TensorRT c++库 - Wangtn - 博客园_files/35695-20240529225347158-1507288531.jpg" onload="countCreativeImpressions(&#39;C1-博客园-T恤&#39;)" alt="">
+                <span id="c1_impression" style="display:none"></span>
+            </a>
+        </div>
+    <div id="under_post_card1"><div class="under-post-card">
+<b>编辑推荐：</b>
+<br>
+
+· <a href="https://www.cnblogs.com/yxhblogs/p/18226534" target="_blank">老生常谈！程序员为什么要阅读源代码？</a>
+    <br>
+· <a href="https://www.cnblogs.com/zhanggaoxing/p/18240809" target="_blank">如何安全地访问互联网</a>
+    <br>
+· <a href="https://www.cnblogs.com/fanshaoO/p/18233291" target="_blank">还在拼冗长的 WhereIf 吗？100行代码解放这个操作</a>
+    <br>
+· <a href="https://www.cnblogs.com/ggtc/p/18229724" target="_blank">C#异步编程是怎么回事（番外）</a>
+    <br>
+· <a href="https://www.cnblogs.com/tcjiaan/p/18233254" target="_blank">［WPF］Dispatcher 与消息循环</a>
+    <br>
+</div></div>
+    <div id="under_post_card2"><div class="itnews under-post-card">
+    <b>阅读排行：</b>
+    <br>
+ ·          <a href="https://www.cnblogs.com/cmt/p/18239927" target="_blank">「指间灵动，快码加编」：阿里云通义灵码，再次降临博客园</a>
+        <br>
+ ·          <a href="https://www.cnblogs.com/yxhblogs/p/18226534" target="_blank">老生常谈！程序员为什么要阅读源代码？</a>
+        <br>
+ ·          <a href="https://www.cnblogs.com/zhanggaoxing/p/18240809" target="_blank">如何安全地访问互联网</a>
+        <br>
+ ·          <a href="https://www.cnblogs.com/xueweihan/p/18241445" target="_blank">手机上玩 PC 游戏的开源项目「GitHub 热点速览」</a>
+        <br>
+ ·          <a href="https://www.cnblogs.com/MeteorSeed/p/18240681" target="_blank">【译】Visual Studio 17.10 发布了新版扩展管理器</a>
+        <br>
+</div></div>
+    <div id="HistoryToday" class="under-post-card"></div>
+    <script type="text/javascript">
+        var commentManager = new blogCommentManager();
+        commentManager.renderComments(0);
+        fixPostBody();
+        window.footnoteTipManager.generateFootnoteTips();
+
+            window.tocManager.displayDisableTocTips = false;
+            window.tocManager.generateToc();
+            
+                setTimeout(function() { countViews(cb_blogId, cb_entryId); }, 50);
+            
+            deliverT2();
+            deliverC1C2();
+            loadNewsAndKb();
+            
+                LoadPostCategoriesTags(cb_blogId, cb_entryId);
+            
+            LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+            GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+            loadOptUnderPost();
+            GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+                </script>
+</div>
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+	<div id="sideBar">
+		<div id="sideBarMain">
+			<div id="sidebar_news" class="newsItem">
+    <h3 class="catListTitle">公告</h3>
+<div id="blog-news">    
+    <div id="sidebar_news_content">
+<div id="profile_block">
+    昵称：
+    <a href="https://home.cnblogs.com/u/wangtianning1223/">
+        Wangtn
+    </a>
+    <br>
+    园龄：
+    <a href="https://home.cnblogs.com/u/wangtianning1223/" title="入园时间：2016-03-01">
+        8年3个月
+    </a>
+    <br>
+    粉丝：
+    <a class="follower-count" href="https://home.cnblogs.com/u/wangtianning1223/followers/">
+        28
+    </a>
+    <br>
+    关注：
+    <a class="folowing-count" href="https://home.cnblogs.com/u/wangtianning1223/followees/">
+        18
+    </a>
+    <div id="p_b_follow" class="follow-tip">
+<a href="javascript:void(0)" onclick="follow(&#39;6b659cc1-acdf-e511-9fc1-ac853d9f53cc&#39;)">+加关注</a></div>
+    <script>getFollowStatus('6b659cc1-acdf-e511-9fc1-ac853d9f53cc');</script>
+</div>
+</div>
+</div>
+<script>loadBlogNews();</script>
+
+ 
+</div>
+<div id="sidebar_c3"></div>
+			<div id="blog-calendar" style="">
+
+<table id="blogCalendar" class="Cal" cellspacing="0" cellpadding="0" title="Calendar" border="0">
+    <tbody>
+        <tr>
+            <td colspan="7">
+                <table class="CalTitle" cellspacing="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2024/05/12&#39;); return false;">&lt;</a>
+                            </td>
+                            <td align="center">2024年6月</td>
+                            <td align="right" class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2024/07/12&#39;); return false;">&gt;</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    <tr>
+        <th class="CalDayHeader" align="center" abbr="日" scope="col">日</th>
+        <th class="CalDayHeader" align="center" abbr="一" scope="col">一</th>
+        <th class="CalDayHeader" align="center" abbr="二" scope="col">二</th>
+        <th class="CalDayHeader" align="center" abbr="三" scope="col">三</th>
+        <th class="CalDayHeader" align="center" abbr="四" scope="col">四</th>
+        <th class="CalDayHeader" align="center" abbr="五" scope="col">五</th>
+        <th class="CalDayHeader" align="center" abbr="六" scope="col">六</th>
+    </tr>
+            <tr>
+                            <td class="CalOtherMonthDay" align="center">26</td>
+                            <td class="CalOtherMonthDay" align="center">27</td>
+                            <td class="CalOtherMonthDay" align="center">28</td>
+                            <td class="CalOtherMonthDay" align="center">29</td>
+                            <td class="CalOtherMonthDay" align="center">30</td>
+                            <td class="CalOtherMonthDay" align="center">31</td>
+                    <td class="CalWeekendDay" align="center">
+                        1
+                    </td>
+            </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            2
+                        </td>
+                            <td class="" align="center">
+                                3
+                            </td>
+                            <td class="" align="center">
+                                4
+                            </td>
+                            <td class="" align="center">
+                                5
+                            </td>
+                            <td class="" align="center">
+                                6
+                            </td>
+                            <td class="" align="center">
+                                7
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            8
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            9
+                        </td>
+                            <td class="" align="center">
+                                10
+                            </td>
+                            <td class="" align="center">
+                                11
+                            </td>
+                            <td class="CalTodayDay" align="center">
+                                12
+                            </td>
+                            <td class="" align="center">
+                                13
+                            </td>
+                            <td class="" align="center">
+                                14
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            15
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            16
+                        </td>
+                            <td class="" align="center">
+                                17
+                            </td>
+                            <td class="" align="center">
+                                18
+                            </td>
+                            <td class="" align="center">
+                                19
+                            </td>
+                            <td class="" align="center">
+                                20
+                            </td>
+                            <td class="" align="center">
+                                21
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            22
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            23
+                        </td>
+                            <td class="" align="center">
+                                24
+                            </td>
+                            <td class="" align="center">
+                                25
+                            </td>
+                            <td class="" align="center">
+                                26
+                            </td>
+                            <td class="" align="center">
+                                27
+                            </td>
+                            <td class="" align="center">
+                                28
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            29
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            30
+                        </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                1
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                2
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                3
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                4
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                5
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            6
+                        </td>
+                </tr>
+    </tbody>
+</table></div><script>loadBlogDefaultCalendar();</script>			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"><!-- 搜索 -->
+<div id="sidebar_search" class="sidebar-block">
+    <div class="mySearch my-search">
+        <h3 class="catListTitle">搜索</h3>
+        <div id="sidebar_search_box">
+            <div id="widget_my_zzk" class="div_my_zzk">
+                <input type="text" id="q" onkeydown="return zzk_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="zzk_go()" type="button" value="找找看" id="btnZzk" class="btn_my_zzk">
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<!-- 常用链接 -->
+<div id="sidebar_shortcut" class="sidebar-block"><div class="catListLink">
+<h3 class="catListTitle">
+常用链接
+</h3>
+<ul>
+    <li><a href="https://www.cnblogs.com/wangtianning1223/p/" title="我的博客的随笔列表">我的随笔</a></li>
+<li><a href="https://www.cnblogs.com/wangtianning1223/MyComments.html" title="我的发表过的评论列表">我的评论</a></li>
+<li><a href="https://www.cnblogs.com/wangtianning1223/OtherPosts.html" title="我评论过的随笔列表">我的参与</a></li>
+<li><a href="https://www.cnblogs.com/wangtianning1223/comments" title="我的博客的评论列表">最新评论</a></li>
+<li><a href="https://www.cnblogs.com/wangtianning1223/tag/" title="我的博客的标签列表">我的标签</a></li>
+
+</ul>
+</div>
+
+</div>
+
+<!-- 最新随笔 -->
+
+
+<!-- 我的标签 -->
+<div id="sidebar_toptags" class="sidebar-block"></div>
+
+<!-- 积分与排名 -->
+
+
+<!-- 随笔分类、随笔档案、文章分类、新闻分类、相册、链接 -->
+<div id="sidebar_categories">
+
+    <div id="sidebar_postcategory" class="catListPostCategory sidebar-block">
+        <h3 class="catListTitle">
+            
+    <a class="sidebar-card-title-a" href="https://www.cnblogs.com/wangtianning1223/post-categories">随笔分类</a>
+
+
+
+        </h3>
+
+        <ul>
+
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/category/1808312.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">bug记录(17)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/category/1672857.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">C++(54)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/category/2080777.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">cuda编程(12)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/category/1898233.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">python(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/category/1796924.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">环境配置(14)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/category/1808313.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">数学基础(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/category/1808311.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">算法和数据结构(20)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/category/1616508.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">图像处理Opencv/Matlab(36)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/category/1808319.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">杂(42)</a>
+ 
+                </li>                
+            
+        </ul>
+
+
+    </div>    
+    <div id="sidebar_postarchive" class="catListPostArchive sidebar-block">
+        <h3 class="catListTitle">
+            
+随笔档案
+
+
+        </h3>
+
+        <ul>
+
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2024/02" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2024年2月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2023/12" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2023年12月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2023/10" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2023年10月(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2023/07" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2023年7月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2023/06" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2023年6月(8)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2023/03" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2023年3月(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2023/02" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2023年2月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2023/01" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2023年1月(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2022/12" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2022年12月(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2022/10" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2022年10月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2022/09" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2022年9月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2022/08" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2022年8月(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2022/07" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2022年7月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2022/06" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2022年6月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2022/05" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2022年5月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2022/04" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2022年4月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2022/03" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2022年3月(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2022/02" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2022年2月(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2022/01" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2022年1月(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2021/12" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2021年12月(6)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2021/11" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2021年11月(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2021/10" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2021年10月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2021/09" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2021年9月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2021/07" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2021年7月(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2021/06" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2021年6月(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2021/05" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2021年5月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2021/04" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2021年4月(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2021/03" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2021年3月(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2021/02" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2021年2月(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2021/01" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2021年1月(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2020/12" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2020年12月(6)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2020/10" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2020年10月(11)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2020/09" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2020年9月(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2020/08" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2020年8月(14)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2020/07" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2020年7月(15)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2020/05" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2020年5月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2020/04" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2020年4月(23)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2020/03" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2020年3月(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2019/12" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2019年12月(8)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2019/10" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2019年10月(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2019/09" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2019年9月(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2019/08" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2019年8月(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2019/07" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2019年7月(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2019/05" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2019年5月(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2019/04" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2019年4月(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2019/03" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2019年3月(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2019/02" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2019年2月(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2017/04" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2017年4月(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2017/02" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2017年2月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2017/01" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2017年1月(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2016/06" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2016年6月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2016/05" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2016年5月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2016/04" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2016年4月(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/wangtianning1223/p/archive/2016/03" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2016年3月(9)</a>
+ 
+                </li>                
+            <li>
+                <a href="javascript:void(0)" onclick="sideColumnManager.loadMore(this)">更多</a>
+            </li>
+        </ul>
+
+
+    </div>    
+</div>
+
+<!-- 最新评论 -->
+<!-- 阅读排行榜 -->
+<div id="sidebar_topviewedposts" class="sidebar-block"><div class="catListView">
+    <h3 class="catListTitle">
+        <a href="https://www.cnblogs.com/wangtianning1223/most-viewed" class="sidebar-card-title-a">
+    阅读排行榜
+</a>
+
+    </h3>
+    <div id="TopViewPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/wangtianning1223/p/5286693.html">
+                            1. coding代码仓库的配置和代码上传(13106)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/wangtianning1223/p/11145441.html">
+                            2. matlab 彩色图像转化成灰度图像，灰度图像降低灰度级(7941)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/wangtianning1223/p/11321145.html">
+                            3. ValueError: Graph disconnected: cannot obtain value for tensor Tensor(7122)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/wangtianning1223/p/15919596.html">
+                            4. c++ 线程绑定到cpu指定核心(6836)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/wangtianning1223/p/11510077.html">
+                            5. 图像处理中的卷积操作和高斯核(5884)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div></div>
+
+<!-- 评论排行榜 -->
+<div id="sidebar_topcommentedposts" class="sidebar-block"><div class="catListFeedback">
+    <h3 class="catListTitle">
+        <a href="https://www.cnblogs.com/wangtianning1223/most-commented" class="sidebar-card-title-a">评论排行榜</a>
+
+    </h3>
+    <div id="TopFeedbackPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/wangtianning1223/p/5346601.html">
+                            1. 软件工程  团队作业一(7)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/wangtianning1223/p/5357294.html">
+                            2. 结对编程  黄金点游戏(5)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/wangtianning1223/p/11321145.html">
+                            3. ValueError: Graph disconnected: cannot obtain value for tensor Tensor(4)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/wangtianning1223/p/5256260.html">
+                            4. 软件工程第一次作业  出题程序(3)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/wangtianning1223/p/5243758.html">
+                            5. 对于软件工程课程的疑问(3)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div></div>
+
+<!-- 推荐排行榜 -->
+<div id="sidebar_topdiggedposts" class="sidebar-block">
+<div id="topdigg_posts_wrap">
+    <div class="catListView">
+        <h3 class="catListTitle">
+            <a href="https://www.cnblogs.com/wangtianning1223/most-liked" class="sidebar-card-title-a">推荐排行榜</a>
+
+        </h3>
+        <div id="TopDiggPostsBlock">
+            <ul style="word-break: break-all">
+                        <li>
+                            <a href="https://www.cnblogs.com/wangtianning1223/p/5286693.html">
+                                1. coding代码仓库的配置和代码上传(3)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/wangtianning1223/p/14662970.html">
+                                2. tvm模型c++部署 调用gpu(1)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/wangtianning1223/p/14250470.html">
+                                3. ubuntu18.04 TVM编译安装(1)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/wangtianning1223/p/11680147.html">
+                                4. c++中char类型的取值范围(1)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/wangtianning1223/p/11321145.html">
+                                5. ValueError: Graph disconnected: cannot obtain value for tensor Tensor(1)
+                            </a>
+                        </li>
+            </ul>
+        </div>
+    </div>
+</div></div><div id="sidebar_recentcomments" class="sidebar-block"><div class="catListComment">
+<h3 class="catListTitle"><a href="https://www.cnblogs.com/wangtianning1223/comments" class="sidebar-card-title-a">最新评论</a></h3>
+    <div class="RecentCommentBlock">
+        <ul>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/wangtianning1223/p/16040626.html">1. Re:手写grpc c++ 简单demo</a></li>
+                <li class="recent_comment_body">@lance1 感谢指正，已修改...</li>
+                <li class="recent_comment_author">--Wangtn</li>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/wangtianning1223/p/16040626.html">2. Re:手写grpc c++ 简单demo</a></li>
+                <li class="recent_comment_body">您好，按照您的步骤来会出现上述错误，需要在CMakeLists.txt中将find_package(Protobuf REQUIRED) 改为 find_package(Protobuf REQUIR...</li>
+                <li class="recent_comment_author">--lance1</li>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/wangtianning1223/p/10394416.html">3. Re:PCA降维实验代码</a></li>
+                <li class="recent_comment_body">@脂环 链接： 提取码：37cp --来自百度网盘超级会员V7的分享...</li>
+                <li class="recent_comment_author">--Wangtn</li>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/wangtianning1223/p/10394416.html">4. Re:PCA降维实验代码</a></li>
+                <li class="recent_comment_body"><p>您好 请问可以提供一下Houston15这个数据集吗</p>
+</li>
+                <li class="recent_comment_author">--脂环</li>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/wangtianning1223/p/15534011.html">5. Re:javascript 用变量作为object的key</a></li>
+                <li class="recent_comment_body">@张瑞远 丑远...</li>
+                <li class="recent_comment_author">--Wangtn</li>
+        </ul>
+    </div>
+</div>
+
+</div>
+
+
+</div>
+                    <script>loadBlogSideColumn();</script>
+			</div>			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright © 2024 Wangtn
+<br><span id="poweredby">Powered by .NET 8.0 on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+
+    
+
+    <input type="hidden" id="antiforgery_token" value="CfDJ8ONv0caE5GtEh3YJ5j088klDCRuHrLzuuEeDoxaQIzuWsmyDh8SDj4NW3aISXTjAXXwEcZqtkq7Hz0MQ52X7j0Y5MWWkNTcUCpnAZCqquaDhdHc3RyLHxKJOli_DRot8h3sZb5V2d_pfOPyE0viPAqk">
+    <script async="" src="./ubuntu20.04 安装TensorRT c++库 - Wangtn - 博客园_files/js"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-M95P3TTWJZ');
+</script>
+<script defer="" src="./ubuntu20.04 安装TensorRT c++库 - Wangtn - 博客园_files/hm.js"></script>
+
+
+<div style="z-index: 998; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); display: none; flex-direction: column; align-items: center; justify-content: center">
+<div style="background: #fff;padding: 30px; margin: 30px; border-radius: 16px;">
+  <div style="width: 200px; height: 200px; background: rgba(255, 255, 255, 0.8); position: absolute; top: -100px; right: -100px; border-radius: 100px"></div>
+  <div style="text-align: center; font-size: 18px; margin-bottom: 10px;">点击右上角即可分享</div>
+  <img src="./ubuntu20.04 安装TensorRT c++库 - Wangtn - 博客园_files/35695-20230906145857937-1471873834.gif" alt="微信分享提示">
+</div>   
+    </div></body></html>
