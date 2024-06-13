@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<!-- saved from url=(0047)https://www.cnblogs.com/SnailN2/p/17710999.html -->
+<html lang="zh-cn" style="--olcb-folder-code-block-max-height: 80vh; --cnb-code-bg: rgb(245, 245, 245); --cnb-code-font-size: 12px; --cnb-code-color: rgb(68, 68, 68);"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin-when-cross-origin">
+    <meta name="keywords" content="c++,YOLO,深度学习,ubuntu">
+    <meta name="description" content="目录 环境配置 系统环境 项目文件路径 文件环境 config.txt CMakeLists.txt type.names 读取config.txt配置文件 修改图片尺寸格式 读取缺陷标志文件 生成缺陷随机颜色标识 模型推理 推理结果获取 缺陷信息还原并显示 总代码 环境配置 系统环境 Ubuntu">
+    <meta property="og:description" content="目录 环境配置 系统环境 项目文件路径 文件环境 config.txt CMakeLists.txt type.names 读取config.txt配置文件 修改图片尺寸格式 读取缺陷标志文件 生成缺陷随机颜色标识 模型推理 推理结果获取 缺陷信息还原并显示 总代码 环境配置 系统环境 Ubuntu">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Ubuntu环境下C++使用onnxruntime和Opencv进行YOLOv8模型部署 - 放氮气的蜗牛 - 博客园</title>
+    <link rel="canonical" href="https://www.cnblogs.com/SnailN2/p/17710999.html">
+    <link rel="shortcut icon" id="favicon" href="https://assets.cnblogs.com/favicon.svg?v=2" type="image/svg+xml">
+    
+    <style>#home :not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]):not([class*="brush:"]) code:not(.hljs), :not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]):not([class*="brush:"]) code:not(.hljs) {background: rgb(245, 245, 245);
+        padding: 12px;
+        border: 0.8px solid rgb(204, 204, 204);
+        border-radius: 3px;
+        border-color: transparent;
+        color: rgb(68, 68, 68);
+        font-family: "Courier New", sans-serif;
+        font-size: 12px</style><link rel="stylesheet" href="./Ubuntu环境下C++使用onnxruntime和Opencv进行YOLOv8模型部署 - 放氮气的蜗牛 - 博客园_files/blog-common.min.css">
+    
+
+    <link id="MainCss" rel="stylesheet" href="./Ubuntu环境下C++使用onnxruntime和Opencv进行YOLOv8模型部署 - 放氮气的蜗牛 - 博客园_files/bundle-codinglife.min.css">
+        <link id="highlighter-theme-cnblogs" type="text/css" rel="stylesheet" href="./Ubuntu环境下C++使用onnxruntime和Opencv进行YOLOv8模型部署 - 放氮气的蜗牛 - 博客园_files/cnblogs.css">
+    
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./Ubuntu环境下C++使用onnxruntime和Opencv进行YOLOv8模型部署 - 放氮气的蜗牛 - 博客园_files/bundle-codinglife-mobile.min.css">
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/SnailN2/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/SnailN2/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/SnailN2/wlwmanifest.xml">
+    <script>
+        var currentBlogId = 802881;
+        var currentBlogApp = 'SnailN2';
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'CodingLife';
+        var visitorUserId = '';
+        var hasCustomScript = false;
+        window.cb_enable_mathjax = false;
+        window.mathEngine = 1;
+        window.codeHighlightEngine = 1;
+        window.enableCodeLineNumber = false;
+        window.codeHighlightTheme = 'cnblogs';
+        window.darkModeCodeHighlightTheme = 'vs2015';
+        window.isDarkCodeHighlightTheme = false;
+        window.isDarkModeCodeHighlightThemeDark = true;
+        window.isDisableCodeHighlighter = false;
+        window.enableCodeThemeTypeFollowSystem = false;
+        window.enableMacStyleCodeBlock = true;
+    </script>
+        <script>
+            window.currentPostId = 17710999;
+            window.currentPostDateAdded = '2023-08-28 19:58';
+        </script>
+    <script src="./Ubuntu环境下C++使用onnxruntime和Opencv进行YOLOv8模型部署 - 放氮气的蜗牛 - 博客园_files/jquery-3.3.1.min.js"></script>
+    <script src="./Ubuntu环境下C++使用onnxruntime和Opencv进行YOLOv8模型部署 - 放氮气的蜗牛 - 博客园_files/blog-common.min.js"></script><style>.medium-zoom-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 300ms;
+  will-change: opacity;
+}
+
+.medium-zoom--opened .medium-zoom-overlay {
+  cursor: pointer;
+  cursor: zoom-out;
+  opacity: 1;
+}
+
+.medium-zoom-image {
+  cursor: pointer;
+  cursor: zoom-in;
+  /*
+    The `transition` is marked as "!important" for the animation to happen
+    even though it's overriden by another inline `transition` style attribute.
+
+    This is problematic with frameworks that generate inline styles on their
+    images (e.g. Gatsby).
+
+    See https://github.com/francoischalifour/medium-zoom/issues/110
+   */
+  transition: transform 300ms cubic-bezier(0.2, 0, 0.2, 1) !important;
+}
+
+.medium-zoom-image--hidden {
+  visibility: hidden;
+}
+
+.medium-zoom-image--opened {
+  position: relative;
+  cursor: pointer;
+  cursor: zoom-out;
+  will-change: transform;
+}
+</style><script id="hljs-script" src="./Ubuntu环境下C++使用onnxruntime和Opencv进行YOLOv8模型部署 - 放氮气的蜗牛 - 博客园_files/highlight.min.js" type="text/javascript" async=""></script>
+    
+<meta property="og:image" content="https://img2023.cnblogs.com/blog/3281405/202309/3281405-20230918113558584-469607223.png"></head>
+<body class="skin-codinglife has-navbar hljs-engine">
+    <a name="top"></a>
+    <div id="top_nav" class="navbar forpc">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding">
+                    <a href="https://www.cnblogs.com/" title="开发者的网上家园" role="banner">
+                        <img src="./Ubuntu环境下C++使用onnxruntime和Opencv进行YOLOv8模型部署 - 放氮气的蜗牛 - 博客园_files/logo.svg" alt="博客园Logo">
+                    </a>
+                </li>
+                <li><a href="https://cnblogs.vip/">会员</a></li>
+                <li><a href="https://www.cnblogs.com/cmt/articles/18197617">众包</a></li>
+                <li>
+                    <a href="https://news.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-news&#39;)">新闻</a>
+                </li>
+                <li>
+                    <a href="https://q.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-q&#39;)">博问</a>
+                </li>
+                <li>
+                    <a href="https://ing.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-ing&#39;)">闪存</a>
+                </li>
+                <li><a href="https://market.cnblogs.com/" target="_blank">云市场</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search dropdown" action="https://zzk.cnblogs.com/s" method="get" role="search">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="search" tabindex="3" autocomplete="off">
+                        <button id="zzk_search_button" onclick="window.navbarSearchManager.triggerActiveOption()">
+                            <img id="search_icon" class="focus-hidden" src="./Ubuntu环境下C++使用onnxruntime和Opencv进行YOLOv8模型部署 - 放氮气的蜗牛 - 博客园_files/search.svg" alt="搜索">
+                            <img class="hidden focus-visible" src="./Ubuntu环境下C++使用onnxruntime和Opencv进行YOLOv8模型部署 - 放氮气的蜗牛 - 博客园_files/enter.svg" alt="搜索">
+                        </button>
+                        <ul id="navbar_search_options" class="dropdown-menu quick-search-menu">
+                            <li tabindex="0" class="active" onclick="zzkSearch(event, document.getElementById(&#39;zzk_search_input&#39;).value)">
+                                <div class="keyword-wrapper">
+                                    <img src="./Ubuntu环境下C++使用onnxruntime和Opencv进行YOLOv8模型部署 - 放氮气的蜗牛 - 博客园_files/search.svg" alt="搜索">
+                                    <div class="keyword"></div>
+                                </div>
+                                <span class="search-area">所有博客</span>
+                            </li>
+                                    <li tabindex="1" onclick="zzkBlogSearch(event, &#39;SnailN2&#39;, document.getElementById(&#39;zzk_search_input&#39;).value)">
+                                        <div class="keyword-wrapper">
+                                            <img src="./Ubuntu环境下C++使用onnxruntime和Opencv进行YOLOv8模型部署 - 放氮气的蜗牛 - 博客园_files/search.svg" alt="搜索">
+                                            <div class="keyword"></div>
+                                        </div>
+                                        <span class="search-area">当前博客</span>
+                                    </li>
+                        </ul>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔" style="display: none;">
+                        <img id="new_post_icon" class="navbar-icon" src="./Ubuntu环境下C++使用onnxruntime和Opencv进行YOLOv8模型部署 - 放氮气的蜗牛 - 博客园_files/newpost.svg" alt="写随笔">
+                    </a>
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客" style="display: none;">
+                        <img id="myblog_icon" class="navbar-icon" src="./Ubuntu环境下C++使用onnxruntime和Opencv进行YOLOv8模型部署 - 放氮气的蜗牛 - 博客园_files/myblog.svg" alt="我的博客">
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息" style="display: none;">
+                        <img id="msg_icon" class="navbar-icon" src="./Ubuntu环境下C++使用onnxruntime和Opencv进行YOLOv8模型部署 - 放氮气的蜗牛 - 博客园_files/message.svg" alt="短消息">
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <a id="navbar_lite_mode_indicator" data-current-page="blog" style="display: none" href="javascript:void(0)" alt="简洁模式" title="简洁模式启用，您在访问他人博客时会使用简洁款皮肤展示">
+                        <img class="navbar-icon" src="./Ubuntu环境下C++使用onnxruntime和Opencv进行YOLOv8模型部署 - 放氮气的蜗牛 - 博客园_files/lite-mode-on.svg" alt="简洁模式">
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown" style="display: none;">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="./Ubuntu环境下C++使用onnxruntime和Opencv进行YOLOv8模型部署 - 放氮气的蜗牛 - 博客园_files/avatar-default.svg" alt="用户头像">
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <img id="navbar_lite_mode_on" src="./Ubuntu环境下C++使用onnxruntime和Opencv进行YOLOv8模型部署 - 放氮气的蜗牛 - 博客园_files/lite-mode-check.svg" class="hide" style="display: none;"><span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+                            <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup" style="display: inline;">注册</a>
+                    <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()" style="display: inline;">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    
+
+    <!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/SnailN2/"><img id="blogLogo" src="./Ubuntu环境下C++使用onnxruntime和Opencv进行YOLOv8模型部署 - 放氮气的蜗牛 - 博客园_files/logo.gif" alt="返回主页"></a>		
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/SnailN2">SnailN2</a>
+</h1>
+<h2></h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/SnailN2/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/%E6%94%BE%E6%B0%AE%E6%B0%94%E7%9A%84%E8%9C%97%E7%89%9B">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/SnailN2/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			<span id="stats_post_count">随笔 - 99&nbsp; </span>
+<span id="stats_article_count">文章 - 0&nbsp; </span>
+<span id="stats-comment_count">评论 - 4&nbsp; </span>
+<span id="stats-total-view-count">阅读 - 
+<span title="总阅读数: 8795">
+8795</span></span>
+
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    <!--done-->
+    <div id="topics">
+        <div class="post">
+            <h1 class="postTitle">
+                <a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/SnailN2/p/17710999.html" title="发布于 2023-08-28 19:58">
+    <span role="heading" aria-level="2">Ubuntu环境下C++使用onnxruntime和Opencv进行YOLOv8模型部署</span>
+    
+
+</a><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                <div id="cnblogs_post_body" class="blogpost-body blogpost-body-html">
+<p id="main-toc"><strong>目录</strong></p>
+<p id="%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-toc" style="margin-left: 0"><a href="https://www.cnblogs.com/SnailN2/p/17710999.html#%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE" rel="noopener">环境配置</a></p>
+<p id="%E7%B3%BB%E7%BB%9F%E7%8E%AF%E5%A2%83-toc" style="margin-left: 40px"><a href="https://www.cnblogs.com/SnailN2/p/17710999.html#%E7%B3%BB%E7%BB%9F%E7%8E%AF%E5%A2%83" rel="noopener">系统环境</a></p>
+<p id="%E9%A1%B9%E7%9B%AE%E6%96%87%E4%BB%B6%E8%B7%AF%E5%BE%84%C2%A0-toc" style="margin-left: 40px"><a href="https://www.cnblogs.com/SnailN2/p/17710999.html#%E9%A1%B9%E7%9B%AE%E6%96%87%E4%BB%B6%E8%B7%AF%E5%BE%84%C2%A0" rel="noopener">项目文件路径&nbsp;</a></p>
+<p id="%E6%96%87%E4%BB%B6%E7%8E%AF%E5%A2%83-toc" style="margin-left: 40px"><a href="https://www.cnblogs.com/SnailN2/p/17710999.html#%E6%96%87%E4%BB%B6%E7%8E%AF%E5%A2%83" rel="noopener">文件环境</a></p>
+<p id="%C2%A0config.txt-toc" style="margin-left: 80px"><a href="https://www.cnblogs.com/SnailN2/p/17710999.html#%C2%A0config.txt" rel="noopener">&nbsp;config.txt</a></p>
+<p id="%C2%A0CMakeLists.txt-toc" style="margin-left: 80px"><a href="https://www.cnblogs.com/SnailN2/p/17710999.html#%C2%A0CMakeLists.txt" rel="noopener">&nbsp;CMakeLists.txt</a></p>
+<p id="type.names-toc" style="margin-left: 80px"><a href="https://www.cnblogs.com/SnailN2/p/17710999.html#type.names" rel="noopener">type.names</a></p>
+<p id="%C2%A0%E8%AF%BB%E5%8F%96config.txt%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6-toc" style="margin-left: 0"><a href="https://www.cnblogs.com/SnailN2/p/17710999.html#%C2%A0%E8%AF%BB%E5%8F%96config.txt%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6" rel="noopener">&nbsp;读取config.txt配置文件</a></p>
+<p id="%E4%BF%AE%E6%94%B9%E5%9B%BE%E7%89%87%E5%B0%BA%E5%AF%B8%E6%A0%BC%E5%BC%8F-toc" style="margin-left: 0"><a href="https://www.cnblogs.com/SnailN2/p/17710999.html#%E4%BF%AE%E6%94%B9%E5%9B%BE%E7%89%87%E5%B0%BA%E5%AF%B8%E6%A0%BC%E5%BC%8F" rel="noopener">修改图片尺寸格式</a></p>
+<p id="%E8%AF%BB%E5%8F%96%E7%BC%BA%E9%99%B7%E6%A0%87%E5%BF%97%E6%96%87%E4%BB%B6-toc" style="margin-left: 0"><a href="https://www.cnblogs.com/SnailN2/p/17710999.html#%E8%AF%BB%E5%8F%96%E7%BC%BA%E9%99%B7%E6%A0%87%E5%BF%97%E6%96%87%E4%BB%B6" rel="noopener">读取缺陷标志文件</a></p>
+<p id="%E7%94%9F%E6%88%90%E7%BC%BA%E9%99%B7%E9%9A%8F%E6%9C%BA%E9%A2%9C%E8%89%B2%E6%A0%87%E8%AF%86-toc" style="margin-left: 0"><a href="https://www.cnblogs.com/SnailN2/p/17710999.html#%E7%94%9F%E6%88%90%E7%BC%BA%E9%99%B7%E9%9A%8F%E6%9C%BA%E9%A2%9C%E8%89%B2%E6%A0%87%E8%AF%86" rel="noopener">生成缺陷随机颜色标识</a></p>
+<p id="%E6%A8%A1%E5%9E%8B%E6%8E%A8%E7%90%86-toc" style="margin-left: 0"><a href="https://www.cnblogs.com/SnailN2/p/17710999.html#%E6%A8%A1%E5%9E%8B%E6%8E%A8%E7%90%86" rel="noopener">模型推理</a></p>
+<p id="%E6%8E%A8%E7%90%86%E7%BB%93%E6%9E%9C%E8%8E%B7%E5%8F%96-toc" style="margin-left: 0"><a href="https://www.cnblogs.com/SnailN2/p/17710999.html#%E6%8E%A8%E7%90%86%E7%BB%93%E6%9E%9C%E8%8E%B7%E5%8F%96" rel="noopener">推理结果获取</a></p>
+<p id="%E7%BC%BA%E9%99%B7%E4%BF%A1%E6%81%AF%E8%BF%98%E5%8E%9F%E5%B9%B6%E6%98%BE%E7%A4%BA-toc" style="margin-left: 0"><a href="https://www.cnblogs.com/SnailN2/p/17710999.html#%E7%BC%BA%E9%99%B7%E4%BF%A1%E6%81%AF%E8%BF%98%E5%8E%9F%E5%B9%B6%E6%98%BE%E7%A4%BA" rel="noopener">缺陷信息还原并显示</a></p>
+<p id="%E6%80%BB%E4%BB%A3%E7%A0%81-toc" style="margin-left: 0"><a href="https://www.cnblogs.com/SnailN2/p/17710999.html#%E6%80%BB%E4%BB%A3%E7%A0%81" rel="noopener">总代码</a></p>
+<hr id="hr-toc">
+<h1>环境配置<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<h2 id="%E7%B3%BB%E7%BB%9F%E7%8E%AF%E5%A2%83">系统环境<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h2>
+<blockquote>
+<p id="main-toc">Ubuntu18.04</p>
+<p>onnxruntime-linux-x64 1.12.1：<a title="https://github.com/microsoft/onnxruntime/releases" href="https://github.com/microsoft/onnxruntime/releases" rel="noopener">https://github.com/microsoft/onnxruntime/releases</a></p>
+<p>opencv 3.4.3</p>
+<p>cmake&nbsp;3.10.2</p>
+</blockquote>
+<h2 id="%E9%A1%B9%E7%9B%AE%E6%96%87%E4%BB%B6%E8%B7%AF%E5%BE%84%C2%A0">项目文件路径&nbsp;<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h2>
+<blockquote>
+<p>1.&nbsp; bin：存放可执行程序和识别结果<br> 2.&nbsp; data：存放数据集<br> 3.&nbsp; src：存放源程序<br> 4.&nbsp; include：存放头文件<br> 5.&nbsp; config.txt：配置文件，内容分别是模型相对路径、图片相对路径、缺陷标识文件相对路径、缺陷识别阈值、缺陷重叠阈值<br> 6.&nbsp; type.names：缺陷标识文件，内容和模型识别的缺陷标识顺序需要一致</p>
+<p><img src="./Ubuntu环境下C++使用onnxruntime和Opencv进行YOLOv8模型部署 - 放氮气的蜗牛 - 博客园_files/3281405-20230918113558584-469607223.png" alt="" class="medium-zoom-image"></p>
+ 
+</blockquote>
+<h2 id="%E6%96%87%E4%BB%B6%E7%8E%AF%E5%A2%83">文件环境<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h2>
+<h3 id="%C2%A0config.txt">&nbsp;config.txt<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h3>
+<p>分别表示模型相对路径、图片相对路径、缺陷标识文件相对路径、缺陷识别阈值、缺陷重叠阈值</p>
+<blockquote>
+<p>../models/best.onnx<br> ../data/2.bmp<br> ../type.names<br> 0.4<br> 0.4</p>
+ 
+</blockquote>
+<h3 id="%C2%A0CMakeLists.txt">&nbsp;CMakeLists.txt<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h3>
+<p>需要更改的地方已经在里面标注好了</p>
+<pre class="highlighter-hljs" data-mac-style="true" highlighted="true"><code class="language-cs highlighter-hljs hljs language-csharp"><span class="hljs-meta"># 项目名称，随便写</span>
+PROJECT(image_onnx)
+<span class="hljs-meta"># cmake版本，根据自己的写</span>
+cmake_minimum_required(VERSION <span class="hljs-number">3.10</span>)
+
+<span class="hljs-meta"># 编译好的可执行文件放置的位置</span>
+<span class="hljs-keyword">set</span>(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${image_onnx_SOURCE_DIR}/bin)
+
+<span class="hljs-meta"># find required opencv</span>
+find_package(OpenCV REQUIRED)
+<span class="hljs-meta"># directory of opencv headers</span>
+include_directories(${OpenCV_INCLUDE_DIRS})
+
+<span class="hljs-meta"># 根据自己的onnxruntime存放路径编写</span>
+<span class="hljs-keyword">set</span>(ONNXRUNTIME_ROOT_PATH /home/ebaina/onnxruntime-linux-x64<span class="hljs-number">-1.12</span><span class="hljs-number">.1</span>/)
+<span class="hljs-keyword">set</span>(ONNXRUNTIME_INCLUDE_DIRS ${ONNXRUNTIME_ROOT_PATH}/include/)
+<span class="hljs-keyword">set</span>(ONNXRUNTIME_LIB ${ONNXRUNTIME_ROOT_PATH}lib/libonnxruntime.so)
+
+<span class="hljs-meta"># 需要编译的cpp文件所在路径，前面是编译好的可执行文件名</span>
+add_executable(image_onnx src/main_image.cpp
+src/change_image.cpp
+src/adjust_result.cpp)
+<span class="hljs-meta"># directory of opencv library</span>
+link_directories(${OpenCV_LIBRARY_DIRS})
+<span class="hljs-meta"># opencv libraries</span>
+target_link_libraries(image_onnx ${OpenCV_LIBS})
+
+include_directories(${ONNXRUNTIME_INCLUDE_DIRS})
+target_link_libraries(image_onnx ${ONNXRUNTIME_LIB})
+
+<span class="hljs-meta"># include</span>
+target_include_directories(image_onnx
+    PRIVATE 
+        ${PROJECT_SOURCE_DIR}/include
+)</code></pre>
+<h3 id="type.names">type.names<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h3>
+<p>缺陷标志文件，内容和模型识别的缺陷标识顺序需要一致，模型识别网站：<a title="Netron" href="https://netron.app/" rel="noopener">Netron</a></p>
+<p class="img-center"><img src="./Ubuntu环境下C++使用onnxruntime和Opencv进行YOLOv8模型部署 - 放氮气的蜗牛 - 博客园_files/3281405-20230918113817850-923178976.png" alt="" class="medium-zoom-image"></p>
+<blockquote>
+<p>burr<br> cbreakage<br> inbreakage<br> bpulp<br> corrode</p>
+ 
+</blockquote>
+<h1 id="%C2%A0%E8%AF%BB%E5%8F%96config.txt%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6">&nbsp;读取config.txt配置文件<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<pre class="highlighter-hljs" data-mac-style="true" highlighted="true"><code class="language-cpp highlighter-hljs hljs">    <span class="hljs-comment">// 自动读取模型路径，图片路径，缺陷阈值，重叠阈值</span>
+    std::string model_path_;
+    std::string imgPath;
+    std::string namesPath;
+    <span class="hljs-type">float</span> threshold;
+    <span class="hljs-type">float</span> nms_threshold;
+        <span class="hljs-comment">// 打开配置文件并读取配置</span>
+    <span class="hljs-function">std::ifstream <span class="hljs-title">configFile</span><span class="hljs-params">(<span class="hljs-string">"../config.txt"</span>)</span></span>;
+    <span class="hljs-keyword">if</span> (configFile.<span class="hljs-built_in">is_open</span>()) {
+        configFile &gt;&gt; model_path_ &gt;&gt; imgPath &gt;&gt; namesPath &gt;&gt; threshold &gt;&gt; nms_threshold;
+        configFile.<span class="hljs-built_in">close</span>();
+
+        std::cout &lt;&lt; <span class="hljs-string">"Model Path: "</span> &lt;&lt; model_path_ &lt;&lt; std::endl;
+        std::cout &lt;&lt; <span class="hljs-string">"Image Path: "</span> &lt;&lt; imgPath &lt;&lt; std::endl;
+        std::cout &lt;&lt; <span class="hljs-string">"Names Path: "</span> &lt;&lt; namesPath &lt;&lt; std::endl;
+        std::cout &lt;&lt; <span class="hljs-string">"Threshold: "</span> &lt;&lt; threshold &lt;&lt; std::endl;
+        std::cout &lt;&lt; <span class="hljs-string">"NMS Threshold: "</span> &lt;&lt; nms_threshold &lt;&lt; std::endl;
+    } <span class="hljs-keyword">else</span>
+        std::cerr &lt;&lt; <span class="hljs-string">"Failed to open config file."</span> &lt;&lt; std::endl;
+    <span class="hljs-type">const</span> <span class="hljs-type">char</span>* model_path = model_path_.<span class="hljs-built_in">c_str</span>();</code></pre>
+<h1 id="%E4%BF%AE%E6%94%B9%E5%9B%BE%E7%89%87%E5%B0%BA%E5%AF%B8%E6%A0%BC%E5%BC%8F">修改图片尺寸格式<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<pre class="highlighter-hljs" data-mac-style="true" highlighted="true"><code class="language-cpp highlighter-hljs hljs">    <span class="hljs-comment">// 图片变换</span>
+    cv::Mat inputImage = cv::<span class="hljs-built_in">imread</span>(imgPath);
+    <span class="hljs-keyword">if</span> (inputImage.<span class="hljs-built_in">empty</span>()) {
+        std::cerr &lt;&lt; <span class="hljs-string">"Failed to load image."</span> &lt;&lt; std::endl;
+        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+    }
+        <span class="hljs-comment">// 获取图片尺寸</span>
+    <span class="hljs-type">int</span> y = inputImage.rows;
+    <span class="hljs-type">int</span> x = inputImage.cols;
+        <span class="hljs-comment">// 图片尺寸变换</span>
+    cv::Mat image0 = <span class="hljs-built_in">resizeImage</span>(inputImage, y, x);
+        <span class="hljs-comment">// 图像归一化</span>
+    std::vector&lt;<span class="hljs-type">float</span>&gt; input_image_ = <span class="hljs-built_in">nchwImage</span>(image0);</code></pre>
+<h1 id="%E8%AF%BB%E5%8F%96%E7%BC%BA%E9%99%B7%E6%A0%87%E5%BF%97%E6%96%87%E4%BB%B6">读取缺陷标志文件<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<pre class="highlighter-hljs" data-mac-style="true" highlighted="true"><code class="language-cpp highlighter-hljs hljs">    <span class="hljs-comment">// 读取缺陷标志文件</span>
+    <span class="hljs-function">std::ifstream <span class="hljs-title">inputFile</span><span class="hljs-params">(namesPath)</span></span>;
+    <span class="hljs-keyword">if</span> (!inputFile.<span class="hljs-built_in">is_open</span>()) {
+        std::cerr &lt;&lt; <span class="hljs-string">"Failed to open the file."</span> &lt;&lt; std::endl;
+        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+    }
+    std::vector&lt;std::string&gt; typeNames;
+    std::string line;
+    <span class="hljs-keyword">while</span> (std::<span class="hljs-built_in">getline</span>(inputFile, line)) 
+        typeNames.<span class="hljs-built_in">push_back</span>(line);
+    inputFile.<span class="hljs-built_in">close</span>();</code></pre>
+<h1 id="%E7%94%9F%E6%88%90%E7%BC%BA%E9%99%B7%E9%9A%8F%E6%9C%BA%E9%A2%9C%E8%89%B2%E6%A0%87%E8%AF%86">生成缺陷随机颜色标识<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<pre class="highlighter-hljs" data-mac-style="true" highlighted="true"><code class="language-cpp highlighter-hljs hljs">    <span class="hljs-comment">// 缺陷颜色标识随机</span>
+    <span class="hljs-type">int</span> numColors = typeNames.<span class="hljs-built_in">size</span>();
+    std::vector&lt;std::vector&lt;<span class="hljs-type">int</span>&gt;&gt; colors;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; numColors; ++i) 
+        colors.<span class="hljs-built_in">push_back</span>(<span class="hljs-built_in">generateRandomColor</span>());
+    <span class="hljs-comment">//     // 打印颜色种类</span>
+    <span class="hljs-comment">// for (const auto &amp;color : colors) </span>
+    <span class="hljs-comment">//     std::cout &lt;&lt; "R: " &lt;&lt; color[0] &lt;&lt; ", G: " &lt;&lt; color[1] &lt;&lt; ", B: " &lt;&lt; color[2] &lt;&lt; std::endl;</span></code></pre>
+<h1 id="%E6%A8%A1%E5%9E%8B%E6%8E%A8%E7%90%86">模型推理<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<pre class="highlighter-hljs" data-mac-style="true" highlighted="true"><code class="language-cpp highlighter-hljs hljs">    <span class="hljs-comment">// 模型设置和推理结果</span>
+    <span class="hljs-function">Ort::Env <span class="hljs-title">env</span><span class="hljs-params">(ORT_LOGGING_LEVEL_WARNING, <span class="hljs-string">"Default"</span>)</span></span>;
+        <span class="hljs-comment">// CPU</span>
+    Ort::Session session_{env, model_path, Ort::SessionOptions{<span class="hljs-literal">nullptr</span>}}; 
+        <span class="hljs-comment">// 模型输入尺寸</span>
+    <span class="hljs-type">static</span> <span class="hljs-keyword">constexpr</span> <span class="hljs-type">const</span> <span class="hljs-type">int</span> height_ = <span class="hljs-number">640</span>; <span class="hljs-comment">//model input height</span>
+    <span class="hljs-type">static</span> <span class="hljs-keyword">constexpr</span> <span class="hljs-type">const</span> <span class="hljs-type">int</span> width_ = <span class="hljs-number">640</span>; <span class="hljs-comment">//model input width</span>
+    Ort::Value input_tensor_{<span class="hljs-literal">nullptr</span>};
+    std::array&lt;<span class="hljs-type">int64_t</span>, 4&gt; input_shape_{<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, height_, width_}; <span class="hljs-comment">//mode input shape NCHW = 1x3xHxW</span>
+        <span class="hljs-comment">// 模型输出尺寸</span>
+    Ort::Value output_tensor_{<span class="hljs-literal">nullptr</span>};
+    std::array&lt;<span class="hljs-type">int64_t</span>, 3&gt; output_shape_{<span class="hljs-number">1</span>, <span class="hljs-number">9</span>, <span class="hljs-number">8400</span>}; <span class="hljs-comment">//model output shape,</span>
+    std::array&lt;_Float32, 9*8400&gt; results_{};
+
+        <span class="hljs-comment">// 模型输入输出张量设置</span>
+    <span class="hljs-keyword">auto</span> memory_info = Ort::MemoryInfo::<span class="hljs-built_in">CreateCpu</span>(OrtDeviceAllocator, OrtMemTypeDefault);
+    input_tensor_ = Ort::Value::<span class="hljs-built_in">CreateTensor</span>&lt;<span class="hljs-type">float</span>&gt;(memory_info, input_image_.<span class="hljs-built_in">data</span>(), input_image_.<span class="hljs-built_in">size</span>(), input_shape_.<span class="hljs-built_in">data</span>(), input_shape_.<span class="hljs-built_in">size</span>());
+    output_tensor_ = Ort::Value::<span class="hljs-built_in">CreateTensor</span>&lt;<span class="hljs-type">float</span>&gt;(memory_info, results_.<span class="hljs-built_in">data</span>(), results_.<span class="hljs-built_in">size</span>(), output_shape_.<span class="hljs-built_in">data</span>(), output_shape_.<span class="hljs-built_in">size</span>());
+        <span class="hljs-comment">// 查看模型输入输出的名称</span>
+    <span class="hljs-type">const</span> <span class="hljs-type">char</span>* input_names[] = {<span class="hljs-string">"images"</span>};
+    <span class="hljs-type">const</span> <span class="hljs-type">char</span>* output_names[] = {<span class="hljs-string">"output0"</span>};
+        <span class="hljs-comment">// 推理</span>
+    session_.<span class="hljs-built_in">Run</span>(Ort::RunOptions{<span class="hljs-literal">nullptr</span>}, input_names, &amp;input_tensor_, <span class="hljs-number">1</span>, output_names, &amp;output_tensor_, <span class="hljs-number">1</span>);
+    <span class="hljs-type">float</span>* out = output_tensor_.<span class="hljs-built_in">GetTensorMutableData</span>&lt;<span class="hljs-type">float</span>&gt;();</code></pre>
+<h1 id="%E6%8E%A8%E7%90%86%E7%BB%93%E6%9E%9C%E8%8E%B7%E5%8F%96">推理结果获取<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<pre class="highlighter-hljs" data-mac-style="true" highlighted="true"><code class="language-cpp highlighter-hljs hljs">        <span class="hljs-comment">// 推理结果获取</span>
+    <span class="hljs-type">int</span> rows = <span class="hljs-number">9</span>;      <span class="hljs-comment">// 第二维度大小，即行数</span>
+    <span class="hljs-type">int</span> cols = <span class="hljs-number">8400</span>;   <span class="hljs-comment">// 第三维度大小，即列数</span>
+    std::vector&lt;std::vector&lt;<span class="hljs-type">float</span>&gt;&gt; <span class="hljs-built_in">matrix</span>(rows, std::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-type">float</span>&gt;(cols));
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> row = <span class="hljs-number">0</span>; row &lt; rows; ++row) 
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> col = <span class="hljs-number">0</span>; col &lt; cols; ++col) 
+            matrix[row][col] = out[row * cols + col];
+        <span class="hljs-comment">// 9，8400数组转置为8400，9</span>
+    std::vector&lt;std::vector&lt;<span class="hljs-type">float</span>&gt;&gt; tran_matrix = <span class="hljs-built_in">transpose</span>(matrix);
+    <span class="hljs-comment">//     // 显示缺陷筛选结果</span>
+    <span class="hljs-comment">// std::vector&lt;std::vector&lt;float&gt;&gt; num = tran_matrix;</span>
+    <span class="hljs-comment">// for (size_t n = 0; n &lt; num.size(); ++n) {</span>
+    <span class="hljs-comment">//     bool aboveThreshold = false;</span>
+    <span class="hljs-comment">//     for (size_t col = 4; col &lt;= 8; ++col)</span>
+    <span class="hljs-comment">//         if (num[n][col] &gt; threshold) {</span>
+    <span class="hljs-comment">//             aboveThreshold = true;</span>
+    <span class="hljs-comment">//             break;</span>
+    <span class="hljs-comment">//         }</span>
+        
+    <span class="hljs-comment">//     if (aboveThreshold) {</span>
+    <span class="hljs-comment">//         std::cout &lt;&lt; "Row " &lt;&lt; n &lt;&lt; ": ";</span>
+    <span class="hljs-comment">//         for (const auto&amp; val : num[n]) </span>
+    <span class="hljs-comment">//             std::cout &lt;&lt; val &lt;&lt; " ";</span>
+                
+    <span class="hljs-comment">//         std::cout &lt;&lt; std::endl;</span>
+    <span class="hljs-comment">//     }</span>
+    <span class="hljs-comment">// }</span></code></pre>
+<h1 id="%E7%BC%BA%E9%99%B7%E4%BF%A1%E6%81%AF%E8%BF%98%E5%8E%9F%E5%B9%B6%E6%98%BE%E7%A4%BA">缺陷信息还原并显示<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<pre class="highlighter-hljs" data-mac-style="true" highlighted="true"><code class="language-cpp highlighter-hljs hljs">    <span class="hljs-comment">// 缺陷还原</span>
+    std::vector&lt;std::vector&lt;<span class="hljs-type">double</span>&gt;&gt; select_matrix;
+    select_matrix = <span class="hljs-built_in">select</span>(tran_matrix, threshold, cols,rows);
+        <span class="hljs-comment">// 缺陷位置信息还原</span>
+    select_matrix = <span class="hljs-built_in">return_</span>(select_matrix, y, x);
+        <span class="hljs-comment">// 缺陷位置信息筛选</span>
+    select_matrix = <span class="hljs-built_in">nms_</span>(select_matrix, nms_threshold);
+    <span class="hljs-comment">//     // 打印数组的内容</span>
+    <span class="hljs-comment">// for (const auto&amp; row : select_matrix){</span>
+    <span class="hljs-comment">//     for (const auto&amp; value : row) {</span>
+    <span class="hljs-comment">//         std::cout &lt;&lt; value &lt;&lt; " ";</span>
+    <span class="hljs-comment">//     }</span>
+    <span class="hljs-comment">//     std::cout &lt;&lt; std::endl;</span>
+    <span class="hljs-comment">// }</span>
+        <span class="hljs-comment">// 绘制识别框</span>
+    cv::Mat outputImage = <span class="hljs-built_in">draw_image</span>(select_matrix, inputImage, typeNames, colors);
+    
+    <span class="hljs-comment">// 自定义窗口大小</span>
+    <span class="hljs-type">int</span> windowWidth = <span class="hljs-number">1200</span>;
+    <span class="hljs-type">int</span> windowHeight = <span class="hljs-number">900</span>;
+
+    <span class="hljs-comment">// 调整窗口大小</span>
+    cv::<span class="hljs-built_in">namedWindow</span>(<span class="hljs-string">"Image with Bounding Boxes"</span>, cv::WINDOW_NORMAL);
+    cv::<span class="hljs-built_in">resizeWindow</span>(<span class="hljs-string">"Image with Bounding Boxes"</span>, windowWidth, windowHeight);
+    cv::<span class="hljs-built_in">imshow</span>(<span class="hljs-string">"Image with Bounding Boxes"</span>, outputImage);
+    cv::<span class="hljs-built_in">imwrite</span>(<span class="hljs-string">"marked_image.jpg"</span>, outputImage);
+    cv::<span class="hljs-built_in">waitKey</span>(<span class="hljs-number">0</span>);</code></pre>
+<h1 id="%E6%80%BB%E4%BB%A3%E7%A0%81">main代码(关注取源码!)<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<pre class="highlighter-hljs" data-mac-style="true" highlighted="true"><code class="language-cpp highlighter-hljs hljs"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;assert.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;random&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;onnxruntime_cxx_api.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">"cpu_provider_factory.h"</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;adjust_result.h&gt;</span></span>
+
+<span class="hljs-comment">// 随机生成颜色</span>
+<span class="hljs-function">std::vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">generateRandomColor</span><span class="hljs-params">()</span> </span>{
+    std::random_device rd;
+    <span class="hljs-function">std::mt19937 <span class="hljs-title">gen</span><span class="hljs-params">(rd())</span></span>;
+    <span class="hljs-function">std::uniform_real_distribution&lt;<span class="hljs-type">double</span>&gt; <span class="hljs-title">dis</span><span class="hljs-params">(<span class="hljs-number">0.0</span>, <span class="hljs-number">1.0</span>)</span></span>;
+
+    <span class="hljs-function">std::vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">color</span><span class="hljs-params">(<span class="hljs-number">3</span>)</span></span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">3</span>; ++i) {
+        color[i] = <span class="hljs-built_in">static_cast</span>&lt;<span class="hljs-type">int</span>&gt;(<span class="hljs-built_in">dis</span>(gen) * <span class="hljs-number">255</span>);
+    }
+
+    <span class="hljs-keyword">return</span> color;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span>* argv[])</span> </span>{
+    <span class="hljs-comment">// // 模型路径，图片路径，缺陷阈值，重叠阈值</span>
+    <span class="hljs-comment">// const char* model_path = "../models/best.onnx";</span>
+    <span class="hljs-comment">// std::string imgPath = "../data/3.bmp";</span>
+    <span class="hljs-comment">// std::string namesPath = "../type.names";</span>
+    <span class="hljs-comment">// float threshold = 0.4;</span>
+    <span class="hljs-comment">// float nms_threshold = 0.4;</span>
+    <span class="hljs-comment">// 自动读取模型路径，图片路径，缺陷阈值，重叠阈值</span>
+    std::string model_path_;
+    std::string imgPath;
+    std::string namesPath;
+    <span class="hljs-type">float</span> threshold;
+    <span class="hljs-type">float</span> nms_threshold;
+        <span class="hljs-comment">// 打开配置文件并读取配置</span>
+    <span class="hljs-function">std::ifstream <span class="hljs-title">configFile</span><span class="hljs-params">(<span class="hljs-string">"../config.txt"</span>)</span></span>;
+    <span class="hljs-keyword">if</span> (configFile.<span class="hljs-built_in">is_open</span>()) {
+        configFile &gt;&gt; model_path_ &gt;&gt; imgPath &gt;&gt; namesPath &gt;&gt; threshold &gt;&gt; nms_threshold;
+        configFile.<span class="hljs-built_in">close</span>();
+
+        std::cout &lt;&lt; <span class="hljs-string">"Model Path: "</span> &lt;&lt; model_path_ &lt;&lt; std::endl;
+        std::cout &lt;&lt; <span class="hljs-string">"Image Path: "</span> &lt;&lt; imgPath &lt;&lt; std::endl;
+        std::cout &lt;&lt; <span class="hljs-string">"Names Path: "</span> &lt;&lt; namesPath &lt;&lt; std::endl;
+        std::cout &lt;&lt; <span class="hljs-string">"Threshold: "</span> &lt;&lt; threshold &lt;&lt; std::endl;
+        std::cout &lt;&lt; <span class="hljs-string">"NMS Threshold: "</span> &lt;&lt; nms_threshold &lt;&lt; std::endl;
+    } <span class="hljs-keyword">else</span>
+        std::cerr &lt;&lt; <span class="hljs-string">"Failed to open config file."</span> &lt;&lt; std::endl;
+    <span class="hljs-type">const</span> <span class="hljs-type">char</span>* model_path = model_path_.<span class="hljs-built_in">c_str</span>();
+
+    <span class="hljs-comment">// 图片变换</span>
+    cv::Mat inputImage = cv::<span class="hljs-built_in">imread</span>(imgPath);
+    <span class="hljs-keyword">if</span> (inputImage.<span class="hljs-built_in">empty</span>()) {
+        std::cerr &lt;&lt; <span class="hljs-string">"Failed to load image."</span> &lt;&lt; std::endl;
+        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+    }
+        <span class="hljs-comment">// 获取图片尺寸</span>
+    <span class="hljs-type">int</span> y = inputImage.rows;
+    <span class="hljs-type">int</span> x = inputImage.cols;
+        <span class="hljs-comment">// 图片尺寸变换</span>
+    cv::Mat image0 = <span class="hljs-built_in">resizeImage</span>(inputImage, y, x);
+        <span class="hljs-comment">// 图像归一化</span>
+    std::vector&lt;<span class="hljs-type">float</span>&gt; input_image_ = <span class="hljs-built_in">nchwImage</span>(image0);
+    
+    <span class="hljs-comment">// 读取缺陷标志文件</span>
+    <span class="hljs-function">std::ifstream <span class="hljs-title">inputFile</span><span class="hljs-params">(namesPath)</span></span>;
+    <span class="hljs-keyword">if</span> (!inputFile.<span class="hljs-built_in">is_open</span>()) {
+        std::cerr &lt;&lt; <span class="hljs-string">"Failed to open the file."</span> &lt;&lt; std::endl;
+        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+    }
+    std::vector&lt;std::string&gt; typeNames;
+    std::string line;
+    <span class="hljs-keyword">while</span> (std::<span class="hljs-built_in">getline</span>(inputFile, line)) 
+        typeNames.<span class="hljs-built_in">push_back</span>(line);
+    inputFile.<span class="hljs-built_in">close</span>();
+    <span class="hljs-comment">//     // 打印缺陷标志文件内容</span>
+    <span class="hljs-comment">// std::cout &lt;&lt; "Number of elements: " &lt;&lt; typeNames.size() &lt;&lt; std::endl;</span>
+    <span class="hljs-comment">// for (const std::string &amp;typeName : typeNames) </span>
+    <span class="hljs-comment">//     std::cout &lt;&lt; typeName &lt;&lt; std::endl;</span>
+
+    <span class="hljs-comment">// 缺陷颜色标识随机</span>
+    <span class="hljs-type">int</span> numColors = typeNames.<span class="hljs-built_in">size</span>();
+    std::vector&lt;std::vector&lt;<span class="hljs-type">int</span>&gt;&gt; colors;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; numColors; ++i) 
+        colors.<span class="hljs-built_in">push_back</span>(<span class="hljs-built_in">generateRandomColor</span>());
+    <span class="hljs-comment">//     // 打印颜色种类</span>
+    <span class="hljs-comment">// for (const auto &amp;color : colors) </span>
+    <span class="hljs-comment">//     std::cout &lt;&lt; "R: " &lt;&lt; color[0] &lt;&lt; ", G: " &lt;&lt; color[1] &lt;&lt; ", B: " &lt;&lt; color[2] &lt;&lt; std::endl;</span>
+
+    <span class="hljs-comment">// 模型设置和推理结果</span>
+    <span class="hljs-function">Ort::Env <span class="hljs-title">env</span><span class="hljs-params">(ORT_LOGGING_LEVEL_WARNING, <span class="hljs-string">"Default"</span>)</span></span>;
+        <span class="hljs-comment">// CPU</span>
+    Ort::Session session_{env, model_path, Ort::SessionOptions{<span class="hljs-literal">nullptr</span>}}; 
+        <span class="hljs-comment">// 模型输入尺寸</span>
+    <span class="hljs-type">static</span> <span class="hljs-keyword">constexpr</span> <span class="hljs-type">const</span> <span class="hljs-type">int</span> height_ = <span class="hljs-number">640</span>; <span class="hljs-comment">//model input height</span>
+    <span class="hljs-type">static</span> <span class="hljs-keyword">constexpr</span> <span class="hljs-type">const</span> <span class="hljs-type">int</span> width_ = <span class="hljs-number">640</span>; <span class="hljs-comment">//model input width</span>
+    Ort::Value input_tensor_{<span class="hljs-literal">nullptr</span>};
+    std::array&lt;<span class="hljs-type">int64_t</span>, 4&gt; input_shape_{<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, height_, width_}; <span class="hljs-comment">//mode input shape NCHW = 1x3xHxW</span>
+        <span class="hljs-comment">// 模型输出尺寸</span>
+    Ort::Value output_tensor_{<span class="hljs-literal">nullptr</span>};
+    std::array&lt;<span class="hljs-type">int64_t</span>, 3&gt; output_shape_{<span class="hljs-number">1</span>, <span class="hljs-number">9</span>, <span class="hljs-number">8400</span>}; <span class="hljs-comment">//model output shape,</span>
+    std::array&lt;_Float32, 9*8400&gt; results_{};
+
+        <span class="hljs-comment">// 模型输入输出张量设置</span>
+    <span class="hljs-keyword">auto</span> memory_info = Ort::MemoryInfo::<span class="hljs-built_in">CreateCpu</span>(OrtDeviceAllocator, OrtMemTypeDefault);
+    input_tensor_ = Ort::Value::<span class="hljs-built_in">CreateTensor</span>&lt;<span class="hljs-type">float</span>&gt;(memory_info, input_image_.<span class="hljs-built_in">data</span>(), input_image_.<span class="hljs-built_in">size</span>(), input_shape_.<span class="hljs-built_in">data</span>(), input_shape_.<span class="hljs-built_in">size</span>());
+    output_tensor_ = Ort::Value::<span class="hljs-built_in">CreateTensor</span>&lt;<span class="hljs-type">float</span>&gt;(memory_info, results_.<span class="hljs-built_in">data</span>(), results_.<span class="hljs-built_in">size</span>(), output_shape_.<span class="hljs-built_in">data</span>(), output_shape_.<span class="hljs-built_in">size</span>());
+        <span class="hljs-comment">// 查看模型输入输出的名称</span>
+    <span class="hljs-type">const</span> <span class="hljs-type">char</span>* input_names[] = {<span class="hljs-string">"images"</span>};
+    <span class="hljs-type">const</span> <span class="hljs-type">char</span>* output_names[] = {<span class="hljs-string">"output0"</span>};
+        <span class="hljs-comment">// 推理</span>
+    session_.<span class="hljs-built_in">Run</span>(Ort::RunOptions{<span class="hljs-literal">nullptr</span>}, input_names, &amp;input_tensor_, <span class="hljs-number">1</span>, output_names, &amp;output_tensor_, <span class="hljs-number">1</span>);
+    <span class="hljs-type">float</span>* out = output_tensor_.<span class="hljs-built_in">GetTensorMutableData</span>&lt;<span class="hljs-type">float</span>&gt;();
+
+        <span class="hljs-comment">// 推理结果获取</span>
+    <span class="hljs-type">int</span> rows = <span class="hljs-number">9</span>;      <span class="hljs-comment">// 第二维度大小，即行数</span>
+    <span class="hljs-type">int</span> cols = <span class="hljs-number">8400</span>;   <span class="hljs-comment">// 第三维度大小，即列数</span>
+    std::vector&lt;std::vector&lt;<span class="hljs-type">float</span>&gt;&gt; <span class="hljs-built_in">matrix</span>(rows, std::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-type">float</span>&gt;(cols));
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> row = <span class="hljs-number">0</span>; row &lt; rows; ++row) 
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> col = <span class="hljs-number">0</span>; col &lt; cols; ++col) 
+            matrix[row][col] = out[row * cols + col];
+        <span class="hljs-comment">// 9，8400数组转置为8400，9</span>
+    std::vector&lt;std::vector&lt;<span class="hljs-type">float</span>&gt;&gt; tran_matrix = <span class="hljs-built_in">transpose</span>(matrix);
+    <span class="hljs-comment">//     // 显示缺陷筛选结果</span>
+    <span class="hljs-comment">// std::vector&lt;std::vector&lt;float&gt;&gt; num = tran_matrix;</span>
+    <span class="hljs-comment">// for (size_t n = 0; n &lt; num.size(); ++n) {</span>
+    <span class="hljs-comment">//     bool aboveThreshold = false;</span>
+    <span class="hljs-comment">//     for (size_t col = 4; col &lt;= 8; ++col)</span>
+    <span class="hljs-comment">//         if (num[n][col] &gt; threshold) {</span>
+    <span class="hljs-comment">//             aboveThreshold = true;</span>
+    <span class="hljs-comment">//             break;</span>
+    <span class="hljs-comment">//         }</span>
+        
+    <span class="hljs-comment">//     if (aboveThreshold) {</span>
+    <span class="hljs-comment">//         std::cout &lt;&lt; "Row " &lt;&lt; n &lt;&lt; ": ";</span>
+    <span class="hljs-comment">//         for (const auto&amp; val : num[n]) </span>
+    <span class="hljs-comment">//             std::cout &lt;&lt; val &lt;&lt; " ";</span>
+                
+    <span class="hljs-comment">//         std::cout &lt;&lt; std::endl;</span>
+    <span class="hljs-comment">//     }</span>
+    <span class="hljs-comment">// }</span>
+
+    <span class="hljs-comment">// 缺陷还原</span>
+    std::vector&lt;std::vector&lt;<span class="hljs-type">double</span>&gt;&gt; select_matrix;
+    select_matrix = <span class="hljs-built_in">select</span>(tran_matrix, threshold, cols,rows);
+        <span class="hljs-comment">// 缺陷位置信息还原</span>
+    select_matrix = <span class="hljs-built_in">return_</span>(select_matrix, y, x);
+        <span class="hljs-comment">// 缺陷位置信息筛选</span>
+    select_matrix = <span class="hljs-built_in">nms_</span>(select_matrix, nms_threshold);
+    <span class="hljs-comment">//     // 打印数组的内容</span>
+    <span class="hljs-comment">// for (const auto&amp; row : select_matrix){</span>
+    <span class="hljs-comment">//     for (const auto&amp; value : row) {</span>
+    <span class="hljs-comment">//         std::cout &lt;&lt; value &lt;&lt; " ";</span>
+    <span class="hljs-comment">//     }</span>
+    <span class="hljs-comment">//     std::cout &lt;&lt; std::endl;</span>
+    <span class="hljs-comment">// }</span>
+        <span class="hljs-comment">// 绘制识别框</span>
+    cv::Mat outputImage = <span class="hljs-built_in">draw_image</span>(select_matrix, inputImage, typeNames, colors);
+    
+    <span class="hljs-comment">// 自定义窗口大小</span>
+    <span class="hljs-type">int</span> windowWidth = <span class="hljs-number">1200</span>;
+    <span class="hljs-type">int</span> windowHeight = <span class="hljs-number">900</span>;
+
+    <span class="hljs-comment">// 调整窗口大小</span>
+    cv::<span class="hljs-built_in">namedWindow</span>(<span class="hljs-string">"Image with Bounding Boxes"</span>, cv::WINDOW_NORMAL);
+    cv::<span class="hljs-built_in">resizeWindow</span>(<span class="hljs-string">"Image with Bounding Boxes"</span>, windowWidth, windowHeight);
+    cv::<span class="hljs-built_in">imshow</span>(<span class="hljs-string">"Image with Bounding Boxes"</span>, outputImage);
+    cv::<span class="hljs-built_in">imwrite</span>(<span class="hljs-string">"marked_image.jpg"</span>, outputImage);
+    cv::<span class="hljs-built_in">waitKey</span>(<span class="hljs-number">0</span>);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+</div>
+<div class="clear"></div>
+<div id="blog_post_info_block" role="contentinfo">
+
+
+<div id="BlogPostCategory">
+    分类: 
+            <a href="https://www.cnblogs.com/SnailN2/category/2345020.html" target="_blank">深度学习</a>
+</div>
+<div id="EntryTag">
+    标签: 
+            <a href="https://www.cnblogs.com/SnailN2/tag/c%2B%2B/">c++</a>
+,             <a href="https://www.cnblogs.com/SnailN2/tag/YOLO/">YOLO</a>
+,             <a href="https://www.cnblogs.com/SnailN2/tag/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+,             <a href="https://www.cnblogs.com/SnailN2/tag/ubuntu/">ubuntu</a>
+</div>
+    <div id="blog_post_info">
+<div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(17710999,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+        <a id="green_channel_follow" onclick="follow(&#39;88ff9927-7076-490f-27cb-08dbb65ca99e&#39;);" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_wechat" href="javascript:void(0);" onclick="shareManager.wechatShare()">微信分享</a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/SnailN2/" target="_blank"><img src="./Ubuntu环境下C++使用onnxruntime和Opencv进行YOLOv8模型部署 - 放氮气的蜗牛 - 博客园_files/20231101213444.png" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/SnailN2/">放氮气的蜗牛</a>
+            <br>
+            <a href="https://home.cnblogs.com/u/SnailN2/followers/">粉丝 - <span class="follower-count">4</span></a>
+            <a href="https://home.cnblogs.com/u/SnailN2/followees/">关注 - <span class="following-count">0</span></a><br>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow" class="follow-tip">
+                <a href="javascript:void(0);" onclick="follow(&#39;88ff9927-7076-490f-27cb-08dbb65ca99e&#39;);return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(17710999,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">0</span>
+    </div>
+    <div class="buryit" onclick="votePost(17710999,&#39;Bury&#39;)">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+        <div id="vip_tip"><a class="tip" href="https://cnblogs.vip/" target="_blank">升级成为会员</a></div>
+</div>
+
+<script type="text/javascript">
+    currentDiggType = 0;
+</script>
+</div>
+    <div class="clear"></div>
+    <div id="post_next_prev">
+
+    <a href="https://www.cnblogs.com/SnailN2/p/17711081.html" class="p_n_p_prefix">« </a> 上一篇：    <a href="https://www.cnblogs.com/SnailN2/p/17711081.html" data-featured-image="" title="发布于 2023-08-15 15:07">Windows10下的hexo搭建</a>
+    <br>
+    <a href="https://www.cnblogs.com/SnailN2/p/17711119.html" class="p_n_p_prefix">» </a> 下一篇：    <a href="https://www.cnblogs.com/SnailN2/p/17711119.html" data-featured-image="" title="发布于 2023-09-07 00:27">python列表之索引及len()函数</a>
+
+</div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date" data-last-update-days="268.951403594566" data-date-created="BlogServer.Application.Dto.BlogPost.BlogPostDto" data-date-updated="2023-09-18 11:39" aria-expanded="false">2023-08-28 19:58</span>&nbsp;
+<a href="https://www.cnblogs.com/SnailN2">放氮气的蜗牛</a>&nbsp;
+阅读(<span id="post_view_count">719</span>)&nbsp;
+评论(<span id="post_comment_count">3</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=17710999" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(17710999);return false;">收藏</a>&nbsp;
+<a href="javascript:void(0)" onclick="reportManager.report({ currentUserId: &#39;&#39;, targetType: &#39;blogPost&#39;, targetId: &#39;17710999&#39;, targetLink: &#39;https://www.cnblogs.com/SnailN2/p/17710999.html&#39;, title: &#39;Ubuntu环境下C++使用onnxruntime和Opencv进行YOLOv8模型部署&#39; })">举报</a>
+&nbsp;<a href="javascript:void(0)" id="import-indicator" data-is-imported="true" aria-expanded="false">来源</a>
+</div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+<script>
+    var cb_entryId = 17710999, cb_entryCreatedDate = '2023-08-28 19:58', cb_postType = 1, cb_postTitle = 'Ubuntu环境下C++使用onnxruntime和Opencv进行YOLOv8模型部署';
+    var allowComments = true, cb_blogId = 802881, cb_blogApp = 'SnailN2', cb_blogUserGuid = '88ff9927-7076-490f-27cb-08dbb65ca99e';
+    mermaidRender.render()
+    markdown_highlight()
+    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");    
+</script>
+<a id="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav">
+            <a class="comment-nav-left forpc" href="https://cnblogs.vip/" target="_blank">会员力量，点亮园子希望</a>
+        <div class="comment-nav-right">
+            <span id="span_refresh_tips"></span><a href="https://www.cnblogs.com/SnailN2/p/17710999.html#" onclick="return RefreshPage();">刷新页面</a><a href="https://www.cnblogs.com/SnailN2/p/17710999.html#top">返回顶部</a>
+        </div>
+    </div>
+    <div id="comment_form_container"><div class="login_tips">
+    登录后才能查看或发表评论，立即 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return account.login(&#39;!comments&#39;);">登录</a> 或者
+    <a href="https://www.cnblogs.com/">逛逛</a> 博客园首页
+</div>
+</div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+        <div id="cnblogs_ch"><a href="https://www.cnblogs.com/cmt/p/18239927" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-阿里云-通义灵码&#39;})">【推荐】「指间灵动，快码加编」：通义灵码，再次降临博客园</a><br><a href="https://www.cnblogs.com/sanshi/p/18186007" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-三生石上&#39;})">【推荐】三生石上：ASP.NET Core中运行WebForms业务代码</a><br><a href="https://www.cnblogs.com/cmt/p/18226431" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-阿里云-征文&#39;})">【推荐】这场阿里云开发者社区有奖征文活动，期待您出文相助</a><br><a href="https://www.finclip.com/?channel=cnblog2024" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-凡泰极客&#39;})">【推荐】凡泰极客：跨越技术“鸿”沟，小程序一键生成鸿蒙App</a><br><a href="https://click.aliyun.com/m/1000394160/" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-阿里云-618&#39;})">【推荐】阿里云创新加速季，5亿补贴享不停，上云礼包抢先领</a><br></div>
+    <div id="opt_under_post"></div>
+        <div id="cnblogs_c1" class="under-post-card">
+            <a href="https://www.cnblogs.com/cmt/p/18219378" rel="nofollow" target="_blank" onclick="countCreativeClicks(&#39;C1-博客园-T恤&#39;)">
+                <img src="./Ubuntu环境下C++使用onnxruntime和Opencv进行YOLOv8模型部署 - 放氮气的蜗牛 - 博客园_files/35695-20240529225347158-1507288531.jpg" onload="countCreativeImpressions(&#39;C1-博客园-T恤&#39;)" alt="">
+                <span id="c1_impression" style="display:none"></span>
+            </a>
+        </div>
+    <div id="under_post_card1"><div class="under-post-card">
+<b>编辑推荐：</b>
+<br>
+
+· <a href="https://www.cnblogs.com/wzh2010/p/18115794" target="_blank">了解 Http 和 Https 的区别（图文详解）</a>
+    <br>
+· <a href="https://www.cnblogs.com/yxhblogs/p/18226534" target="_blank">老生常谈！程序员为什么要阅读源代码？</a>
+    <br>
+· <a href="https://www.cnblogs.com/zhanggaoxing/p/18240809" target="_blank">如何安全地访问互联网</a>
+    <br>
+· <a href="https://www.cnblogs.com/fanshaoO/p/18233291" target="_blank">还在拼冗长的 WhereIf 吗？100行代码解放这个操作</a>
+    <br>
+· <a href="https://www.cnblogs.com/ggtc/p/18229724" target="_blank">C#异步编程是怎么回事（番外）</a>
+    <br>
+</div></div>
+    <div id="under_post_card2"><div class="itnews under-post-card">
+    <b>阅读排行：</b>
+    <br>
+ ·          <a href="https://www.cnblogs.com/huangxincheng/p/18243233" target="_blank">记一次 .NET某游戏币自助机后端 内存暴涨分析</a>
+        <br>
+ ·          <a href="https://www.cnblogs.com/wang1dao/p/18241935" target="_blank">我所理解的机器学习</a>
+        <br>
+ ·          <a href="https://www.cnblogs.com/BaiCai/p/18241681" target="_blank">开源高性能结构化日志模块NanoLog</a>
+        <br>
+ ·          <a href="https://www.cnblogs.com/primihub/p/18241759" target="_blank">RSA算法中，为什么需要的是两个素数？</a>
+        <br>
+ ·          <a href="https://www.cnblogs.com/VAllen/p/18243038/Are-there-any-other-methods-besides-VB-LikeString-in-the-dotNET-Core" target="_blank">在.NET Core，除了VB的LikeString，还有其它方法吗？(四种LikeString实现</a>
+        <br>
+</div></div>
+    <div id="HistoryToday" class="under-post-card" style="display: none;"></div>
+    <script type="text/javascript">
+        var commentManager = new blogCommentManager();
+        commentManager.renderComments(0);
+        fixPostBody();
+        window.footnoteTipManager.generateFootnoteTips();
+
+            window.tocManager.displayDisableTocTips = false;
+            window.tocManager.generateToc();
+            
+                setTimeout(function() { countViews(cb_blogId, cb_entryId); }, 50);
+            
+            deliverT2();
+            deliverC1C2();
+            loadNewsAndKb();
+            
+                LoadPostCategoriesTags(cb_blogId, cb_entryId);
+            
+            LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+            GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+            loadOptUnderPost();
+            GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+                </script>
+</div>
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+	<div id="sideBar">
+		<div id="sideBarMain">
+			<div id="sidebar_news" class="newsItem">
+    <h3 class="catListTitle">公告</h3>
+<div id="blog-news">    
+    <div id="sidebar_news_content">
+<div id="profile_block">
+    昵称：
+    <a href="https://home.cnblogs.com/u/SnailN2/">
+        放氮气的蜗牛
+    </a>
+    <br>
+    园龄：
+    <a href="https://home.cnblogs.com/u/SnailN2/" title="入园时间：2023-09-17">
+        8个月
+    </a>
+    <br>
+    粉丝：
+    <a class="follower-count" href="https://home.cnblogs.com/u/SnailN2/followers/">
+        4
+    </a>
+    <br>
+    关注：
+    <a class="folowing-count" href="https://home.cnblogs.com/u/SnailN2/followees/">
+        0
+    </a>
+    <div id="p_b_follow" class="follow-tip">
+<a href="javascript:void(0)" onclick="follow(&#39;88ff9927-7076-490f-27cb-08dbb65ca99e&#39;)">+加关注</a></div>
+    <script>getFollowStatus('88ff9927-7076-490f-27cb-08dbb65ca99e');</script>
+</div>
+</div>
+</div>
+<script>loadBlogNews();</script>
+
+ 
+</div>
+<div id="sidebar_c3"></div>
+			<div id="blog-calendar" style="">
+
+<table id="blogCalendar" class="Cal" cellspacing="0" cellpadding="0" title="Calendar" border="0">
+    <tbody>
+        <tr>
+            <td colspan="7">
+                <table class="CalTitle" cellspacing="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2024/05/13&#39;); return false;">&lt;</a>
+                            </td>
+                            <td align="center">2024年6月</td>
+                            <td align="right" class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2024/07/13&#39;); return false;">&gt;</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    <tr>
+        <th class="CalDayHeader" align="center" abbr="日" scope="col">日</th>
+        <th class="CalDayHeader" align="center" abbr="一" scope="col">一</th>
+        <th class="CalDayHeader" align="center" abbr="二" scope="col">二</th>
+        <th class="CalDayHeader" align="center" abbr="三" scope="col">三</th>
+        <th class="CalDayHeader" align="center" abbr="四" scope="col">四</th>
+        <th class="CalDayHeader" align="center" abbr="五" scope="col">五</th>
+        <th class="CalDayHeader" align="center" abbr="六" scope="col">六</th>
+    </tr>
+            <tr>
+                            <td class="CalOtherMonthDay" align="center">26</td>
+                            <td class="CalOtherMonthDay" align="center">27</td>
+                            <td class="CalOtherMonthDay" align="center">28</td>
+                            <td class="CalOtherMonthDay" align="center">29</td>
+                            <td class="CalOtherMonthDay" align="center">30</td>
+                            <td class="CalOtherMonthDay" align="center">31</td>
+                    <td class="CalWeekendDay" align="center">
+                        1
+                    </td>
+            </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            2
+                        </td>
+                            <td class="" align="center">
+                                3
+                            </td>
+                            <td class="" align="center">
+                                4
+                            </td>
+                            <td class="" align="center">
+                                5
+                            </td>
+                            <td class="" align="center">
+                                6
+                            </td>
+                            <td class="" align="center">
+                                7
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            8
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            9
+                        </td>
+                            <td class="" align="center">
+                                10
+                            </td>
+                            <td class="" align="center">
+                                11
+                            </td>
+                            <td class="" align="center">
+                                12
+                            </td>
+                            <td class="CalTodayDay" align="center">
+                                13
+                            </td>
+                            <td class="" align="center">
+                                14
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            15
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            16
+                        </td>
+                            <td class="" align="center">
+                                17
+                            </td>
+                            <td class="" align="center">
+                                18
+                            </td>
+                            <td class="" align="center">
+                                19
+                            </td>
+                            <td class="" align="center">
+                                20
+                            </td>
+                            <td class="" align="center">
+                                21
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            22
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            23
+                        </td>
+                            <td class="" align="center">
+                                24
+                            </td>
+                            <td class="" align="center">
+                                25
+                            </td>
+                            <td class="" align="center">
+                                26
+                            </td>
+                            <td class="" align="center">
+                                27
+                            </td>
+                            <td class="" align="center">
+                                28
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            29
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            30
+                        </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                1
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                2
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                3
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                4
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                5
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            6
+                        </td>
+                </tr>
+    </tbody>
+</table></div><script>loadBlogDefaultCalendar();</script>			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"><!-- 搜索 -->
+<div id="sidebar_search" class="sidebar-block">
+    
+</div>
+
+<!-- 常用链接 -->
+<div id="sidebar_shortcut" class="sidebar-block"><div class="catListLink">
+<h3 class="catListTitle">
+常用链接
+</h3>
+<ul>
+    <li><a href="https://www.cnblogs.com/SnailN2/p/" title="我的博客的随笔列表">我的随笔</a></li>
+<li><a href="https://www.cnblogs.com/SnailN2/MyComments.html" title="我的发表过的评论列表">我的评论</a></li>
+<li><a href="https://www.cnblogs.com/SnailN2/OtherPosts.html" title="我评论过的随笔列表">我的参与</a></li>
+<li><a href="https://www.cnblogs.com/SnailN2/comments" title="我的博客的评论列表">最新评论</a></li>
+<li><a href="https://www.cnblogs.com/SnailN2/tag/" title="我的博客的标签列表">我的标签</a></li>
+
+</ul>
+</div>
+
+</div>
+
+<!-- 最新随笔 -->
+
+
+<!-- 我的标签 -->
+<div id="sidebar_toptags" class="sidebar-block"><div class="catListTag">
+    <h3 class="catListTitle"><a href="https://www.cnblogs.com/SnailN2/tag/" class="sidebar-card-title-a">我的标签</a></h3>
+<ul>
+        <li>
+            <a href="https://www.cnblogs.com/SnailN2/tag/python/">python<span class="tag-count">(39)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/SnailN2/tag/c%E8%AF%AD%E8%A8%80/">c语言<span class="tag-count">(20)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/SnailN2/tag/Matlab/">Matlab<span class="tag-count">(14)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/SnailN2/tag/%E7%AE%97%E6%B3%95/">算法<span class="tag-count">(12)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/SnailN2/tag/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E5%AE%9E%E9%AA%8C/">数字图像处理实验<span class="tag-count">(12)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/SnailN2/tag/%E5%88%97%E8%A1%A8/">列表<span class="tag-count">(8)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/SnailN2/tag/%E7%B1%BB/">类<span class="tag-count">(7)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/SnailN2/tag/labview/">labview<span class="tag-count">(6)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/SnailN2/tag/mysql/">mysql<span class="tag-count">(5)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/SnailN2/tag/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89/">机器视觉<span class="tag-count">(5)</span></a>
+        </li>
+    <li>
+        <a href="https://www.cnblogs.com/SnailN2/tag/">更多</a>
+    </li>
+
+</ul>
+</div>
+
+</div>
+
+<!-- 积分与排名 -->
+
+
+<!-- 随笔分类、随笔档案、文章分类、新闻分类、相册、链接 -->
+<div id="sidebar_categories">
+
+    <div id="sidebar_postcategory" class="catListPostCategory sidebar-block">
+        <h3 class="catListTitle">
+            
+    <a class="sidebar-card-title-a" href="https://www.cnblogs.com/SnailN2/post-categories">随笔分类</a>
+
+
+
+        </h3>
+
+        <ul>
+
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/SnailN2/category/2345025.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">C语言练习(25)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/SnailN2/category/2345031.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">hexo个人博客搭建(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/SnailN2/category/2345021.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">LabVIEW练习(6)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/SnailN2/category/2345029.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">Leetcode(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/SnailN2/category/2345022.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">Matlab数字图像处理实验(14)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/SnailN2/category/2345024.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">python入门(38)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/SnailN2/category/2345019.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">SDK发开(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/SnailN2/category/2360543.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">个人猜想(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/SnailN2/category/2345030.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">普中51开发板程序(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/SnailN2/category/2345020.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">深度学习(3)</a>
+ 
+                </li>                
+            
+        </ul>
+
+
+    </div>    
+    <div id="sidebar_postarchive" class="catListPostArchive sidebar-block">
+        <h3 class="catListTitle">
+            
+随笔档案
+
+
+        </h3>
+
+        <ul>
+
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/SnailN2/p/archive/2023/11" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2023年11月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/SnailN2/p/archive/2023/09" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2023年9月(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/SnailN2/p/archive/2023/08" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2023年8月(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/SnailN2/p/archive/2023/07" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2023年7月(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/SnailN2/p/archive/2023/06" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2023年6月(11)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/SnailN2/p/archive/2023/05" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2023年5月(9)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/SnailN2/p/archive/2023/04" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2023年4月(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/SnailN2/p/archive/2023/03" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2023年3月(6)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/SnailN2/p/archive/2023/02" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2023年2月(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/SnailN2/p/archive/2023/01" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2023年1月(6)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/SnailN2/p/archive/2022/12" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2022年12月(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/SnailN2/p/archive/2022/11" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2022年11月(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/SnailN2/p/archive/2022/10" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2022年10月(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/SnailN2/p/archive/2022/09" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2022年9月(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/SnailN2/p/archive/2022/08" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2022年8月(6)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/SnailN2/p/archive/2022/06" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2022年6月(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/SnailN2/p/archive/2022/05" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2022年5月(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/SnailN2/p/archive/2022/04" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2022年4月(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/SnailN2/p/archive/2022/03" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2022年3月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/SnailN2/p/archive/2021/09" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2021年9月(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/SnailN2/p/archive/2021/08" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2021年8月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/SnailN2/p/archive/2021/05" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2021年5月(2)</a>
+ 
+                </li>                
+            
+        </ul>
+
+
+    </div>    
+</div>
+
+<!-- 最新评论 -->
+<!-- 阅读排行榜 -->
+<div id="sidebar_topviewedposts" class="sidebar-block"><div class="catListView">
+    <h3 class="catListTitle">
+        <a href="https://www.cnblogs.com/SnailN2/most-viewed" class="sidebar-card-title-a">
+    阅读排行榜
+</a>
+
+    </h3>
+    <div id="TopViewPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/SnailN2/p/17710999.html">
+                            1. Ubuntu环境下C++使用onnxruntime和Opencv进行YOLOv8模型部署(716)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/SnailN2/p/17711089.html">
+                            2. C语言从键盘上输入年份和月份，计算并输出这一年的这一月共有多少天。(535)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/SnailN2/p/17711003.html">
+                            3. Python+Yolov8+ONNX实时缺陷目标检测(486)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/SnailN2/p/17711009.html">
+                            4. 数字图像处理实验十理想、高斯、巴特沃斯低通和高通滤波器(474)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/SnailN2/p/17711001.html">
+                            5. Windows10+Python+Yolov8+ONNX图片缺陷识别，并在原图中标记缺陷，有onnx模型则无需配置，无需训练。(412)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div></div>
+
+<!-- 评论排行榜 -->
+<div id="sidebar_topcommentedposts" class="sidebar-block"><div class="catListFeedback">
+    <h3 class="catListTitle">
+        <a href="https://www.cnblogs.com/SnailN2/most-commented" class="sidebar-card-title-a">评论排行榜</a>
+
+    </h3>
+    <div id="TopFeedbackPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/SnailN2/p/17710999.html">
+                            1. Ubuntu环境下C++使用onnxruntime和Opencv进行YOLOv8模型部署(3)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/SnailN2/p/17850084.html">
+                            2. 潜在威胁信息模型(PTIM)-Potential threats Information Modeling(1)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div></div>
+
+<!-- 推荐排行榜 --><div id="sidebar_recentcomments" class="sidebar-block"><div class="catListComment">
+<h3 class="catListTitle"><a href="https://www.cnblogs.com/SnailN2/comments" class="sidebar-card-title-a">最新评论</a></h3>
+    <div class="RecentCommentBlock">
+        <ul>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/SnailN2/p/17710999.html">1. Re:Ubuntu环境下C++使用onnxruntime和Opencv进行YOLOv8模型部署</a></li>
+                <li class="recent_comment_body">@放氮气的蜗牛 谢谢楼主大大！！...</li>
+                <li class="recent_comment_author">--Echo_0yw</li>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/SnailN2/p/17710999.html">2. Re:Ubuntu环境下C++使用onnxruntime和Opencv进行YOLOv8模型部署</a></li>
+                <li class="recent_comment_body">@Echo_0yw...</li>
+                <li class="recent_comment_author">--放氮气的蜗牛</li>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/SnailN2/p/17710999.html">3. Re:Ubuntu环境下C++使用onnxruntime和Opencv进行YOLOv8模型部署</a></li>
+                <li class="recent_comment_body"><p>请问有源代码吗</p>
+</li>
+                <li class="recent_comment_author">--Echo_0yw</li>
+                <li class="recent_comment_title"><a href="https://www.cnblogs.com/SnailN2/p/17850084.html">4. Re:潜在威胁信息模型(PTIM)-Potential threats Information Modeling</a></li>
+                <li class="recent_comment_body"><p>不考虑隐私问题确实是一个好方法，但是不一定实用</p>
+</li>
+                <li class="recent_comment_author">--kiterza</li>
+        </ul>
+    </div>
+</div>
+
+</div>
+
+
+</div>
+                    <script>loadBlogSideColumn();</script>
+			</div>			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright © 2024 放氮气的蜗牛
+<br><span id="poweredby">Powered by .NET 8.0 on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+
+    
+
+    <input type="hidden" id="antiforgery_token" value="CfDJ8ONv0caE5GtEh3YJ5j088kl5s6egsWJOi1tQhWOiedWQLu7uYye0bg4JNQg9d8gilppPH_snl0eRmVxYx1dohBa5owG6t5qea72sZsEEd40C_2hfPFlrgRSSsan_onqV7u5U6bxgkp9LiRM4T0LEID4">
+    <script async="" src="./Ubuntu环境下C++使用onnxruntime和Opencv进行YOLOv8模型部署 - 放氮气的蜗牛 - 博客园_files/js"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-M95P3TTWJZ');
+</script>
+<script defer="" src="./Ubuntu环境下C++使用onnxruntime和Opencv进行YOLOv8模型部署 - 放氮气的蜗牛 - 博客园_files/hm.js"></script>
+
+
+<div style="z-index: 998; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); display: none; flex-direction: column; align-items: center; justify-content: center">
+<div style="background: #fff;padding: 30px; margin: 30px; border-radius: 16px;">
+  <div style="width: 200px; height: 200px; background: rgba(255, 255, 255, 0.8); position: absolute; top: -100px; right: -100px; border-radius: 100px"></div>
+  <div style="text-align: center; font-size: 18px; margin-bottom: 10px;">点击右上角即可分享</div>
+  <img src="./Ubuntu环境下C++使用onnxruntime和Opencv进行YOLOv8模型部署 - 放氮气的蜗牛 - 博客园_files/35695-20230906145857937-1471873834.gif" alt="微信分享提示">
+</div>   
+    </div></body></html>
