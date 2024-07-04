@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<!-- saved from url=(0068)https://docs.nvidia.com/nsight-graphics/InstallationGuide/index.html -->
+<html class="writer-html5" lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Installation Guide — NsightGraphics 2024.1 documentation</title>
+      <link rel="stylesheet" href="./Installation Guide — NsightGraphics 2024.1 documentation_files/pygments.css" type="text/css">
+      <link rel="stylesheet" href="./Installation Guide — NsightGraphics 2024.1 documentation_files/theme.css" type="text/css">
+      <link rel="stylesheet" href="./Installation Guide — NsightGraphics 2024.1 documentation_files/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css">
+      <link rel="stylesheet" href="./Installation Guide — NsightGraphics 2024.1 documentation_files/omni-style.css" type="text/css">
+      <link rel="stylesheet" href="./Installation Guide — NsightGraphics 2024.1 documentation_files/api-styles.css" type="text/css">
+    <link rel="shortcut icon" href="https://docs.nvidia.com/nsight-graphics/_static/nvidia-nsight-graphics.ico">
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="./Installation Guide — NsightGraphics 2024.1 documentation_files/documentation_options.js"></script>
+        <script src="./Installation Guide — NsightGraphics 2024.1 documentation_files/jquery.js"></script>
+        <script src="./Installation Guide — NsightGraphics 2024.1 documentation_files/underscore.js"></script>
+        <script src="./Installation Guide — NsightGraphics 2024.1 documentation_files/doctools.js"></script>
+        <script src="./Installation Guide — NsightGraphics 2024.1 documentation_files/mermaid-init.js"></script>
+        <script src="./Installation Guide — NsightGraphics 2024.1 documentation_files/design-tabs.js"></script>
+        <script src="./Installation Guide — NsightGraphics 2024.1 documentation_files/version.js"></script>
+        <script src="./Installation Guide — NsightGraphics 2024.1 documentation_files/social-media.js"></script>
+    <script src="./Installation Guide — NsightGraphics 2024.1 documentation_files/theme.js"></script>
+    <link rel="index" title="Index" href="https://docs.nvidia.com/nsight-graphics/genindex.html">
+    <link rel="search" title="Search" href="https://docs.nvidia.com/nsight-graphics/search.html">
+    <link rel="next" title="User Guide" href="https://docs.nvidia.com/nsight-graphics/UserGuide/index.html">
+    <link rel="prev" title="Release Notes" href="https://docs.nvidia.com/nsight-graphics/ReleaseNotes/index.html">
+ 
+
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+
+
+  <a href="https://docs.nvidia.com/nsight-graphics/index.html">
+  <img src="./Installation Guide — NsightGraphics 2024.1 documentation_files/nvidia-nsight-graphics.png" class="logo" alt="Logo">
+</a>
+
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="https://docs.nvidia.com/nsight-graphics/search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs">
+    <input type="hidden" name="check_keywords" value="yes">
+    <input type="hidden" name="area" value="default">
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Nsight Graphics</span></p>
+<ul class="current" aria-expanded="true">
+<li class="toctree-l1"><a class="reference internal" href="https://docs.nvidia.com/nsight-graphics/ReleaseNotes/index.html">Release Notes</a></li>
+<li class="toctree-l1 current" aria-expanded="true"><a class="reference internal current" href="https://docs.nvidia.com/nsight-graphics/InstallationGuide/index.html#" aria-expanded="true"><button class="toctree-expand" title="Open/close menu"></button>Installation Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.nvidia.com/nsight-graphics/InstallationGuide/index.html#windows-installation-and-setup"><button class="toctree-expand" title="Open/close menu"></button>Windows Installation and Setup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="https://docs.nvidia.com/nsight-graphics/InstallationGuide/index.html#system-requirements">System Requirements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://docs.nvidia.com/nsight-graphics/InstallationGuide/index.html#installing-the-nvidia-display-driver">Installing the NVIDIA Display Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://docs.nvidia.com/nsight-graphics/InstallationGuide/index.html#setup-hybrid-mode">Setup Hybrid Mode</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.nvidia.com/nsight-graphics/InstallationGuide/index.html#linux-installation-and-setup">Linux Installation and Setup</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="https://docs.nvidia.com/nsight-graphics/UserGuide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://docs.nvidia.com/nsight-graphics/AdvancedLearning/index.html">Advanced Learning</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Interfaces</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="https://docs.nvidia.com/nsight-graphics/NsightGraphicsSdk/NsightGraphics_api.html">Nsight Graphics SDK</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Legal</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="https://docs.nvidia.com/nsight-graphics/CopyrightAndLicenses/index.html">Copyright and Licenses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://docs.nvidia.com/nsight-graphics/Content/notices-header.html">Notices</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="https://docs.nvidia.com/nsight-graphics/index.html">NsightGraphics</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+
+
+<li><a href="https://docs.nvidia.com/nsight-graphics/index.html" class="icon icon-home"></a> »</li>
+<li>Installation Guide</li>
+
+      <li class="wy-breadcrumbs-aside">
+      </li>
+<li class="wy-breadcrumbs-aside">
+
+
+  <span>v2024.1 |</span>
+
+
+
+  <a href="https://docs.nvidia.com/nsight-graphics/InstallationGuide/ReleaseNotes/index.html#previous-versions" class="reference external">Archive</a>
+
+
+  <span>&nbsp;</span>
+</li>
+
+  </ul>
+  <hr>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="installation-guide">
+<h1>Installation Guide<a class="headerlink" href="https://docs.nvidia.com/nsight-graphics/InstallationGuide/index.html#installation-guide" title="Permalink to this headline"></a></h1>
+<p>Guides on how to install NVIDIA Nsight Graphics.</p>
+<section id="windows-installation-and-setup">
+<h2>Windows Installation and Setup<a class="headerlink" href="https://docs.nvidia.com/nsight-graphics/InstallationGuide/index.html#windows-installation-and-setup" title="Permalink to this headline"></a></h2>
+<p>Before you install Nsight Graphics, please make sure that you have prepared your system by completing the following tasks:</p>
+<div class="wy-table-responsive"><table class="table-no-stripes docutils align-default">
+<colgroup>
+<col style="width: 52%">
+<col style="width: 48%">
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Task</p></th>
+<th class="head"><p>For more information, see…</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Review the hardware and software requirements for the product to make sure that you have the minimum or recommended configurations.</p></td>
+<td><p><a class="reference external" href="https://docs.nvidia.com/nsight-graphics/InstallationGuide/index.html#system-requirements-for-nvidia-nsight-graphics">System Requirements for NVIDIA Nsight Graphics Software</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Configure Windows 10 Hybrid mode to use the high-performance NVIDIA GPU for Nsight Graphics.</p></td>
+<td><p><a class="reference external" href="https://docs.nvidia.com/nsight-graphics/InstallationGuide/index.html#setup-hybrid-mode">Setup Hybrid Mode</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Walkthrough how to make sure your system is running with the most current NVIDIA graphics driver.</p></td>
+<td><p><a class="reference external" href="https://docs.nvidia.com/nsight-graphics/InstallationGuide/index.html#how-to-install-the-nvidia-display-driver">How To: Install the NVIDIA Display Driver</a></p></td>
+</tr>
+</tbody>
+</table></div>
+<section id="system-requirements">
+<span id="system-requirements-for-nvidia-nsight-graphics"></span><h3>System Requirements<a class="headerlink" href="https://docs.nvidia.com/nsight-graphics/InstallationGuide/index.html#system-requirements" title="Permalink to this headline"></a></h3>
+<p>Nsight Graphics™ supports flexible hardware configurations:</p>
+<ul class="simple">
+<li><p><strong>Single GPU System</strong></p></li>
+<li><p><strong>Dual GPU System</strong></p></li>
+<li><p><strong>Notebook equipped with</strong> <a class="reference external" href="http://www.nvidia.com/object/optimus_technology.html">NVIDIA Optimus</a> <strong>technology</strong>: The recommended single notebook machine configuration for a GPGPU developer. This configuration supports both the Nsight Graphics Debugger and Analyzer using NVIDIA Optimus technology.</p></li>
+</ul>
+<p><strong>Display Driver</strong></p>
+<p>You must install the NVIDIA display driver that supports the Nsight Graphics tools. If you have an NVIDIA graphics card installed on your target machine, you likely already have an NVIDIA display driver; however, Nsight Graphics requires a specific version of the driver in order to function properly.</p>
+<p>The required driver version can be found in the <a class="reference external" href="https://docs.nvidia.com/nsight-graphics/ReleaseNotes/index.html#required-display-driver">Release Notes</a>.</p>
+<p><strong>Supported Operating Systems</strong></p>
+<p>For the latest updates to the list of supported operating systems, see the <a class="reference external" href="https://developer.nvidia.com/nsight-graphics-requirements">full list here</a>.</p>
+<p><strong>Supported Graphics Cards</strong></p>
+<p>For the latest updates to the list of supported GPUs, see the <a class="reference external" href="http://developer.nvidia.com/nsight-graphics-gpus-full-list">full GPU list here</a>.</p>
+<p><strong>C++ Capture Requirements</strong></p>
+<p>C++ Captures require that the host machine have Visual Studio 2019 or newer installed to compile. For Direct3D applications, this version of Visual Studio must have an SDK version that is compatible with the Direct3D SDK usage of the application being captured.</p>
+</section>
+<section id="installing-the-nvidia-display-driver">
+<span id="how-to-install-the-nvidia-display-driver"></span><h3>Installing the NVIDIA Display Driver<a class="headerlink" href="https://docs.nvidia.com/nsight-graphics/InstallationGuide/index.html#installing-the-nvidia-display-driver" title="Permalink to this headline"></a></h3>
+<p>It is recommended that you install an NVIDIA display driver that Nsight Graphics™ 2024.1 requires. See the <a class="reference external" href="https://docs.nvidia.com/nsight-graphics/ReleaseNotes/index.html#required-display-driver">Release Notes</a> for more information.</p>
+<p>If you have an NVIDIA graphics card installed on your target machine, you probably already have an NVIDIA display driver. However, Nsight Graphics™ requires an updated version of the driver in order to function properly. Please see the latest release notes for instructions on compatible driver versions:</p>
+<p>To install the NVIDIA Display Driver:</p>
+<ol class="arabic">
+<li><p>Run the NVIDIA Display Driver installer.</p>
+<p>The Display Driver Installer appears.</p>
+<img alt="../_images/nsight.displaydriver.install.noversion.001.png" class="image" src="./Installation Guide — NsightGraphics 2024.1 documentation_files/nsight.displaydriver.install.noversion.001.png">
+</li>
+<li><p>Follow installer directions until final screen. Do not reboot.</p>
+<img alt="../_images/nsight.displaydriver.finishinstall.noversion.001.png" class="image" src="./Installation Guide — NsightGraphics 2024.1 documentation_files/nsight.displaydriver.finishinstall.noversion.001.png">
+</li>
+<li><p>When prompted, select No, I will restart my computer later.</p></li>
+<li><p>Click Finish.</p></li>
+</ol>
+<p>See also:</p>
+<blockquote>
+<div><p><a class="reference external" href="http://www.nvidia.com/download/index.aspx">NVIDIA Driver Downloads</a></p>
+</div></blockquote>
+</section>
+<section id="setup-hybrid-mode">
+<h3>Setup Hybrid Mode<a class="headerlink" href="https://docs.nvidia.com/nsight-graphics/InstallationGuide/index.html#setup-hybrid-mode" title="Permalink to this headline"></a></h3>
+<p>Nsight Graphics™ is able to profile and debug applications on laptops using Windows 10 Hybrid mode. In order to do so, you will need to configure your machine to use the high-performance NVIDIA GPU for Nsight Graphics.</p>
+<p>There are two methods to direct an application to use the NVIDIA GPU.</p>
+<ol class="arabic simple">
+<li><p>Configure all applications use the NVIDIA GPU.</p></li>
+<li><p>Configure only specific applications to use the NVIDIA GPU.</p></li>
+</ol>
+<p>The first option is the easiest to control, but may adversely affect overall system performance. The second option is more fine grain and allows the system to maintain lower power.</p>
+<p>To get started, right-click on your desktop, and open the <strong>NVIDIA Control Panel</strong>.</p>
+<blockquote>
+<div><img alt="../_images/nvidia_control_panel.001.png" class="image" src="./Installation Guide — NsightGraphics 2024.1 documentation_files/nvidia_control_panel.001.png">
+</div></blockquote>
+<p>Once the NVIDIA Control Panel has opened, click <strong>Manage 3D Settings</strong>.</p>
+<blockquote>
+<div><img alt="../_images/nvidia_manage_3d_settings.001.png" class="image" src="./Installation Guide — NsightGraphics 2024.1 documentation_files/nvidia_manage_3d_settings.001.png">
+</div></blockquote>
+<p><strong>Option 1: Global Settings</strong></p>
+<ul class="simple">
+<li><p>On the <strong>Global Settings</strong> tab, select the drop-down menu under <strong>Preferred graphics processor</strong>, and select <strong>High Performance NVIDIA processor</strong>.</p></li>
+<li><p>Click <strong>Apply</strong> to save the changes. All applications can now be profiled, traced, and debugged in Hybrid mode.</p></li>
+</ul>
+<img alt="../_images/nvidia_3d_settings_preferred_processor.001.png" class="image" src="./Installation Guide — NsightGraphics 2024.1 documentation_files/nvidia_3d_settings_preferred_processor.001.png">
+<p><strong>Option 2: Program Settings</strong></p>
+<p>On the <strong>Program Settings</strong> tab, you can add each application that should run on the NVIDIA GPU.</p>
+<ul>
+<li><p>Under <strong>1. Select a program to customize</strong>, press <strong>Add</strong> to select a running instance of the executable to be debugged, profiled, and/or traced. You may also Browse directly to the location of the desired executable.</p>
+<p>If you plan on running a serialized frame capture, the solution (and built executable) are typically found in:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>C:\Users\&lt;user&gt;\Documents\Nsight Graphics\Captures\&lt;TimeStampedCaptureProcess&gt;
+</pre></div>
+</div>
+<p>with the built executable in the subdirectory:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&lt;architecture&gt;\&lt;build&gt;\&lt;TimeStampedCaptureProcess&gt;.exe
+</pre></div>
+</div>
+</li>
+<li><p>Press <strong>Add Selected Program</strong> to confirm your selection.</p>
+<img alt="../_images/nvidia_3d_program_settings_add_app.001.png" class="image" src="./Installation Guide — NsightGraphics 2024.1 documentation_files/nvidia_3d_program_settings_add_app.001.png">
+</li>
+<li><p>Click the drop-down menu under <strong>2. Select the preferred graphics processor for this program:</strong>, and select <strong>High-performance NVIDIA processor</strong>.</p></li>
+<li><p>Click <strong>Apply</strong> to save the changes. The specified application(s) can now be profiled, traced, and debugged in Hybrid mode.</p>
+<img alt="../_images/nvidia_3d_high_perf_gpu_for_nsight.001.png" class="image" src="./Installation Guide — NsightGraphics 2024.1 documentation_files/nvidia_3d_high_perf_gpu_for_nsight.001.png">
+</li>
+</ul>
+</section>
+</section>
+<section id="linux-installation-and-setup">
+<h2>Linux Installation and Setup<a class="headerlink" href="https://docs.nvidia.com/nsight-graphics/InstallationGuide/index.html#linux-installation-and-setup" title="Permalink to this headline"></a></h2>
+<p>Nsight Graphics™ can be downloaded from the <a class="reference external" href="https://developer.nvidia.com/gameworksdownload">NVIDIA GameWorks Download Center</a>, and is installed as a standalone application.</p>
+<p><strong>Host Setup</strong></p>
+<ol class="arabic">
+<li><p>Run the .run file.</p></li>
+<li><p>When prompted, accept the license agreement.</p>
+<img alt="../_images/linux_install.001.png" src="./Installation Guide — NsightGraphics 2024.1 documentation_files/linux_install.001.png">
+</li>
+<li><p>Enter a install path.</p></li>
+<li><p>Specify whether or not you want to create a symlink.</p>
+<img alt="../_images/linux_install_symlink.001.png" src="./Installation Guide — NsightGraphics 2024.1 documentation_files/linux_install_symlink.001.png">
+</li>
+<li><p>Complete the installation.</p></li>
+</ol>
+<p>After the installation, the Nsight Graphics GUI host can be found in</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&lt;install path&gt;/host/linux-desktop-nomad-x64/ngfx-ui
+</pre></div>
+</div>
+<p>If installed by .deb installer, you can use this command to start the GUI host</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ngfx-ui-for-linux
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You may need to install additional dependencies. On Ubuntu, for example, the package currently requires the following dependencies:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>libgstreamer0.10-0
+
+libgstreamer0.10-dev
+
+libgstreamer-plugins-base0.10-0
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr>
+
+  <div role="contentinfo">
+    <p>© Copyright 2018-2024, NVIDIA Corporation &amp; Affiliates. All rights reserved.
+      <span class="lastupdated">Last updated on Mar 19, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ 
+
+
+
+
+</body></html>

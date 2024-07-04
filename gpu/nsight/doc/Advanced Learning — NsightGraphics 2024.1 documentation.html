@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<!-- saved from url=(0067)https://docs.nvidia.com/nsight-graphics/AdvancedLearning/index.html -->
+<html class="writer-html5" lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced Learning — NsightGraphics 2024.1 documentation</title>
+      <link rel="stylesheet" href="./Advanced Learning — NsightGraphics 2024.1 documentation_files/pygments.css" type="text/css">
+      <link rel="stylesheet" href="./Advanced Learning — NsightGraphics 2024.1 documentation_files/theme.css" type="text/css">
+      <link rel="stylesheet" href="./Advanced Learning — NsightGraphics 2024.1 documentation_files/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css">
+      <link rel="stylesheet" href="./Advanced Learning — NsightGraphics 2024.1 documentation_files/omni-style.css" type="text/css">
+      <link rel="stylesheet" href="./Advanced Learning — NsightGraphics 2024.1 documentation_files/api-styles.css" type="text/css">
+    <link rel="shortcut icon" href="https://docs.nvidia.com/nsight-graphics/_static/nvidia-nsight-graphics.ico">
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="./Advanced Learning — NsightGraphics 2024.1 documentation_files/documentation_options.js"></script>
+        <script src="./Advanced Learning — NsightGraphics 2024.1 documentation_files/jquery.js"></script>
+        <script src="./Advanced Learning — NsightGraphics 2024.1 documentation_files/underscore.js"></script>
+        <script src="./Advanced Learning — NsightGraphics 2024.1 documentation_files/doctools.js"></script>
+        <script src="./Advanced Learning — NsightGraphics 2024.1 documentation_files/mermaid-init.js"></script>
+        <script src="./Advanced Learning — NsightGraphics 2024.1 documentation_files/design-tabs.js"></script>
+        <script src="./Advanced Learning — NsightGraphics 2024.1 documentation_files/version.js"></script>
+        <script src="./Advanced Learning — NsightGraphics 2024.1 documentation_files/social-media.js"></script>
+    <script src="./Advanced Learning — NsightGraphics 2024.1 documentation_files/theme.js"></script>
+    <link rel="index" title="Index" href="https://docs.nvidia.com/nsight-graphics/genindex.html">
+    <link rel="search" title="Search" href="https://docs.nvidia.com/nsight-graphics/search.html">
+    <link rel="next" title="Nsight Graphics SDK" href="https://docs.nvidia.com/nsight-graphics/NsightGraphicsSdk/NsightGraphics_api.html">
+    <link rel="prev" title="User Guide" href="https://docs.nvidia.com/nsight-graphics/UserGuide/index.html">
+ 
+
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+
+
+  <a href="https://docs.nvidia.com/nsight-graphics/index.html">
+  <img src="./Advanced Learning — NsightGraphics 2024.1 documentation_files/nvidia-nsight-graphics.png" class="logo" alt="Logo">
+</a>
+
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="https://docs.nvidia.com/nsight-graphics/search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs">
+    <input type="hidden" name="check_keywords" value="yes">
+    <input type="hidden" name="area" value="default">
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Nsight Graphics</span></p>
+<ul class="current" aria-expanded="true">
+<li class="toctree-l1"><a class="reference internal" href="https://docs.nvidia.com/nsight-graphics/ReleaseNotes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://docs.nvidia.com/nsight-graphics/InstallationGuide/index.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://docs.nvidia.com/nsight-graphics/UserGuide/index.html">User Guide</a></li>
+<li class="toctree-l1 current" aria-expanded="true"><a class="reference internal current" href="https://docs.nvidia.com/nsight-graphics/AdvancedLearning/index.html#" aria-expanded="true"><button class="toctree-expand" title="Open/close menu"></button>Advanced Learning</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.nvidia.com/nsight-graphics/AdvancedLearning/index.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.nvidia.com/nsight-graphics/AdvancedLearning/index.html#gpu-trace"><button class="toctree-expand" title="Open/close menu"></button>GPU Trace</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="https://docs.nvidia.com/nsight-graphics/AdvancedLearning/index.html#overview-of-the-gpu">Overview of the GPU</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://docs.nvidia.com/nsight-graphics/AdvancedLearning/index.html#units-throughput">Units Throughput</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://docs.nvidia.com/nsight-graphics/AdvancedLearning/index.html#sm-occupancy-rows">SM Occupancy Rows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://docs.nvidia.com/nsight-graphics/AdvancedLearning/index.html#asynchronous-compute">Asynchronous Compute</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://docs.nvidia.com/nsight-graphics/AdvancedLearning/index.html#warp-can-t-launch-reasons">Warp Can’t Launch Reasons</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://docs.nvidia.com/nsight-graphics/AdvancedLearning/index.html#sm-throughput">SM Throughput</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://docs.nvidia.com/nsight-graphics/AdvancedLearning/index.html#l1-throughput">L1 Throughput</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://docs.nvidia.com/nsight-graphics/AdvancedLearning/index.html#vram">VRAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://docs.nvidia.com/nsight-graphics/AdvancedLearning/index.html#pci-bandwidth">PCI Bandwidth</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Interfaces</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="https://docs.nvidia.com/nsight-graphics/NsightGraphicsSdk/NsightGraphics_api.html">Nsight Graphics SDK</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Legal</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="https://docs.nvidia.com/nsight-graphics/CopyrightAndLicenses/index.html">Copyright and Licenses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://docs.nvidia.com/nsight-graphics/Content/notices-header.html">Notices</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="https://docs.nvidia.com/nsight-graphics/index.html">NsightGraphics</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+
+
+<li><a href="https://docs.nvidia.com/nsight-graphics/index.html" class="icon icon-home"></a> »</li>
+<li>Advanced Learning</li>
+
+      <li class="wy-breadcrumbs-aside">
+      </li>
+<li class="wy-breadcrumbs-aside">
+
+
+  <span>v2024.1 |</span>
+
+
+
+  <a href="https://docs.nvidia.com/nsight-graphics/AdvancedLearning/ReleaseNotes/index.html#previous-versions" class="reference external">Archive</a>
+
+
+  <span>&nbsp;</span>
+</li>
+
+  </ul>
+  <hr>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="advanced-learning">
+<h1>Advanced Learning<a class="headerlink" href="https://docs.nvidia.com/nsight-graphics/AdvancedLearning/index.html#advanced-learning" title="Permalink to this headline"></a></h1>
+<p>This section will focus on the primary Nsight Graphics tools key concepts, advanced information and howto’s.</p>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="https://docs.nvidia.com/nsight-graphics/AdvancedLearning/index.html#introduction" title="Permalink to this headline"></a></h2>
+<p>Since the dawn of graphics acceleration, NVIDIA has led the way in creating the most performant and feature rich GPUs in the world. With each generation, GPUs get faster, and, because of that, more complex. In order to create applications that fully take advantage of the complex capabilities that exist in modern GPUs, you, the programmer, must have a deep understanding of how the GPU operates, as well as a way to see the GPU’s state as it relates to that operation. Lucky for you, NVIDIA Graphics Developer Tools has a simple mission; to provide an ecosystem of tools that gives you that super power.</p>
+<p>This reference guide was created by experts on the Developer Tools team and is meant as a gentle introduction to some critical tools features that will help you debug, profile and ultimately, optimize your application.</p>
+<p>Feel free to skip ahead to whichever section is most relevant to you. If you find any information lacking, please contact us at <a class="reference external" href="mailto:NsightGraphics%40nvidia.com">NsightGraphics<span>@</span>nvidia<span>.</span>com</a> so we can make this reference better. In addition to this guide, we’re happy to work with individual developers on training. Lastly, if anything ever goes wrong, remember to use that Feedback Button at the top right of the tool window so that we have a chance to make the tool work better for you.</p>
+<p>Thank you,</p>
+<p>Aurelio Reis</p>
+<p>SWE Director, Graphics Developer Tools</p>
+<p><strong>NVIDIA</strong></p>
+</section>
+<section id="gpu-trace">
+<h2>GPU Trace<a class="headerlink" href="https://docs.nvidia.com/nsight-graphics/AdvancedLearning/index.html#gpu-trace" title="Permalink to this headline"></a></h2>
+<p><strong>What is it?</strong></p>
+<p>GPU Trace is a D3D12/DXR and Vulkan/VKRay graphics profiler used to identify performance limiters in graphics applications. It uses a technique called periodic sampling to gather metrics and detailed timing statistics associated with different GPU hardware units. With Multi-Pass Metrics, the tool can use multiple passes and statistical sampling to collect metrics. For standard metric collection, it takes advantage of specialized Turing hardware to capture this data in a single pass with minimal overhead.</p>
+<p>GPU Trace saves this data to a report file and includes “diffing” functionality via a feature called “TraceCompare”. The data is presented as an intuitive visualization on a timeline which is configurable and easy to navigate. The data is organized in a hierarchical top-down fashion so you can observe whole-frame behavior before zooming into individual problem areas. Problems that previously required guessing &amp; testing can now be visually identified at a glance.</p>
+<p>In this section we will focus on the key-concepts the GPU Trace tool introduces and in depth explanation of the data it retrieves.</p>
+<ul class="simple">
+<li><p>To learn how to use the tools go to the activities section in the user guide: <a class="reference external" href="https://docs.nvidia.com/nsight-graphics/UserGuide/index.html#gpu-trace-profiler">here</a>.</p></li>
+<li><p>To understand the UI components GPU Trace UI section in the User Interface Reference <a class="reference external" href="https://docs.nvidia.com/nsight-graphics/UserGuide/index.html#gpu-trace-ui">here</a>.</p></li>
+</ul>
+<section id="overview-of-the-gpu">
+<h3>Overview of the GPU<a class="headerlink" href="https://docs.nvidia.com/nsight-graphics/AdvancedLearning/index.html#overview-of-the-gpu" title="Permalink to this headline"></a></h3>
+<p>GPU Trace allows you to observe metrics across all stages of the D3D12 and Vulkan graphics pipeline. The following diagram names the NVIDIA hardware units related to each logical pipeline state:</p>
+<a class="image reference internal image-reference" href="./Advanced Learning — NsightGraphics 2024.1 documentation_files/gpu_trace_overview_of_gpu.png" id="gt-overview-of-the-gpu-image-jjq-vs2-vnb"><img alt="../_images/gpu_trace_overview_of_gpu.png" class="image" id="gt-overview-of-the-gpu-image-jjq-vs2-vnb" src="./Advanced Learning — NsightGraphics 2024.1 documentation_files/gpu_trace_overview_of_gpu.png" style="width: 1024px;"></a>
+</section>
+<section id="units-throughput">
+<h3>Units Throughput<a class="headerlink" href="https://docs.nvidia.com/nsight-graphics/AdvancedLearning/index.html#units-throughput" title="Permalink to this headline"></a></h3>
+<p>The Unit Throughputs row overlays the %-of-max-throughput of every hardware unit in the GPU. Multiple units can concurrently reach close to 100% at any moment in time.</p>
+<a class="image reference internal image-reference" href="./Advanced Learning — NsightGraphics 2024.1 documentation_files/gpu_trace_unit_throughputs.png" id="gt-units-throughput-image-u15-352-vnb"><img alt="../_images/gpu_trace_unit_throughputs.png" class="image" id="gt-units-throughput-image-u15-352-vnb" src="./Advanced Learning — NsightGraphics 2024.1 documentation_files/gpu_trace_unit_throughputs.png" style="width: 1024px;"></a>
+<div class="wy-table-responsive"><table class="table-no-stripes docutils align-default">
+<colgroup>
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 84%">
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Unit</p></th>
+<th class="head"><p>Pipeline Area</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SM</p></td>
+<td><p>Shader</p></td>
+<td><p>The Streaming Multiprocessor executes shader code.</p></td>
+</tr>
+<tr class="row-odd"><td><p>L1TEX</p></td>
+<td><p>Memory</p></td>
+<td><p>The L1TEX unit contains the L1 data cache for the SM, and two parallel pipelines: the LSU or load/store unit, and TEX for texture lookups and filtering.</p></td>
+</tr>
+<tr class="row-even"><td><p>L2</p></td>
+<td><p>Memory</p></td>
+<td><p>The L2 cache serves all units on the GPU, and is a central point of coherency.</p></td>
+</tr>
+<tr class="row-odd"><td><p>VRAM</p></td>
+<td><p>Memory</p></td>
+<td><p><a class="reference external" href="https://en.wikipedia.org/wiki/GDDR6_SDRAM">GDDR6 on Wikipedia</a>, <a class="reference external" href="http://monitorinsider.com/GDDR5X.html">GDDR5X</a>, <a class="reference external" href="http://monitorinsider.com/GDDR6.html">GDDR6</a></p></td>
+</tr>
+<tr class="row-even"><td><p>PD</p></td>
+<td><p>World Pipe</p></td>
+<td><p>The Primitive Distributor fetches indices from the index buffer, and sends triangles to the vertex shader.</p></td>
+</tr>
+<tr class="row-odd"><td><p>VAF</p></td>
+<td><p>World Pipe</p></td>
+<td><p>The Vertex Attribute Fetch unit reads attribute values from memory and sends them to the vertex shader. VAF is part of the Primitive Engine.</p></td>
+</tr>
+<tr class="row-even"><td><p>PES+VPC</p></td>
+<td><p>World Pipe</p></td>
+<td><p>The Primitive Engine orchestrates the flow of primitive and attribute data across all world pipe shader stages (Vertex, Tessellation, Geometry).</p>
+<p>PES contains the stream (transform feedback) unit.</p>
+<p>The VPC unit performs clip and cull.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>RASTER</p></td>
+<td><p>Screen Pipe</p></td>
+<td><p>The Raster units receives primitives from the world pipe, and outputs pixels (fragments) and samples (coverage masks) for the PROP, Pixel Shader, and ROP to process.</p></td>
+</tr>
+<tr class="row-even"><td><p>PROP</p></td>
+<td><p>Screen Pipe</p></td>
+<td><p>The Pre-ROP unit orchestrates the flow of depth and color pixels (fragments) and samples, for final output. PROP enforces the API ordering of pixel shading, depth testing, and color blending. Early-Z and Late-Z modes are handled in PROP.</p></td>
+</tr>
+<tr class="row-odd"><td><p>ZROP</p></td>
+<td><p>Screen Pipe</p></td>
+<td><p>The Depth Raster Operation unit performs depth tests, stencil tests, and depth/stencil buffer updates.</p></td>
+</tr>
+<tr class="row-even"><td><p>CROP</p></td>
+<td><p>Screen Pipe</p></td>
+<td><p>The Color Raster Operation unit performs the final color blend and render-target updates. CROP implements the “advanced blend equation”</p></td>
+</tr>
+</tbody>
+</table></div>
+</section>
+<section id="sm-occupancy-rows">
+<h3>SM Occupancy Rows<a class="headerlink" href="https://docs.nvidia.com/nsight-graphics/AdvancedLearning/index.html#sm-occupancy-rows" title="Permalink to this headline"></a></h3>
+<p>The SM Occupancy row shows warp slot residency over time. Each Turing SM has 32 warp slots, where launched warps reside while they take turns issuing instructions.</p>
+</section>
+<section id="asynchronous-compute">
+<h3>Asynchronous Compute<a class="headerlink" href="https://docs.nvidia.com/nsight-graphics/AdvancedLearning/index.html#asynchronous-compute" title="Permalink to this headline"></a></h3>
+<p>The only way to concurrently run compute and 3D is by simultaneously:</p>
+<ul class="simple">
+<li><p>sending 3D work to the DIRECT queue</p></li>
+<li><p>sending compute work to an ASYNC_COMPUTE queue</p></li>
+</ul>
+<p>On Ampere, you can also dispatch concurrent compute workloads by dispatching it on both the DIRECT and ASYNC_COMPUTE queue.</p>
+<p>You can detect whether a program is taking advantage of async compute in several ways:</p>
+<p>The “Compute In Flight” row contains an “Async Compute In Flight” counter.</p>
+<p>Observe when the compute warps executed on the SM Occupancy row, and determine if they were Sync or Async based on the color of the “Compute In Flight” row.</p>
+<a class="image reference internal image-reference" href="./Advanced Learning — NsightGraphics 2024.1 documentation_files/gt_async_compute_1.PNG" id="gt-asynchronous-compute-image-wbc-fzc-c4b"><img alt="../_images/gt_async_compute_1.PNG" class="image" id="gt-asynchronous-compute-image-wbc-fzc-c4b" src="./Advanced Learning — NsightGraphics 2024.1 documentation_files/gt_async_compute_1.PNG" style="width: 800px;"></a>
+<p>Look for multiple queue rows; the ASYNC_COMPUTE queue will appear as something other than Q0.</p>
+<p>Compute will only run simultaneously with graphics if submitted on from an ASYNC_COMPUTE queue. This can disambiguate the SM Occupancy row.</p>
+<a class="image reference internal image-reference" href="./Advanced Learning — NsightGraphics 2024.1 documentation_files/gt_async_compute_2.PNG" id="gt-asynchronous-compute-image-ot5-fzc-c4b"><img alt="../_images/gt_async_compute_2.PNG" class="image" id="gt-asynchronous-compute-image-ot5-fzc-c4b" src="./Advanced Learning — NsightGraphics 2024.1 documentation_files/gt_async_compute_2.PNG" style="width: 800px;"></a>
+</section>
+<section id="warp-can-t-launch-reasons">
+<h3>Warp Can’t Launch Reasons<a class="headerlink" href="https://docs.nvidia.com/nsight-graphics/AdvancedLearning/index.html#warp-can-t-launch-reasons" title="Permalink to this headline"></a></h3>
+<p>When a draw call or compute dispatch enqueues more work than can fit onto the SMs all-at-once, the SMs will report that “additional warps can’t launch”. We can graph these signals over time to determine the limiting factor.</p>
+<p class="rubric-h3 rubric" id="d-shaders">3D Shaders</p>
+<p>3D warps may not launch due to the following reasons:</p>
+<ul class="simple">
+<li><p>Register Allocation</p></li>
+<li><p>Warp Allocation</p></li>
+<li><p>Attribute Allocation (ISBEs for VTG, or TRAM for PS)</p></li>
+</ul>
+<p>GPU Trace allows you to determine the following:</p>
+<ol class="arabic simple">
+<li><p>When Pixel Shaders can’t launch, for any reason.</p></li>
+<li><p>When Pixel Shaders launch was register limited.</p></li>
+<li><p>The warp-allocation limited regions in the Warp Occupancy chart. There are no free slots when there are no gray regions.</p></li>
+<li><p>By deduction, if SM Occupancy shows a large region of pixel warps with no limiter visible, it either means</p></li>
+</ol>
+<ul class="simple">
+<li><p>there was no warp launch stall, but rather very long running warps [unlikely], OR</p></li>
+<li><p>warp launch was stalled due to attribute allocation.</p></li>
+</ul>
+<p><strong>Compute Shaders</strong>
+Compute warps may not launch due to the following reasons:</p>
+<ul class="simple">
+<li><p>Register Allocation</p></li>
+<li><p>Warp Allocation</p></li>
+<li><p>CTA Allocation</p></li>
+<li><p>Shared Memory Allocation</p></li>
+</ul>
+<p>GPU Trace allow you to determine the following:</p>
+<ol class="arabic simple">
+<li><p>When Compute Shaders should be running in the Compute In Flight row.</p></li>
+<li><p>When Compute Shader launch was register limited.</p></li>
+<li><p>The warp-allocation limited regions in the Warp Occupancy chart. There are no free slots when there are no gray regions.</p></li>
+<li><p>By deduction, if SM Occupancy shows a large region of compute warps with no limiter visible, it eithers means:</p>
+<ol class="loweralpha simple">
+<li><p>there was no warp launch stall, but rather very long running warps [unlikely], OR</p></li>
+<li><p>one of the other reasons (CTAs, Shared Memory) was the reason.</p></li>
+</ol>
+</li>
+</ol>
+<p>Further disambiguating between 4a and 4b above:</p>
+<ul class="simple">
+<li><p>Are the CTA dimensions (<a class="reference external" href="https://docs.microsoft.com/en-us/windows/desktop/direct3dhlsl/sm5-attributes-numthreads">HLSL numthreads</a>) the theoretical occupancy limiter for your shader? A thread group with 32 threads or fewer will be limited to half occupancy. <em>Increasing</em> to 64 threads per CTA will relieve this issue.</p></li>
+<li><p>Is the shared memory size per CTA the theoretical occupancy limiter for your shader? <strong>(</strong><a class="reference external" href="https://docs.microsoft.com/en-us/windows/desktop/direct3dhlsl/dx-graphics-hlsl-variable-syntax">HLSL groupshared</a> variables) Does (numCTAs * shmemSizePerCTA) exceed the per-SM limit of 64KiB [compute-only mode] or 32KiB [SCG mode]?</p></li>
+</ul>
+</section>
+<section id="sm-throughput">
+<h3>SM Throughput<a class="headerlink" href="https://docs.nvidia.com/nsight-graphics/AdvancedLearning/index.html#sm-throughput" title="Permalink to this headline"></a></h3>
+<p>SM Throughput reveals the most common computational pipeline limiters in shader code:</p>
+<a class="image reference internal image-reference" href="./Advanced Learning — NsightGraphics 2024.1 documentation_files/gt_sm_instruction_throughput.PNG" id="gt-sm-throughput-image-o4y-ly1-d4b"><img alt="../_images/gt_sm_instruction_throughput.PNG" class="image" id="gt-sm-throughput-image-o4y-ly1-d4b" src="./Advanced Learning — NsightGraphics 2024.1 documentation_files/gt_sm_instruction_throughput.PNG" style="width: 800px;"></a>
+<ul class="simple">
+<li><p>Issue Active : instruction-issue limited</p></li>
+<li><p>ALU Pipe : INT other than multiply, bit manipulation, lower frequency FP32 like comparison and min/max.</p></li>
+<li><p>FMA Pipe : FP32 add &amp; multiply, integer multiply.</p></li>
+<li><p>FP16+Tensor : FP16 instructions which execute a vec2 per instruction, and Tensor ops used by deep learning.</p></li>
+<li><p>SFU Pipe : transcendentals (sqrt, rsqrt, sin, cos, log, exp, …)</p></li>
+<li><p>Pipes not covered in the SM Throughput: IPA, LSU, TEX, CBU, ADU, RTCORE, UNIFORM.</p>
+<ul>
+<li><p>LSU and TEX are never limiters in the SM; see <a class="reference external" href="https://docs.nvidia.com/nsight-graphics/AdvancedLearning/index.html#gt-l1-throughput">L1 Throughput</a> instead.</p></li>
+<li><p>IPA traffic to TRAM is counted as part of LSU</p></li>
+<li><p>RTCORE has its own Throughput metric</p></li>
+<li><p>UNIFORM and CBU are unaccounted for, but rarely a limiter</p></li>
+</ul>
+</li>
+</ul>
+<p>Problem Solving:</p>
+<ul class="simple">
+<li><p>If FP32 is high, consider using FP16 instead.</p>
+<ul>
+<li><p>In theory, a 2X speedup is possible due solely to pipeline width.</p></li>
+<li><p>In theory, a 3X speedup is possible by perfectly balancing FP32 and FP16.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="l1-throughput">
+<span id="gt-l1-throughput"></span><h3>L1 Throughput<a class="headerlink" href="https://docs.nvidia.com/nsight-graphics/AdvancedLearning/index.html#l1-throughput" title="Permalink to this headline"></a></h3>
+<p>GPU Trace exposes a simplified model of the L1TEX Data Cache, that still reveals the most common types of memory limiters in shader programs.</p>
+<a class="image reference internal image-reference" href="./Advanced Learning — NsightGraphics 2024.1 documentation_files/gt_l1_throughput.PNG" id="gt-l1-throughput-image-tnj-n32-d4b"><img alt="../_images/gt_l1_throughput.PNG" class="image" id="gt-l1-throughput-image-tnj-n32-d4b" src="./Advanced Learning — NsightGraphics 2024.1 documentation_files/gt_l1_throughput.PNG" style="width: 640px;"></a>
+<p>The Turing and GA10x L1TEX Caches share a similar design, capable of concurrent accesses:</p>
+<ul class="simple">
+<li><p>Input: Simultaneously accepting an LSU instruction and TEX quad per cycle</p></li>
+<li><p>Input: LSUIN accepts 16 threads’ addresses per cycle from AGU</p></li>
+<li><p>Data: Simultaneously reading or writing the Data SRAM for LSU and TEX.</p></li>
+<li><p>Writeback: Simultaneously returning data for LSU and TEX reads</p></li>
+</ul>
+<p>Additional cache properties:</p>
+<ul class="simple">
+<li><p>The T-Stage (cache tags), Data-Stage, and M-Stage are shared between LSU and TEX</p></li>
+<li><p>The T-Stage address coalescer can output up to 4 tags per cycle, for divergent accesses. This ensures T-Stage is almost never a limiter, compared to Data-Stage</p></li>
+<li><p>Per cycle, M-Stage can simultaneously read from L2 and write to L2. There is a crossbar (XBAR) between M-Stage and L2, not pictured above</p></li>
+</ul>
+<p>In this simplified model, memory &amp; texture requests follow these paths:</p>
+<ul class="simple">
+<li><p>Local/Global Instruction → LSUIN → T-Stage → LSU Data → LSU Writeback → SM</p></li>
+<li><p>Shared Memory Instruction → LSUIN → LSU Data → LSU Writeback → RF</p>
+<ul>
+<li><p>Includes compute shared memory and 3D shader attributes</p></li>
+<li><p>A few non-memory ops like <a class="reference external" href="https://docs.microsoft.com/en-us/windows/win32/direct3dhlsl/hlsl-shader-model-6-0-features-for-direct3d-12#wave-broadcast">HLSL Wave Broadcast</a> are counted here</p></li>
+</ul>
+</li>
+<li><p>Texture/Surface Read → TEXIN → T-Stage → TEX Data → Filter → Writeback → SM</p>
+<ul>
+<li><p>Includes texture fetches, texture loads, surface loads, and surface atomics</p></li>
+</ul>
+</li>
+<li><p>Surface Write → TEXIN… → T-Stage → LSU Data → Writeback → RF</p>
+<ul>
+<li><p>Surface writes cross over to the LSU Data path</p></li>
+</ul>
+</li>
+<li><p>Memory Barriers → LSUIN &amp; TEXIN → … <em>flows through both sides of the pipe</em></p></li>
+<li><p>Primitive Engine attribute writes to (ISBE, TRAM) → LSU Data</p></li>
+<li><p>Primitive Engine attribute reads from ISBE → LSU Data</p></li>
+<li><p>Local/Global/Texture/Surface→ T-Stage [miss!] → M-Stage → XBAR → L2 → XBAR → M-Stage → Cache Data SRAM</p></li>
+</ul>
+<p><strong>Turing Problem Solving</strong></p>
+<p>Turing reports the following activity:</p>
+<ul class="simple">
+<li><p>Throughput of LSU Data and TEX Data</p></li>
+<li><p>Separate counters in LSU Data for Local/Global vs. Shared memory</p></li>
+<li><p>Throughput of LSU Writeback, and TEX Filter</p></li>
+</ul>
+<p>By comparing the values of the available throughputs, we can draw the following conclusions:</p>
+<ul class="simple">
+<li><p>All values are equal : most likely request limited</p></li>
+<li><p>TEX Data &gt; others : Bandwidth limited; cachelines/instruction &gt; 1</p></li>
+<li><p>TEX Filter &gt; others : expensive filtering (Trilinear/Aniso) OR Texture writeback limited due to a wide sampler format (or surface format when sampler disabled)</p></li>
+<li><p>LSU Data &gt; others : Possibilities are:</p>
+<ul>
+<li><p>Pure bandwidth limited</p></li>
+<li><p>Cachelines per instruction &gt; 1, causing serialization</p></li>
+<li><p>Shared memory bank conflicts, causing serialization</p></li>
+<li><p>Vectored shared memory accesses (64-bit, 128-bit) requiring multi-cycle access</p></li>
+<li><p>Heavy use of SHFL (<a class="reference external" href="https://docs.microsoft.com/en-us/windows/win32/direct3dhlsl/hlsl-shader-model-6-0-features-for-direct3d-12#wave-broadcast">HLSL Wave Broadcast</a>)</p></li>
+</ul>
+</li>
+<li><p>LSU Writeback &gt; others : limited by coalesced wide loads (64-bit or 128-bit)</p>
+<ul>
+<li><p>Note: this implies efficient use of LSU Data</p></li>
+</ul>
+</li>
+<li><p>LSU LG Data or TEX Data close to 100% : implies a high hit-rate</p></li>
+<li><p>If Sector Hit Rate is low : may imply latency-bound by L2 or VRAM accesses</p></li>
+</ul>
+<p><strong>GA10x Problem Solving</strong></p>
+<p>GA10x reports the following activity:</p>
+<ul class="simple">
+<li><p>Throughput of LSU Data and TEX Data</p></li>
+<li><p>Separate counters in LSU Data per Local/Global, Surface, and Shared memories</p></li>
+<li><p>Throughput of LSU Writeback, TEX Filter, and TEX Writeback</p></li>
+<li><p>L1TEX Sector Hit-Rate
+-  Reports the collective hit-rate for Local, Global, Texture, Surface
+-  Note that shared memory and 3D attributes do not contribute to the hit-rate</p></li>
+</ul>
+<p>By comparing the values of the available throughputs, we can draw the following conclusions:</p>
+<ul class="simple">
+<li><p>All values are equal : most likely request limited</p></li>
+<li><p>TEX Data &gt; others : Bandwidth limited; cachelines/instruction &gt; 1</p></li>
+<li><p>TEX Filter &gt; others : expensive filtering (Trilinear/Aniso)</p></li>
+<li><p>TEX Writeback &gt; others : limited wide sampler format (or surface format when sampler disabled)</p></li>
+<li><p>LSU Data &gt; others : Possibilities are</p>
+<ul>
+<li><p>Pure bandwidth limited</p></li>
+<li><p>Cachelines per instruction &gt; 1, causing serialization</p></li>
+<li><p>Shared memory bank conflicts, causing serialization</p></li>
+<li><p>Vectored shared memory accesses (64-bit, 128-bit) requiring multi-cycle access</p></li>
+<li><p>Heavy use of <a class="reference external" href="https://docs.microsoft.com/en-us/windows/win32/direct3dhlsl/hlsl-shader-model-6-0-features-for-direct3d-12#wave-broadcast">HLSL Wave Broadcast</a></p></li>
+</ul>
+</li>
+<li><p>LSU Writeback &gt; others : limited by coalesced wide loads (64-bit or 128-bit)</p>
+<ul>
+<li><p>Note: this implies efficient use of LSU Data</p></li>
+</ul>
+</li>
+<li><p>LSU LG Data or TEX Data close to 100% : implies a high hit-rate; cross-check against the L1TEX Sector Hit Rate</p></li>
+</ul>
+<ul class="simple">
+<li><p>If Sector Hit Rate is low : may imply being latency-bound by L2 or VRAM accesses</p></li>
+</ul>
+</section>
+<section id="vram">
+<h3>VRAM<a class="headerlink" href="https://docs.nvidia.com/nsight-graphics/AdvancedLearning/index.html#vram" title="Permalink to this headline"></a></h3>
+<p>The GPU’s VRAM is built with DRAM. DRAM is a half duplex interface, meaning the same wires are used for read and write, but not simultaneously. This is why the total VRAM bandwidth is the sum of read and write.</p>
+<p>The VRAM Bandwidth row shows bandwidth as a stacked graph, making it easy to visualize the balance between read and write traffic. VRAM traffic implies either L2 cache misses, or L2 writeback. In either case, high VRAM traffic can be a symptom of poor L2 cache usage – either too large a working set, or sub-optimal access patterns.</p>
+<a class="image reference internal image-reference" href="./Advanced Learning — NsightGraphics 2024.1 documentation_files/gt_vram.PNG" id="vram-image-uvs-gvf-d4b"><img alt="../_images/gt_vram.PNG" class="image" id="vram-image-uvs-gvf-d4b" src="./Advanced Learning — NsightGraphics 2024.1 documentation_files/gt_vram.PNG" style="width: 800px;"></a>
+</section>
+<section id="pci-bandwidth">
+<h3>PCI Bandwidth<a class="headerlink" href="https://docs.nvidia.com/nsight-graphics/AdvancedLearning/index.html#pci-bandwidth" title="Permalink to this headline"></a></h3>
+<p>The GPU connects to the rest of the computer via <a class="reference external" href="https://en.wikipedia.org/wiki/PCI_Express">PCI Express (PCIe)</a>. PCIe is a full duplex interface, meaning separate wires are used for reads and writes, and these can occur simultaneously. This is why the PCIe row is displayed as an overlay, where reads and writes can independently reach 100%.</p>
+<p>When the GR engine is idle (neither graphics nor compute running), it is often due to a data dependency, where a previous data transfer (DMA copy) must complete before draws or compute dispatches can start. Compare the GPU Active row against the Throughputs row to confirm that hypothesis.</p>
+<a class="image reference internal image-reference" href="./Advanced Learning — NsightGraphics 2024.1 documentation_files/gt_pci.PNG"><img alt="../_images/gt_pci.PNG" class="image" src="./Advanced Learning — NsightGraphics 2024.1 documentation_files/gt_pci.PNG" style="width: 800px;"></a>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr>
+
+  <div role="contentinfo">
+    <p>© Copyright 2018-2024, NVIDIA Corporation &amp; Affiliates. All rights reserved.
+      <span class="lastupdated">Last updated on Mar 19, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ 
+
+
+
+
+</body></html>
