@@ -1,0 +1,2835 @@
+<!-- BEGIN: preheader --><!DOCTYPE html>
+<html id="htmlTag" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
+<head>
+	
+	
+	<base href="https://thelinuxforum.com/" />
+	
+		<link rel="Shortcut Icon" href="favicon.ico" type="image/x-icon" />
+	
+
+	
+	
+	
+		
+		
+	
+
+	
+
+	
+	<link rel="stylesheet" type="text/css" href="css.php?styleid=17&amp;td=ltr&amp;sheet=css_reset.css,css_unreset.css,css_utilities.css&amp;ts=1698001290 " />
+<link rel="stylesheet" type="text/css" href="css.php?styleid=17&amp;td=ltr&amp;sheet=css_imgareaselect-animated.css,css_jquery-ui-1_12_1_custom.css,css_jquery_qtip.css,css_jquery_selectBox.css,css_jquery_autogrow.css,css_global.css,css_fonts.css,css_b_link.css,css_b_layout.css,css_b_button.css,css_b_button_group.css,css_b_icon.css,css_b_tabbed_pane.css,css_b_form_control.css,css_b_form_input.css,css_b_form_select.css,css_b_form_textarea.css,css_b_media.css,css_b_divider.css,css_b_avatar.css,css_b_namecard.css,css_b_ajax_loading_indicator.css,css_responsive.css,css_b_vbscroller.css,css_b_theme_selector.css,css_b_top_background.css,css_b_module.css,css_b_comp_menu_horizontal.css,css_b_comp_menu_dropdown.css,css_b_comp_menu_vert.css,css_b_top_menu.css&amp;ts=1698001290 " />
+
+<script type="text/javascript" src="js/header-rollup-575.js"></script>
+<!-- END: preheader --><!-- BEGIN: screenlayout_display_wide_narrow --><!-- BEGIN: header -->
+	
+	
+		<meta property="og:site_name" content="The Linux Forum" />
+		<meta property="og:description" content="As a developer, your life is easier when you have your favorite tools. Now that Ubuntu 24.04 is around, one to-do involves installing all the developer tools you require, including Microsoft’s Vs Code.
+Ubuntu supports vscode, and there are different options you can use to quickly install vscode on Ubuntu 24.04 and start using" />
+		<meta property="og:url" content="https://thelinuxforum.com/articles/850-install-vscode-on-ubuntu-24-04" />
+		
+		<meta property="og:type" content="website" />
+	
+	
+
+	
+	
+	<link rel="canonical" href="https://thelinuxforum.com/articles/850-install-vscode-on-ubuntu-24-04" />
+
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+	
+	
+	
+		
+		
+		
+			
+			
+		
+	
+
+	
+	
+	
+		
+
+	<title>
+		
+			Install vscode on Ubuntu 24.04 - 
+		
+		The Linux Forum
+	</title>
+
+	<meta name="description" content="As a developer, your life is easier when you have your favorite tools. Now that Ubuntu 24.04 is around, one to-do involves installing all the developer tools you require, including Microsoft’s Vs Code.
+Ubuntu supports vscode, and there are different options you can use to quickly install vscode on Ubuntu 24.04 and start using" />
+	<meta name="generator" content="vBulletin 5.7.5" />
+
+	
+	
+
+	<link rel="stylesheet" type="text/css" href="css.php?styleid=17&amp;td=ltr&amp;sheet=css_login.css&amp;ts=1698001290 " />
+<link rel="stylesheet" type="text/css" href="css.php?styleid=17&amp;td=ltr&amp;sheet=css_blogs_groups.css,css_b_sidebar_field.css,css_b_flexgrid.css,css_b_groupgrid.css&amp;ts=1698001290 " />
+<link rel="stylesheet" type="text/css" href="css.php?styleid=17&amp;td=ltr&amp;sheet=css_b_post.css,css_b_post_control.css,css_b_post_attachments.css,css_b_post_notice.css,css_b_post_sm.css,css_b_comments.css,css_b_comment.css,css_b_comment_entry.css,css_b_userinfo.css,css_b_meter.css,css_b_inlinemod.css,css_b_bbcode.css,css_b_bbcode_user.css,css_b_event.css,css_b_link_thumbnail_list.css,css_b_thumbnail_nav.css&amp;ts=1698001290 " />
+<link rel="stylesheet" type="text/css" href="css.php?styleid=17&amp;td=ltr&amp;sheet=css_b_sharing_menu.css&amp;ts=1698001290 " />
+<link rel="stylesheet" type="text/css" href="css.php?styleid=17&amp;td=ltr&amp;sheet=css_b_post_column.css,css_b_channel_nav.css,css_b_article_content_pagenav.css&amp;ts=1698001290 " />
+<link class="js-additional-css" rel="stylesheet" type="text/css" href="css.php?styleid=17&amp;td=ltr&amp;sheet=css_additional.css&amp;ts=1698001290 " />
+
+<script type="text/javascript">
+		if (location.hash) {
+			document.write('<style type="text/css"> a.anchor { display:none;} <\/style>');
+		}
+
+		var uploadUrlTarget = "https://thelinuxforum.com/uploader/url";
+		var pageData = {
+			"baseurl": "https://thelinuxforum.com",
+			"baseurl_path": "/",
+			"baseurl_core": "https://thelinuxforum.com/core",
+			"baseurl_pmchat": "https://thelinuxforum.com/pmchat/chat",
+			"pageid": "29",
+			"pagetemplateid": "36",
+			"channelid": "14",
+			"nodeid": "850",
+			"userid": "0",
+			"username": "Guest",
+			"musername": "Guest",
+			"user_startofweek": "1",
+			
+			"user_lang_pickerdateformatoverride": "",
+			"user_editorstate": "",
+			"textDirLeft": "left",
+			"textDirRight": "right",
+			"textdirection": "ltr",
+			"can_use_sitebuilder": "",
+			"cookie_prefix": "bb",
+			"cookie_path": "/",
+			"cookie_domain": "",
+			"inlinemod_cookie_name": "inlinemod_nodes",
+			
+				"pagenum": "1",
+			
+			"languageid": "1",
+			"threadmarking": "2",
+			"lastvisit": "1726644567",
+			"phrasedate": "1696967078",
+			"optionsdate": "1698941357",
+			
+			"current_server_datetime": "1726644846",
+			"simpleversion": "v=575",
+			
+			"showhv_post": "1",
+			"nextcron": "1726645200",
+			"securitytoken": "guest",
+			"privacystatus": "0",
+			"flash_message": "",
+			"registerurl": "https://thelinuxforum.com/register",
+			"activationurl": "https://thelinuxforum.com/activateuser",
+			"helpurl": "https://thelinuxforum.com/help",
+			"contacturl": "https://thelinuxforum.com/contact-us",
+			"datenow": "09-18-2024"
+		};
+		
+		
+
+	</script>
+	<!-- BEGIN: head_include --><!-- END: head_include -->
+	<!-- BEGIN: nativo_javascript -->
+<script type="text/javascript">
+
+var _prx = [];
+if(pageData.userid)
+{
+_prx.push(["cfg.SetUserPremium"]); // just in case the user is logged in
+}
+_prx.push(["cfg.RequestUrl", "https://thelinuxforum.com/articles/850-install-vscode-on-ubuntu-24-04"]);
+</script>
+
+<script type="text/javascript" src=" http://s.ntv.io/serve/load.js "></script>
+
+<style> 
+	.nativo-topic .avatar img{ 
+		width: auto; 
+		height: auto;
+		position: absolute;    
+		top: 0;
+		bottom: 0;
+		left: 0;    
+		right: 0;  
+		margin: auto;
+	} 
+	.nativo-topic .avatar{border: none; position: relative;}
+	.nativo-topic .go-to-last-post{display:none !important;}
+</style><!-- END: nativo_javascript -->
+
+</head>
+
+	
+
+
+
+
+
+
+
+	
+
+<body id="vb-page-body" class="l-desktop page29 vb-page view-mode logged-out" itemscope itemtype="http://schema.org/ItemPage" data-usergroupid="1" data-styleid="17">
+<script type="text/javascript">
+	vBulletin.Responsive.Debounce.checkBrowserSize();
+</script>
+
+
+
+
+	
+
+
+<div class="b-top-menu__background b-top-menu__background--sitebuilder js-top-menu-sitebuilder h-hide-on-small h-hide">
+	<div class="b-top-menu__container">
+		<ul class="b-top-menu b-top-menu--sitebuilder js-top-menu-sitebuilder--list js-shrink-event-parent">
+			<!-- BEGIN: top_menu_sitebuilder --><!-- END: top_menu_sitebuilder -->
+		</ul>
+	</div>
+</div>
+
+<nav class="b-top-menu__background js-top-menu-user">
+	<div class="b-top-menu__container">
+		<ul class="b-top-menu b-top-menu--user js-top-menu-user--list js-shrink-event-parent">
+			<!-- BEGIN: top_menu_user -->
+
+
+
+
+	
+
+
+
+	<li class="b-top-menu__item b-top-menu__item--no-left-divider b-top-menu__item--no-right-divider username-container js-shrink-event-child">
+
+		<div class="b-comp-menu-dropdown b-comp-menu-dropdown--headerbar js-comp-menu-dropdown b-comp-menu-dropdown--open-on-hover js-login-menu">
+			<div id="lnkLoginSignupMenu" class="b-comp-menu-dropdown__trigger js-comp-menu-dropdown__trigger b-comp-menu-dropdown__trigger--arrow b-comp-menu-dropdown__trigger--headerbar js-button" tabindex="0">
+				Login or Sign Up
+			</div>
+
+			<ul class="b-comp-menu-dropdown__content js-comp-menu-dropdown__content b-comp-menu-dropdown__content--right">
+
+				<li class="b-comp-menu-dropdown__content-item js-comp-menu-dropdown__content-maintain-menu b-comp-menu-dropdown__content-item--no-hover">
+					<!-- BEGIN: login_main -->
+
+<div class='js-login-form-main-container login-form-main-container'>
+
+<div class="js-error-box error h-margin-bottom-l h-hide"></div>
+
+<div class="js-login-message-box login-message-box h-hide">
+	<div class="h-center-container"><div class="h-center">Logging in...</div></div>
+</div>
+
+<form action="" method="post" class="h-clearfix js-login-form-main ">
+	<div class="login-fieldset table">
+		<div class="tr">
+			
+				
+			
+			<span class="td">
+				<input type="text" name="username" value="" class="js-login-username b-form-input__input b-form-input__input--full" placeholder="User Name" />
+			</span>
+		</div>
+		<div class="tr">
+			<span class="td">
+				<input type="password" autocomplete="off" name="password" class="js-login-password b-form-input__input b-form-input__input--full" placeholder="Password" />
+			</span>
+		</div>
+	</div>
+
+	
+	
+
+	<div class="secondary-controls h-left h-clear-left h-margin-top-s">
+		<label><input type="checkbox" name="rememberme"  />Remember me</label>
+	</div>
+
+	<div class="primary-controls h-right h-clear-right h-margin-top-s">
+		<button type="button" class="js-login-button b-button b-button--primary">Log in</button>
+	</div>
+
+	<div class="secondary-controls h-left h-clear-left">
+		<a href="https://thelinuxforum.com/lostpw" class='b-link lost-password-link'>Forgot password or user name?</a>
+	</div>
+
+	<div class="primary-controls h-right h-clear-right">
+		
+			
+			
+			
+		
+		or <a id="idLoginSignup" href="https://thelinuxforum.com/register?urlpath=aHR0cHM6Ly90aGVsaW51eGZvcnVtLmNvbS8vYXJ0aWNsZXMvODUwLWluc3RhbGwtdnNjb2RlLW9uLXVidW50dS0yNC0wNA%3D%3D" target="_top">Sign Up</a>
+	</div>
+
+</form>
+</div><!-- END: login_main -->
+				</li>
+
+				
+				
+
+				<li id="externalLoginProviders" class="b-comp-menu-dropdown__content-item js-comp-menu-dropdown__content-maintain-menu b-comp-menu-dropdown__content-item--no-hover js-external-login-providers h-clearfix h-hide-imp">
+					<span class="h-left h-margin-left-s login-external-label">Log in with</span>
+					
+					
+					<!-- BEGIN: twitterlogin_loginbutton -->
+		<!-- END: twitterlogin_loginbutton -->
+<!-- BEGIN: googlelogin_loginbutton -->
+			<!-- END: googlelogin_loginbutton -->
+
+				</li>
+
+			</ul>
+
+		</div>
+
+	</li>
+
+	
+<!-- END: top_menu_user -->
+		</ul>
+	</div>
+</nav>
+
+<div id="sitebuilder-wrapper" class="noselect h-clearfix h-hide-on-small">
+	
+</div>
+
+<div class="main-navbar-bottom-line"></div>
+
+<div id="outer-wrapper">
+<div id="wrapper">
+
+	
+	<div id="header-axd" class="header-edit-box axdnum_1 h-clearfix">
+		
+		<div class="axd-container axd-container_header">
+			<div class="admin-only">
+				
+			</div>
+			<div class="axd axd_header">
+				<!-- BEGIN: ad_header --><div class="ad_header_inner"><a href="https://www.anrdoezrs.net/click-100288554-15555065" target="_blank">
+<img src="https://www.lduhtrp.net/image-100288554-15555065" width="1200" height="629" alt="" border="0"/></a></div><!-- END: ad_header -->
+			</div>
+		</div>
+		<div class="axd-container axd-container_header2">
+			<div class="admin-only">
+				
+			</div>
+			<div class="axd axd_header2">
+				<!-- BEGIN: ad_header2 --><!-- END: ad_header2 -->
+			</div>
+		</div>
+	</div>
+
+	
+	
+	
+	
+	<header class="b-top-background__header-mainnav-subnav">
+
+		
+		<div class="b-top-background__header-mainnav">
+
+			
+			<div id="header" class="noselect">
+				<div class="header-cell header-edit-box">
+					
+					<div class="site-logo">
+						<a href="https://thelinuxforum.com/"><img src="filedata/fetch?filedataid=34" data-orig-src="filedata/fetch?filedataid=34" alt="Logo" title="Powered by vBulletin" /></a>
+					</div>
+				</div>
+				<div class="toolbar">
+					<ul class="h-right">
+						
+						
+						
+						<li class="search-container">
+							<form id="searchForm" action="https://thelinuxforum.com/search" class="h-left" method="GET">
+								<div class="h-left">
+
+									
+									<div class="search-box h-clearfix">
+
+										<div class="search-term-container">
+
+											<input type="text" name="q" id="q" placeholder="Search" class="search-term b-form-input__input b-form-input__input--shadow" autocomplete="off" />
+
+											<div class="search-menu-container h-clearfix">
+												<div class="vertical-divider-left"></div>
+												<div class="b-comp-menu-dropdown js-comp-menu-dropdown b-comp-menu-dropdown--open-on-hover b-comp-menu-dropdown--header-search">
+													<div class="b-comp-menu-dropdown__trigger js-comp-menu-dropdown__trigger b-comp-menu-dropdown__trigger--arrow js-button" tabindex="0"></div>
+													<!-- BEGIN: search_popup --><ul class="b-comp-menu-dropdown__content js-comp-menu-dropdown__content">
+
+	<li class="b-comp-menu-dropdown__content-item b-comp-menu-dropdown__content-item--first b-comp-menu-dropdown__content-item--no-hover js-comp-menu-dropdown__content-maintain-menu">
+
+		<div class="searchPopupBody">
+
+			<label><input type="checkbox" name="searchFields[title_only]" class="searchFields_title_only" value="1" />Search in titles only</label>
+
+			
+
+			
+				
+				
+					<label><input type="checkbox" name="searchFields[channel][]" class="searchFields_channel" value="14" />Search in Articles only</label>
+				
+			
+
+			<div class="b-button-group h-margin-top-xs">
+				<button type="submit" id="btnSearch-popup" class="b-button b-button--primary">Search</button>
+			</div>
+
+		</div>
+
+		<input type="hidden" name="searchJSON" value="" />
+	</li>
+
+	<li class="b-comp-menu-dropdown__content-item js-comp-menu-dropdown__content-maintain-menu">
+		<a href="#" id="btnAdvSearch" class="adv-search-btn">Advanced Search</a>
+	</li>
+
+</ul><!-- END: search_popup -->
+												</div>
+											</div>
+
+										</div>
+
+										<button type="submit" id="btnSearch" class="search-btn" title="Search"><span class="b-icon b-icon__search"></span></button>
+
+									</div>
+
+								</div>
+							</form>
+						</li>
+						
+					</ul>
+				</div>
+				
+			</div>
+
+			
+			<nav id="channel-tabbar" class="h-clearfix noselect">
+				<ul class="channel-tabbar-list h-left b-comp-menu-horizontal js-comp-menu-horizontal js-comp-menu--dropdown-on-small b-comp-menu-dropdown--inactive js-comp-menu-dropdown__content--main-menu h-hide-on-small js-shrink-event-parent">
+
+					
+						
+					
+
+					
+					
+					
+						
+						
+						
+						<li class=" section-item js-shrink-event-child">
+							<a   href="" class="h-left navbar_home">Forums</a>
+							
+								<span class="channel-tabbar-divider"></span>
+							
+							<span class="mobile dropdown-icon"><span class="icon h-right"></span></span>
+						</li>
+					
+						
+						
+						
+						<li class=" section-item js-shrink-event-child">
+							<a   href="blogs" class="h-left navbar_blogs">Blogs</a>
+							
+								<span class="channel-tabbar-divider"></span>
+							
+							<span class="mobile dropdown-icon"><span class="icon h-right"></span></span>
+						</li>
+					
+						
+						
+						
+						<li class="current section-item js-shrink-event-child">
+							<a   href="articles" class="h-left navbar_articles">Articles</a>
+							
+								<span class="channel-tabbar-divider"></span>
+							
+							<span class="mobile dropdown-icon"><span class="icon h-right"></span></span>
+						</li>
+					
+						
+						
+						
+						<li class=" section-item js-shrink-event-child">
+							<a   href="social-groups" class="h-left navbar_social_groups">Groups</a>
+							
+							<span class="mobile dropdown-icon"><span class="icon h-right"></span></span>
+						</li>
+					
+					
+				</ul>
+			</nav>
+
+
+		</div>
+
+
+		
+		<nav id="channel-subtabbar" class="h-clearfix h-hide h-hide-on-small h-block js-channel-subtabbar">
+			<ul class="h-left channel-subtabbar-list js-channel-subtabbar-list js-shrink-event-parent">
+				
+			</ul>
+		</nav>
+
+
+	</header>
+
+
+	
+		
+	
+
+	
+	
+		
+		<nav class="breadcrumbs-wrapper">
+		<ul id="breadcrumbs" class="h-clearfix" itemprop="breadcrumb">
+			<li class="crumb">
+				<a class="crumb-link h-flex-valign-center" href="">
+					<span class="b-icon b-icon__home" title="Home"></span>
+				</a>
+			</li>
+			
+				
+					
+					
+				
+				<li class="crumb">
+					<span class="b-icon b-icon__chevron-right--gray separator"></span>
+					
+						<a class="crumb-link" href="https://thelinuxforum.com/articles">Articles</a>
+					
+				</li>
+			
+		</ul>
+		</nav>
+	
+
+	
+
+	
+	
+
+	
+
+	<!-- BEGIN: notices -->
+<!-- END: notices -->
+
+	
+
+
+	
+	<main id="content">
+		<div class="canvas-layout-container js-canvas-layout-container"><!-- END: header -->
+
+<div id="canvas-layout-wide-narrow" class="canvas-layout" data-layout-id="2">
+
+	
+
+	
+
+		<!-- BEGIN: screenlayout_row_display -->
+	
+
+
+
+	
+
+
+
+<!-- row -->
+<div class="canvas-layout-row l-row no-columns h-clearfix">
+
+	
+	
+
+	
+
+		
+		
+		
+
+		<!-- BEGIN: screenlayout_section_display -->
+	
+
+
+
+
+
+	
+
+
+
+	
+
+
+
+	
+
+
+
+
+	
+	
+
+
+
+
+
+
+
+<!-- section 200 -->
+
+
+
+<div class="canvas-widget-list section-200 js-sectiontype-global_after_breadcrumb h-clearfix l-col__large-12 l-col__small--full l-wide-column">
+
+	
+
+	<!-- BEGIN: screenlayout_widgetlist --><!-- END: screenlayout_widgetlist -->
+
+	
+
+</div><!-- END: screenlayout_section_display -->
+
+	
+
+</div><!-- END: screenlayout_row_display -->
+
+	
+
+		<!-- BEGIN: screenlayout_row_display -->
+	
+
+
+
+	
+
+
+
+<!-- row -->
+<div class="canvas-layout-row l-row no-columns h-clearfix">
+
+	
+	
+
+	
+
+		
+		
+		
+
+		<!-- BEGIN: screenlayout_section_display -->
+	
+
+
+
+
+
+	
+
+
+
+	
+
+
+
+	
+
+
+
+
+	
+	
+
+
+
+
+
+
+
+<!-- section 2 -->
+
+
+
+<div class="canvas-widget-list section-2 js-sectiontype-notice h-clearfix l-col__large-12 l-col__small--full l-wide-column">
+
+	
+
+	<!-- BEGIN: screenlayout_widgetlist -->
+	<!-- *** START WIDGET widgetid:37, widgetinstanceid:143, template:widget_announcement *** -->
+	<!-- BEGIN: widget_announcement -->
+	
+
+
+	
+	
+
+
+
+
+
+<div class="b-module canvas-widget default-widget announcement-widget empty" id="widget_143" data-widget-id="37" data-widget-instance-id="143">
+	<!-- BEGIN: module_title -->
+	<div class="widget-header h-clearfix">
+		
+		
+			
+		
+
+		<div class="module-title h-left">
+			
+				<h1 class="main-title js-main-title hide-on-editmode">Announcement</h1>
+				
+				
+				
+			
+		</div>
+		
+			<div class="module-buttons">
+				
+					<span class="toggle-button module-button-item collapse" title="Collapse" data-toggle-title="Expand"><span class="b-icon b-icon__toggle-collapse">Collapse</span></span>
+				
+			</div>
+		
+	</div>
+	
+<!-- END: module_title -->
+	<div class="widget-content">
+		
+			
+				No announcement yet.
+				
+			
+				
+	</div>
+</div><!-- END: widget_announcement -->
+	<!-- *** END WIDGET widgetid:37, widgetinstanceid:143, template:widget_announcement *** -->
+
+	<!-- *** START WIDGET widgetid:57, widgetinstanceid:144, template:widget_pagetitle *** -->
+	<!-- BEGIN: widget_pagetitle -->
+	
+
+
+	
+	
+
+
+
+
+
+	
+	
+	
+		
+		
+	
+
+
+
+
+
+
+
+	
+
+
+
+
+	
+
+
+
+<div class="b-module canvas-widget default-widget page-title-widget widget-no-header-buttons widget-no-border" id="widget_144" data-widget-id="57" data-widget-instance-id="144">
+	<!-- BEGIN: module_title -->
+	<div class="widget-header h-clearfix">
+		
+		
+
+		<div class="module-title h-left">
+			
+				<h1 class="main-title js-main-title hide-on-editmode">Install vscode on Ubuntu 24.04</h1>
+				
+				
+				
+			
+		</div>
+		
+			<div class="module-buttons">
+				
+					<span class="toggle-button module-button-item collapse" title="Collapse" data-toggle-title="Expand"><span class="b-icon b-icon__toggle-collapse">Collapse</span></span>
+				
+			</div>
+		
+	</div>
+	
+<!-- END: module_title -->
+
+	
+	
+
+		
+		
+		
+
+		
+
+		<div class="b-post__article-meta-wrapper js-update-article-title-info hide-on-editmode">
+
+			
+			<!-- BEGIN: article_title_info -->
+
+	<ul class="b-post__article-meta h-margin-bottom-l">
+
+		
+		
+			<li class="b-post__article-meta-item b-post__article-meta-item--inline">
+
+				
+				
+				
+					
+					
+					
+						
+						
+					
+				
+
+				
+				
+					Created by: <img class="avatar" src="./core/images/default/default_avatar_thumb.png" alt="" /> <a href="https://thelinuxforum.com/member/2-kasimba" data-vbnamecard="2">Kasimba</a>
+				
+
+			</li>
+		
+
+		
+		
+			
+			
+			
+			
+			
+				<li class="b-post__article-meta-item b-post__article-meta-item--inline">
+					Published: 04-10-2024, 03:18 AM
+				</li>
+			
+		
+
+		
+		
+
+		
+		
+			<li class="b-post__article-meta-item b-post__article-meta-item--inline">
+				
+				
+					0 comments
+				
+			</li>
+		
+
+		
+		
+			<li class="b-post__article-meta-item b-post__article-meta-item--sharing-menu-container b-post__article-meta-item--inline">
+				<!-- BEGIN: display_sharing -->
+
+
+
+
+
+
+
+
+
+	
+
+
+<ul class="b-sharing-menu js-sharing-menu js-comp-menu-horizontal js-comp-menu--dropdown-on-small b-sharing-menu--horizontal b-post__hide-when-deleted" data-dropdown-trigger-phrase="share" data-dropdown-icon-classes="b-icon b-icon__share" data-dropdown-content-classes="b-sharing-menu--dropdown" data-dropdown-menu-classes="b-sharing-menu--inline-on-small">
+
+	
+		<li class="b-sharing-menu__item">
+			
+			<a class="js-fb-share-dialog b-sharing-menu__item-link b-sharing-menu__item-link--facebook" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fthelinuxforum.com%2Farticles%2F850-install-vscode-on-ubuntu-24-04%23post850" data-url-not-encoded="https://thelinuxforum.com/articles/850-install-vscode-on-ubuntu-24-04#post850" target="_blank">
+				<svg class="b-sharing-menu__item-link-img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" color="#ffffff">
+					<path fill="#ffffff" fill-rule="evenodd" d="M8 14H3.667C2.733 13.9 2 13.167 2 12.233V3.667A1.65 1.65 0 0 1 3.667 2h8.666A1.65 1.65 0 0 1 14 3.667v8.566c0 .934-.733 1.667-1.667 1.767H10v-3.967h1.3l.7-2.066h-2V6.933c0-.466.167-.9.867-.9H12v-1.8c.033 0-.933-.266-1.533-.266-1.267 0-2.434.7-2.467 2.133v1.867H6v2.066h2V14z"></path>
+				</svg>
+				Share
+			</a>
+		</li>
+	
+
+	
+		<li class="b-sharing-menu__item b-sharing-menu__item--twitter">
+			
+			
+			<a class="js-twitter-share b-sharing-menu__item-link b-sharing-menu__item-link--twitter" href="https://twitter.com/intent/tweet?text=Install+vscode+on+Ubuntu+24.04&amp;url=https%3A%2F%2Fthelinuxforum.com%2Farticles%2F850-install-vscode-on-ubuntu-24-04%23post850" target="_blank">
+				<img class="b-sharing-menu__item-link-img" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2072%2072%22%3E%3Cpath%20fill%3D%22none%22%20d%3D%22M0%200h72v72H0z%22%2F%3E%3Cpath%20class%3D%22icon%22%20fill%3D%22%23fff%22%20d%3D%22M68.812%2015.14c-2.348%201.04-4.87%201.744-7.52%202.06%202.704-1.62%204.78-4.186%205.757-7.243-2.53%201.5-5.33%202.592-8.314%203.176C56.35%2010.59%2052.948%209%2049.182%209c-7.23%200-13.092%205.86-13.092%2013.093%200%201.026.118%202.02.338%202.98C25.543%2024.527%2015.9%2019.318%209.44%2011.396c-1.125%201.936-1.77%204.184-1.77%206.58%200%204.543%202.312%208.552%205.824%2010.9-2.146-.07-4.165-.658-5.93-1.64-.002.056-.002.11-.002.163%200%206.345%204.513%2011.638%2010.504%2012.84-1.1.298-2.256.457-3.45.457-.845%200-1.666-.078-2.464-.23%201.667%205.2%206.5%208.985%2012.23%209.09-4.482%203.51-10.13%205.605-16.26%205.605-1.055%200-2.096-.06-3.122-.184%205.794%203.717%2012.676%205.882%2020.067%205.882%2024.083%200%2037.25-19.95%2037.25-37.25%200-.565-.013-1.133-.038-1.693%202.558-1.847%204.778-4.15%206.532-6.774z%22%2F%3E%3C%2Fsvg%3E" />
+				Tweet
+			</a>
+		</li>
+	
+
+	
+
+</ul><!-- END: display_sharing -->
+			</li>
+		
+
+	</ul><!-- END: article_title_info -->
+
+		</div>
+	
+
+</div><!-- END: widget_pagetitle -->
+	<!-- *** END WIDGET widgetid:57, widgetinstanceid:144, template:widget_pagetitle *** -->
+<!-- END: screenlayout_widgetlist -->
+
+	
+
+</div><!-- END: screenlayout_section_display -->
+
+	
+
+</div><!-- END: screenlayout_row_display -->
+
+	
+
+		<!-- BEGIN: screenlayout_row_display -->
+	
+
+
+
+	
+	
+
+
+
+<!-- row -->
+<div class="canvas-layout-row l-row has-columns l-row__fixed--right">
+
+	
+	
+
+	
+
+		
+		
+		
+
+		<!-- BEGIN: screenlayout_section_display -->
+	
+
+
+
+
+
+	
+		
+		
+			
+		
+	
+
+
+
+	
+		
+	
+
+
+
+	
+
+
+
+
+	
+	
+
+
+
+
+
+	
+	
+	
+	
+
+
+
+<!-- section 0 -->
+
+
+
+<div class="canvas-widget-list section-0 js-sectiontype-primary h-clearfix l-col__flex-6 l-col__small--full l-col--flex-first has-adjacent-right-col l-wide-column">
+
+	
+		<div class="l-col__flex-content">
+	
+
+	<!-- BEGIN: screenlayout_widgetlist -->
+	<!-- *** START WIDGET widgetid:64, widgetinstanceid:145, template:widget_articledisplay *** -->
+	<!-- BEGIN: widget_articledisplay -->
+
+
+
+
+
+	
+		
+	
+
+	
+		
+			
+		
+	
+
+	
+	
+
+	
+	
+
+	
+
+		
+		
+
+		
+
+			
+			
+
+			
+			
+
+			
+			
+
+			
+				
+			
+
+			
+
+			
+
+			
+			
+				
+			
+
+			
+			
+			
+			
+			
+			
+
+			
+
+			
+			
+			
+
+			
+			
+			
+
+			
+			
+
+			
+			
+				
+					
+					
+					
+				
+				
+			
+
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+
+			
+			
+			
+			
+			
+			
+
+		
+	
+
+	
+	
+
+	
+	
+		
+	
+
+	<div class="b-module canvas-widget default-widget conversation-content-widget blog-conversation-content-widget widget-no-border widget-no-header-buttons  axd-container" id="widget_145" data-widget-id="64" data-widget-instance-id="145" data-widget-default-tab="">
+		
+			<div class="conversation-status-messages">
+				
+				
+				
+				<div class="conversation-status-message notice h-hide"><span></span><div class="close">X</div></div>
+			</div>
+
+			<div class="widget-header h-clearfix">
+				<div class="module-title h-left main-header-title">
+					
+				</div>
+				<div class="module-buttons">
+					<span class="toggle-button module-button-item collapse" title="Collapse" data-toggle-title="Expand"><span class="b-icon b-icon__toggle-collapse">Collapse</span></span>
+				</div>
+				
+				
+				<div class="conversation-controls h-right h-clear hide-on-editmode b-button-group h-margin-bottom-l js-movable-toolbar-button-container">
+					
+				</div>
+			</div>
+			<div class="widget-content tab widget-tabs-panel">
+				<input type="hidden" name="canmoderate" id="canmoderate" value="0" />
+
+				<div id="stream-view-tab" class="conversation-view conversation-stream-view">
+
+					
+					
+
+					<!-- BEGIN: conversation_toolbar -->
+
+
+	
+		
+	
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+	
+	
+		
+	
+
+
+<div class="conversation-toolbar-wrapper  top h-clear hide-on-editmode
+	
+		scrolltofixed-floating
+		scrolltofixed-top
+	
+" data-allow-history="0">
+	<div class="conversation-toolbar">
+
+
+		
+
+		
+
+			<ul class="toolset-left js-shrink-event-parent ">
+
+				
+				<li class="conversation-toolbar-height-shim js-shrink-event-child">
+					<div class="b-button">&nbsp;</div>
+				</li>
+
+				
+
+				
+
+				
+
+				
+
+				
+				
+
+				
+				
+				
+
+				<!-- new conversation button -->
+				
+				
+				
+				
+				
+				
+				<!-- /new conversation button -->
+
+				
+				
+
+				
+					
+				
+				
+				
+
+				
+				
+				
+				
+				
+				
+				
+				
+
+				
+				
+					<li class="js-shrink-event-child">
+						<b></b>
+					</li>
+				
+
+			</ul>
+		
+		
+
+		
+
+		<ul class="toolset-right js-shrink-event-parent">
+
+			
+
+			
+			
+				
+			
+
+			
+			
+
+			
+
+			
+
+			
+		</ul>
+	</div>
+
+
+	
+
+	
+</div>
+
+
+<!-- END: conversation_toolbar -->
+
+					<div class="conversation-content">
+						<ul class="conversation-list list-container h-clearfix article-list stream-view stream-view-full-width">
+
+							
+							
+							
+
+							
+							
+							
+								
+							
+
+							
+							
+
+							
+								
+									
+									
+								
+								
+									<!-- Starter Conversation -->
+									
+									<!-- BEGIN: display_contenttype_conversationreply_Text -->
+
+
+
+
+	
+	
+
+
+
+	
+	
+	
+		
+		
+	
+
+
+
+
+
+
+
+
+
+
+
+<li data-node-id="850"
+	data-node-publishdate="1712719109" 
+	class="b-post js-post js-comment-entry__parent list-item list-item-text h-left h-clear conversation-starter js-conversation-starter" itemscope itemtype="http://schema.org/Article">
+
+	
+		
+
+		
+			
+			
+			<meta  itemprop="name" content="Install vscode on Ubuntu 24.04" />
+		
+
+		
+		
+		<meta  itemprop="url" content="https://thelinuxforum.com/articles/850-install-vscode-on-ubuntu-24-04" />
+	
+
+	<a id="post850" class="anchor"></a>
+
+	<!-- BEGIN: display_contenttype_conversationreply_item_deleteinfo --><!-- END: display_contenttype_conversationreply_item_deleteinfo -->
+
+	<div class="b-post__hide-when-deleted">
+		<hr class="b-divider--section">
+
+		
+		<!-- end list item header -->
+
+		
+		
+			
+		
+
+		<div class="js-post__content-wrapper list-item-body-wrapper h-clear" data-node-type="starter">
+			<div class="js-post__content list-item-body conversation-body">
+
+				
+					<div class="axd axd_first-post">
+						
+						
+						<!-- BEGIN: ad_first-post --><!-- END: ad_first-post -->
+					</div>
+				
+
+				
+					<h2 class="b-post__stream-post-title js-post-title h-hide">Install vscode on Ubuntu 24.04</h2>
+					
+					<div class="post-content restore js-post__content-text h-wordwrap" itemprop="text">
+						
+							
+						
+						
+						As a developer, your life is easier when you have your favorite tools. Now that Ubuntu 24.04 is around, one to-do involves installing all the developer tools you require, including Microsoft’s Vs Code.<br />
+Ubuntu supports vscode, and there are different options you can use to quickly install vscode on Ubuntu 24.04 and start using it for your coding. Read on as this post shares three practical installation methods for any user.<br />
+<br />
+<b>How to Install vscode on Ubuntu 24.04</b><br /><br />It’s undeniable that vscode is a favorite code editor among developers. That doesn’t come as a surprise considering the numerous options that vscode offers, from plugins to version control. All these features are only accessible after you install vscode.<br />
+<br />
+You can install vscode via a command line or GUI. We’ve covered the different options below. This way, go through the options and see which suits your case.<br />
+<br />
+<b>Method 1: Installing vscode via Snap</b><br />
+<br />
+Ubuntu uses the <b>App Store</b>, where you can source its snap packages and install them. Vs Code is available as a snap package, and the benefit of installing it this way is that you don’t need to install its dependencies separately.<br />
+<br />
+A snap bundles all packages. It requires ensuring that once you run the install command, vscode will install alongside its dependencies, and only one command is needed.<br />
+<br />
+Although installing vscode as a snap is possible, you won’t get its latest version. Nonetheless, you will get a stable version and only need to execute the following command.<br />
+<br />
+<span style="color:#666666">$ </span><span style="color:#c20cb9"><b>sudo</b></span> snap <span style="color:#c20cb9"><b>install</b></span> <span style="color:#660033">--classic</span> code<br />
+<br />
+<br />
+<img class="bbcode-attachment bbcode-attachment--lightbox js-lightbox" src="https://linuxhint.com/wp-content/uploads/2024/04/install-vscode-1.png" border="0" alt="" /><br />
+<br />
+You will get a window showing the progress bar for the running process, from downloading the snap package to installing it.<br />
+<br />
+<b>Method 2: Install vscode on Ubuntu 24.04 via Snap GUI</b><br />
+<br />
+Our first method explains how to source vscode from the App Center and install it via the command line. Even for this method, we are still sourcing vscode from the snap store but using the GUI approach. Use the below steps to get it done.<br />
+<br />
+<b>Step 1</b>: On your Ubuntu 24.04, search for <b>App Center</b> from your applications and tap on it to open it.<br />
+<br />
+<img class="bbcode-attachment bbcode-attachment--lightbox js-lightbox" src="https://linuxhint.com/wp-content/uploads/2024/04/install-vscode-3.png" border="0" alt="" /><br />
+<br />
+<b>Step 2</b>: On the App Center window, click on the <b>Search icon</b> at the top and type <b>vscode</b> and press the search button.<br />
+<br />
+<img class="bbcode-attachment bbcode-attachment--lightbox js-lightbox" src="https://linuxhint.com/wp-content/uploads/2024/04/install-vscode-4.png" border="0" alt="" /><br />
+<br />
+<b>Step 3</b>: Once vscode appears in the search results, tap on it. Next, click the <b>Install</b> button.<br />
+<br />
+<img class="bbcode-attachment bbcode-attachment--lightbox js-lightbox" src="https://linuxhint.com/wp-content/uploads/2024/04/install-vscode-5.png" border="0" alt="" /><br />
+<br />
+<b>Step 4</b>: Authenticate the installation by entering your password when prompted.<br />
+<br />
+<img class="bbcode-attachment bbcode-attachment--lightbox js-lightbox" src="https://linuxhint.com/wp-content/uploads/2024/04/install-vscode-6.png" border="0" alt="" /><br />
+<br />
+<b>Step 5</b>: That’s it. Vs Code will start installing, and a progress bar will show the progress. Once it completes installing, you can start using vscode for your code.<br />
+<br />
+<b>Method 3: Install vscode on Ubuntu 24.04 via APT</b><br />
+<br />
+APT is a Ubuntu package manager that allows users to source packages from the Ubuntu repository and other repositories, install them, and manage them. Even when you want to install vscode, it’s possible to use APT.<br />
+<br />
+However, Ubuntu 24.04 doesn’t come with vscode in its repository. You can verify this by trying to install vscode via APT using the following command.<br />
+<br />
+<span style="color:#666666">$ </span><span style="color:#c20cb9"><b>sudo</b></span> apt <span style="color:#c20cb9"><b>install</b></span> code<br />
+<br />
+<br />
+Notice the error we get: It only shows that vscode can be installed as a snap package, which we already did.<br />
+<br />
+<img class="bbcode-attachment bbcode-attachment--lightbox js-lightbox" src="https://linuxhint.com/wp-content/uploads/2024/04/install-vscode-7.png" border="0" alt="" /><br />
+<br />
+The solution is to add the vscode repository to your Ubuntu 24.04 repository and then install it. To do this, let’s follow the below steps.<br />
+<br />
+<b>Step 1</b>: The first step is to update your Ubuntu 24.04 package list to prepare it to receive the vscode repository. Run the following update command.<br />
+<br />
+<span style="color:#666666">$ </span><span style="color:#c20cb9"><b>sudo</b></span> apt update<br />
+<br />
+<br />
+<img class="bbcode-attachment bbcode-attachment--lightbox js-lightbox" src="https://linuxhint.com/wp-content/uploads/2024/04/install-vscode-8.png" border="0" alt="" /><br />
+<br />
+<b>Step 2</b>: We must install some required dependencies to ensure the installation runs softly.<br />
+<br />
+<span style="color:#666666">$ </span><span style="color:#c20cb9"><b>sudo</b></span> apt <span style="color:#c20cb9"><b>install</b></span> software-properties-common apt-transport-https <span style="color:#c20cb9"><b>wget</b></span> <span style="color:#660033">-y</span><br />
+<br />
+<br />
+<img class="bbcode-attachment bbcode-attachment--lightbox js-lightbox" src="https://linuxhint.com/wp-content/uploads/2024/04/install-code-9.png" border="0" alt="" /><br />
+<br />
+<b>Step 3</b>: Microsoft offers a GPG key to help verify the vscode code repository before you add it. Source the GPG key and add it with the below command.<br />
+<br />
+<span style="color:#666666">$ </span><span style="color:#c20cb9"><b>wget</b></span> <span style="color:#660033">-q</span> https:<span style="color:#000000"><b>//</b></span>packages.microsoft.com<span style="color:#000000"><b>/</b></span>keys<span style="color:#000000"><b>/</b></span>microsoft.asc <span style="color:#660033">-O-</span> <span style="color:#000000"><b>|</b></span> <span style="color:#c20cb9"><b>sudo</b></span> <span style="color:#c20cb9"><b>apt-key add</b></span> -<br />
+<br />
+<br />
+<img class="bbcode-attachment bbcode-attachment--lightbox js-lightbox" src="https://linuxhint.com/wp-content/uploads/2024/04/install-vscode-15.png" border="0" alt="" /><br />
+<br />
+<b>Step 4</b>: It’s time we added the vscode repository using the below command.<br />
+<br />
+<span style="color:#666666">$ </span><span style="color:#c20cb9"><b>sudo</b></span> add-apt-repository <span style="color:#ff0000">&quot;deb [arch=amd64] <a href="https://packages.microsoft.com/repos/vscode" target="_blank">https://packages.microsoft.com/repos/vscode</a> stable main&quot;</span><br />
+<br />
+<br />
+After running the command, different prompts will appear. Confirm them to complete adding the repository.<br />
+<br />
+<img class="bbcode-attachment bbcode-attachment--lightbox js-lightbox" src="https://linuxhint.com/wp-content/uploads/2024/04/install-code-11.png" border="0" alt="" /><br />
+<br />
+<b>Step 5</b>: That’s it. You can now install vscode on Ubuntu 24.04 using the Apt command.<br />
+<br />
+<span style="color:#666666">$ </span><span style="color:#c20cb9"><b>sudo</b></span> apt <span style="color:#c20cb9"><b>install</b></span> code<br />
+<br />
+<br />
+<img class="bbcode-attachment bbcode-attachment--lightbox js-lightbox" src="https://linuxhint.com/wp-content/uploads/2024/04/install-code-12.png" border="0" alt="" /><br />
+<br />
+<b>Conclusion</b><br /><br />Vs Code is a commonly used code editor, and if you recently upgraded or installed Ubuntu 24.04, knowing how to install it easily saves you time. Luckily, this post has shared three approaches you can follow depending on your preference. Happy coding!<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<a href="https://linuxhint.com/install-vscode-on-ubuntu-24-04/" target="_blank">More...</a>
+					</div>
+					
+					<!-- BEGIN: conversation_posthistory --><!-- END: conversation_posthistory -->
+				
+			</div>
+
+			
+				<!-- BEGIN: article_content_pagenav -->
+
+
+
+
+
+
+
+<!-- END: article_content_pagenav -->
+			
+
+			
+			
+			
+				
+				
+				
+				
+				
+				
+				
+				
+				
+					
+						
+					
+				
+				
+				
+				
+				
+
+				
+
+				
+
+				
+
+				
+
+
+				<!-- BEGIN: conversation_footer -->
+<div class="b-post__footer h-hide--on-preview h-clear h-padding-bottom-m h-margin-horiz-xl">
+
+	<div class="h-clearfix">
+		
+			<!-- BEGIN: taglist_display --><div class="h-margin-bottom-xl h-margin-top-none h-text-size--11" id="content-tags-850">
+
+	
+	
+	
+	
+	
+	
+		
+	
+
+	
+		<strong>Tags:</strong>
+	
+
+	
+		<span class="js-content-tag-none">None</span>
+	
+</div><!-- END: taglist_display -->
+		
+
+		
+			<hr class="b-divider b-divider--post-controls" />
+		
+
+		<ul class="h-left js-post-info">
+
+			
+			
+
+			
+
+			
+		</ul>
+
+		<ul class="h-margin-top-s h-right js-post-controls b-comp-menu-horizontal js-comp-menu-horizontal js-comp-menu--dropdown-on-xsmall b-comp-menu-dropdown--inactive" data-node-id="850" data-dropdown-icon-classes="b-icon b-icon__ellipsis" data-dropdown-content-classes="b-comp-menu-dropdown__content--right">
+			
+
+			
+
+			
+
+			
+
+				
+
+					
+
+				
+
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+			
+
+			
+
+		</ul>
+
+
+	</div>
+</div>
+
+<!-- END: conversation_footer -->
+
+
+				<div class="edit-conversation-container OLD__edit-conversation-container"></div>
+
+				
+
+					<!-- BEGIN: display_Comments -->
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="b-comments js-comments   b-comments--article js-comments--article h-margin-bottom-xl h-clearfix h-hide">
+
+	
+
+	
+		<div class="b-comments__header js-comments__header b-media h-padding-vert-m h-padding-horiz-l h-hide">
+			<div class="js-comments__total h-margin-left-l b-media__body">
+				<span class="b-icon b-icon__speech-single h-margin-right-s"></span>
+				<label class="js-comments__total-text h-align-top"></label>
+			</div>
+			<div class="b-media__img--rev js-comments__pagination h-hide">
+				<label></label>
+				<span class="b-comments__pagination--up js-comments__page--prev h-margin-left-s" title="See previous comments"><span class="b-icon b-icon__arrow-up-m"></span></span>
+			</div>
+		</div>
+		<ul class="b-comments__comments js-comments__comments h-left"></ul>
+		<div class="b-comments__footer js-comments__footer b-media h-padding-vert-m h-padding-horiz-l h-clear h-hide">
+			<div class="b-media__img--rev js-comments__pagination">
+				<label></label>
+				<span class="b-comments__pagination--down js-comments__page--next h-margin-left-s" title="See next comments"><span class="b-icon b-icon__arrow-down-m"></span></span>
+			</div>
+		</div>
+	
+</div><!-- END: display_Comments -->
+				
+
+				
+
+				
+				
+				
+
+				
+				
+				
+					<div class="notice comment-disabled">
+						
+							Posting comments is disabled.
+						
+					</div>
+				
+
+				
+				
+			
+		</div>
+	</div>
+</li><!-- END: display_contenttype_conversationreply_Text -->
+								
+								
+							
+						</ul>
+					</div>
+				</div>
+			</div>
+		
+		
+	</div>
+	<script type="text/javascript">
+	(function(){
+	
+		window.vBulletin = window.vBulletin || {};
+		vBulletin.widget = vBulletin.widget || {};
+		vBulletin.conversation = vBulletin.conversation || {};
+	
+		vBulletin.conversation.COMMENTS_PER_PAGE = Number('25') || 25;
+		vBulletin.conversation.POSTS_PER_PAGE = Number('') || 15;
+	})();
+	</script>
+
+
+
+
+<!-- END: widget_articledisplay -->
+	<!-- *** END WIDGET widgetid:64, widgetinstanceid:145, template:widget_articledisplay *** -->
+<!-- END: screenlayout_widgetlist -->
+
+	
+		</div>
+	
+
+</div><!-- END: screenlayout_section_display -->
+
+	
+
+		
+		
+		
+
+		<!-- BEGIN: screenlayout_section_display -->
+	
+
+
+
+
+
+	
+		
+	
+
+
+
+	
+		
+	
+
+
+
+	
+
+
+
+
+	
+	
+
+
+
+
+
+	
+	
+		
+	
+	
+	
+
+
+
+<!-- section 1 -->
+
+
+
+<div class="canvas-widget-list section-1 js-sectiontype-secondary h-clearfix l-col__fixed-6 l-col__small--full has-adjacent-left-col h-padding-left-xl l-narrow-column">
+
+	
+
+	<!-- BEGIN: screenlayout_widgetlist -->
+	<!-- *** START WIDGET widgetid:62, widgetinstanceid:146, template:widget_cmschannelnavigation *** -->
+	<!-- BEGIN: widget_cmschannelnavigation -->
+	
+
+
+	
+	
+
+
+<div class="b-module canvas-widget default-widget custom-html-widget" id="widget_146" data-widget-id="62" data-widget-instance-id="146">
+
+	<!-- BEGIN: module_title -->
+	<div class="widget-header h-clearfix">
+		
+			
+		
+		
+			
+		
+
+		<div class="module-title h-left">
+			
+				<h1 class="main-title js-main-title hide-on-editmode">Categories</h1>
+				
+				
+				
+			
+		</div>
+		
+			<div class="module-buttons">
+				
+					<span class="toggle-button module-button-item collapse" title="Collapse" data-toggle-title="Expand"><span class="b-icon b-icon__toggle-collapse">Collapse</span></span>
+				
+			</div>
+		
+	</div>
+	
+		<hr class="widget-header-divider" />
+	
+<!-- END: module_title -->
+
+	<div class="widget-content">
+
+		 
+		
+			
+		
+		
+
+		
+
+		
+
+		
+		
+
+		
+
+			
+			
+
+			<nav>
+			<ul class="b-channel-nav">
+			
+				
+					<!-- BEGIN: widget_cmschannelnavigation_item -->
+
+
+	<li class="b-channel-nav__item b-channel-nav__item--selected">
+		<a href="https://thelinuxforum.com/articles">Articles</a>
+		
+		
+	</li>
+<!-- END: widget_cmschannelnavigation_item -->
+				
+			
+			</ul>
+			</nav>
+
+		
+
+	</div>
+</div><!-- END: widget_cmschannelnavigation -->
+	<!-- *** END WIDGET widgetid:62, widgetinstanceid:146, template:widget_cmschannelnavigation *** -->
+
+	<!-- *** START WIDGET widgetid:63, widgetinstanceid:147, template:widget_tagnavigation *** -->
+	<!-- BEGIN: widget_tagnavigation -->
+	
+
+
+	
+	
+
+
+<div class="b-module canvas-widget default-widget custom-html-widget" id="widget_147" data-widget-id="63" data-widget-instance-id="147">
+
+	<!-- BEGIN: module_title -->
+	<div class="widget-header h-clearfix">
+		
+			
+		
+		
+			
+		
+
+		<div class="module-title h-left">
+			
+				<h1 class="main-title js-main-title hide-on-editmode">Article Tags</h1>
+				
+				
+				
+			
+		</div>
+		
+			<div class="module-buttons">
+				
+					<span class="toggle-button module-button-item collapse" title="Collapse" data-toggle-title="Expand"><span class="b-icon b-icon__toggle-collapse">Collapse</span></span>
+				
+			</div>
+		
+	</div>
+	
+		<hr class="widget-header-divider" />
+	
+<!-- END: module_title -->
+
+	<div class="widget-content">
+
+		
+		
+
+		
+
+		
+
+		
+		
+			
+			
+		
+
+		
+			<p><em>There are no tags yet.</em></p>
+		
+
+	</div>
+</div><!-- END: widget_tagnavigation -->
+	<!-- *** END WIDGET widgetid:63, widgetinstanceid:147, template:widget_tagnavigation *** -->
+
+	<!-- *** START WIDGET widgetid:13, widgetinstanceid:148, template:widget_search *** -->
+	<!-- BEGIN: widget_search -->
+	
+
+
+	
+	
+
+
+
+	
+
+
+
+	
+
+
+
+
+	
+	
+	
+	
+		
+	
+
+	
+
+
+
+
+
+<div class="b-module canvas-widget search-widget" id="widget_148" data-widget-id="13" data-widget-instance-id="148">
+
+	<!-- BEGIN: module_title -->
+	<div class="widget-header h-clearfix">
+		
+		
+			
+		
+
+		<div class="module-title h-left">
+			
+				<h1 class="main-title js-main-title hide-on-editmode">Latest Articles</h1>
+				
+				
+				
+			
+		</div>
+		
+			<div class="module-buttons">
+				
+					<span class="toggle-button module-button-item collapse" title="Collapse" data-toggle-title="Expand"><span class="b-icon b-icon__toggle-collapse">Collapse</span></span>
+				
+			</div>
+		
+	</div>
+	
+		<hr class="widget-header-divider" />
+	
+<!-- END: module_title -->
+
+	<div class="widget-content">
+		
+			
+				
+				
+				<ul class="conversation-list list-container h-clearfix">
+					
+							
+							
+							<!-- BEGIN: display_contenttype_searchwidget_Text --><!-- BEGIN: display_contenttype_searchwidget_item_header -->
+	
+
+
+
+
+<li class="b-post-sm js-post-sm" data-nodeid="1037">
+
+	
+	
+
+	
+	<div class="b-post-sm__content">
+
+		
+		<div class="b-post-sm__title ellipsis">
+			
+			
+				<a href="https://thelinuxforum.com/articles/1037-why-ubuntu-secure-boot-is-essential-for-protecting-your-computer">Why Ubuntu Secure Boot is Essential for Protecting Your Computer</a>
+			
+		</div>
+
+		
+		
+			<div class="b-post-sm__author">
+				
+					by <a href="https://thelinuxforum.com/member/2-kasimba" data-vbnamecard="2">Kasimba</a>
+				
+			</div>
+		
+<!-- END: display_contenttype_searchwidget_item_header -->
+
+
+	
+	<div class="b-post-sm__post-content post-content ellipsis restore">
+		
+		<br />
+<br />
+      <br />
+            by <a href="https://www.linuxjournal.com/users/germansuarez" target="_blank">german.suarez</a><br />
+<br />
+      <br />
+            <b>Introduction</b><br /><br />As our reliance on technology grows, so does the need for robust security measures that protect systems from unauthorized access and malicious attacks. One critical area of focus is the system's boot process, a vulnerable phase where malware, rootkits, and other threats can potentially infiltrate and compromise the entire operating system. This is where Secure Boot, a feature of...
+	</div>
+
+
+<!-- BEGIN: display_contenttype_searchwidget_item_footer -->
+
+	
+		
+		
+
+			
+			
+				<div class="list-item-footer h-clearfix">
+					<ul class="replylike_count h-left">
+						<li id="channel-1037">
+							<div class="channel h-left">
+								<div class="channel_text">
+									Channel: <a href="https://thelinuxforum.com/articles">Articles</a>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			
+
+			
+			<div class="b-post-sm__date">09-16-2024, 07:51 PM</div>
+	
+	</div>
+</li><!-- END: display_contenttype_searchwidget_item_footer --><!-- END: display_contenttype_searchwidget_Text -->
+					
+							
+							
+							<!-- BEGIN: display_contenttype_searchwidget_Text --><!-- BEGIN: display_contenttype_searchwidget_item_header -->
+	
+
+
+
+
+<li class="b-post-sm js-post-sm" data-nodeid="1036">
+
+	
+	
+
+	
+	<div class="b-post-sm__content">
+
+		
+		<div class="b-post-sm__title ellipsis">
+			
+			
+				<a href="https://thelinuxforum.com/articles/1036-linux-foundation-announces-opensearch-software-foundation-to-foster-open-collaboration-in-search-and-analytics">Linux Foundation Announces OpenSearch Software Foundation to Foster Open Collaboration in Search and Analytics</a>
+			
+		</div>
+
+		
+		
+			<div class="b-post-sm__author">
+				
+					by <a href="https://thelinuxforum.com/member/2-kasimba" data-vbnamecard="2">Kasimba</a>
+				
+			</div>
+		
+<!-- END: display_contenttype_searchwidget_item_header -->
+
+
+	
+	<div class="b-post-sm__post-content post-content ellipsis restore">
+		
+		AWS transfers OpenSearch to the Linux Foundation to support a vendor-neutral community for search, analytics, observability, and vector database software. Read more at linuxfoundation.org<br />
+<br />
+The post <a href="https://www.linux.com/featured/linux-foundation-announces-opensearch-software-foundation-to-foster-open-collaboration-in-search-and-analytics/" target="_blank">Linux Foundation Announces OpenSearch Software Foundation to Foster Open Collaboration in Search and Analytics</a> appeared first on <a href="https://www.linux.com" target="_blank">Linux.com</a>.<br />
+<br />
+<br />
+<br />
+<a href="https://www.linux.com/featured/linux-foundation-announces-opensearch-software-foundation-to-foster-open-collaboration-in-search-and-analytics/" target="_blank">More...</a>
+	</div>
+
+
+<!-- BEGIN: display_contenttype_searchwidget_item_footer -->
+
+	
+		
+		
+
+			
+			
+				<div class="list-item-footer h-clearfix">
+					<ul class="replylike_count h-left">
+						<li id="channel-1036">
+							<div class="channel h-left">
+								<div class="channel_text">
+									Channel: <a href="https://thelinuxforum.com/articles">Articles</a>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			
+
+			
+			<div class="b-post-sm__date">09-16-2024, 01:11 PM</div>
+	
+	</div>
+</li><!-- END: display_contenttype_searchwidget_item_footer --><!-- END: display_contenttype_searchwidget_Text -->
+					
+							
+							
+							<!-- BEGIN: display_contenttype_searchwidget_Text --><!-- BEGIN: display_contenttype_searchwidget_item_header -->
+	
+
+
+
+
+<li class="b-post-sm js-post-sm" data-nodeid="1035">
+
+	
+	
+
+	
+	<div class="b-post-sm__content">
+
+		
+		<div class="b-post-sm__title ellipsis">
+			
+			
+				<a href="https://thelinuxforum.com/articles/1035-manual-intervention-for-pacman-7-0-0-and-local-repositories-required">Manual intervention for pacman 7.0.0 and local repositories required</a>
+			
+		</div>
+
+		
+		
+			<div class="b-post-sm__author">
+				
+					by <a href="https://thelinuxforum.com/member/2-kasimba" data-vbnamecard="2">Kasimba</a>
+				
+			</div>
+		
+<!-- END: display_contenttype_searchwidget_item_header -->
+
+
+	
+	<div class="b-post-sm__post-content post-content ellipsis restore">
+		
+		With the release of <a href="https://gitlab.archlinux.org/pacman/pacman/-/blob/master/NEWS?ref_type=heads" target="_blank">version 7.0.0</a> pacman has added support for<br />
+downloading packages as a separate user with dropped privileges.<br />
+<br />
+For users with local repos however this might imply that the download<br />
+user does not have access to the files in question, which can be fixed<br />
+by assigning the files and folder to the alpm group and ensuring the<br />
+executable bit (+x) is set on the folders in question.<br />
+<br />
+<br />
+$ chown :alpm -R /path/to/local/repo<br />
+<br />...
+	</div>
+
+
+<!-- BEGIN: display_contenttype_searchwidget_item_footer -->
+
+	
+		
+		
+
+			
+			
+				<div class="list-item-footer h-clearfix">
+					<ul class="replylike_count h-left">
+						<li id="channel-1035">
+							<div class="channel h-left">
+								<div class="channel_text">
+									Channel: <a href="https://thelinuxforum.com/articles">Articles</a>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			
+
+			
+			<div class="b-post-sm__date">09-14-2024, 11:50 AM</div>
+	
+	</div>
+</li><!-- END: display_contenttype_searchwidget_item_footer --><!-- END: display_contenttype_searchwidget_Text -->
+					
+							
+							
+							<!-- BEGIN: display_contenttype_searchwidget_Text --><!-- BEGIN: display_contenttype_searchwidget_item_header -->
+	
+
+
+
+
+<li class="b-post-sm js-post-sm" data-nodeid="1032">
+
+	
+	
+
+	
+	<div class="b-post-sm__content">
+
+		
+		<div class="b-post-sm__title ellipsis">
+			
+			
+				<a href="https://thelinuxforum.com/articles/1032-monthly-news-–-august-2024">Monthly News – August 2024</a>
+			
+		</div>
+
+		
+		
+			<div class="b-post-sm__author">
+				
+					by <a href="https://thelinuxforum.com/member/2-kasimba" data-vbnamecard="2">Kasimba</a>
+				
+			</div>
+		
+<!-- END: display_contenttype_searchwidget_item_header -->
+
+
+	
+	<div class="b-post-sm__post-content post-content ellipsis restore">
+		
+		Many thanks for your donations and for your support. Server upgrades The repository servers were upgraded. They’re now able to serve packages at 10gbps, which is 10 times faster than before. We no longer observe bottlenecks during large updates when packages such as Firefox or Chromium are updated concurrently. Upgrade path The upgrade between Mint […]<br />
+<br />
+<a href="https://blog.linuxmint.com/?p=4740" target="_blank">More...</a>
+	</div>
+
+
+<!-- BEGIN: display_contenttype_searchwidget_item_footer -->
+
+	
+		
+		
+
+			
+			
+				<div class="list-item-footer h-clearfix">
+					<ul class="replylike_count h-left">
+						<li id="channel-1032">
+							<div class="channel h-left">
+								<div class="channel_text">
+									Channel: <a href="https://thelinuxforum.com/articles">Articles</a>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			
+
+			
+			<div class="b-post-sm__date">09-12-2024, 10:50 AM</div>
+	
+	</div>
+</li><!-- END: display_contenttype_searchwidget_item_footer --><!-- END: display_contenttype_searchwidget_Text -->
+					
+							
+							
+							<!-- BEGIN: display_contenttype_searchwidget_Text --><!-- BEGIN: display_contenttype_searchwidget_item_header -->
+	
+
+
+
+
+<li class="b-post-sm js-post-sm" data-nodeid="1031">
+
+	
+	
+
+	
+	<div class="b-post-sm__content">
+
+		
+		<div class="b-post-sm__title ellipsis">
+			
+			
+				<a href="https://thelinuxforum.com/articles/1031-how-linux-shapes-modern-cloud-computing">How Linux Shapes Modern Cloud Computing</a>
+			
+		</div>
+
+		
+		
+			<div class="b-post-sm__author">
+				
+					by <a href="https://thelinuxforum.com/member/2-kasimba" data-vbnamecard="2">Kasimba</a>
+				
+			</div>
+		
+<!-- END: display_contenttype_searchwidget_item_header -->
+
+
+	
+	<div class="b-post-sm__post-content post-content ellipsis restore">
+		
+		<br />
+<br />
+      <br />
+            by <a href="https://www.linuxjournal.com/users/george-whittaker" target="_blank">George Whittaker</a><br />
+<br />
+      <br />
+            <b><b>Introduction</b></b><br /><br />Cloud computing has transformed the way businesses and individuals store, manage, and process data. At its core, cloud computing refers to the on-demand availability of computing resources—such as storage, processing power, and applications—over the internet, eliminating the need for local infrastructure. With scalability, flexibility, and cost efficiency as its hallmarks,...
+	</div>
+
+
+<!-- BEGIN: display_contenttype_searchwidget_item_footer -->
+
+	
+		
+		
+
+			
+			
+				<div class="list-item-footer h-clearfix">
+					<ul class="replylike_count h-left">
+						<li id="channel-1031">
+							<div class="channel h-left">
+								<div class="channel_text">
+									Channel: <a href="https://thelinuxforum.com/articles">Articles</a>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			
+
+			
+			<div class="b-post-sm__date">09-10-2024, 11:44 PM</div>
+	
+	</div>
+</li><!-- END: display_contenttype_searchwidget_item_footer --><!-- END: display_contenttype_searchwidget_Text -->
+					
+							
+							
+							<!-- BEGIN: display_contenttype_searchwidget_Text --><!-- BEGIN: display_contenttype_searchwidget_item_header -->
+	
+
+
+
+
+<li class="b-post-sm js-post-sm" data-nodeid="1030">
+
+	
+	
+
+	
+	<div class="b-post-sm__content">
+
+		
+		<div class="b-post-sm__title ellipsis">
+			
+			
+				<a href="https://thelinuxforum.com/articles/1030-✏️-step-into-success-with-35-savings-on-technical-training-certifications">✏️ Step into Success with 35% Savings on Technical Training & Certifications</a>
+			
+		</div>
+
+		
+		
+			<div class="b-post-sm__author">
+				
+					by <a href="https://thelinuxforum.com/member/2-kasimba" data-vbnamecard="2">Kasimba</a>
+				
+			</div>
+		
+<!-- END: display_contenttype_searchwidget_item_header -->
+
+
+	
+	<div class="b-post-sm__post-content post-content ellipsis restore">
+		
+		Learn more at training.linuxfoundation.org<br />
+<br />
+The post <a href="https://www.linux.com/featured/%e2%9c%8f%ef%b8%8f-step-into-success-with-35-savings-on-technical-training-certifications/" target="_blank">✏️ Step into Success with 35% Savings on Technical Training &amp; Certifications</a> appeared first on <a href="https://www.linux.com" target="_blank">Linux.com</a>.<br />
+<br />
+<br />
+<br />
+<a href="https://www.linux.com/featured/%e2%9c%8f%ef%b8%8f-step-into-success-with-35-savings-on-technical-training-certifications/" target="_blank">More...</a>
+	</div>
+
+
+<!-- BEGIN: display_contenttype_searchwidget_item_footer -->
+
+	
+		
+		
+
+			
+			
+				<div class="list-item-footer h-clearfix">
+					<ul class="replylike_count h-left">
+						<li id="channel-1030">
+							<div class="channel h-left">
+								<div class="channel_text">
+									Channel: <a href="https://thelinuxforum.com/articles">Articles</a>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			
+
+			
+			<div class="b-post-sm__date">09-10-2024, 02:20 PM</div>
+	
+	</div>
+</li><!-- END: display_contenttype_searchwidget_item_footer --><!-- END: display_contenttype_searchwidget_Text -->
+					
+				</ul>
+			
+			<div class="widget-footer h-align-left h-clear">
+				
+				<a href="https://thelinuxforum.com/search?r=410261" class="b-button">View All</a>
+			</div>
+		
+	</div>
+</div>
+
+
+<!-- END: widget_search -->
+	<!-- *** END WIDGET widgetid:13, widgetinstanceid:148, template:widget_search *** -->
+<!-- END: screenlayout_widgetlist -->
+
+	
+
+</div><!-- END: screenlayout_section_display -->
+
+	
+
+</div><!-- END: screenlayout_row_display -->
+
+	
+
+		<!-- BEGIN: screenlayout_row_display -->
+	
+
+
+
+	
+
+
+
+<!-- row -->
+<div class="canvas-layout-row l-row no-columns h-clearfix">
+
+	
+	
+
+	
+
+		
+		
+		
+
+		<!-- BEGIN: screenlayout_section_display -->
+	
+
+
+
+
+
+	
+
+
+
+	
+
+
+
+	
+
+
+
+
+	
+	
+
+
+
+
+
+
+
+<!-- section 3 -->
+
+
+
+<div class="canvas-widget-list section-3 js-sectiontype-extra h-clearfix l-col__large-12 l-col__small--full l-wide-column">
+
+	
+
+	<!-- BEGIN: screenlayout_widgetlist --><!-- END: screenlayout_widgetlist -->
+
+	
+
+</div><!-- END: screenlayout_section_display -->
+
+	
+
+</div><!-- END: screenlayout_row_display -->
+
+	
+
+		<!-- BEGIN: screenlayout_row_display -->
+	
+
+
+
+	
+
+
+
+<!-- row -->
+<div class="canvas-layout-row l-row no-columns h-clearfix">
+
+	
+	
+
+	
+
+		
+		
+		
+
+		<!-- BEGIN: screenlayout_section_display -->
+	
+
+
+
+
+
+	
+
+
+
+	
+
+
+
+	
+
+
+
+
+	
+	
+
+
+
+
+
+
+
+<!-- section 201 -->
+
+
+
+<div class="canvas-widget-list section-201 js-sectiontype-global_before_footer h-clearfix l-col__large-12 l-col__small--full l-wide-column">
+
+	
+
+	<!-- BEGIN: screenlayout_widgetlist --><!-- END: screenlayout_widgetlist -->
+
+	
+
+</div><!-- END: screenlayout_section_display -->
+
+	
+
+</div><!-- END: screenlayout_row_display -->
+
+	
+
+</div>
+
+<!-- BEGIN: footer --></div>
+	<div class="h-clear"></div>
+</main>
+
+	<footer id="footer">
+		
+		
+		<nav id="footer-tabbar" class="h-clearfix js-shrink-event-parent">
+			
+			
+			
+			
+			
+				
+			
+			
+			<ul class="h-left js-footer-chooser-list h-margin-left-xxl js-shrink-event-child">
+				
+				
+				
+			</ul>
+
+			<ul class="nav-list h-right js-footer-nav-list h-margin-right-xxl b-comp-menu-horizontal js-comp-menu-horizontal js-comp-menu--dropdown-on-xsmall b-comp-menu-dropdown--inactive js-shrink-event-child" data-dropdown-trigger-phrase="go_to_ellipsis" data-dropdown-menu-classes="h-margin-vert-l b-comp-menu-dropdown--direction-up" data-dropdown-trigger-classes="b-comp-menu-dropdown__trigger--arrow">
+				
+				
+					
+					
+					
+						
+						
+					
+					
+					
+					
+					
+					
+					
+					
+
+					<li class="">
+						<a rel="nofollow" href="https://thelinuxforum.com/help">Help</a>
+					</li>
+
+				
+					
+					
+					
+						
+						
+					
+					
+					
+					
+					
+					
+					
+					
+
+					<li class="">
+						<a rel="nofollow" href="https://thelinuxforum.com/contact-us">Contact Us</a>
+					</li>
+
+				
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+
+					<li class="">
+						<a href="https://thelinuxforum.com/privacy">Privacy</a>
+					</li>
+
+				
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+
+					<li class="">
+						<a href="https://thelinuxforum.com/terms-of-service">Terms of Service</a>
+					</li>
+
+				
+				<li><a href="#" class="js-footer-go-to-top">Go to top</a></li>
+			</ul>
+		</nav>
+		<!-- BEGIN: viglink_install_javascript -->
+      
+      
+      
+      
+
+      
+    <!-- END: viglink_install_javascript -->
+
+	</footer>
+</div>
+<div id="footer-copyright">
+	<div id="footer-user-copyright"></div>
+	<div id="footer-vb-copyright">Powered by <a href="https://www.vbulletin.com" id="vbulletinlink">vBulletin&reg;</a> Version 5.7.5 <br />Copyright &copy; 2024 MH Sub I, LLC dba vBulletin. All rights reserved. </div>
+	<div id="footer-current-datetime">All times are GMT. This page was generated at 07:34 AM.</div>
+</div>
+</div>
+
+<div id="loading-indicator" class="js-loading-indicator b-ajax-loading-indicator h-hide">
+	<span>Working...</span>
+</div>
+<div class="js-flash-message b-ajax-loading-indicator b-ajax-loading-indicator--medium h-hide">
+	<span class="js-flash-message-content"></span>
+</div>
+<div id="confirm-dialog" class="sb-dialog">
+	<div class="dialog-content h-clearfix">
+		<div class="icon h-left"></div>
+		<div class="message"></div>
+	</div>
+	<div class="b-button-group">
+		<button id="btnConfirmDialogYes" type="button" class="b-button b-button--primary js-button">Yes</button>
+		<button id="btnConfirmDialogNo" type="button" class="b-button b-button--secondary js-button">No</button>
+	</div>
+</div>
+<div id="alert-dialog" class="sb-dialog">
+	<div class="dialog-content h-clearfix">
+		<div class="icon h-left"></div>
+		<div class="message"></div>
+	</div>
+	<div class="b-button-group">
+		<button id="btnAlertDialogOK" type="button" class="b-button b-button--primary js-button">OK</button>
+	</div>
+</div>
+<div id="prompt-dialog" class="sb-dialog">
+	<div class="dialog-content table h-clearfix">
+		<div class="message td"></div>
+		<div class="input-box-container td">
+			<input type="text" class="input-box textbox" />
+			<textarea class="input-box textbox h-hide" rows="3"></textarea>
+		</div>
+	</div>
+	<div class="js-prompt-error h-hide"></div>
+	<div class="b-button-group">
+		<button id="btnPromptDialogOK" type="button" class="b-button b-button--primary js-button">OK</button>
+		<button id="btnPromptDialogCancel" type="button" class="b-button b-button--secondary js-button">Cancel</button>
+	</div>
+</div>
+<div id="slideshow-dialog" class="sb-dialog slideshow">
+	<div class="b-icon b-icon__x-square--gray close-btn">X</div>
+	<div class="slideshow-wrapper"></div>
+	<div class="caption"></div>
+	<div class="thumbnails-wrapper">
+		<div class="thumbnails"></div>
+	</div>
+
+</div>
+
+<div class="unsubscribe-overlay-container"></div>
+
+<div id="fb-root" data-facebook-language="en_US"></div>
+
+
+
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+
+<script type="text/javascript">window.jQuery || document.write('<script type="text/javascript" src="js/jquery/jquery-3.5.1.min.js"><\/script>');</script>
+
+<script type="text/javascript" src="js/footer-rollup-575.js"></script>
+
+
+
+<script type="text/javascript">
+	
+		window.vBulletin = window.vBulletin || {};
+	
+		vBulletin.version = '5.7.5';
+</script>
+
+
+
+
+
+
+<script type="text/javascript" src="js/login.js?v=575"></script>
+<script type="text/javascript" src="js/facebook.js?v=575"></script>
+<script type="text/javascript" src="js/conversation-rollup-575.js"></script>
+</body>
+</html><!-- END: footer --><!-- END: screenlayout_display_wide_narrow -->

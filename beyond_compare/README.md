@@ -4,6 +4,7 @@
 
 ```
 $ rm -rf "${HOME}/.config/bcompare/registry.dat"
+# 对于bcompare5，路径变为${HOME}/.config/bcompare5/registry.dat
 ```
 
 具体操作：
@@ -17,3 +18,4 @@ $ rm -rf "${HOME}/.config/bcompare/registry.dat"
 rm -rf "${HOME}/.config/bcompare/registry.dat"
 bcompare.real $@
 ```
+
