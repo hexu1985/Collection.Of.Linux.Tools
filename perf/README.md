@@ -41,6 +41,7 @@ $ sudo apt-get install linux-tools-common
 上面的 Kernel 版本可能和你不一样，根据指示安装起来即可。不放心的话可以使用`＄ uname -r`确认。
 ```
 $ sudo apt-get install linux-tools-3.16.0-50-generic linux-cloud-tools-3.16.0-50-generic
+# sudo apt-get install linux-tools-generic linux-tools-`uname -r`
 ```
 
 3. 到这里 perf 的安装就完成了。不过这里我再稍微补充一下，如果你不是切换到 root 的情况下输入
