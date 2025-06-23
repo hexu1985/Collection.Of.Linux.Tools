@@ -1,5 +1,14 @@
 破解bcompare
 
+下载链接
+https://www.scootersoftware.com/download/download
+
+如果是在官网下载好乐安装包的同学，可使用 sudo dpkg -i 安装包.deb 命令安装
+
+```
+$ sudo dpkg -i 安装包.deb
+```
+
 根据网上大家的建议，只需要将删除注册表就可以
 
 ```
