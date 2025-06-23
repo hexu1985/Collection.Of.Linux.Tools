@@ -9,6 +9,15 @@ https://www.scootersoftware.com/download/download
 $ sudo dpkg -i 安装包.deb
 ```
 
+如果没有在官网下载的同学，请使用以下步骤安装
+
+```
+$ wget https://www.scootersoftware.com/files/bcompare-5.1.0.31016_amd64.deb
+$ sudo apt-get update
+$ sudo apt-get install gdebi-core
+$ sudo gdebi bcompare-5.1.0.31016_amd64.deb
+```
+
 根据网上大家的建议，只需要将删除注册表就可以
 
 ```
