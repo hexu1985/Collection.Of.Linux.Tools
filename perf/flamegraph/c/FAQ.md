@@ -14,7 +14,7 @@ WARNING: perf.back not found for kernel 5.4.0-121
 
 需要安装`linux-tools-generic`
 ```
-$ sudo apt linux-tools-5.4.0-121-generic    # 根据ubuntu不同版本, 可能tools的版本也需要调整
+$ sudo apt install linux-tools-5.4.0-121-generic    # 根据ubuntu不同版本, 可能tools的版本也需要调整
 $ export PATH=/usr/lib/linux-tools/5.4.0-120-generic:$PATH
 $ perf --version
 ```
