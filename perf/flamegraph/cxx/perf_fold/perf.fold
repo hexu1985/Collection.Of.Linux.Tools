@@ -1,0 +1,24 @@
+example;_start;__libc_start_main@@GLIBC_2.34;__libc_start_call_main;Math::Calculator::compute 2
+example;_start;__libc_start_main@@GLIBC_2.34;__libc_start_call_main;main 38
+example;_start;__libc_start_main@@GLIBC_2.34;__libc_start_call_main;main;Math::Calculator::compute 276
+example;_start;__libc_start_main@@GLIBC_2.34;__libc_start_call_main;main;Math::Calculator::compute;Math::Calculator::process 182
+example;_start;__libc_start_main@@GLIBC_2.34;__libc_start_call_main;main;Math::Calculator::compute;Math::Calculator::process;asm_sysvec_apic_timer_interrupt;sysvec_apic_timer_interrupt;irq_exit_rcu;__irq_exit_rcu;handle_softirqs;run_timer_softirq;tmigr_handle_remote;tmigr_handle_remote_up;tmigr_handle_remote_cpu;timer_expire_remote;__run_timers;call_timer_fn;process_timeout;wake_up_process;try_to_wake_up;_raw_spin_unlock_irqrestore 1
+example;_start;__libc_start_main@@GLIBC_2.34;__libc_start_call_main;main;Math::Calculator::compute;__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >::__normal_iterator 11
+example;_start;__libc_start_main@@GLIBC_2.34;__libc_start_call_main;main;Math::Calculator::compute;__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >::base 56
+example;_start;__libc_start_main@@GLIBC_2.34;__libc_start_call_main;main;Math::Calculator::compute;__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >::operator* 50
+example;_start;__libc_start_main@@GLIBC_2.34;__libc_start_call_main;main;Math::Calculator::compute;__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >::operator++ 28
+example;_start;__libc_start_main@@GLIBC_2.34;__libc_start_call_main;main;Math::Calculator::compute;bool __gnu_cxx::operator!=<int*, std::vector<int, std::allocator<int> > > 106
+example;_start;__libc_start_main@@GLIBC_2.34;__libc_start_call_main;main;Math::Calculator::compute;bool __gnu_cxx::operator!=<int*, std::vector<int, std::allocator<int> > >;__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >::base 38
+example;_start;__libc_start_main@@GLIBC_2.34;__libc_start_call_main;main;Math::Calculator::compute;bool __gnu_cxx::operator!=<int*, std::vector<int, std::allocator<int> > >;asm_sysvec_apic_timer_interrupt;sysvec_apic_timer_interrupt;irq_exit_rcu;__irq_exit_rcu;handle_softirqs;run_timer_softirq;__run_timers;call_timer_fn;rh_timer_func;usb_hcd_poll_rh_status;uhci_hub_status_data;_raw_spin_unlock_irqrestore 1
+example;_start;__libc_start_main@@GLIBC_2.34;__libc_start_call_main;main;Math::Calculator::compute;std::vector<int, std::allocator<int> >::begin 14
+example;_start;__libc_start_main@@GLIBC_2.34;__libc_start_call_main;main;Math::Calculator::compute;std::vector<int, std::allocator<int> >::begin;__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >::__normal_iterator 4
+example;_start;__libc_start_main@@GLIBC_2.34;__libc_start_call_main;main;Math::Calculator::compute;std::vector<int, std::allocator<int> >::end 20
+example;_start;__libc_start_main@@GLIBC_2.34;__libc_start_call_main;main;Math::Calculator::compute;std::vector<int, std::allocator<int> >::end;__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >::__normal_iterator 21
+example;_start;__libc_start_main@@GLIBC_2.34;__libc_start_call_main;main;Math::Calculator::compute;std::vector<int, std::allocator<int> >::size 18
+example;_start;__libc_start_main@@GLIBC_2.34;__libc_start_call_main;main;Math::Calculator::process 18
+example;_start;__libc_start_main@@GLIBC_2.34;__libc_start_call_main;main;__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >::operator* 26
+example;_start;__libc_start_main@@GLIBC_2.34;__libc_start_call_main;main;__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >::operator++ 29
+example;_start;__libc_start_main@@GLIBC_2.34;__libc_start_call_main;main;bool __gnu_cxx::operator!=<int*, std::vector<int, std::allocator<int> > > 40
+example;_start;__libc_start_main@@GLIBC_2.34;__libc_start_call_main;main;std::vector<int, std::allocator<int> >::begin 2
+example;_start;__libc_start_main@@GLIBC_2.34;__libc_start_call_main;main;std::vector<int, std::allocator<int> >::end 2
+example;_start;__libc_start_main@@GLIBC_2.34;__libc_start_call_main;main;std::vector<int, std::allocator<int> >::size 6
