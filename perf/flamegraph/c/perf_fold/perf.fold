@@ -1,2 +1,2 @@
-sched;_start;__libc_start_main@@GLIBC_2.34;__libc_start_call_main;main;child_fn;load 516
-sched;_start;__libc_start_main@@GLIBC_2.34;__libc_start_call_main;main;estimate_loops_per_msec 144
+sched;_start;__libc_start_main@@GLIBC_2.34;__libc_start_call_main;main;child_fn;load 882
+sched;_start;__libc_start_main@@GLIBC_2.34;__libc_start_call_main;main;estimate_loops_per_msec 106

@@ -421,40 +421,40 @@
 <text id="matched" x="1090.00" y="181" > </text>
 <g id="frames">
 <g >
-<title>load (516 samples, 78.18%)</title><rect x="10.0" y="37" width="922.5" height="15.0" fill="rgb(239,117,42)" rx="2" ry="2" />
-<text  x="13.00" y="47.5" >load</text>
-</g>
-<g >
-<title>all (660 samples, 100%)</title><rect x="10.0" y="149" width="1180.0" height="15.0" fill="rgb(247,129,0)" rx="2" ry="2" />
-<text  x="13.00" y="159.5" ></text>
-</g>
-<g >
-<title>__libc_start_call_main (660 samples, 100.00%)</title><rect x="10.0" y="85" width="1180.0" height="15.0" fill="rgb(253,39,33)" rx="2" ry="2" />
-<text  x="13.00" y="95.5" >__libc_start_call_main</text>
-</g>
-<g >
-<title>estimate_loops_per_msec (144 samples, 21.82%)</title><rect x="932.5" y="53" width="257.5" height="15.0" fill="rgb(250,229,39)" rx="2" ry="2" />
-<text  x="935.55" y="63.5" >estimate_loops_per_msec</text>
-</g>
-<g >
-<title>child_fn (516 samples, 78.18%)</title><rect x="10.0" y="53" width="922.5" height="15.0" fill="rgb(232,173,26)" rx="2" ry="2" />
-<text  x="13.00" y="63.5" >child_fn</text>
-</g>
-<g >
-<title>_start (660 samples, 100.00%)</title><rect x="10.0" y="117" width="1180.0" height="15.0" fill="rgb(231,204,0)" rx="2" ry="2" />
-<text  x="13.00" y="127.5" >_start</text>
-</g>
-<g >
-<title>sched (660 samples, 100.00%)</title><rect x="10.0" y="133" width="1180.0" height="15.0" fill="rgb(219,185,1)" rx="2" ry="2" />
+<title>sched (988 samples, 100.00%)</title><rect x="10.0" y="133" width="1180.0" height="15.0" fill="rgb(241,73,53)" rx="2" ry="2" />
 <text  x="13.00" y="143.5" >sched</text>
 </g>
 <g >
-<title>main (660 samples, 100.00%)</title><rect x="10.0" y="69" width="1180.0" height="15.0" fill="rgb(249,193,20)" rx="2" ry="2" />
+<title>__libc_start_main@@GLIBC_2.34 (988 samples, 100.00%)</title><rect x="10.0" y="101" width="1180.0" height="15.0" fill="rgb(234,143,39)" rx="2" ry="2" />
+<text  x="13.00" y="111.5" >__libc_start_main@@GLIBC_2.34</text>
+</g>
+<g >
+<title>main (988 samples, 100.00%)</title><rect x="10.0" y="69" width="1180.0" height="15.0" fill="rgb(222,118,52)" rx="2" ry="2" />
 <text  x="13.00" y="79.5" >main</text>
 </g>
 <g >
-<title>__libc_start_main@@GLIBC_2.34 (660 samples, 100.00%)</title><rect x="10.0" y="101" width="1180.0" height="15.0" fill="rgb(232,218,6)" rx="2" ry="2" />
-<text  x="13.00" y="111.5" >__libc_start_main@@GLIBC_2.34</text>
+<title>estimate_loops_per_msec (106 samples, 10.73%)</title><rect x="1063.4" y="53" width="126.6" height="15.0" fill="rgb(224,43,32)" rx="2" ry="2" />
+<text  x="1066.40" y="63.5" >estimate_loops_..</text>
+</g>
+<g >
+<title>load (882 samples, 89.27%)</title><rect x="10.0" y="37" width="1053.4" height="15.0" fill="rgb(206,152,51)" rx="2" ry="2" />
+<text  x="13.00" y="47.5" >load</text>
+</g>
+<g >
+<title>child_fn (882 samples, 89.27%)</title><rect x="10.0" y="53" width="1053.4" height="15.0" fill="rgb(252,86,25)" rx="2" ry="2" />
+<text  x="13.00" y="63.5" >child_fn</text>
+</g>
+<g >
+<title>_start (988 samples, 100.00%)</title><rect x="10.0" y="117" width="1180.0" height="15.0" fill="rgb(206,156,27)" rx="2" ry="2" />
+<text  x="13.00" y="127.5" >_start</text>
+</g>
+<g >
+<title>all (988 samples, 100%)</title><rect x="10.0" y="149" width="1180.0" height="15.0" fill="rgb(230,107,54)" rx="2" ry="2" />
+<text  x="13.00" y="159.5" ></text>
+</g>
+<g >
+<title>__libc_start_call_main (988 samples, 100.00%)</title><rect x="10.0" y="85" width="1180.0" height="15.0" fill="rgb(243,123,0)" rx="2" ry="2" />
+<text  x="13.00" y="95.5" >__libc_start_call_main</text>
 </g>
 </g>
 </svg>
