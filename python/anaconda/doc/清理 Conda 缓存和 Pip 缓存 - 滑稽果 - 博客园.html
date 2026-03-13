@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<!-- saved from url=(0042)https://www.cnblogs.com/xiaoaug/p/18106750 -->
+<html lang="zh-cn" style="--olcb-folder-code-block-max-height: 80vh; --cnb-code-bg: rgb(45, 45, 45); --cnb-code-font-size: 16px; --cnb-code-color: rgb(204, 204, 204);" mode="light" theme="a"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin-when-cross-origin">
+    <meta name="keywords" content="Conda,Python">
+    <meta name="description" content="清理 Conda 缓存： 查看 Conda 缓存的使用情况： conda clean --dry-run --all 删除不再使用的包和缓存： conda clean --all 清理 Pip 缓存 在使用 pip 安装 Python 库时，如果之前已经下载过该库，pip 会默认使用缓存来安装库，而">
+    <meta property="og:description" content="清理 Conda 缓存： 查看 Conda 缓存的使用情况： conda clean --dry-run --all 删除不再使用的包和缓存： conda clean --all 清理 Pip 缓存 在使用 pip 安装 Python 库时，如果之前已经下载过该库，pip 会默认使用缓存来安装库，而">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>清理 Conda 缓存和 Pip 缓存 - 滑稽果 - 博客园</title>
+    <link rel="canonical" href="https://www.cnblogs.com/xiaoaug/p/18106750">
+    <link rel="shortcut icon" id="favicon" href="https://blog-static.cnblogs.com/files/blogs/521828/huajiIcon.ico" type="image/svg+xml">
+    
+    <style>#home :not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([class*="language-"]):not([highlighted]):not(.hljs):not([class*="brush:"]), :not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([class*="language-"]):not([highlighted]):not(.hljs):not([class*="brush:"]) {background: rgb(45, 45, 45);
+        padding: 16px;
+        border: 0px none rgb(204, 204, 204);
+        border-radius: 0px;
+        border-color: transparent;
+        color: rgb(204, 204, 204);
+        font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+        font-size: 16px</style><link rel="stylesheet" href="./清理 Conda 缓存和 Pip 缓存 - 滑稽果 - 博客园_files/blog-common.min.css">
+    
+
+    
+        <link id="highlighter-theme-prism-tomorrow" type="text/css" rel="stylesheet" href="./清理 Conda 缓存和 Pip 缓存 - 滑稽果 - 博客园_files/prism-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="./清理 Conda 缓存和 Pip 缓存 - 滑稽果 - 博客园_files/custom.css">
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./清理 Conda 缓存和 Pip 缓存 - 滑稽果 - 博客园_files/mobile-common.min.css">
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/xiaoaug/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/xiaoaug/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/xiaoaug/wlwmanifest.xml">
+    <script>
+        var currentBlogId = 521828;
+        var currentBlogApp = 'xiaoaug';
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'Custom';
+        var visitorUserId = '';
+        var hasCustomScript = true;
+        window.cb_enable_mathjax = true;
+        window.mathEngine = 0;
+        window.codeHighlightEngine = 2;
+        window.enableCodeLineNumber = true;
+        window.codeHighlightTheme = 'prism-tomorrow';
+        window.darkModeCodeHighlightTheme = 'prism-tomorrow';
+        window.isDarkCodeHighlightTheme = true;
+        window.isDarkModeCodeHighlightThemeDark = true;
+        window.isDisableCodeHighlighter = false;
+        window.enableCodeThemeTypeFollowSystem = false;
+        window.enableMacStyleCodeBlock = false;
+    </script>
+        <script>
+            window.currentPostId = 18106750;
+            window.currentPostDateAdded = '2024-03-31 15:05';
+        </script>
+    <script src="./清理 Conda 缓存和 Pip 缓存 - 滑稽果 - 博客园_files/jquery-3.3.1.min.js"></script>
+    <script src="./清理 Conda 缓存和 Pip 缓存 - 滑稽果 - 博客园_files/blog-common.min.js"></script><style>.medium-zoom-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 300ms;
+  will-change: opacity;
+}
+
+.medium-zoom--opened .medium-zoom-overlay {
+  cursor: pointer;
+  cursor: zoom-out;
+  opacity: 1;
+}
+
+.medium-zoom-image {
+  cursor: pointer;
+  cursor: zoom-in;
+  /*
+    The `transition` is marked as "!important" for the animation to happen
+    even though it's overriden by another inline `transition` style attribute.
+
+    This is problematic with frameworks that generate inline styles on their
+    images (e.g. Gatsby).
+
+    See https://github.com/francoischalifour/medium-zoom/issues/110
+   */
+  transition: transform 300ms cubic-bezier(0.2, 0, 0.2, 1) !important;
+}
+
+.medium-zoom-image--hidden {
+  visibility: hidden;
+}
+
+.medium-zoom-image--opened {
+  position: relative;
+  cursor: pointer;
+  cursor: zoom-out;
+  will-change: transform;
+}
+</style><script id="prismjs-script" src="./清理 Conda 缓存和 Pip 缓存 - 滑稽果 - 博客园_files/prism.js" type="text/javascript" async=""></script><link id="prism-line-numbers-style" href="./清理 Conda 缓存和 Pip 缓存 - 滑稽果 - 博客园_files/prism-line-numbers.css" rel="stylesheet" type="text/css">
+        <script>updateCustomBlogReferrer();</script>
+    
+<script id="mathjax" src="./清理 Conda 缓存和 Pip 缓存 - 滑稽果 - 博客园_files/MathJax.js" type="text/javascript" async=""></script><link rel="stylesheet" href="./清理 Conda 缓存和 Pip 缓存 - 滑稽果 - 博客园_files/lightbox.min.css"><script id="prismjs-autoloader-script" src="./清理 Conda 缓存和 Pip 缓存 - 滑稽果 - 博客园_files/prism-autoloader.min.js" type="text/javascript" async=""></script><script id="prism-line-numbers-script" src="./清理 Conda 缓存和 Pip 缓存 - 滑稽果 - 博客园_files/prism-line-numbers.min.js" type="text/javascript" async=""></script><meta property="og:image" content="https://assets.cnblogs.com/logo_square.png"><style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Menu_Button .MathJax_Hover_Arrow {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px; font-family: 'Courier New',Courier; font-size: 9px; color: #F0F0F0}
+.MathJax_Menu_Button .MathJax_Hover_Arrow span {display: block; background-color: #AAA; border: 1px solid; border-radius: 3px; line-height: 0; padding: 4px}
+.MathJax_Hover_Arrow:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_Hover_Arrow:hover span {background-color: #CCC!important}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 5px 0px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 5px; -webkit-border-radius: 5px; -moz-border-radius: 5px; -khtml-border-radius: 5px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 1px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: .7em}
+.MathJax_MenuRadioCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuLabel {padding: 1px 2em 3px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #DDDDDD; margin: 4px 3px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: #606872; color: white}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+</style><style type="text/css">.MathJax_Preview .MJXf-math {color: inherit!important}
+</style><style type="text/css">.MJX_Assistive_MathML {position: absolute!important; top: 0; left: 0; clip: rect(1px, 1px, 1px, 1px); padding: 1px 0 0 0!important; border: 0!important; height: 1px!important; width: 1px!important; overflow: hidden!important; display: block!important; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none}
+.MJX_Assistive_MathML.MJX_Assistive_MathML_Block {width: 100%!important}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1em; bottom: 1.5em; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><style type="text/css">.MJXp-script {font-size: .8em}
+.MJXp-right {-webkit-transform-origin: right; -moz-transform-origin: right; -ms-transform-origin: right; -o-transform-origin: right; transform-origin: right}
+.MJXp-bold {font-weight: bold}
+.MJXp-italic {font-style: italic}
+.MJXp-scr {font-family: MathJax_Script,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-frak {font-family: MathJax_Fraktur,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-sf {font-family: MathJax_SansSerif,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-cal {font-family: MathJax_Caligraphic,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-mono {font-family: MathJax_Typewriter,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-largeop {font-size: 150%}
+.MJXp-largeop.MJXp-int {vertical-align: -.2em}
+.MJXp-math {display: inline-block; line-height: 1.2; text-indent: 0; font-family: 'Times New Roman',Times,STIXGeneral,serif; white-space: nowrap; border-collapse: collapse}
+.MJXp-display {display: block; text-align: center; margin: 1em 0}
+.MJXp-math span {display: inline-block}
+.MJXp-box {display: block!important; text-align: center}
+.MJXp-box:after {content: " "}
+.MJXp-rule {display: block!important; margin-top: .1em}
+.MJXp-char {display: block!important}
+.MJXp-mo {margin: 0 .15em}
+.MJXp-mfrac {margin: 0 .125em; vertical-align: .25em}
+.MJXp-denom {display: inline-table!important; width: 100%}
+.MJXp-denom > * {display: table-row!important}
+.MJXp-surd {vertical-align: top}
+.MJXp-surd > * {display: block!important}
+.MJXp-script-box > *  {display: table!important; height: 50%}
+.MJXp-script-box > * > * {display: table-cell!important; vertical-align: top}
+.MJXp-script-box > *:last-child > * {vertical-align: bottom}
+.MJXp-script-box > * > * > * {display: block!important}
+.MJXp-mphantom {visibility: hidden}
+.MJXp-munderover, .MJXp-munder {display: inline-table!important}
+.MJXp-over {display: inline-block!important; text-align: center}
+.MJXp-over > * {display: block!important}
+.MJXp-munderover > *, .MJXp-munder > * {display: table-row!important}
+.MJXp-mtable {vertical-align: .25em; margin: 0 .125em}
+.MJXp-mtable > * {display: inline-table!important; vertical-align: middle}
+.MJXp-mtr {display: table-row!important}
+.MJXp-mtd {display: table-cell!important; text-align: center; padding: .5em 0 0 .5em}
+.MJXp-mtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-mlabeledtr {display: table-row!important}
+.MJXp-mlabeledtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mlabeledtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MJXp-scale0 {-webkit-transform: scaleX(.0); -moz-transform: scaleX(.0); -ms-transform: scaleX(.0); -o-transform: scaleX(.0); transform: scaleX(.0)}
+.MJXp-scale1 {-webkit-transform: scaleX(.1); -moz-transform: scaleX(.1); -ms-transform: scaleX(.1); -o-transform: scaleX(.1); transform: scaleX(.1)}
+.MJXp-scale2 {-webkit-transform: scaleX(.2); -moz-transform: scaleX(.2); -ms-transform: scaleX(.2); -o-transform: scaleX(.2); transform: scaleX(.2)}
+.MJXp-scale3 {-webkit-transform: scaleX(.3); -moz-transform: scaleX(.3); -ms-transform: scaleX(.3); -o-transform: scaleX(.3); transform: scaleX(.3)}
+.MJXp-scale4 {-webkit-transform: scaleX(.4); -moz-transform: scaleX(.4); -ms-transform: scaleX(.4); -o-transform: scaleX(.4); transform: scaleX(.4)}
+.MJXp-scale5 {-webkit-transform: scaleX(.5); -moz-transform: scaleX(.5); -ms-transform: scaleX(.5); -o-transform: scaleX(.5); transform: scaleX(.5)}
+.MJXp-scale6 {-webkit-transform: scaleX(.6); -moz-transform: scaleX(.6); -ms-transform: scaleX(.6); -o-transform: scaleX(.6); transform: scaleX(.6)}
+.MJXp-scale7 {-webkit-transform: scaleX(.7); -moz-transform: scaleX(.7); -ms-transform: scaleX(.7); -o-transform: scaleX(.7); transform: scaleX(.7)}
+.MJXp-scale8 {-webkit-transform: scaleX(.8); -moz-transform: scaleX(.8); -ms-transform: scaleX(.8); -o-transform: scaleX(.8); transform: scaleX(.8)}
+.MJXp-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
+.MathJax_PHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style></head>
+<body class="skin-custom no-navbar mathjax2 prismjs-engine"><div id="MathJax_Message" style="display: none;"></div>
+    <a name="top"></a>
+    <div id="top_nav" class="navbar forpc navbar-custom">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding">
+                    <a href="https://www.cnblogs.com/" title="开发者的网上家园" role="banner">
+                        <img src="./清理 Conda 缓存和 Pip 缓存 - 滑稽果 - 博客园_files/logo.svg" alt="博客园Logo">
+                    </a>
+                </li>
+                <li><a href="https://cnblogs.vip/">会员</a></li>
+                <li><a href="https://www.cnblogs.com/cmt/articles/18197617">众包</a></li>
+                <li>
+                    <a href="https://news.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-news&#39;)">新闻</a>
+                </li>
+                <li>
+                    <a href="https://q.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-q&#39;)">博问</a>
+                </li>
+                    <li>
+                        <a href="https://ai.hanghang.com/page/4649915" target="_blank">AI培训</a>
+                    </li>
+                <li><a href="https://market.cnblogs.com/" target="_blank">云市场</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search dropdown" action="https://zzk.cnblogs.com/s" method="get" role="search">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="search" tabindex="3" autocomplete="off">
+                        <button id="zzk_search_button" onclick="window.navbarSearchManager.triggerActiveOption()">
+                            <img id="search_icon" class="focus-hidden" src="./清理 Conda 缓存和 Pip 缓存 - 滑稽果 - 博客园_files/search.svg" alt="搜索">
+                            <img class="hidden focus-visible" src="./清理 Conda 缓存和 Pip 缓存 - 滑稽果 - 博客园_files/enter.svg" alt="搜索">
+                        </button>
+                        <ul id="navbar_search_options" class="dropdown-menu quick-search-menu">
+                            <li tabindex="0" class="active" onclick="zzkSearch(event, document.getElementById(&#39;zzk_search_input&#39;).value)">
+                                <div class="keyword-wrapper">
+                                    <img src="./清理 Conda 缓存和 Pip 缓存 - 滑稽果 - 博客园_files/search.svg" alt="搜索">
+                                    <div class="keyword"></div>
+                                </div>
+                                <span class="search-area">所有博客</span>
+                            </li>
+                                    <li tabindex="1" onclick="zzkBlogSearch(event, &#39;xiaoaug&#39;, document.getElementById(&#39;zzk_search_input&#39;).value)">
+                                        <div class="keyword-wrapper">
+                                            <img src="./清理 Conda 缓存和 Pip 缓存 - 滑稽果 - 博客园_files/search.svg" alt="搜索">
+                                            <div class="keyword"></div>
+                                        </div>
+                                        <span class="search-area">当前博客</span>
+                                    </li>
+                        </ul>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔" style="display: none;">
+                        <img id="new_post_icon" class="navbar-icon" src="./清理 Conda 缓存和 Pip 缓存 - 滑稽果 - 博客园_files/newpost.svg" alt="写随笔">
+                    </a>
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客" style="display: none;">
+                        <img id="myblog_icon" class="navbar-icon" src="./清理 Conda 缓存和 Pip 缓存 - 滑稽果 - 博客园_files/myblog.svg" alt="我的博客">
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息" style="display: none;">
+                        <img id="msg_icon" class="navbar-icon" src="./清理 Conda 缓存和 Pip 缓存 - 滑稽果 - 博客园_files/message.svg" alt="短消息">
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <a id="navbar_lite_mode_indicator" data-current-page="blog" style="display: none" href="javascript:void(0)" alt="简洁模式" title="简洁模式启用，您在访问他人博客时会使用简洁款皮肤展示">
+                        <img class="navbar-icon" src="./清理 Conda 缓存和 Pip 缓存 - 滑稽果 - 博客园_files/lite-mode-on.svg" alt="简洁模式">
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown" style="display: none;">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="./清理 Conda 缓存和 Pip 缓存 - 滑稽果 - 博客园_files/avatar-default.svg" alt="用户头像">
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <img id="navbar_lite_mode_on" src="./清理 Conda 缓存和 Pip 缓存 - 滑稽果 - 博客园_files/lite-mode-check.svg" class="hide" style="display: none;"><span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+                            <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup" style="display: inline;">注册</a>
+                    <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()" style="display: inline;">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div id="page_begin_html">
+        <div class="loading" style="display: none;">
+  <div class="box">
+    <h2>Loading</h2>
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+</div>
+    </div>
+
+    <!--done-->
+<div id="home">
+<div id="header"><div class="esa-mobile-menu material-symbols-outlined">menu</div>
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/xiaoaug/"><img id="blogLogo" src="./清理 Conda 缓存和 Pip 缓存 - 滑稽果 - 博客园_files/logo.gif" alt="返回主页"></a>		
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/xiaoaug">XIAOAUG</a>
+</h1>
+<h2>清风湿润，茶烟轻扬。</h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/xiaoaug/">
+首页</a>
+</li><li><a class="menu" target="_self" href="https://www.cnblogs.com/xiaoaug/tag/">标签📌</a></li><li><a class="menu" target="_self" href="https://www.cnblogs.com/xiaoaug/p/">归档📒</a></li>
+
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/%E6%BB%91%E7%A8%BD%E6%9E%9C">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/xiaoaug/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			<span id="stats_post_count">随笔 - 50&nbsp; </span>
+<span id="stats_article_count">文章 - 0&nbsp; </span>
+<span id="stats-comment_count">评论 - 4&nbsp; </span>
+<span id="stats-total-view-count">阅读 - 
+<span title="总阅读数: 39373">
+39373</span></span>
+
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    <!--done-->
+    <div id="topics">
+        <div class="post">
+            <h1 class="postTitle">
+                <a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/xiaoaug/p/18106750" title="发布于 2024-03-31 15:05">
+    <span role="heading" aria-level="2">清理 Conda 缓存和 Pip 缓存</span>
+    
+
+</a><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                <div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+<h2 id="清理-conda-缓存">清理 Conda 缓存：<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button><a href="https://www.cnblogs.com/xiaoaug/p/18106750#%E6%B8%85%E7%90%86-conda-%E7%BC%93%E5%AD%98" class="esa-anchor" style="opacity: 0;">#</a></h2>
+<p>查看 Conda 缓存的使用情况：</p>
+<pre class="line-numbers highlighter-prismjs language-none prismjs-lines-highlighted code-theme-dark" tabindex="0" data-dark-theme="true" highlighted="true" has-selection="true"><code class="highlighter-prismjs language-none" data-dark-theme="true">conda clean --dry-run --all
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>删除不再使用的包和缓存：</p>
+<pre class="line-numbers highlighter-prismjs language-none prismjs-lines-highlighted code-theme-dark" tabindex="0" data-dark-theme="true" highlighted="true" has-selection="true"><code class="highlighter-prismjs language-none" data-dark-theme="true">conda clean --all
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="清理-pip-缓存">清理 Pip 缓存<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button><a href="https://www.cnblogs.com/xiaoaug/p/18106750#%E6%B8%85%E7%90%86-pip-%E7%BC%93%E5%AD%98" class="esa-anchor" style="opacity: 0;">#</a></h2>
+<p>在使用 pip 安装 Python 库时，如果之前已经下载过该库，pip 会默认使用缓存来安装库，而不是重新从网络上下载。缓存文件通常存储在用户目录下的缓存文件夹中，具体位置因操作系统和Python版本而异。以下是一些常见的Python版本和操作系统下缓存文件的默认位置：</p>
+<pre class="line-numbers highlighter-prismjs language-none prismjs-lines-highlighted code-theme-dark" tabindex="0" data-dark-theme="true" highlighted="true"><code class="highlighter-prismjs language-none" data-dark-theme="true">Windows 10：C:\Users\username\AppData\Local\pip\Cache
+macOS：/Users/username/Library/Caches/pip
+Linux：~/.cache/pip
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>查看缓存信息:</p>
+<pre class="line-numbers highlighter-prismjs language-none prismjs-lines-highlighted code-theme-dark" tabindex="0" data-dark-theme="true" highlighted="true"><code class="highlighter-prismjs language-none" data-dark-theme="true">pip cache info
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>查看 cache 列表和路径：</p>
+<pre class="line-numbers highlighter-prismjs language-none prismjs-lines-highlighted code-theme-dark" tabindex="0" data-dark-theme="true" highlighted="true"><code class="highlighter-prismjs language-none" data-dark-theme="true">pip cache list
+pip cache dir
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>清除缓存:</p>
+<pre class="line-numbers highlighter-prismjs language-none prismjs-lines-highlighted code-theme-dark" tabindex="0" data-dark-theme="true" highlighted="true"><code class="highlighter-prismjs language-none" data-dark-theme="true">pip cache purge   # 清除所有缓存，包括已下载但未安装的软件包和已安装但未被使用的缓存
+pip cache remove package-name   # 只清除特定软件包的缓存。package-name 是你要清除缓存的软件包的名称。
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+</div><div class="esa-post-signature"> 
+                <p>作者：xiaoaug</p> 
+                <p>出处：<a href="https://www.cnblogs.com/xiaoaug/p/18106750">https://www.cnblogs.com/xiaoaug/p/18106750</a></p> 
+                <p>版权：本作品采用「<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">署名-非商业性使用-相同方式共享 4.0 国际</a>」许可协议进行许可。</p> 
+                <p></p> 
+            </div>
+<div class="clear"></div>
+<div id="blog_post_info_block" role="contentinfo">
+
+
+
+<div id="EntryTag">
+    标签: 
+            <a href="https://www.cnblogs.com/xiaoaug/tag/Conda/">Conda</a>
+,             <a href="https://www.cnblogs.com/xiaoaug/tag/Python/">Python</a>
+</div>
+    <div id="blog_post_info">
+<div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(18106750,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+        <a id="green_channel_follow" onclick="follow(&#39;02c67705-4294-443d-a651-08d6e43e75b8&#39;);" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_wechat" href="javascript:void(0);" onclick="shareManager.wechatShare()">微信分享</a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/xiaoaug/" target="_blank"><img src="./清理 Conda 缓存和 Pip 缓存 - 滑稽果 - 博客园_files/20190617185042.png" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/xiaoaug/">滑稽果</a>
+            <br>
+            <a href="https://home.cnblogs.com/u/xiaoaug/followers/">粉丝 - <span class="follower-count">10</span></a>
+            <a href="https://home.cnblogs.com/u/xiaoaug/followees/">关注 - <span class="following-count">0</span></a><br>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow" class="follow-tip">
+                <a href="javascript:void(0);" onclick="follow(&#39;02c67705-4294-443d-a651-08d6e43e75b8&#39;);return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(18106750,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">0</span>
+    </div>
+    <div class="buryit" onclick="votePost(18106750,&#39;Bury&#39;)">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+
+<script type="text/javascript">
+    currentDiggType = 0;
+</script>
+</div>
+    <div class="clear"></div>
+    <div id="post_next_prev">
+
+    <a href="https://www.cnblogs.com/xiaoaug/p/18070074" class="p_n_p_prefix">« </a> 上一篇：    <a href="https://www.cnblogs.com/xiaoaug/p/18070074" data-featured-image="" title="发布于 2024-03-13 10:30">Conda 安装本地 bz2 包方法</a>
+
+</div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date" data-last-update-days="71.82398726435301" data-date-created="BlogServer.Application.Dto.BlogPost.BlogPostDto" data-date-updated="2024-03-31 15:05" aria-expanded="false">2024-03-31 15:05</span>&nbsp;
+<a href="https://www.cnblogs.com/xiaoaug">滑稽果</a>&nbsp;
+阅读(<span id="post_view_count">1162</span>)&nbsp;
+评论(<span id="post_comment_count">0</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=18106750" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(18106750);return false;">收藏</a>&nbsp;
+<a href="javascript:void(0)" onclick="reportManager.report({ currentUserId: &#39;&#39;, targetType: &#39;blogPost&#39;, targetId: &#39;18106750&#39;, targetLink: &#39;https://www.cnblogs.com/xiaoaug/p/18106750&#39;, title: &#39;清理 Conda 缓存和 Pip 缓存&#39; })">举报</a>
+</div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+<script>
+    var cb_entryId = 18106750, cb_entryCreatedDate = '2024-03-31 15:05', cb_postType = 1, cb_postTitle = '清理 Conda 缓存和 Pip 缓存';
+    var allowComments = true, cb_blogId = 521828, cb_blogApp = 'xiaoaug', cb_blogUserGuid = '02c67705-4294-443d-a651-08d6e43e75b8';
+    mermaidRender.render()
+    markdown_highlight()
+    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");    
+</script>
+<a id="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav">
+            <a class="comment-nav-left forpc" href="https://cnblogs.vip/" target="_blank">会员力量，点亮园子希望</a>
+        <div class="comment-nav-right">
+            <span id="span_refresh_tips"></span><a href="https://www.cnblogs.com/xiaoaug/p/18106750#" onclick="return RefreshPage();">刷新页面</a><a href="https://www.cnblogs.com/xiaoaug/p/18106750#top">返回顶部</a>
+        </div>
+    </div>
+    <div id="comment_form_container"><div class="login_tips">
+    登录后才能查看或发表评论，立即 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return account.login(&#39;!comments&#39;);">登录</a> 或者
+    <a href="https://www.cnblogs.com/">逛逛</a> 博客园首页
+</div>
+</div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+        <div id="cnblogs_ch"><a href="https://www.cnblogs.com/cmt/p/18226431" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-阿里云-征文&#39;})">【推荐】这场阿里云开发者社区有奖征文活动，期待您出文相助</a><br><a href="https://www.cnblogs.com/sanshi/p/18186007" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-三生石上&#39;})">【推荐】三生石上：ASP.NET Core中运行WebForms业务代码</a><br><a href="https://www.cnblogs.com/cmt/p/18239927" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-阿里云-通义灵码&#39;})">【推荐】「指间灵动，快码加编」：通义灵码，再次降临博客园</a><br><a href="https://www.finclip.com/?channel=cnblog2024" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-凡泰极客&#39;})">【推荐】凡泰极客：跨越技术“鸿”沟，小程序一键生成鸿蒙App</a><br><a href="https://click.aliyun.com/m/1000394160/" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-阿里云-618&#39;})">【推荐】阿里云创新加速季，5亿补贴享不停，上云礼包抢先领</a><br></div>
+    <div id="opt_under_post"></div>
+        <div id="cnblogs_c1" class="under-post-card">
+            <a href="https://www.cnblogs.com/cmt/p/18219378" rel="nofollow" target="_blank" onclick="countCreativeClicks(&#39;C1-博客园-T恤&#39;)">
+                <img src="./清理 Conda 缓存和 Pip 缓存 - 滑稽果 - 博客园_files/35695-20240529225347158-1507288531.jpg" onload="countCreativeImpressions(&#39;C1-博客园-T恤&#39;)" alt="">
+                <span id="c1_impression" style="display:none"></span>
+            </a>
+        </div>
+    <div id="under_post_card1"><div class="under-post-card">
+<b>编辑推荐：</b>
+<br>
+
+· <a href="https://www.cnblogs.com/zhanggaoxing/p/18240809" target="_blank">如何安全地访问互联网</a>
+    <br>
+· <a href="https://www.cnblogs.com/fanshaoO/p/18233291" target="_blank">还在拼冗长的 WhereIf 吗？100行代码解放这个操作</a>
+    <br>
+· <a href="https://www.cnblogs.com/ggtc/p/18229724" target="_blank">C#异步编程是怎么回事（番外）</a>
+    <br>
+· <a href="https://www.cnblogs.com/tcjiaan/p/18233254" target="_blank">［WPF］Dispatcher 与消息循环</a>
+    <br>
+· <a href="https://www.cnblogs.com/wsss/p/18231400" target="_blank">网关限流功能性能优化</a>
+    <br>
+</div></div>
+    <div id="under_post_card2"><div class="itnews under-post-card">
+    <b>阅读排行：</b>
+    <br>
+ ·          <a href="https://www.cnblogs.com/wenbochang/p/18240697" target="_blank">面试官：你讲下接口防重放如何处理？</a>
+        <br>
+ ·          <a href="https://www.cnblogs.com/scc-/p/18240188" target="_blank">推荐十个优秀的ASP.NET Core第三方中间件，你用过几个？</a>
+        <br>
+ ·          <a href="https://www.cnblogs.com/dotnet-org-cn/p/18239999" target="_blank">.NET借助虚拟网卡实现一个简单异地组网工具</a>
+        <br>
+ ·          <a href="https://www.cnblogs.com/zhanggaoxing/p/18240809" target="_blank">如何安全地访问互联网</a>
+        <br>
+ ·          <a href="https://www.cnblogs.com/MeteorSeed/p/18240681" target="_blank">【译】Visual Studio 17.10 发布了新版扩展管理器</a>
+        <br>
+</div></div>
+    <div id="HistoryToday" class="under-post-card"></div>
+    <script type="text/javascript">
+        var commentManager = new blogCommentManager();
+        commentManager.renderComments(0);
+        fixPostBody();
+        window.footnoteTipManager.generateFootnoteTips();
+
+            window.tocManager.displayDisableTocTips = false;
+            window.tocManager.generateToc();
+            
+                setTimeout(function() { countViews(cb_blogId, cb_entryId); }, 50);
+            
+            deliverT2();
+            deliverC1C2();
+            loadNewsAndKb();
+            
+                LoadPostCategoriesTags(cb_blogId, cb_entryId);
+            
+            LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+            GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+            loadOptUnderPost();
+            GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+                </script>
+</div>
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+	<div id="sideBar">
+		<div id="sideBarMain"><img class="esa-profile-avatar" src="./清理 Conda 缓存和 Pip 缓存 - 滑稽果 - 博客园_files/avatar_1.ico">
+			<div id="sidebar_news" class="newsItem">
+    <h3 class="catListTitle">公告</h3>
+<div id="blog-news">    
+    <div id="sidebar_news_content">
+<div id="profile_block">
+    昵称：
+    <a href="https://home.cnblogs.com/u/xiaoaug/">
+        滑稽果
+    </a>
+    <br>
+    园龄：
+    <a href="https://home.cnblogs.com/u/xiaoaug/" title="入园时间：2019-05-31">
+        5年
+    </a>
+    <br>
+    粉丝：
+    <a class="follower-count" href="https://home.cnblogs.com/u/xiaoaug/followers/">
+        10
+    </a>
+    <br>
+    关注：
+    <a class="folowing-count" href="https://home.cnblogs.com/u/xiaoaug/followees/">
+        0
+    </a>
+    <div id="p_b_follow" class="follow-tip">
+<a href="javascript:void(0)" onclick="follow(&#39;02c67705-4294-443d-a651-08d6e43e75b8&#39;)">+加关注</a></div>
+    <script>getFollowStatus('02c67705-4294-443d-a651-08d6e43e75b8');</script>
+</div>
+</div>
+</div>
+<script>loadBlogNews();</script>
+
+ 
+</div>
+<div id="sidebar_c3"></div>
+			<div id="blog-calendar" style="">
+
+<table id="blogCalendar" class="Cal" cellspacing="0" cellpadding="0" title="Calendar" border="0">
+    <tbody>
+        <tr>
+            <td colspan="7">
+                <table class="CalTitle" cellspacing="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2024/05/11&#39;); return false;">&lt;</a>
+                            </td>
+                            <td align="center">2024年6月</td>
+                            <td align="right" class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2024/07/11&#39;); return false;">&gt;</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    <tr>
+        <th class="CalDayHeader" align="center" abbr="日" scope="col">日</th>
+        <th class="CalDayHeader" align="center" abbr="一" scope="col">一</th>
+        <th class="CalDayHeader" align="center" abbr="二" scope="col">二</th>
+        <th class="CalDayHeader" align="center" abbr="三" scope="col">三</th>
+        <th class="CalDayHeader" align="center" abbr="四" scope="col">四</th>
+        <th class="CalDayHeader" align="center" abbr="五" scope="col">五</th>
+        <th class="CalDayHeader" align="center" abbr="六" scope="col">六</th>
+    </tr>
+            <tr>
+                            <td class="CalOtherMonthDay" align="center">26</td>
+                            <td class="CalOtherMonthDay" align="center">27</td>
+                            <td class="CalOtherMonthDay" align="center">28</td>
+                            <td class="CalOtherMonthDay" align="center">29</td>
+                            <td class="CalOtherMonthDay" align="center">30</td>
+                            <td class="CalOtherMonthDay" align="center">31</td>
+                    <td class="CalWeekendDay" align="center">
+                        1
+                    </td>
+            </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            2
+                        </td>
+                            <td class="" align="center">
+                                3
+                            </td>
+                            <td class="" align="center">
+                                4
+                            </td>
+                            <td class="" align="center">
+                                5
+                            </td>
+                            <td class="" align="center">
+                                6
+                            </td>
+                            <td class="" align="center">
+                                7
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            8
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            9
+                        </td>
+                            <td class="" align="center">
+                                10
+                            </td>
+                            <td class="CalTodayDay" align="center">
+                                11
+                            </td>
+                            <td class="" align="center">
+                                12
+                            </td>
+                            <td class="" align="center">
+                                13
+                            </td>
+                            <td class="" align="center">
+                                14
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            15
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            16
+                        </td>
+                            <td class="" align="center">
+                                17
+                            </td>
+                            <td class="" align="center">
+                                18
+                            </td>
+                            <td class="" align="center">
+                                19
+                            </td>
+                            <td class="" align="center">
+                                20
+                            </td>
+                            <td class="" align="center">
+                                21
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            22
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            23
+                        </td>
+                            <td class="" align="center">
+                                24
+                            </td>
+                            <td class="" align="center">
+                                25
+                            </td>
+                            <td class="" align="center">
+                                26
+                            </td>
+                            <td class="" align="center">
+                                27
+                            </td>
+                            <td class="" align="center">
+                                28
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            29
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            30
+                        </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                1
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                2
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                3
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                4
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                5
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            6
+                        </td>
+                </tr>
+    </tbody>
+</table></div><script>loadBlogDefaultCalendar();</script>			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"><!-- 搜索 -->
+<div id="sidebar_search" class="sidebar-block">
+    <div class="mySearch my-search">
+        <h3 class="catListTitle">搜索</h3>
+        <div id="sidebar_search_box">
+            <div id="widget_my_zzk" class="div_my_zzk">
+                <input type="text" id="q" onkeydown="return zzk_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="zzk_go()" type="button" value="找找看" id="btnZzk" class="btn_my_zzk">
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<!-- 常用链接 -->
+
+
+<!-- 最新随笔 -->
+
+
+<!-- 我的标签 -->
+<div id="sidebar_toptags" class="sidebar-block"><div class="catListTag">
+    <h3 class="catListTitle"><a href="https://www.cnblogs.com/xiaoaug/tag/" class="sidebar-card-title-a">我的标签</a></h3>
+<ul>
+        <li>
+            <a href="https://www.cnblogs.com/xiaoaug/tag/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记<span class="tag-count">(13)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/xiaoaug/tag/Ubuntu/">Ubuntu<span class="tag-count">(11)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/xiaoaug/tag/Python/">Python<span class="tag-count">(8)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/xiaoaug/tag/ROS/">ROS<span class="tag-count">(7)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/xiaoaug/tag/%E7%BE%8E%E5%8C%96/">美化<span class="tag-count">(7)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/xiaoaug/tag/Windows/">Windows<span class="tag-count">(4)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/xiaoaug/tag/%E8%BD%AF%E4%BB%B6/">软件<span class="tag-count">(4)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/xiaoaug/tag/SLAM/">SLAM<span class="tag-count">(3)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/xiaoaug/tag/K60%E5%8D%95%E7%89%87%E6%9C%BA/">K60单片机<span class="tag-count">(3)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/xiaoaug/tag/Hexo/">Hexo<span class="tag-count">(3)</span></a>
+        </li>
+    <li>
+        <a href="https://www.cnblogs.com/xiaoaug/tag/">更多</a>
+    </li>
+
+</ul>
+</div>
+
+</div>
+
+<!-- 积分与排名 -->
+<div id="sidebar_scorerank" class="sidebar-block"><div class="catListBlogRank">
+<h3 class="catListTitle">积分与排名</h3>
+<ul>
+	<li class="liScore">
+		积分 -	
+36101
+	</li>
+	<li class="liRank">
+		排名 -	
+44875
+	</li>
+</ul>
+</div>
+
+
+
+</div>
+
+<!-- 随笔分类、随笔档案、文章分类、新闻分类、相册、链接 -->
+<div id="sidebar_categories">
+
+</div>
+
+<!-- 最新评论 -->
+
+
+
+<!-- 阅读排行榜 -->
+<div id="sidebar_topviewedposts" class="sidebar-block"><div class="catListView">
+    <h3 class="catListTitle">
+        <a href="https://www.cnblogs.com/xiaoaug/most-viewed" class="sidebar-card-title-a">
+    阅读排行榜
+</a>
+
+    </h3>
+    <div id="TopViewPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/xiaoaug/p/11624886.html">
+                            1. Windows 下使用 VScode 运行 C/C++ 程序(5371)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/xiaoaug/p/12209817.html">
+                            2. PID 基础公式及程序(4046)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/xiaoaug/p/11203493.html">
+                            3. Hexo Next 主题启用及相关设置(2842)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/xiaoaug/p/11211128.html">
+                            4. Hexo yilia 主题启用及相关设置(2204)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/xiaoaug/p/11440276.html">
+                            5. 值得一用的 Windows 美化软件(2190)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/xiaoaug/p/12213381.html">
+                            6. 二自由度舵机云台球面角度、坐标转换笔记(1957)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/xiaoaug/p/12445511.html">
+                            7. ROS 自定义 msg 类型及发布消息笔记(1856)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/xiaoaug/p/13096507.html">
+                            8. Ubuntu+Windows 双系统安装方法(1549)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/xiaoaug/p/12212876.html">
+                            9. Ubuntu18.04LTS 美化（仿Mac）(1241)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/xiaoaug/p/18106750">
+                            10. 清理 Conda 缓存和 Pip 缓存(1158)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/xiaoaug/p/11111867.html">
+                            11. 值得一用的 Windows 软件清单(1152)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/xiaoaug/p/17766112.html">
+                            12. ORBSLAM3 安装及测试教程（Ubuntu20.04）(1128)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/xiaoaug/p/17148272.html">
+                            13. 安装 conda 后的部分问题解决方案(918)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/xiaoaug/p/12255260.html">
+                            14. ROS Melodic 小海龟操控笔记(908)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/xiaoaug/p/11225487.html">
+                            15. 简述 K60 直流电机闭环控制(805)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div></div>
+
+<!-- 评论排行榜 -->
+
+
+<!-- 推荐排行榜 -->
+</div>
+                    <script>loadBlogSideColumn();</script>
+			</div>			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright © 2024 滑稽果
+<br><span id="poweredby">Powered by .NET 8.0 on Kubernetes</span>
+
+
+
+	<span class="esa-copyright">&amp; Theme <a href="https://github.com/esofar/cnblogs-theme-silence" target="_blank">Silence v3.0.0-rc2</a></span></div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+
+    <div id="page_end_html">
+        <script>
+  window.$silence = {
+    avatar: 'https://blog-static.cnblogs.com/files/blogs/521828/avatar_1.ico',  // 设置左侧栏中博主头像图片，未配置则不会渲染
+    favicon: 'https://blog-static.cnblogs.com/files/blogs/521828/huajiIcon.ico',  // 设置网页标题前面的小图标，未设置则继续使用博客园官方默认的图标
+    github: 'https://github.com/xiaoaug', // null,
+    defaultTheme: 'a',
+    defaultMode: 'light',
+    showNavAdmin: true,  // 是否显示导航栏中的「管理」菜单项
+    // 在导航栏中追加自定义菜单项
+    navbars: [{
+      title: '标签📌',
+      url: 'https://www.cnblogs.com/xiaoaug/tag/'
+    }, {
+      title: '归档📒',
+      url: 'https://www.cnblogs.com/xiaoaug/p/'
+    }],
+    // 生成在右侧悬浮的博文标题目录
+    catalog: {
+      enable: true,  // 是否启用目录生成功能
+      index: false,  // 是否在生成的标题链接前面添加索引
+      active: false,  // 页面加载时是否直接显示目录
+      levels: ['h2', 'h3', 'h4'],  // 设置需要生成目录的标题等级
+    },
+    // 用来在每篇博文结尾处生成版权签名
+    signature: {
+      enable: true,
+      author: null,  // 自定义作者名称，未设置则默认使用博客园显示名称
+      license: ['署名-非商业性使用-相同方式共享 4.0 国际', 'https://creativecommons.org/licenses/by-nc-sa/4.0/'],
+      remark: null,  // 设置其他备注，未设置则不会渲染，支持 HTML 内容
+    },
+    // 用来在每篇博文结尾处生成赞赏按钮
+    sponsor: {
+      enable: false,
+      wechat: 'https://images.cnblogs.com/cnblogs_com/esofar/972540/o_wechat.png',
+      alipay: 'https://images.cnblogs.com/cnblogs_com/esofar/972540/o_alipay.png'
+    }
+  };
+</script>
+<script src="./清理 Conda 缓存和 Pip 缓存 - 滑稽果 - 博客园_files/silence.min.js"></script>
+
+
+
+
+
+
+<!-- 动态显示博客标题 -->
+<div style="display:none;"> 浏览器标题切换  </div>
+<script>  
+var OriginTitile = document.title;    // 保存之前页面标题  
+var titleTime;  
+document.addEventListener('visibilitychange', function(){  
+    if (document.hidden){  
+        document.title ='你不要我了么？╥﹏╥';  // 切出文字
+        titleTime = setTimeout(function() {  
+            document.title = OriginTitile;  
+        }, 2000); // 2秒后恢复原标题
+    }else{  
+        document.title = '(ㄏ￣▽￣)ㄏ 回来啦~';  // 切入文字
+        titleTime = setTimeout(function() {  
+            document.title = OriginTitile;  
+        }, 2000); // 2秒后恢复原标题
+    }  
+});  
+</script>
+<div style="display:none;"> 浏览器标题切换end  </div>
+
+    </div><a href="https://github.com/xiaoaug" class="github-corner" title="GitHub" target="_blank">
+                <svg width="60" height="60" viewBox="0 0 250 250" style="color:#fff" aria-hidden="true">
+                    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+                    <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+                    <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+                </svg>
+            </a><div class="esa-toolbar">
+        <div class="material-symbols-outlined bars bars-show">more_horiz</div>
+        <span class="material-symbols-outlined up up-show" title="返回顶部">keyboard_arrow_up</span>
+        <span class="material-symbols-outlined mode mode-show" title="切换模式">dark_mode</span>
+        <span class="material-symbols-outlined skin skin-show" title="切换主题">palette</span>
+        <div class="skin-popup">
+            <div class="item">
+                <div class="title">选择主题</div>
+                <div class="themes">
+                    <button data-theme="a" style="background: #2D8CF0;"></button>
+                    <button data-theme="b" style="background: #FA7298;"></button>
+                    <button data-theme="c" style="background: #42B983;"></button>
+                    <button data-theme="d" style="background: #607D8B;"></button>
+                    <button data-theme="e" style="background: #5E72E4;"></button>
+                    <button data-theme="f" style="background: #FF9700;"></button>
+                    <button data-theme="g" style="background: #FF5722;"></button>
+                    <button data-theme="h" style="background: #009688;"></button>
+                    <button data-theme="i" style="background: #673BB7;"></button>
+                    <button data-theme="j" style="background: #906f61;"></button>
+                </div>
+            </div>
+        </div>
+        <span class="material-symbols-outlined contents contents-show" title="目录导航">menu</span></div>
+    <div class="esa-contents noactive"><ul><li class="h2" title="清理 Conda 缓存：">
+                    <a class="esa-anchor-link" href="https://www.cnblogs.com/xiaoaug/p/18106750#%E6%B8%85%E7%90%86-conda-%E7%BC%93%E5%AD%98"><span class="level1">清理 Conda 缓存：</span></a>
+                 </li><li class="h2" title="清理 Pip 缓存">
+                    <a class="esa-anchor-link" href="https://www.cnblogs.com/xiaoaug/p/18106750#%E6%B8%85%E7%90%86-pip-%E7%BC%93%E5%AD%98"><span class="level1">清理 Pip 缓存</span></a>
+                 </li></ul></div>
+
+    <input type="hidden" id="antiforgery_token" value="CfDJ8ONv0caE5GtEh3YJ5j088klOcRWiFydqLKqtbTcvETx6nCoS5Ypq_hLRO2-h2zeTSXHWVVyCwkoM08Ft51HACroX8eau6fbJtqNRHxYThFHmL-UZf9Yzbwuqlu7lRbPTf3c-Sx0PwALg7Ttnudc9krs">
+    <script async="" src="./清理 Conda 缓存和 Pip 缓存 - 滑稽果 - 博客园_files/js"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-M95P3TTWJZ');
+</script>
+<script defer="" src="./清理 Conda 缓存和 Pip 缓存 - 滑稽果 - 博客园_files/hm.js"></script>
+
+
+<div style="z-index: 998; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); display: none; flex-direction: column; align-items: center; justify-content: center">
+<div style="background: #fff;padding: 30px; margin: 30px; border-radius: 16px;">
+  <div style="width: 200px; height: 200px; background: rgba(255, 255, 255, 0.8); position: absolute; top: -100px; right: -100px; border-radius: 100px"></div>
+  <div style="text-align: center; font-size: 18px; margin-bottom: 10px;">点击右上角即可分享</div>
+  <img src="./清理 Conda 缓存和 Pip 缓存 - 滑稽果 - 博客园_files/35695-20230906145857937-1471873834.gif" alt="微信分享提示">
+</div>   
+    </div><div id="lightboxOverlay" tabindex="-1" class="lightboxOverlay" style="display: none;"></div><div id="lightbox" tabindex="-1" class="lightbox" style="display: none;"><div class="lb-outerContainer"><div class="lb-container"><img class="lb-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" alt=""><div class="lb-nav"><a class="lb-prev" aria-label="Previous image" href="https://www.cnblogs.com/xiaoaug/p/18106750"></a><a class="lb-next" aria-label="Next image" href="https://www.cnblogs.com/xiaoaug/p/18106750"></a></div><div class="lb-loader"><a class="lb-cancel"></a></div></div></div><div class="lb-dataContainer"><div class="lb-data"><div class="lb-details"><span class="lb-caption"></span><span class="lb-number"></span></div><div class="lb-closeContainer"><a class="lb-close"></a></div></div></div></div></body></html>

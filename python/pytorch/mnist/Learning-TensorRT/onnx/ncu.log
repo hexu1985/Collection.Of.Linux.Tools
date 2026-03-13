@@ -1,0 +1,18 @@
+$ sudo /usr/local/NVIDIA-Nsight-Compute/ncu -o profile ./build/onnx_eval_gpu 
+==PROF== Connected to process 29922 (/home/hexu/git/Collection.Of.Python.Utility.Tools/pytorch/mnist/Learning-TensorRT/onnx/build/onnx_eval_gpu)
+==PROF== Profiling "conv2d_grouped_direct_kernel" - 1: 0%....50%....100% - 8 passes
+==PROF== Profiling "pooling_fw_4d_kernel" - 2: 0%....50%....100% - 8 passes
+==PROF== Profiling "implicit_convolve_sgemm" - 3: 0%....50%....100% - 8 passes
+==PROF== Profiling "pooling_fw_4d_kernel" - 4: 0%....50%....100% - 8 passes
+==PROF== Profiling "_Fill" - 5: 0%....50%....100% - 8 passes
+==PROF== Profiling "gemmk1_kernel" - 6: 0%....50%....100% - 8 passes
+==PROF== Profiling "kernel" - 7: 0%....50%....100% - 8 passes
+==PROF== Profiling "_UnaryElementWise" - 8: 0%....50%....100% - 8 passes
+==PROF== Profiling "gemmk1_kernel" - 9: 0%....50%....100% - 8 passes
+==PROF== Profiling "kernel" - 10: 0%....50%....100% - 8 passes
+==PROF== Profiling "_UnaryElementWise" - 11: 0%....50%....100% - 8 passes
+==PROF== Profiling "gemmk1_kernel" - 12: 0%....50%....100% - 8 passes
+==PROF== Profiling "gemv2T_kernel_val" - 13: 0%....50%....100% - 8 passes
+0
+==PROF== Disconnected from process 29922
+==PROF== Report: /home/hexu/git/Collection.Of.Python.Utility.Tools/pytorch/mnist/Learning-TensorRT/onnx/profile.ncu-rep

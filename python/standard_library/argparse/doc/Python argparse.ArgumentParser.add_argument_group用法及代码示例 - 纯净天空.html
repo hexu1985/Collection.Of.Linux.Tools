@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<!-- saved from url=(0091)https://vimsky.com/examples/usage/python-argparse.ArgumentParser.add_argument_group-py.html -->
+<html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>Python argparse.ArgumentParser.add_argument_group用法及代码示例 - 纯净天空</title>
+<meta name="description" content="Python argparse.ArgumentParser.add_argument_group用法及代码示例">
+<meta name="keywords" content="Python,argparse.ArgumentParser.add_argument_group,用法,代码,示例">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="shortcut icon" href="https://vimsky.com/wp-content/themes/mytux/images/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="./Python argparse.ArgumentParser.add_argument_group用法及代码示例 - 纯净天空_files/style.css" type="text/css" media="screen">
+<link rel="canonical" href="https://vimsky.com/examples/usage/python-argparse.ArgumentParser.add_argument_group-py.html">
+<!--[if lt IE 9]>
+<script type="text/javascript" src="https://vimsky.com/wp-content/themes/mytux/js/respond.min.js?v=1.4.2"></script>
+<script type="text/javascript" src="https://vimsky.com/wp-content/themes/mytux/js/html5shiv.js?v=html5shiv.js"></script>
+<![endif]-->
+<script type="text/javascript" async="" src="./Python argparse.ArgumentParser.add_argument_group用法及代码示例 - 纯净天空_files/auto_dup"></script><script src="./Python argparse.ArgumentParser.add_argument_group用法及代码示例 - 纯净天空_files/f.txt" id="google_shimpl"></script><script src="./Python argparse.ArgumentParser.add_argument_group用法及代码示例 - 纯净天空_files/hm.js"></script><script type="text/javascript" src="./Python argparse.ArgumentParser.add_argument_group用法及代码示例 - 纯净天空_files/jquery.js"></script>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?d786aae6ba648d6402b5f26edddb573f";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!-- Google tag (gtag.js) -->
+<script async="" src="./Python argparse.ArgumentParser.add_argument_group用法及代码示例 - 纯净天空_files/js"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-57NSN9PRYP');
+</script>
+<script async="" src="./Python argparse.ArgumentParser.add_argument_group用法及代码示例 - 纯净天空_files/f(1).txt" crossorigin="anonymous" data-checked-head="true"></script>
+<script type="text/javascript" src="./Python argparse.ArgumentParser.add_argument_group用法及代码示例 - 纯净天空_files/cm.js" async="async" defer="defer"></script>
+<meta http-equiv="origin-trial" content="As0hBNJ8h++fNYlkq8cTye2qDLyom8NddByiVytXGGD0YVE+2CEuTCpqXMDxdhOMILKoaiaYifwEvCRlJ/9GcQ8AAAB8eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiV2ViVmlld1hSZXF1ZXN0ZWRXaXRoRGVwcmVjYXRpb24iLCJleHBpcnkiOjE3MTk1MzI3OTksImlzU3ViZG9tYWluIjp0cnVlfQ=="><meta http-equiv="origin-trial" content="AgRYsXo24ypxC89CJanC+JgEmraCCBebKl8ZmG7Tj5oJNx0cmH0NtNRZs3NB5ubhpbX/bIt7l2zJOSyO64NGmwMAAACCeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiV2ViVmlld1hSZXF1ZXN0ZWRXaXRoRGVwcmVjYXRpb24iLCJleHBpcnkiOjE3MTk1MzI3OTksImlzU3ViZG9tYWluIjp0cnVlfQ=="><meta http-equiv="origin-trial" content="A/ERL66fN363FkXxgDc6F1+ucRUkAhjEca9W3la6xaLnD2Y1lABsqmdaJmPNaUKPKVBRpyMKEhXYl7rSvrQw+AkAAACNeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiRmxlZGdlQmlkZGluZ0FuZEF1Y3Rpb25TZXJ2ZXIiLCJleHBpcnkiOjE3MTkzNTk5OTksImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A6OdGH3fVf4eKRDbXb4thXA4InNqDJDRhZ8U533U/roYjp4Yau0T3YSuc63vmAs/8ga1cD0E3A7LEq6AXk1uXgsAAACTeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiRmxlZGdlQmlkZGluZ0FuZEF1Y3Rpb25TZXJ2ZXIiLCJleHBpcnkiOjE3MTkzNTk5OTksImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="AymqwRC7u88Y4JPvfIF2F37QKylC04248hLCdJAsh8xgOfe/dVJPV3XS3wLFca1ZMVOtnBfVjaCMTVudWM//5g4AAAB7eyJvcmlnaW4iOiJodHRwczovL3d3dy5nb29nbGV0YWdtYW5hZ2VyLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjk1MTY3OTk5LCJpc1RoaXJkUGFydHkiOnRydWV9"></head>
+<body class="page">
+<header id="header">
+    <div class="navtop">
+	<div class="logo"><a href="https://vimsky.com/"><img id="vslogoimg" style="width:87px;height:38px" src="./Python argparse.ArgumentParser.add_argument_group用法及代码示例 - 纯净天空_files/vimsky-logo-v12.png" alt="纯净天空"></a></div>
+    <div style="float:left;margin-left:30px"><nav id="navigation"><ul id="nav">
+<li id="menu-item-0" class="menu-item"><a href="https://vimsky.com/">首页</a></li>
+<li id="menu-item-1" class="menu-item"><a href="https://vimsky.com/category/%e6%8a%80%e6%9c%af%e9%97%ae%e7%ad%94">技术问答</a></li>
+<li id="menu-item-2" class="menu-item"><a href="https://vimsky.com/category/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B">技术教程</a></li>
+<li id="menu-item-3" class="menu-item"><a href="https://vimsky.com/category/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84">系统&amp;架构</a></li>
+<li id="menu-item-4" class="menu-item"><a href="https://vimsky.com/category/%E7%AE%97%E6%B3%95%E7%BB%93%E6%9E%84">算法&amp;结构</a></li>
+<li id="menu-item-5" class="menu-item"><a href="https://vimsky.com/examples/index.html">编程示例</a></li>
+<li id="menu-item-6" class="menu-item"><a href="https://vimsky.com/info/tools">实用工具</a></li>
+<li id="menu-item-7" class="menu-item"><a href="https://vimsky.com/info/tag-list-001">全部</a></li>
+</ul>
+</nav></div>
+    	<div class="search">
+	    <form id="searchform" method="get" action="https://vimsky.com/wp-content/themes/mytux/znsearch.php" target="_blank">
+		    <input type="text" value="" placeholder="站内搜索" name="s" id="s" size="30" x-webkit-speech="">
+			<button type="submit" id="searchsubmit"><span>➜</span></button>
+		</form>
+	</div>
+    	</div>
+</header>
+<section id="content" style="height: auto !important;">
+<div id="main" style="height: auto !important;"><div id="article" style="height: auto !important;">
+<p class="mypos">
+当前位置: <a href="https://vimsky.com/" title="首页">首页</a>&gt;&gt;<a href="https://vimsky.com/examples/index.html">代码示例</a>
+&gt;&gt;<a href="https://vimsky.com/examples/list/code-usage-page-1.html">用法及示例精选</a>
+&gt;&gt;正文 </p><hr style="border:1px solid #56bbdc">
+<p></p>
+<header><h1 class="mytitle"><a href="https://vimsky.com/examples/usage/python-argparse.ArgumentParser.add_argument_group-py.html">Python argparse.ArgumentParser.add_argument_group用法及代码示例</a></h1></header>
+<br>
+<div class="content_adsense" style="width:100%;height:250px">
+<div class="adsbybdwm" bdclass="_ignk45lmx9j" bdadid="u6925856" style="height: 250px; display: block;" status="done"><div><div class="_ignk45lmx9j"><iframe id="iframeu6925856_0" name="iframeu6925856_0" src="./Python argparse.ArgumentParser.add_argument_group用法及代码示例 - 纯净天空_files/kcem.html" width="728" height="250" scrolling="no" frameborder="0"></iframe></div><script>(window.slotbydup = window.slotbydup || []).push({id: "u6925856", container: "_ignk45lmx9j", async: true});</script></div></div>
+<ins class="adsbygoogle" style="display: none; text-align: center; height: 186px;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-9584489059513758" data-ad-slot="6385017089" data-adsbygoogle-status="done" data-ad-status="unfilled"><div id="aswift_1_host" tabindex="0" title="Advertisement" aria-label="Advertisement" style="border: none; height: 186px; width: 744px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-block;"><iframe id="aswift_1" name="aswift_1" style="left:0;position:absolute;top:0;border:0;width:744px;height:186px;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" width="744" height="186" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" src="./Python argparse.ArgumentParser.add_argument_group用法及代码示例 - 纯净天空_files/ads.html" data-google-container-id="a!2" data-google-query-id="COSRiJ_1-YIDFRxbDwIdvcYAZw" data-load-complete="true"></iframe></div></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+<article class="text" style="height: auto !important;">
+<dl>
+<dt><p></p><h3>用法:</h3><pre><code class="python hljs">ArgumentParser.<span class="highlight">add_argument_group</span>(title=<span class="hljs-keyword">None</span>, description=<span class="hljs-keyword">None</span>)</code></pre><p></p></dt>
+<dd><p><span>默认情况下，当显示帮助消息时，<a href="https://vimsky.com/link.php?source=https%3A//docs.python.org/3/library/argparse.html%23argparse.ArgumentParser" rel="nofollow" target="_blank"><code class="xref py py-class docutils literal notranslate">ArgumentParser</code></a> 将 命令行 参数分组为 “positional arguments” 和 “optional arguments”。当参数的概念分组比这个默认分组更好时，可以使用 <a href="https://vimsky.com/examples/usage/python-argparse.ArgumentParser.add_argument_group-py.html" target="_blank"><code class="xref py py-meth docutils literal notranslate">add_argument_group()</code></a> 方法创建适当的组：</span></p>
+<div><div><pre><code class="python hljs"><span class="hljs-meta">&gt;&gt;&gt; </span>parser = argparse.ArgumentParser(prog=<span class="hljs-string">'PROG'</span>, add_help=<span class="hljs-keyword">False</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>group = parser.<span class="highlight">add_argument_group</span>(<span class="hljs-string">'group'</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>group.add_argument(<span class="hljs-string">'--foo'</span>, help=<span class="hljs-string">'foo help'</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>group.add_argument(<span class="hljs-string">'bar'</span>, help=<span class="hljs-string">'bar help'</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>parser.print_help()
+usage: PROG [--foo FOO] bar
+
+group:
+  bar    bar help
+  --foo FOO  foo help</code></pre></div>
+</div>
+<p><span><a href="https://vimsky.com/examples/usage/python-argparse.ArgumentParser.add_argument_group-py.html" target="_blank"><code class="xref py py-meth docutils literal notranslate">add_argument_group()</code></a> 方法返回一个参数组对象，该对象具有 <a href="https://vimsky.com/link.php?source=https%3A//docs.python.org/3/library/argparse.html%23argparse.ArgumentParser.add_argument" rel="nofollow" target="_blank"><code class="xref py py-meth docutils literal notranslate">add_argument()</code></a> 方法，就像常规的 <a href="https://vimsky.com/link.php?source=https%3A//docs.python.org/3/library/argparse.html%23argparse.ArgumentParser" rel="nofollow" target="_blank"><code class="xref py py-class docutils literal notranslate">ArgumentParser</code></a> 一样。将参数添加到组时，解析器将其视为普通参数，但将参数显示在单独的组中以获取帮助消息。 <a href="https://vimsky.com/examples/usage/python-argparse.ArgumentParser.add_argument_group-py.html" target="_blank"><code class="xref py py-meth docutils literal notranslate">add_argument_group()</code></a> 方法接受可用于自定义此显示的 <code>title</code> 和 <code>description</code> 参数：</span></p>
+<div><div><pre><code class="python hljs"><span class="hljs-meta">&gt;&gt;&gt; </span>parser = argparse.ArgumentParser(prog=<span class="hljs-string">'PROG'</span>, add_help=<span class="hljs-keyword">False</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>group1 = parser.<span class="highlight">add_argument_group</span>(<span class="hljs-string">'group1'</span>, <span class="hljs-string">'group1 description'</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>group1.add_argument(<span class="hljs-string">'foo'</span>, help=<span class="hljs-string">'foo help'</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>group2 = parser.<span class="highlight">add_argument_group</span>(<span class="hljs-string">'group2'</span>, <span class="hljs-string">'group2 description'</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>group2.add_argument(<span class="hljs-string">'--bar'</span>, help=<span class="hljs-string">'bar help'</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>parser.print_help()
+usage: PROG [--bar BAR] foo
+
+group1:
+  group1 description
+
+  foo    foo help
+
+group2:
+  group2 description
+
+  --bar BAR  bar help</code></pre></div>
+</div>
+<p>请注意，不在您的用户定义组中的任何参数都将返回到通常的 “positional arguments” 和 “optional arguments” 部分。</p>
+</dd></dl>
+<p><strong>相关用法</strong>
+</p><ul>
+<li><a href="https://vimsky.com/examples/usage/python-argparse.ArgumentParser.add_mutually_exclusive_group-py.html">Python argparse.ArgumentParser.add_mutually_exclusive_group用法及代码示例</a></li>
+<li><a href="https://vimsky.com/examples/usage/python-argparse.ArgumentParser.add_subparsers-py.html">Python argparse.ArgumentParser.add_subparsers用法及代码示例</a></li>
+<li><a href="https://vimsky.com/examples/usage/python-argparse.ArgumentParser.convert_arg_line_to_args-py.html">Python argparse.ArgumentParser.convert_arg_line_to_args用法及代码示例</a></li>
+<li><a href="https://vimsky.com/examples/usage/python-argparse.ArgumentParser.get_default-py.html">Python argparse.ArgumentParser.get_default用法及代码示例</a></li>
+<li><a href="https://vimsky.com/examples/usage/python-argparse.ArgumentParser.exit-py.html">Python argparse.ArgumentParser.exit用法及代码示例</a></li>
+<li><a href="https://vimsky.com/examples/usage/python-argparse.ArgumentParser.set_defaults-py.html">Python argparse.ArgumentParser.set_defaults用法及代码示例</a></li>
+<li><a href="https://vimsky.com/examples/usage/python-argparse.FileType-py.html">Python argparse.FileType用法及代码示例</a></li>
+<li><a href="https://vimsky.com/examples/usage/python-ast.MatchClass-py.html">Python ast.MatchClass用法及代码示例</a></li>
+<li><a href="https://vimsky.com/examples/usage/python-abc.ABCMeta-py.html">Python abc.ABCMeta用法及代码示例</a></li>
+<li><a href="https://vimsky.com/examples/usage/python-ast.ListComp-py.html">Python ast.ListComp用法及代码示例</a></li>
+<li><a href="https://vimsky.com/examples/usage/python-ast.Lambda-py.html">Python ast.Lambda用法及代码示例</a></li>
+<li><a href="https://vimsky.com/examples/usage/python-asyncio.BaseTransport.get_extra_info-py.html">Python asyncio.BaseTransport.get_extra_info用法及代码示例</a></li>
+<li><a href="https://vimsky.com/examples/usage/python-ast.IfExp-py.html">Python ast.IfExp用法及代码示例</a></li>
+<li><a href="https://vimsky.com/examples/usage/python-unittest-assertnotisinstance-function.html">Python unittest assertNotIsInstance()用法及代码示例</a></li>
+<li><a href="https://vimsky.com/examples/usage/python-ast.Return-py.html">Python ast.Return用法及代码示例</a></li>
+<li><a href="https://vimsky.com/examples/usage/python-askopenfile-function-in-tkinter.html">Python Tkinter askopenfile()用法及代码示例</a></li>
+<li><a href="https://vimsky.com/examples/usage/python-ast.Subscript-py.html">Python ast.Subscript用法及代码示例</a></li>
+<li><a href="https://vimsky.com/examples/usage/python-asyncio.shield-py.html">Python asyncio.shield用法及代码示例</a></li>
+<li><a href="https://vimsky.com/examples/usage/python-asyncio.run-py.html">Python asyncio.run用法及代码示例</a></li>
+<li><a href="https://vimsky.com/examples/usage/python-unittest-assertisnotnone-function.html">Python unittest assertIsNotNone()用法及代码示例</a></li>
+</ul>
+<br>
+<div class="content_adsense" style="width: 100%; height: 250px;">
+<div class="adsbybdwm" bdclass="_72abog78158" bdadid="u6938003" style="height: 250px; display: block;" status="done"><div><div class="_72abog78158"><iframe id="iframeu6938003_0" name="iframeu6938003_0" src="./Python argparse.ArgumentParser.add_argument_group用法及代码示例 - 纯净天空_files/kcem(1).html" width="728" height="250" scrolling="no" frameborder="0"></iframe></div><script>(window.slotbydup = window.slotbydup || []).push({id: "u6938003", container: "_72abog78158", async: true});</script></div></div>
+<ins class="adsbygoogle" style="display: none; height: 0px;" data-ad-client="ca-pub-9584489059513758" data-ad-slot="9870695712" data-ad-format="auto" data-full-width-responsive="true" data-adsbygoogle-status="done" data-ad-status="unfilled"><div id="aswift_2_host" tabindex="0" title="Advertisement" aria-label="Advertisement" style="border: none; height: 0px; width: 744px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-block; overflow: hidden; opacity: 0;"><iframe id="aswift_2" name="aswift_2" style="left: 0px; position: absolute; top: 0px; border: 0px; width: 744px; height: 0px;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" width="744" height="0" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" src="./Python argparse.ArgumentParser.add_argument_group用法及代码示例 - 纯净天空_files/ads(1).html" data-google-container-id="a!3" data-google-query-id="CMGfip_1-YIDFWRGDwIdi5IN9g" data-load-complete="true"></iframe></div></ins>
+<script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+<p>注：<a href="https://vimsky.com/examples/usage/python-argparse.ArgumentParser.add_argument_group-py.html">本文</a>由纯净天空筛选整理自<a href="https://vimsky.com/link.php?source=https%3A%2F%2Fdocs.python.org%2F3%2Flibrary%2Findex.html" target="_blank" rel="nofollow">python.org</a>大神的英文原创作品&nbsp;<a href="https://vimsky.com/link.php?source=https%3A%2F%2Fdocs.python.org%2F3%2Flibrary%2Fargparse.html%23argparse.ArgumentParser.add_argument_group" target="_blank" rel="nofollow">argparse.ArgumentParser.add_argument_group</a>。非经特殊声明，原始代码版权归原作者所有，本译文未经允许或授权，请勿转载或复制。</p>
+</article>
+<script type="text/javascript">
+jQuery(function ($) {$('pre').highlight("add_argument_group", {caseSensitive:true});})</script>
+</div></div>
+<aside id="sidebar" class="q2w3-fixed-widget-container" style="height: 1230px;">
+    <div class="widget widget_text" id="text-17">			<div class="textwidget"><div style="width:300px;height:600px">
+<div class="adsbybdwm" bdclass="_5epzdemhlyn" bdadid="u6938051" style="display:none !important;height:600px"></div>
+<ins class="adsbygoogle" style="display: block; height: 600px;" data-ad-client="ca-pub-9584489059513758" data-ad-slot="1399774028" data-ad-format="auto" data-full-width-responsive="true" data-adsbygoogle-status="done" data-ad-status="filled"><div id="aswift_3_host" tabindex="0" title="Advertisement" aria-label="Advertisement" style="border: none; height: 600px; width: 300px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-block; overflow: visible;"><iframe id="aswift_3" name="aswift_3" style="left:0;position:absolute;top:0;border:0;width:300px;height:600px;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" width="300" height="600" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" src="./Python argparse.ArgumentParser.add_argument_group用法及代码示例 - 纯净天空_files/ads(2).html" data-google-container-id="a!4" data-google-query-id="CImaiJ_1-YIDFX9ODwIdB7oJAQ" data-load-complete="true"></iframe></div></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div></div>
+		</div><div class="widget widget_text" id="text-23" style="">			<div class="textwidget"><div style="width:300px;height:600px">
+<div class="adsbybdwm" bdclass="_efhus20tly" bdadid="u6937850" style="display:none !important;height:600px"></div>
+<ins class="adsbygoogle" style="display: block; height: 600px;" data-ad-client="ca-pub-9584489059513758" data-ad-slot="5544538702" data-ad-format="auto" data-full-width-responsive="true" data-adsbygoogle-status="done" data-ad-status="filled"><div id="aswift_4_host" style="border: none; height: 600px; width: 300px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-block; overflow: visible;" tabindex="0" title="Advertisement" aria-label="Advertisement"><iframe id="aswift_4" name="aswift_4" style="left:0;position:absolute;top:0;border:0;width:300px;height:600px;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" width="300" height="600" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" src="./Python argparse.ArgumentParser.add_argument_group用法及代码示例 - 纯净天空_files/ads(3).html" data-google-container-id="a!5" data-google-query-id="CMjWip_1-YIDFbZJDwIdrw4GRg" data-load-complete="true"></iframe></div></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div></div>
+		</div></aside>
+</section>
+<footer id="footer">
+<center>
+
+<div class="crblock">
+<span>©2008-2023</span>&nbsp;|&nbsp;<a href="https://vimsky.com/"><span>纯净天空</span></a>
+&nbsp;|&nbsp;
+<a href="https://vimsky.com/info/contact" target="_blank">联系我们</a>
+&nbsp;|&nbsp;
+<a href="http://beian.miit.gov.cn/" target="_blank">京ICP备15018527号-1</a>
+&nbsp;|&nbsp;
+<a href="https://vimsky.com/info/sponsor" target="_blank">赞助商</a>
+</div>
+</center>
+</footer>
+<script type="text/javascript" src="./Python argparse.ArgumentParser.add_argument_group用法及代码示例 - 纯净天空_files/highlight.common.new.pack.js" async="async"></script>
+<script type="text/javascript" src="./Python argparse.ArgumentParser.add_argument_group用法及代码示例 - 纯净天空_files/adsalternative.min.js" async="async" defer="defer"></script>
+
+
+<ins class="adsbygoogle adsbygoogle-noablate" data-adsbygoogle-status="done" style="display: none !important;" data-ad-status="unfilled"><div id="aswift_0_host" tabindex="0" title="Advertisement" aria-label="Advertisement" style="border: none; height: 0px; width: 0px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-block;"><iframe id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;border:0;width:undefinedpx;height:undefinedpx;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" src="./Python argparse.ArgumentParser.add_argument_group用法及代码示例 - 纯净天空_files/ads(4).html" data-google-container-id="a!1" data-load-complete="true"></iframe></div></ins><iframe src="./Python argparse.ArgumentParser.add_argument_group用法及代码示例 - 纯净天空_files/aframe.html" width="0" height="0" style="display: none;"></iframe></body><iframe id="google_esf" name="google_esf" src="./Python argparse.ArgumentParser.add_argument_group用法及代码示例 - 纯净天空_files/zrt_lookup_fy2021.html" style="display: none;"></iframe></html>

@@ -1,0 +1,78 @@
+/*生成博客目录*/
+
+#uprightsideBar{
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: left;
+    position: fixed; /*将div的位置固定到距离top:250px，right:0px的位置，这样div就会处在最右边的位置，距离顶部50px*/
+    top: 376px;
+    left: 0px; /*确定在左侧还是右侧*/
+    width: auto;
+    height: auto;
+}
+
+#sideBarTab {
+    float: left;
+    width: 40px;
+    border: 4px solid #ED5736;
+    border-left: none;
+    text-align: center;
+    background: #ffffff;
+    font-size: 22px;
+}
+
+#sideBarContents{
+    float: left;
+    overflow: auto;
+    overflow-x: hidden;!important;
+    width: 300px;
+    min-height: 100px;
+    max-height: 500px;
+    border: 1px solid #e5e5e5;
+    border-left: none;
+    background: #ffffff;
+}
+
+
+#sideBarContents dd, dt {
+    cursor: pointer;
+}
+
+.title1:hover,
+.title2:hover,
+.title3:hover,
+.title4:hover,
+.title5:hover,
+.title6:hover {
+    color: #ED5736;
+}
+
+#sideBarContents dl{
+    margin: 0;
+    padding: 0;
+}
+
+.title1{
+    margin-top: 5px;
+    margin-left: 5px;
+}
+
+.title2{
+    margin-left: 20px;
+}
+
+.title3{
+    margin-left: 40px;
+}
+
+.title4{
+    margin-left: 60px;
+}
+
+.title5{
+    margin-left: 80px;
+}
+
+.title6{
+    margin-left: 100px;
+}

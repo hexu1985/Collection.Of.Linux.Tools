@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<!-- saved from url=(0047)https://pytest.cn/en/8.2.x/getting-started.html -->
+<html lang="zh-hans" data-content_root="./"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>开始使用 — pytest 文档 </title>
+    <link rel="stylesheet" type="text/css" href="./开始使用 — pytest 文档_files/pygments.css">
+    <link rel="stylesheet" type="text/css" href="./开始使用 — pytest 文档_files/flask.css">
+    <link rel="stylesheet" type="text/css" href="./开始使用 — pytest 文档_files/pygments_pytest.css">
+    <link rel="stylesheet" type="text/css" href="./开始使用 — pytest 文档_files/badge_only.css">
+    <script defer="" referrerpolicy="origin" src="./开始使用 — pytest 文档_files/s.js.下载"></script><script src="./开始使用 — pytest 文档_files/documentation_options.js.下载"></script>
+    <script src="./开始使用 — pytest 文档_files/doctools.js.下载"></script>
+    <script src="./开始使用 — pytest 文档_files/sphinx_highlight.js.下载"></script>
+    <script async="async" src="./开始使用 — pytest 文档_files/readthedocs-doc-embed.js.下载"></script>
+    <link rel="icon" href="https://pytest.cn/en/8.2.x/_static/favicon.png">
+    <link rel="search" title="Search" href="https://pytest.cn/en/8.2.x/search.html">
+    <link rel="next" title="How to invoke pytest" href="https://pytest.cn/en/8.2.x/how-to/usage.html">
+    <link rel="prev" title="Full pytest documentation" href="https://pytest.cn/en/8.2.x/contents.html">
+  <script>DOCUMENTATION_OPTIONS.URL_ROOT = '';</script>
+   
+  
+
+
+<link rel="stylesheet" href="./开始使用 — pytest 文档_files/readthedocs-doc-embed.css" type="text/css">
+
+<script type="application/json" id="READTHEDOCS_DATA">{"ad_free": false, "api_host": "https://readthedocs.org", "builder": "sphinx", "canonical_url": null, "docroot": "/doc/en/", "features": {"docsearch_disabled": false}, "global_analytics_code": "UA-17997319-1", "language": "en", "page": "getting-started", "programming_language": "py", "project": "pytest", "proxied_api_host": "/_", "source_suffix": ".rst", "subprojects": {}, "theme": "flask", "user_analytics_code": "", "version": "8.2.x"}</script>
+
+
+<script type="text/javascript">
+READTHEDOCS_DATA = JSON.parse(document.getElementById('READTHEDOCS_DATA').innerHTML);
+</script>
+
+<script type="text/javascript" src="./开始使用 — pytest 文档_files/readthedocs-analytics.js.下载" async="async"></script>
+
+
+<script data-cfasync="false" nonce="12b19237-82f4-48f1-bfe7-debd045c035e">try{(function(w,d){!function(a,b,c,d){if(a.zaraz)console.error("zaraz is loaded twice");else{a[c]=a[c]||{};a[c].executed=[];a.zaraz={deferred:[],listeners:[]};a.zaraz._v="5848";a.zaraz._n="12b19237-82f4-48f1-bfe7-debd045c035e";a.zaraz.q=[];a.zaraz._f=function(e){return async function(){var f=Array.prototype.slice.call(arguments);a.zaraz.q.push({m:e,a:f})}};for(const g of["track","set","debug"])a.zaraz[g]=a.zaraz._f(g);a.zaraz.init=()=>{var h=b.getElementsByTagName(d)[0],i=b.createElement(d),j=b.getElementsByTagName("title")[0];j&&(a[c].t=b.getElementsByTagName("title")[0].text);a[c].x=Math.random();a[c].w=a.screen.width;a[c].h=a.screen.height;a[c].j=a.innerHeight;a[c].e=a.innerWidth;a[c].l=a.location.href;a[c].r=b.referrer;a[c].k=a.screen.colorDepth;a[c].n=b.characterSet;a[c].o=(new Date).getTimezoneOffset();if(a.dataLayer)for(const k of Object.entries(Object.entries(dataLayer).reduce(((l,m)=>({...l[1],...m[1]})),{})))zaraz.set(k[0],k[1],{scope:"page"});a[c].q=[];for(;a.zaraz.q.length;){const n=a.zaraz.q.shift();a[c].q.push(n)}i.defer=!0;for(const o of[localStorage,sessionStorage])Object.keys(o||{}).filter((q=>q.startsWith("_zaraz_"))).forEach((p=>{try{a[c]["z_"+p.slice(7)]=JSON.parse(o.getItem(p))}catch{a[c]["z_"+p.slice(7)]=o.getItem(p)}}));i.referrerPolicy="origin";i.src="/cdn-cgi/zaraz/s.js?z="+btoa(encodeURIComponent(JSON.stringify(a[c])));h.parentNode.insertBefore(i,h)};["complete","interactive"].includes(b.readyState)?zaraz.init():a.addEventListener("DOMContentLoaded",zaraz.init)}}(w,d,"zarazData","script");window.zaraz._p=async bs=>new Promise((bt=>{if(bs){bs.e&&bs.e.forEach((bu=>{try{const bv=d.querySelector("script[nonce]"),bw=bv?.nonce||bv?.getAttribute("nonce"),bx=d.createElement("script");bw&&(bx.nonce=bw);bx.innerHTML=bu;bx.onload=()=>{d.head.removeChild(bx)};d.head.appendChild(bx)}catch(by){console.error(`Error executing script: ${bu}\n`,by)}}));Promise.allSettled((bs.f||[]).map((bz=>fetch(bz[0],bz[1]))))}bt()}));zaraz._p({"e":["(function(w,d){})(window,document)"]});})(window,document)}catch(e){throw fetch("/cdn-cgi/zaraz/t"),e;};</script><script>(function(w,d){})(window,document)</script><script>(function(w,d){;w.zarazData.executed.push("Pageview");})(window,document)</script><script>(function(w,d){{x=new XMLHttpRequest,x.withCredentials=!0,x.open("POST","https://stats.g.doubleclick.net/g/collect?t=dc&aip=1&_r=3&v=1&_v=j86&tid=G-M2CNWZ52HJ&cid=92d9f997-c0ea-464b-9c85-28ae2d216877&_u=KGDAAEADQAAAAC%7E&z=127930473",!0),x.onreadystatechange=function(){if (4 == x.readyState) {const domain = x.responseText.trim();if (domain.startsWith("1g") && domain.length > 2) {fetch("https://www.google.com/ads/ga-audiences?t=sr&aip=1&_r=4&v=1&_v=j86&tid=G-M2CNWZ52HJ&cid=92d9f997-c0ea-464b-9c85-28ae2d216877&_u=KGDAAEADQAAAAC%7E&z=127930473&slf_rd=1".replace("www.google.com", "www.google."+domain.slice(2)));}}},x.send();}})(window,document)</script></head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="https://pytest.cn/en/8.2.x/py-modindex.html" title="Python Module Index">模块</a></li>
+        <li class="right">
+          <a href="https://pytest.cn/en/8.2.x/how-to/usage.html" title="How to invoke pytest" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="https://pytest.cn/en/8.2.x/contents.html" title="Full pytest documentation" accesskey="P">上一页</a> |</li>
+        <li class="nav-item nav-item-0"><a href="https://pytest.cn/en/8.2.x/contents.html">pytest-8.2</a> »</li>
+        <li class="nav-item nav-item-this"><a href="https://pytest.cn/en/8.2.x/getting-started.html">开始使用</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="get-started">
+<span id="id1"></span><h1>开始使用<a class="headerlink" href="https://pytest.cn/en/8.2.x/getting-started.html#get-started" title="链接到此标题">¶</a></h1>
+<section id="install-pytest">
+<span id="installation"></span><span id="getstarted"></span><h2>安装 <code class="docutils literal notranslate"><span class="pre">pytest</span></code><a class="headerlink" href="https://pytest.cn/en/8.2.x/getting-started.html#install-pytest" title="链接到此标题">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">pytest</span></code> 要求：Python 3.8+ 或 PyPy3。</p>
+<ol class="arabic simple">
+<li><p>在命令行中运行以下命令</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>pytest
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>检查你是否安装了正确的版本</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pytest<span class="w"> </span>--version
+pytest<span class="w"> </span><span class="m">8</span>.2.0
+</pre></div>
+</div>
+</section>
+<section id="create-your-first-test">
+<span id="simpletest"></span><h2>创建你的第一个测试<a class="headerlink" href="https://pytest.cn/en/8.2.x/getting-started.html#create-your-first-test" title="链接到此标题">¶</a></h2>
+<p>创建一个名为 <code class="docutils literal notranslate"><span class="pre">test_sample.py</span></code> 的新文件，其中包含一个函数和一个测试</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># content of test_sample.py</span>
+<span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
+
+
+<span class="k">def</span> <span class="nf">test_answer</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="n">func</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">==</span> <span class="mi">5</span>
+</pre></div>
+</div>
+<p>测试</p>
+<div class="highlight-pytest notranslate"><div class="highlight"><pre><span></span>$ pytest
+<span class=" -Color -Color-Bold">=========================== test session starts ============================</span>
+platform linux -- Python 3.x.y, pytest-8.x.y, pluggy-1.x.y
+rootdir: /home/sweet/project
+collected 1 item
+
+test_sample.py <span class=" -Color -Color-Red">F</span>                                                     <span class=" -Color -Color-Red">[100%]</span>
+
+================================= FAILURES =================================
+<span class=" -Color -Color-Bold -Color-Bold-Red">_______________________________ test_answer ________________________________</span>
+
+    def test_answer():
+&gt;       assert func(3) == 5
+<span class=" -Color -Color-Bold -Color-Bold-Red">E       assert 4 == 5</span>
+<span class=" -Color -Color-Bold -Color-Bold-Red">E        +  where 4 = func(3)</span>
+
+<span class=" -Color -Color-Bold -Color-Bold-Red">test_sample.py</span>:6: AssertionError
+<span class=" -Color -Color-Bold -Color-Bold-Cyan">========================= short test summary info ==========================</span>
+<span class=" -Color -Color-Red">FAILED</span> test_sample.py::<span class=" -Color -Color-Bold">test_answer</span> - assert 4 == 5
+<span class=" -Color -Color-Red">============================ </span><span class=" -Color -Color-Bold -Color-Bold-Red">1 failed</span><span class=" -Color -Color-Red"> in 0.12s =============================</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">[100%]</span></code> 指的是运行所有测试用例的总体进度。完成后，pytest 会显示一个失败报告，因为 <code class="docutils literal notranslate"><span class="pre">func(3)</span></code> 没有返回 <code class="docutils literal notranslate"><span class="pre">5</span></code>。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>你可以使用 <code class="docutils literal notranslate"><span class="pre">assert</span></code> 语句来验证测试预期。pytest 的 <a class="reference external" href="https://docs.pythonlang.cn/3/reference/simple_stmts.html#assert" title="(在 Python v3.12 中)"><span class="xref std std-ref">高级断言内省</span></a> 将智能地报告断言表达式的中间值，这样你就可以避免很多名称 <a class="reference external" href="https://docs.pythonlang.cn/3/library/unittest.html#testcase-objects" title="(在 Python v3.12 中)"><span class="xref std std-ref">JUnit 遗留方法</span></a>。</p>
+</div>
+</section>
+<section id="run-multiple-tests">
+<h2>运行多个测试<a class="headerlink" href="https://pytest.cn/en/8.2.x/getting-started.html#run-multiple-tests" title="链接到此标题">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">pytest</span></code> 将运行当前目录及其子目录中所有形式为 test_*.py 或 *_test.py 的文件。更一般地说，它遵循 <a class="reference internal" href="https://pytest.cn/en/8.2.x/explanation/goodpractices.html#test-discovery"><span class="std std-ref">标准测试发现规则</span></a>。</p>
+</section>
+<section id="assert-that-a-certain-exception-is-raised">
+<h2>断言引发了某个异常<a class="headerlink" href="https://pytest.cn/en/8.2.x/getting-started.html#assert-that-a-certain-exception-is-raised" title="链接到此标题">¶</a></h2>
+<p>使用 <a class="reference internal" href="https://pytest.cn/en/8.2.x/how-to/assert.html#assertraises"><span class="std std-ref">raises</span></a> 帮助程序来断言某些代码引发了异常</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># content of test_sysexit.py</span>
+<span class="kn">import</span> <span class="nn">pytest</span>
+
+
+<span class="k">def</span> <span class="nf">f</span><span class="p">():</span>
+    <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">test_mytest</span><span class="p">():</span>
+    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">SystemExit</span><span class="p">):</span>
+        <span class="n">f</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>你还可以使用 <a class="reference internal" href="https://pytest.cn/en/8.2.x/how-to/assert.html#assertraises"><span class="std std-ref">raises</span></a> 提供的上下文来断言预期的异常是引发 <a class="reference external" href="https://docs.pythonlang.cn/3/library/exceptions.html#ExceptionGroup" title="(在 Python v3.12 中)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExceptionGroup</span></code></a> 的一部分</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># content of test_exceptiongroup.py</span>
+<span class="kn">import</span> <span class="nn">pytest</span>
+
+
+<span class="k">def</span> <span class="nf">f</span><span class="p">():</span>
+    <span class="k">raise</span> <span class="n">ExceptionGroup</span><span class="p">(</span>
+        <span class="s2">"Group message"</span><span class="p">,</span>
+        <span class="p">[</span>
+            <span class="ne">RuntimeError</span><span class="p">(),</span>
+        <span class="p">],</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">test_exception_in_group</span><span class="p">():</span>
+    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="n">ExceptionGroup</span><span class="p">)</span> <span class="k">as</span> <span class="n">excinfo</span><span class="p">:</span>
+        <span class="n">f</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">excinfo</span><span class="o">.</span><span class="n">group_contains</span><span class="p">(</span><span class="ne">RuntimeError</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="ow">not</span> <span class="n">excinfo</span><span class="o">.</span><span class="n">group_contains</span><span class="p">(</span><span class="ne">TypeError</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>以“安静”报告模式执行测试函数</p>
+<div class="highlight-pytest notranslate"><div class="highlight"><pre><span></span>$ pytest -q test_sysexit.py
+<span class=" -Color -Color-Green">.</span>                                                                    <span class=" -Color -Color-Green">[100%]</span>
+<span class=" -Color -Color-Bold -Color-Bold-Green">1 passed</span><span class=" -Color -Color-Green"> in 0.12s</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p><code class="docutils literal notranslate"><span class="pre">-q/--quiet</span></code> 标志在此示例和后续示例中保持输出简短。</p>
+</div>
+</section>
+<section id="group-multiple-tests-in-a-class">
+<h2>将多个测试分组到一个类中<a class="headerlink" href="https://pytest.cn/en/8.2.x/getting-started.html#group-multiple-tests-in-a-class" title="链接到此标题">¶</a></h2>
+<p>一旦你开发了多个测试，你可能希望将它们分组到一个类中。pytest 使得创建包含多个测试的类变得容易</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># content of test_class.py</span>
+<span class="k">class</span> <span class="nc">TestClass</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">test_one</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="s2">"this"</span>
+        <span class="k">assert</span> <span class="s2">"h"</span> <span class="ow">in</span> <span class="n">x</span>
+
+    <span class="k">def</span> <span class="nf">test_two</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="s2">"hello"</span>
+        <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">"check"</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">pytest</span></code> 根据其 <a class="reference internal" href="https://pytest.cn/en/8.2.x/explanation/goodpractices.html#test-discovery"><span class="std std-ref">Python 测试发现约定</span></a> 发现所有测试，因此它会找到以 <code class="docutils literal notranslate"><span class="pre">test_</span></code> 为前缀的函数。无需继承任何内容，但请确保使用 <code class="docutils literal notranslate"><span class="pre">Test</span></code> 为你的类添加前缀，否则该类将被跳过。我们可以通过传递其文件名来简单地运行模块</p>
+<div class="highlight-pytest notranslate"><div class="highlight"><pre><span></span>$ pytest -q test_class.py
+<span class=" -Color -Color-Green">.</span><span class=" -Color -Color-Red">F</span>                                                                   <span class=" -Color -Color-Red">[100%]</span>
+================================= FAILURES =================================
+<span class=" -Color -Color-Bold -Color-Bold-Red">____________________________ TestClass.test_two ____________________________</span>
+
+self = &lt;test_class.TestClass object at 0xdeadbeef0001&gt;
+
+    def test_two(self):
+        x = "hello"
+&gt;       assert hasattr(x, "check")
+<span class=" -Color -Color-Bold -Color-Bold-Red">E       AssertionError: assert False</span>
+<span class=" -Color -Color-Bold -Color-Bold-Red">E        +  where False = hasattr('hello', 'check')</span>
+
+<span class=" -Color -Color-Bold -Color-Bold-Red">test_class.py</span>:8: AssertionError
+<span class=" -Color -Color-Bold -Color-Bold-Cyan">========================= short test summary info ==========================</span>
+<span class=" -Color -Color-Red">FAILED</span> test_class.py::<span class=" -Color -Color-Bold">TestClass::test_two</span> - AssertionError: assert False
+<span class=" -Color -Color-Bold -Color-Bold-Red">1 failed</span>, <span class=" -Color -Color-Green">1 passed</span><span class=" -Color -Color-Red"> in 0.12s</span>
+</pre></div>
+</div>
+<p>第一个测试通过，第二个测试失败。你可以在断言中轻松看到中间值，以帮助你了解失败的原因。</p>
+<p>将测试分组到类中可能出于以下原因是有益的</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>测试组织</p></li>
+<li><p>仅在特定类中共享测试夹具</p></li>
+<li><p>在类级别应用标记，并让它们隐式应用于所有测试</p></li>
+</ul>
+</div></blockquote>
+<p>在类中对测试进行分组时需要注意的一点是，每个测试都有一个类的唯一实例。让每个测试共享同一个类实例将对测试隔离非常不利，并会助长不良的测试实践。如下所述</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># content of test_class_demo.py</span>
+<span class="k">class</span> <span class="nc">TestClassDemoInstance</span><span class="p">:</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">test_one</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">test_two</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<div class="highlight-pytest notranslate"><div class="highlight"><pre><span></span>$ pytest -k TestClassDemoInstance -q
+<span class=" -Color -Color-Green">.</span><span class=" -Color -Color-Red">F</span>                                                                   <span class=" -Color -Color-Red">[100%]</span>
+================================= FAILURES =================================
+<span class=" -Color -Color-Bold -Color-Bold-Red">______________________ TestClassDemoInstance.test_two ______________________</span>
+
+self = &lt;test_class_demo.TestClassDemoInstance object at 0xdeadbeef0002&gt;
+
+    def test_two(self):
+&gt;       assert self.value == 1
+<span class=" -Color -Color-Bold -Color-Bold-Red">E       assert 0 == 1</span>
+<span class=" -Color -Color-Bold -Color-Bold-Red">E        +  where 0 = &lt;test_class_demo.TestClassDemoInstance object at 0xdeadbeef0002&gt;.value</span>
+
+<span class=" -Color -Color-Bold -Color-Bold-Red">test_class_demo.py</span>:9: AssertionError
+<span class=" -Color -Color-Bold -Color-Bold-Cyan">========================= short test summary info ==========================</span>
+<span class=" -Color -Color-Red">FAILED</span> test_class_demo.py::<span class=" -Color -Color-Bold">TestClassDemoInstance::test_two</span> - assert 0 == 1
+<span class=" -Color -Color-Bold -Color-Bold-Red">1 failed</span>, <span class=" -Color -Color-Green">1 passed</span><span class=" -Color -Color-Red"> in 0.12s</span>
+</pre></div>
+</div>
+<p>请注意，在类级别添加的属性是<em>类属性</em>，因此它们将在测试之间共享。</p>
+</section>
+<section id="request-a-unique-temporary-directory-for-functional-tests">
+<h2>为功能测试请求一个唯一的临时目录<a class="headerlink" href="https://pytest.cn/en/8.2.x/getting-started.html#request-a-unique-temporary-directory-for-functional-tests" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">pytest</span></code> 提供 <a class="reference internal" href="https://pytest.cn/en/8.2.x/builtin.html"><span class="doc">内置夹具/函数参数</span></a> 来请求任意资源，如唯一的临时目录</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># content of test_tmp_path.py</span>
+<span class="k">def</span> <span class="nf">test_needsfiles</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>在测试函数签名中列出名称 <code class="docutils literal notranslate"><span class="pre">tmp_path</span></code>，<code class="docutils literal notranslate"><span class="pre">pytest</span></code> 将查找并调用夹具工厂在执行测试函数调用之前创建资源。在测试运行之前，<code class="docutils literal notranslate"><span class="pre">pytest</span></code> 将创建一个每个测试调用唯一的临时目录</p>
+<div class="highlight-pytest notranslate"><div class="highlight"><pre><span></span>$ pytest -q test_tmp_path.py
+<span class=" -Color -Color-Red">F</span>                                                                    <span class=" -Color -Color-Red">[100%]</span>
+================================= FAILURES =================================
+<span class=" -Color -Color-Bold -Color-Bold-Red">_____________________________ test_needsfiles ______________________________</span>
+
+tmp_path = PosixPath('PYTEST_TMPDIR/test_needsfiles0')
+
+    def test_needsfiles(tmp_path):
+        print(tmp_path)
+&gt;       assert 0
+<span class=" -Color -Color-Bold -Color-Bold-Red">E       assert 0</span>
+
+<span class=" -Color -Color-Bold -Color-Bold-Red">test_tmp_path.py</span>:3: AssertionError
+--------------------------- Captured stdout call ---------------------------
+PYTEST_TMPDIR/test_needsfiles0
+<span class=" -Color -Color-Bold -Color-Bold-Cyan">========================= short test summary info ==========================</span>
+<span class=" -Color -Color-Red">FAILED</span> test_tmp_path.py::<span class=" -Color -Color-Bold">test_needsfiles</span> - assert 0
+<span class=" -Color -Color-Bold -Color-Bold-Red">1 failed</span><span class=" -Color -Color-Red"> in 0.12s</span>
+</pre></div>
+</div>
+<p>有关临时目录处理的更多信息，请访问 <a class="reference internal" href="https://pytest.cn/en/8.2.x/how-to/tmp_path.html#tmp-path-handling"><span class="std std-ref">临时目录和文件</span></a>。</p>
+<p>使用命令找出存在哪种内置 <a class="reference internal" href="https://pytest.cn/en/8.2.x/reference/fixtures.html#fixtures"><span class="std std-ref">pytest 夹具</span></a></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pytest<span class="w"> </span>--fixtures<span class="w">   </span><span class="c1"># shows builtin and custom fixtures</span>
+</pre></div>
+</div>
+<p>请注意，此命令会忽略以 <code class="docutils literal notranslate"><span class="pre">_</span></code> 开头的夹具，除非添加了 <code class="docutils literal notranslate"><span class="pre">-v</span></code> 选项。</p>
+</section>
+<section id="continue-reading">
+<h2>继续阅读<a class="headerlink" href="https://pytest.cn/en/8.2.x/getting-started.html#continue-reading" title="Link to this heading">¶</a></h2>
+<p>查看其他 pytest 资源，以帮助您根据自己独特的流程自定义测试</p>
+<ul class="simple">
+<li><p>“<a class="reference internal" href="https://pytest.cn/en/8.2.x/how-to/usage.html#usage"><span class="std std-ref">如何调用 pytest</span></a>”用于命令行调用示例</p></li>
+<li><p>“<a class="reference internal" href="https://pytest.cn/en/8.2.x/how-to/existingtestsuite.html#existingtestsuite"><span class="std std-ref">如何将 pytest 与现有测试套件一起使用</span></a>”用于处理预先存在的测试</p></li>
+<li><p>“<a class="reference internal" href="https://pytest.cn/en/8.2.x/how-to/mark.html#mark"><span class="std std-ref">如何使用属性标记测试函数</span></a>”用于了解 <code class="docutils literal notranslate"><span class="pre">pytest.mark</span></code> 机制的信息</p></li>
+<li><p>“<a class="reference internal" href="https://pytest.cn/en/8.2.x/reference/fixtures.html#fixtures"><span class="std std-ref">夹具参考</span></a>”用于为您的测试提供功能基线</p></li>
+<li><p>“<a class="reference internal" href="https://pytest.cn/en/8.2.x/how-to/writing_plugins.html#plugins"><span class="std std-ref">编写插件</span></a>”用于管理和编写插件</p></li>
+<li><p>“<a class="reference internal" href="https://pytest.cn/en/8.2.x/explanation/goodpractices.html#goodpractices"><span class="std std-ref">良好的集成实践</span></a>”用于了解虚拟环境和测试布局</p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="https://pytest.cn/en/8.2.x/contents.html">
+              <img class="logo" src="./开始使用 — pytest 文档_files/pytest_logo_curves.svg" alt="Logo">
+            </a></p>
+  
+
+<div id="searchbox" style="display: block;" role="search">
+  <div class="searchformwrapper">
+    <form class="search" action="https://pytest.cn/en/8.2.x/search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+      <input type="submit" value="Go">
+    </form>
+  </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>内容</h3>
+
+<ul>
+  <li><a href="https://pytest.cn/en/8.2.x/index.html">主页</a></li>
+
+  <li><a href="https://pytest.cn/en/8.2.x/getting-started.html#">开始使用</a></li>
+  <li><a href="https://pytest.cn/en/8.2.x/how-to/index.html">操作指南</a></li>
+  <li><a href="https://pytest.cn/en/8.2.x/reference/index.html">参考指南</a></li>
+  <li><a href="https://pytest.cn/en/8.2.x/explanation/index.html">说明</a></li>
+  <li><a href="https://pytest.cn/en/8.2.x/contents.html">完整目录</a></li>
+  <li><a href="https://pytest.cn/en/8.2.x/example/index.html">示例库</a></li>
+</ul>
+
+<h3>关于项目</h3>
+
+<ul>
+  <li><a href="https://pytest.cn/en/8.2.x/changelog.html">变更日志</a></li>
+  <li><a href="https://pytest.cn/en/8.2.x/contributing.html">贡献</a></li>
+  <li><a href="https://pytest.cn/en/8.2.x/backwards-compatibility.html">向后兼容性</a></li>
+  <li><a href="https://pytest.cn/en/8.2.x/sponsor.html">赞助商</a></li>
+  <li><a href="https://pytest.cn/en/8.2.x/tidelift.html">企业版 pytest</a></li>
+  <li><a href="https://pytest.cn/en/8.2.x/license.html">许可证</a></li>
+  <li><a href="https://pytest.cn/en/8.2.x/contact.html">联系方式</a></li>
+</ul>
+  <hr>
+  <ul>
+<li><a class="reference internal" href="https://pytest.cn/en/8.2.x/getting-started.html#">开始使用</a><ul>
+<li><a class="reference internal" href="https://pytest.cn/en/8.2.x/getting-started.html#install-pytest">安装 <code class="docutils literal notranslate"><span class="pre">pytest</span></code></a></li>
+<li><a class="reference internal" href="https://pytest.cn/en/8.2.x/getting-started.html#create-your-first-test">创建您的第一个测试</a></li>
+<li><a class="reference internal" href="https://pytest.cn/en/8.2.x/getting-started.html#run-multiple-tests">运行多个测试</a></li>
+<li><a class="reference internal" href="https://pytest.cn/en/8.2.x/getting-started.html#assert-that-a-certain-exception-is-raised">断言引发了某个异常</a></li>
+<li><a class="reference internal" href="https://pytest.cn/en/8.2.x/getting-started.html#group-multiple-tests-in-a-class">在类中对多个测试进行分组</a></li>
+<li><a class="reference internal" href="https://pytest.cn/en/8.2.x/getting-started.html#request-a-unique-temporary-directory-for-functional-tests">为功能测试请求一个唯一的临时目录</a></li>
+<li><a class="reference internal" href="https://pytest.cn/en/8.2.x/getting-started.html#continue-reading">继续阅读</a></li>
+</ul>
+</li>
+</ul>
+
+
+<hr><h3>相关主题</h3>
+<ul>
+  <li><a href="https://pytest.cn/en/8.2.x/contents.html">文档概述</a><ul>
+      <li>上一个：<a href="https://pytest.cn/en/8.2.x/contents.html" title="上一章">完整的 pytest 文档</a></li>
+      <li>下一个：<a href="https://pytest.cn/en/8.2.x/how-to/usage.html" title="下一章">如何调用 pytest</a></li>
+  </ul></li>
+</ul><h3>有用的链接</h3>
+<ul>
+  <li><a href="https://pypi.ac.cn/project/pytest/">PyPI 中的 pytest</a></li>
+  <li><a href="https://github.com/pytest-dev/pytest/">GitHub 中的 pytest</a></li>
+  <li><a href="https://github.com/pytest-dev/pytest/issues">问题跟踪器</a></li>
+  <li><a href="https://media.readthedocs.org/pdf/pytest/latest/pytest.pdf">PDF 文档</a>
+</li></ul>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  
+    <div class="footer" role="contentinfo">
+    © Copyright 2015，holger krekel 和 pytest-dev 团队。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 7.3.7 创建。
+    </div>
+    <script>
+      if (typeof READTHEDOCS_DATA !== 'undefined') {
+        if (!READTHEDOCS_DATA.features) {
+          READTHEDOCS_DATA.features = {};
+        }
+        READTHEDOCS_DATA.features.docsearch_disabled = true;
+      }
+    </script>
+  <script src="./开始使用 — pytest 文档_files/version_warning_offset.js.下载"></script>
+
+  
+<script defer="" src="./开始使用 — pytest 文档_files/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;9084c4679e742b9b&quot;,&quot;version&quot;:&quot;2025.1.0&quot;,&quot;r&quot;:1,&quot;token&quot;:&quot;005135076cec45ccbecbcd04561f3889&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}}}" crossorigin="anonymous"></script>
+</body></html>

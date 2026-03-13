@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<!-- saved from url=(0049)https://wiki.tiker.net/PyCuda/Installation/Linux/ -->
+<html lang="en" style="scroll-padding-top: 76px;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="https://wiki.tiker.net/img/favicon.ico">
+        <title>Installing PyCUDA on Linux - Andreas Klöckner's Former Wiki</title>
+        <link href="./Installing PyCUDA on Linux - Andreas Klöckner&#39;s Former Wiki_files/bootstrap.min.css" rel="stylesheet">
+        <link href="./Installing PyCUDA on Linux - Andreas Klöckner&#39;s Former Wiki_files/font-awesome.min.css" rel="stylesheet">
+        <link href="./Installing PyCUDA on Linux - Andreas Klöckner&#39;s Former Wiki_files/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="./Installing PyCUDA on Linux - Andreas Klöckner&#39;s Former Wiki_files/github.min.css">
+
+        <script src="./Installing PyCUDA on Linux - Andreas Klöckner&#39;s Former Wiki_files/jquery-1.10.2.min.js" defer=""></script>
+        <script src="./Installing PyCUDA on Linux - Andreas Klöckner&#39;s Former Wiki_files/bootstrap.min.js" defer=""></script>
+        <script src="./Installing PyCUDA on Linux - Andreas Klöckner&#39;s Former Wiki_files/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    <style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Menu_Button .MathJax_Hover_Arrow {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px; font-family: 'Courier New',Courier; font-size: 9px; color: #F0F0F0}
+.MathJax_Menu_Button .MathJax_Hover_Arrow span {display: block; background-color: #AAA; border: 1px solid; border-radius: 3px; line-height: 0; padding: 4px}
+.MathJax_Hover_Arrow:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_Hover_Arrow:hover span {background-color: #CCC!important}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 5px 0px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 5px; -webkit-border-radius: 5px; -moz-border-radius: 5px; -khtml-border-radius: 5px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 1px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: .7em}
+.MathJax_MenuRadioCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuLabel {padding: 1px 2em 3px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #DDDDDD; margin: 4px 3px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: #606872; color: white}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+</style><style type="text/css">.MathJax_Preview .MJXf-math {color: inherit!important}
+</style><style type="text/css">.MJX_Assistive_MathML {position: absolute!important; top: 0; left: 0; clip: rect(1px, 1px, 1px, 1px); padding: 1px 0 0 0!important; border: 0!important; height: 1px!important; width: 1px!important; overflow: hidden!important; display: block!important; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none}
+.MJX_Assistive_MathML.MJX_Assistive_MathML_Block {width: 100%!important}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1em; bottom: 1.5em; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><style type="text/css">.MJXp-script {font-size: .8em}
+.MJXp-right {-webkit-transform-origin: right; -moz-transform-origin: right; -ms-transform-origin: right; -o-transform-origin: right; transform-origin: right}
+.MJXp-bold {font-weight: bold}
+.MJXp-italic {font-style: italic}
+.MJXp-scr {font-family: MathJax_Script,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-frak {font-family: MathJax_Fraktur,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-sf {font-family: MathJax_SansSerif,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-cal {font-family: MathJax_Caligraphic,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-mono {font-family: MathJax_Typewriter,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-largeop {font-size: 150%}
+.MJXp-largeop.MJXp-int {vertical-align: -.2em}
+.MJXp-math {display: inline-block; line-height: 1.2; text-indent: 0; font-family: 'Times New Roman',Times,STIXGeneral,serif; white-space: nowrap; border-collapse: collapse}
+.MJXp-display {display: block; text-align: center; margin: 1em 0}
+.MJXp-math span {display: inline-block}
+.MJXp-box {display: block!important; text-align: center}
+.MJXp-box:after {content: " "}
+.MJXp-rule {display: block!important; margin-top: .1em}
+.MJXp-char {display: block!important}
+.MJXp-mo {margin: 0 .15em}
+.MJXp-mfrac {margin: 0 .125em; vertical-align: .25em}
+.MJXp-denom {display: inline-table!important; width: 100%}
+.MJXp-denom > * {display: table-row!important}
+.MJXp-surd {vertical-align: top}
+.MJXp-surd > * {display: block!important}
+.MJXp-script-box > *  {display: table!important; height: 50%}
+.MJXp-script-box > * > * {display: table-cell!important; vertical-align: top}
+.MJXp-script-box > *:last-child > * {vertical-align: bottom}
+.MJXp-script-box > * > * > * {display: block!important}
+.MJXp-mphantom {visibility: hidden}
+.MJXp-munderover {display: inline-table!important}
+.MJXp-over {display: inline-block!important; text-align: center}
+.MJXp-over > * {display: block!important}
+.MJXp-munderover > * {display: table-row!important}
+.MJXp-mtable {vertical-align: .25em; margin: 0 .125em}
+.MJXp-mtable > * {display: inline-table!important; vertical-align: middle}
+.MJXp-mtr {display: table-row!important}
+.MJXp-mtd {display: table-cell!important; text-align: center; padding: .5em 0 0 .5em}
+.MJXp-mtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-mlabeledtr {display: table-row!important}
+.MJXp-mlabeledtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mlabeledtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MJXp-scale0 {-webkit-transform: scaleX(.0); -moz-transform: scaleX(.0); -ms-transform: scaleX(.0); -o-transform: scaleX(.0); transform: scaleX(.0)}
+.MJXp-scale1 {-webkit-transform: scaleX(.1); -moz-transform: scaleX(.1); -ms-transform: scaleX(.1); -o-transform: scaleX(.1); transform: scaleX(.1)}
+.MJXp-scale2 {-webkit-transform: scaleX(.2); -moz-transform: scaleX(.2); -ms-transform: scaleX(.2); -o-transform: scaleX(.2); transform: scaleX(.2)}
+.MJXp-scale3 {-webkit-transform: scaleX(.3); -moz-transform: scaleX(.3); -ms-transform: scaleX(.3); -o-transform: scaleX(.3); transform: scaleX(.3)}
+.MJXp-scale4 {-webkit-transform: scaleX(.4); -moz-transform: scaleX(.4); -ms-transform: scaleX(.4); -o-transform: scaleX(.4); transform: scaleX(.4)}
+.MJXp-scale5 {-webkit-transform: scaleX(.5); -moz-transform: scaleX(.5); -ms-transform: scaleX(.5); -o-transform: scaleX(.5); transform: scaleX(.5)}
+.MJXp-scale6 {-webkit-transform: scaleX(.6); -moz-transform: scaleX(.6); -ms-transform: scaleX(.6); -o-transform: scaleX(.6); transform: scaleX(.6)}
+.MJXp-scale7 {-webkit-transform: scaleX(.7); -moz-transform: scaleX(.7); -ms-transform: scaleX(.7); -o-transform: scaleX(.7); transform: scaleX(.7)}
+.MJXp-scale8 {-webkit-transform: scaleX(.8); -moz-transform: scaleX(.8); -ms-transform: scaleX(.8); -o-transform: scaleX(.8); transform: scaleX(.8)}
+.MJXp-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
+.MathJax_PHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style></head>
+
+    <body style=""><div id="MathJax_Message" style="display: none;"></div>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="https://wiki.tiker.net/">Andreas Klöckner's Former Wiki</a>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="https://wiki.tiker.net/PyCuda/Installation/Linux/#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary" style="top: 76px;">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="https://wiki.tiker.net/PyCuda/Installation/Linux/#installing-pycuda-on-linux" class="nav-link active">Installing PyCUDA on Linux</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="https://wiki.tiker.net/PyCuda/Installation/Linux/#step-1-download-and-unpack-pycuda" class="nav-link">Step 1: Download and unpack PyCUDA</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="https://wiki.tiker.net/PyCuda/Installation/Linux/#step-2-install-numpy" class="nav-link">Step 2: Install Numpy</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="https://wiki.tiker.net/PyCuda/Installation/Linux/#step-3-build-pycuda" class="nav-link">Step 3: Build PyCUDA</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="https://wiki.tiker.net/PyCuda/Installation/Linux/#step-4-test-pycuda" class="nav-link">Step 4: Test PyCUDA</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="https://wiki.tiker.net/PyCuda/Installation/Linux/#optional-boost-c-libraries" class="nav-link">Optional: Boost C++ Libraries</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="https://wiki.tiker.net/PyCuda/Installation/Linux/#contributed-helper-script" class="nav-link">Contributed Helper Script</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="installing-pycuda-on-linux">Installing PyCUDA on Linux</h1>
+<p>[[!toc ]] </p>
+<div>
+You're looking at the generic, distribution-independent instructions for installing PyCUDA. You may be able to save a fair bit of work by using these distribution-specific instructions: 
+
+[[!map pages="^PyCuda/Installation/Linux/[^/]*"]] 
+</div>
+<p>This tutorial will walk you through the process of building PyCUDA. To follow, you really only need four basic things: </p>
+<ul>
+<li>A UNIX-like machine with web access. </li>
+<li><a href="http://nvidia.com/">Nvidia</a>'s <a href="http://nvidia.com/cuda/">CUDA</a> toolkit. PyCUDA was developed against version 2.0 beta. It may work with other versions, too. </li>
+<li>A C++ compiler, preferably a Version 4.x gcc. </li>
+<li>A working <a href="http://www.python.org/">Python</a> installation, Version 2.4 or newer. </li>
+</ul>
+<h2 id="step-1-download-and-unpack-pycuda">Step 1: Download and unpack PyCUDA</h2>
+<p>[[!PyPi pycuda desc="Download PyCUDA"]] and unpack it: </p>
+<pre><code class="language-txt hljs plaintext">
+$ tar xfz pycuda-VERSION.tar.gz
+
+</code></pre>
+<h2 id="step-2-install-numpy">Step 2: Install Numpy</h2>
+<p>PyCUDA is designed to work in conjunction with <a href="http://numpy.org/">numpy</a>, Python's array package. Here's an easy way to install it, if you do not have it already: </p>
+<pre><code class="language-txt hljs plaintext">
+$ cd pycuda-VERSION
+$ su -c "python distribute_setup.py" # this will install distribute
+$ su -c "easy_install numpy" # this will install numpy using distribute
+
+</code></pre>
+<p>(If you're not sure, repeating these commands will not hurt.) </p>
+<h2 id="step-3-build-pycuda">Step 3: Build PyCUDA</h2>
+<p>Next, just type: </p>
+<pre><code class="language-txt hljs plaintext">
+$ cd pycuda-VERSION # if you're not there already
+$ python configure.py --cuda-root=/where/ever/you/installed/cuda
+$ su -c "make install"
+
+</code></pre>
+<p>Also note that you will (probably) have to change the value of :option:<code>--cuda-root</code>. If you want to install PyCUDA to your home folder, you need to edit the setup.py call in the Makefile by appending for example "--home=/home/username/local" to the line after the install directive. Make sure that the lib/python folder under the folder you specified is also in PYTHONPATH. </p>
+<p>Once that works, congratulations! You've successfully built PyCUDA. </p>
+<p>Note that this step may automatically look for and, if necessary, install a number of Python packages from the <a href="http://pypi.python.org/pypi">Python package index</a>. These packages are listed under <code>install_requires</code> in <a href="http://git.tiker.net/pycuda.git/blob/HEAD:/setup.py#l318">PyCUDA's install control file</a>. </p>
+<h2 id="step-4-test-pycuda">Step 4: Test PyCUDA</h2>
+<p>If you'd like to be extra-careful, you can run PyCUDA's unit tests: </p>
+<pre><code class="language-txt hljs plaintext">
+$ cd pycuda-VERSION/test
+$ python test_driver.py
+
+</code></pre>
+<p>If it says "OK" at the end, that means your installation of PyCUDA was successful. Reward yourself by checking out the <a href="http://documen.tician.de/pycuda/tutorial.html">tutorial</a>. </p>
+<h2 id="optional-boost-c-libraries">Optional: Boost C++ Libraries</h2>
+<p>As of version 0.94, the <a href="http://www.boost.org/">Boost C++ libraries</a> are <em>no longer</em> a dependency of PyCUDA. </p>
+<p>If you would like to use multiple packages that use Boost.Python (e.g. both PyCUDA and PyOpenCL), you <em>can</em> still build PyCUDA against a separate Boost installation. If so, follow the <a href="https://wiki.tiker.net/PyCuda/Installation/Linux/BoostInstallationHowto">BoostInstallationHowto</a>. Continue here when you're done. </p>
+<pre><code class="language-txt hljs plaintext">
+$ cd pycuda-VERSION # if you're not there already
+$ python configure.py \
+  --boost-inc-dir=$HOME/pool/include/boost-1_35 \
+  --boost-lib-dir=$HOME/pool/lib \
+  --boost-python-libname=boost_python-gcc42-mt \
+  --boost-thread-libname=boost_thread-gcc42-mt (0.93 and above only) \
+  --cuda-root=/where/ever/you/installed/cuda
+$ su -c "make install"
+
+</code></pre>
+<p>Note that gcc42 is a compiler tag that depends on the compiler with which you built boost. Check the contents of your boost  library directory to find out what the correct tag is.  </p>
+<h2 id="contributed-helper-script">Contributed Helper Script</h2>
+<p>A simple script do deal with: </p>
+<ul>
+<li>a littlesome ambiguity in the names and directory locations </li>
+<li>beware cuda does not accept gcc-4.5, get and symlink to v4.4 </li>
+</ul>
+<pre><code class="language-txt hljs plaintext">
+#!/bin/sh
+rm siteconf.py
+./configure.py \
+        --boost-inc-dir=/usr/include/boost \
+        --boost-lib-dir=/usr/lib64 \
+        --boost-python-libname=boost_python-mt \
+        --cudadrv-lib-dir=/usr/lib64 \
+        --cudart-lib-dir=/usr/local/cuda/lib64 \
+        --cudart-libname=cudart \
+        --cuda-root=/usr/local/cuda \
+        --boost-thread-libname=boost_thread-mt \
+        --no-cuda-enable-curand
+
+</code></pre>
+<ul>
+<li>Also note how the library names do not have either the usual prefix "lib" nor any extension whatsoever </li>
+<li>It simply could not find curand ... effectiveness of the --cuda-root (which is where it is most usually, along with libcudart) doubted. </li>
+</ul>
+<hr>
+<p><a href="https://wiki.tiker.net/PyCuda/Installation/Linux/CategoryPyCuda">CategoryPyCuda</a> </p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="./Installing PyCUDA on Linux - Andreas Klöckner&#39;s Former Wiki_files/base.js" defer=""></script>
+        <script src="./Installing PyCUDA on Linux - Andreas Klöckner&#39;s Former Wiki_files/MathJax.js" defer=""></script>
+        <script src="./Installing PyCUDA on Linux - Andreas Klöckner&#39;s Former Wiki_files/main.js" defer=""></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</body></html>

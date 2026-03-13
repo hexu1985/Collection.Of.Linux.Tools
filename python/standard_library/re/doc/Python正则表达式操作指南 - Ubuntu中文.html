@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="zh-Hans" dir="ltr" class="client-js"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<title>Python正则表达式操作指南 - Ubuntu中文</title>
+<script type="text/javascript">document.documentElement.className = document.documentElement.className.replace( /(^|\s)client-nojs(\s|$)/, "$1client-js$2" );</script>
+<script type="text/javascript">window.RLQ = window.RLQ || []; window.RLQ.push( function () {
+mw.config.set({"wgCanonicalNamespace":"","wgCanonicalSpecialPageName":!1,"wgNamespaceNumber":0,"wgPageName":"Python正则表达式操作指南","wgTitle":"Python正则表达式操作指南","wgCurRevisionId":151894,"wgRevisionId":151894,"wgArticleId":14836,"wgIsArticle":!0,"wgIsRedirect":!1,"wgAction":"view","wgUserName":null,"wgUserGroups":["*"],"wgCategories":["程序开发"],"wgBreakFrames":!1,"wgPageContentLanguage":"zh-hans","wgPageContentModel":"wikitext","wgSeparatorTransformTable":["",""],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"zh","wgMonthNames":["","1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"],"wgMonthNamesShort":["","1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"],"wgRelevantPageName":"Python正则表达式操作指南","wgRelevantArticleId":14836,"wgIsProbablyEditable":!1,"wgRestrictionEdit":[],"wgRestrictionMove":[],"wgWikiEditorEnabledModules":{"toolbar":!1,
+"dialogs":!1,"preview":!1,"publish":!1}});mw.loader.implement("user.options",function($,jQuery){mw.user.options.set({"variant":"zh-hans"});});mw.loader.implement("user.tokens",function($,jQuery){mw.user.tokens.set({"editToken":"+\\","patrolToken":"+\\","watchToken":"+\\"});});mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits"]);
+} );</script>
+<link rel="stylesheet" href="Python%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97%20-%20Ubuntu%E4%B8%AD%E6%96%87_files/load_002.css">
+<!--[if IE 6]><link rel="stylesheet" href="/skins/Cavendish/IE60Fixes.css?303" media="screen" /><![endif]-->
+<!--[if IE 7]><link rel="stylesheet" href="/skins/Cavendish/IE70Fixes.css?303" media="screen" /><![endif]-->
+<link rel="stylesheet" href="Python%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97%20-%20Ubuntu%E4%B8%AD%E6%96%87_files/brown.css" media="screen">
+<link rel="stylesheet" href="Python%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97%20-%20Ubuntu%E4%B8%AD%E6%96%87_files/extensions.css" media="screen">
+<link rel="stylesheet" href="Python%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97%20-%20Ubuntu%E4%B8%AD%E6%96%87_files/style.css" media="screen">
+<style>
+.mw-collapsible-toggle{float:right;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;user-select:none}  .mw-content-ltr .mw-collapsible-toggle,.mw-content-rtl .mw-content-ltr .mw-collapsible-toggle{float:right} .mw-content-rtl .mw-collapsible-toggle,.mw-content-ltr .mw-content-rtl .mw-collapsible-toggle{float:left}.mw-customtoggle,.mw-collapsible-toggle{cursor:pointer} caption .mw-collapsible-toggle,.mw-content-ltr caption .mw-collapsible-toggle,.mw-content-rtl caption .mw-collapsible-toggle,.mw-content-rtl .mw-content-ltr caption .mw-collapsible-toggle,.mw-content-ltr .mw-content-rtl caption .mw-collapsible-toggle{float:none} li .mw-collapsible-toggle,.mw-content-ltr li .mw-collapsible-toggle,.mw-content-rtl li .mw-collapsible-toggle,.mw-content-rtl .mw-content-ltr li .mw-collapsible-toggle,.mw-content-ltr .mw-content-rtl li .mw-collapsible-toggle{float:none} .mw-collapsible-toggle-li{list-style:none}
+.suggestions{overflow:hidden;position:absolute;top:0;left:0;width:0;border:none;z-index:1099;padding:0;margin:-1px 0 0 0}.suggestions-special{position:relative;background-color:white;cursor:pointer;border:solid 1px #aaaaaa;padding:0;margin:0;margin-top:-2px;display:none;padding:0.25em 0.25em;line-height:1.25em}.suggestions-results{background-color:white;cursor:pointer;border:solid 1px #aaaaaa;padding:0;margin:0}.suggestions-result{color:black;margin:0;line-height:1.5em;padding:0.01em 0.25em;text-align:left; overflow:hidden;-o-text-overflow:ellipsis; text-overflow:ellipsis;white-space:nowrap}.suggestions-result-current{background-color:#4C59A6;color:white}.suggestions-special .special-label{color:gray;text-align:left}.suggestions-special .special-query{color:black;font-style:italic;text-align:left}.suggestions-special .special-hover{background-color:silver}.suggestions-result-current .special-label,.suggestions-result-current .special-query{color:white}.highlight{font-weight:bold}
+#interwiki-completelist{font-weight:bold}  ol.references{font-size:100%}.references-small{font-size:90%}sup.reference{white-space:nowrap}    .references-2column{font-size:90%;-moz-column-count:2;column-count:2}.same-bg{background:none }ol.references > li:target,sup.reference:target,cite:target{background-color:#DDEEFF}  table.wikitable,table.prettytable{background:#f9f9f9;border:1px #aaaaaa solid;border-collapse:collapse;margin-top:1em;margin-bottom:1em}table.wikitable th,table.wikitable td,table.prettytable th,table.prettytable td{border:1px #aaaaaa solid;padding:0.2em}table.wikitable th,table.prettytable th{background:#f2f2f2;text-align:center}table.wikitable caption,table.prettytable caption{margin-left:inherit;margin-right:inherit}  .notice{text-align:justify;margin:1em;padding:0.2em}#disambig{border-top:3px double #cccccc;border-bottom:3px double #cccccc}#spoiler{border-top:2px solid #ddd;border-bottom:2px solid #ddd} .Talk-Notice{border:1px solid #C0C090;background-color:#F8EABA;margin-bottom:3px;width:80%;border-spacing:3px;margin-left:auto;margin-right:auto}.Talk-Notice:after{content:"The CSS for this template should be changed. See [[Wikipedia:Template Standardisation]]."} .Talk-Notice td{background:inherit} div.thumb{border-top:1em solid #FFFFFF;margin-top:1em}  .allpagesredirect{font-style:italic}  .Use_Default_Date_Convention{display:inline}.Use_AD_and_BC{display:none}.Use_BCE_and_CE{display:none}     .audiolink a{background:url(http://upload.wikimedia.org/wikipedia/commons/f/f7/Loudspeaker.png) center left no-repeat !important;padding-left:16px !important;padding-right:0 !important} div.listenlist{background:url(http://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Gnome-speakernotes.png/30px-Gnome-speakernotes.png);padding-left:40px}div.videolist{background:url(http://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Video.svg/40px-Video.svg.png);padding-left:50px}div.multivideolist{background:url(http://upload.wikimedia.org/wikipedia/en/thumb/7/7a/FilmRoll-small.png/40px-FilmRoll-small.png);padding-left:50px} div.medialist{min-height:50px;margin:1em;background-position:top left;background-repeat:no-repeat}div.medialist ul{list-style-type:none;list-style-image:none;margin:0}div.medialist ul li{padding-bottom:0.5em}div.medialist ul li li{font-size:91%;padding-bottom:0} .plainlinksneverexpand{background:none ! important;padding:0 ! important}.plainlinksneverexpand .urlexpansion{display:none ! important} .plainlinksneverexpand a{background:none !important;padding:0 !important} .plainlinksneverexpand a.external.text:after{display:none !important}.plainlinksneverexpand a.external.autonumber:after{display:none !important} .infobox{border:1px solid #aaaaaa;background-color:#f9f9f9;color:black;margin-bottom:0.5em;margin-left:1em;padding:0.2em;float:right;clear:right}.infobox td,.infobox th{vertical-align:top}.infobox caption{font-size:larger;margin-left:inherit}.infobox.bordered{border-collapse:collapse}.infobox.bordered td,.infobox.bordered th{border:1px solid #aaaaaa}.infobox.bordered .borderless td,.infobox.bordered .borderless th{border:0}.infobox.sisterproject{width:20em;font-size:90%} .infobox.bordered .mergedtoprow td,.infobox.bordered .mergedtoprow th{border:0;border-top:1px solid #aaaaaa;border-right:1px solid #aaaaaa}.infobox.bordered .mergedrow td,.infobox.bordered .mergedrow th{border:0;border-right:1px solid #aaaaaa} .infobox.geography{text-align:left;border-collapse:collapse;line-height:1.2em;font-size:90%}.infobox.geography td,.infobox.geography th{border-top:solid 1px #aaaaaa;padding:0.4em 0.6em 0.4em 0.6em}.infobox.geography .mergedtoprow td,.infobox.geography .mergedtoprow th{border-top:solid 1px #aaaaaa;padding:0.4em 0.6em 0.2em 0.6em}.infobox.geography .mergedrow td,.infobox.geography .mergedrow th{border:0;padding:0 0.6em 0.2em 0.6em}.infobox.geography .mergedbottomrow td,.infobox.geography .mergedbottomrow th{border-top:0;border-bottom:solid 1px #aaaaaa;padding:0 0.6em 0.4em 0.6em}.infobox.geography .maptable td,.infobox.geography .maptable th{border:0;padding:0} .IPA{font-family:"Segoe UI","Chrysanthi Unicode","Doulos SIL","Gentium","GentiumAlt","Code2000","TITUS Cyberbit Basic","DejaVu Sans","Bitstream Cyberbit","Arial Unicode MS","Lucida Sans Unicode","Hiragino Kaku Gothic Pro","Matrix Unicode"}.Unicode{font-family:"Segoe UI","TITUS Cyberbit Basic","Code2000","Doulos SIL","Chrysanthi Unicode","Bitstream Cyberbit","Bitstream CyberBase","Thryomanes","Gentium","GentiumAlt","Visual Geez Unicode","Lucida Grande","Arial Unicode MS","Microsoft Sans Serif","Lucida Sans Unicode"}.latinx{font-family:"TITUS Cyberbit Basic","Code2000","Microsoft Sans Serif"}.polytonic,.interwiki-el a{font-family:"Athena","Gentium","Palatino Linotype","Segoe UI","Arial Unicode MS","Lucida Sans Unicode","Lucida Grande","Code2000"}.mufi{font-family:"Alphabetum","Cardo","LeedsUni","Junicode","TITUS Cyberbit Basic","ALPHA-Demo"}.interwiki-ja a{font-family:"Meiryo","MS PMincho","MS Mincho","MS PGothic","MS Gothic","Arial Unicode MS"}.interwiki-ko a{font-family:"Malgun Gothic","Gulim","Dotum","Arial Unicode MS"}.interwiki-ru a,.interwiki-uk a,.interwiki-be a,.interwiki-bg a,.interwiki-sr a,.interwiki-mk a,.interwiki-os a,.interwiki-tg a,.interwiki-mo a,.interwiki-kk a,.interwiki-ky a,.interwiki-tt a,.interwiki-ba a,.interwiki-cv a,.interwiki-mn a,.interwiki-xal a,.interwiki-udm a,.interwiki-ab a,.interwiki-av a,.interwiki-ce a{ font-family:"Times CY","Times New Roman",Times,serif}.interwiki-ar a,.interwiki-fa a,.interwiki-ur a,.interwiki-ug a{ font-family:"Arial Unicode MS","Microsoft Sans Serif","Times New Roman",Times,serif;direction:rtl}.interwiki-he a,.interwiki-yi a{ font-family:Cardo,"Arial Unicode MS",Code2000,David,"Times New Roman",Times,serif;direction:rtl}.interwiki-af a,.interwiki-als a,.interwiki-an a,.interwiki-ang a,.interwiki-ast a,.interwiki-az a,.interwiki-ba a,.interwiki-bat-smg a,.interwiki-bm a,.interwiki-br a,.interwiki-bs a,.interwiki-ca a,.interwiki-ceb a,.interwiki-co a,.interwiki-cs a,.interwiki-csb a,.interwiki-cy a,.interwiki-da a,.interwiki-de a,.interwiki-en a,.interwiki-eo a,.interwiki-es a,.interwiki-et a,.interwiki-eu a,.interwiki-ff a,.interwiki-fi a,.interwiki-fiu-vro a,.interwiki-fo a,.interwiki-fr a,.interwiki-frp a,.interwiki-fur a,.interwiki-fy a,.interwiki-ga a,.interwiki-gd a,.interwiki-gl a,.interwiki-gv a,.interwiki-ha a,.interwiki-hr a,.interwiki-ht a,.interwiki-hu a,.interwiki-ia a,.interwiki-id a,.interwiki-ie a,.interwiki-ilo a,.interwiki-io a,.interwiki-is a,.interwiki-it a,.interwiki-jbo a,.interwiki-jv a,.interwiki-kg a,.interwiki-ksh a,.interwiki-ku a,.interwiki-kw a,.interwiki-la a,.interwiki-lad a,.interwiki-lb a,.interwiki-li a,.interwiki-lij a,.interwiki-lmo a,.interwiki-ln a,.interwiki-lt a,.interwiki-lv a,.interwiki-map-bms a,.interwiki-mi a,.interwiki-ms a,.interwiki-na a,.interwiki-nap a,.interwiki-nds a,.interwiki-nl a,.interwiki-nn a,.interwiki-no a,.interwiki-nrm a,.interwiki-oc a,.interwiki-om a,.interwiki-os a,.interwiki-pam a,.interwiki-pl a,.interwiki-pms a,.interwiki-pt a,.interwiki-rm a,.interwiki-ro a,.interwiki-sc a,.interwiki-scn a,.interwiki-sco a,.interwiki-se a,.interwiki-simple a,.interwiki-sk a,.interwiki-sl a,.interwiki-so a,.interwiki-sq a,.interwiki-su a,.interwiki-sv a,.interwiki-sw a,.interwiki-tet a,.interwiki-tpi a,.interwiki-tk a,.interwiki-tl a,.interwiki-tw a,.interwiki-tr a,.interwiki-uz a,.interwiki-vec a,.interwiki-vi a,.interwiki-wa a,.interwiki-war a,.interwiki-wo a,.interwiki-yo a,.interwiki-cdo a,.interwiki-zh-min-nan a{font-family:"Times New Roman",Times,serif}#wpSave{font-weight:bold} .hiddenStructure{display:none;speak:none} .nounderlines a{text-decoration:none} #EnWpMainPage{width:100%;margin-top:1em}#EnWpMainPage h2{font-size:130%;font-weight:bold;margin:0;padding:0;border:0}#EnWpMpMargin{margin-right:13.8em}#EnWpMpCol1{float:left;clear:left;width:50%}#EnWpMpCol2{width:49.9%;float:left}#EnWpMpBrowse{background:#f8fcff url(http://upload.wikimedia.org/wikipedia/en/9/9f/MP-three-books.png) no-repeat 180% 9%;border:1px solid #c7c7c7}#EnWpMpBrowseCats li{font-size:85%;margin-left:1em;line-height:1.5}#EnWpMpBrowseCats h3{font-size:120%;margin:.2em 0 .1em -.8em;padding:0;font-weight:normal}#EnWpMpBrowseCats h3 a{font-weight:bold}#EnWpMpBook{background-image:url(http://upload.wikimedia.org/wikipedia/en/7/7e/MP-open-book.png)}#EnWpMpFeaturedPic{text-align:center;margin:0 0 .5em;font-size:85%;font-weight:bold}#EnWpMpFeaturedPic h2{font-size:145%;text-align:left}.EnWpMpBrowseRight{float:right;width:12.7em}.EnWpMpBrowseBottom{margin:1em 0}.EnWpMpBrowseBottom #EnWpMpBrowseCats li,.EnWpMpBrowseBottom #EnWpMpUsefulLinks,.EnWpMpBrowseBottom #EnWpMpFeaturedPic{float:left;width:24%;margin:0;line-height:normal}.EnWpMpBrowseBottom #EnWpMpBrowseCats h3{margin-left:0}#EnWpMpUsefulLinks{clear:left}#EnWpMpSearch{background:url(http://upload.wikimedia.org/wikipedia/en/a/ae/MP-magnifying-glass.png) no-repeat top right}#EnWpMpSearch input{vertical-align:middle}#EnWpMpSearchInner{float:right;width:20em;text-align:center}#bodySearchMP{margin:0;padding:0}#bodySearchMP .bodySearchWrap{float:right;width:17.5em;text-align:left;padding:.8em 0}#bodySearchMP label{display:block;font-size:95%;font-weight:bold;margin-bottom:-.2em}#bodySearchMP .bodySearchBtnGo{font-weight:bold;padding-left:.3em;padding-right:.3em;margin-left:.5em}.EnWpMpContentBox{border:1px solid;margin-bottom:.9em}#EnWpMpCol2 .EnWpMpContentBox{margin-left:.9em}.EnWpMpImage{float:right;margin:0 0 .2em .2em}.EnWpMpImage img{position:relative;z-index:3}#EnWpMpSisterProjects{float:left;width:49%}.EnWpMpSisterProject{float:left;width:17em;margin:0;height:5.5em;margin:0}.EnWpMpSisterImg{float:left;width:40px;height:100%}#EnWpMpOtherLangs{margin-left:50%}#EnWpMainPageNoCSS{display:none}#EnWpMpBook2{background-image:url(http://upload.wikimedia.org/wikipedia/commons/8/8e/MP-open-book2.png)}#EnWpMpSearch2{background:url(http://upload.wikimedia.org/wikipedia/en/3/3a/MP-magnifying-glass2.png) no-repeat top right} .charboxblack a:link,.charboxblack a:hover,.charboxblack a:visited,.charboxblack a:active{color:black}.charboxsilver a:link,.charboxsilver a:hover,.charboxsilver a:visited,.charboxsilver a:active{color:silver}.charboxgray a:link,.charboxgray a:hover,.charboxgray a:visited,.charboxgray a:active{color:gray}.charboxwhite a:link,.charboxwhite a:hover,.charboxwhite a:visited,.charboxwhite a:active{color:white}.charboxmaroon a:link,.charboxmaroon a:hover,.charboxmaroon a:visited,.charboxmaroon a:active{color:maroon}.charboxred a:link,.charboxred a:hover,.charboxred a:visited,.charboxred a:active{color:red}.charboxpurple a:link,.charboxpurple a:hover,.charboxpurple a:visited,.charboxpurple a:active{color:purple}.charboxfuchsia a:link,.charboxfuchsia a:hover,.charboxfuchsia a:visited,.charboxfuchsia a:active{color:fuchsia}.charboxgreen a:link,.charboxgreen a:hover,.charboxgreen a:visited,.charboxgreen a:active{color:green}.charboxlime a:link,.charboxlime a:hover,.charboxlime a:visited,.charboxlime a:active{color:lime}.charboxolive a:link,.charboxolive a:hover,.charboxolive a:visited,.charboxolive a:active{color:olive}.charboxyellow a:link,.charboxyellow a:hover,.charboxyellow a:visited,.charboxyellow a:active{color:yellow}.charboxnavy a:link,.charboxnavy a:hover,.charboxnavy a:visited,.charboxnavy a:active{color:navy}.charboxblue a:link,.charboxblue a:hover,.charboxblue a:visited,.charboxblue a:active{color:blue}.charboxteal a:link,.charboxteal a:hover,.charboxteal a:visited,.charboxteal a:active{color:teal}.charboxaqua a:link,.charboxaqua a:hover,.charboxaqua a:visited,.charboxaqua a:active{color:aqua} .allpagesredirect a:link{color:#0066ff}  .tickerDiffLink{} .tickerMiscLink{}  .tickerList ul,.tickerList ul li{list-style:none;text-indent:-2em;margin-left:2em;text-align:left}.tickerList ul ul,.tickerList ul ul li{list-style:none;text-indent:0;margin-left:1.5em;text-align:left} .tickerEntry_deleted{} .tickerEntry_replaced{} .tickerEntry_tagged{} .tickerEntry_redir{} .tickerEntry_recat{} .tickerEntry_notify{} .tickerEntry_changed{}  .tickerAction_deleted:before{content:"(×)";color:#FF0000;font-family:monospace;font-weight:bold;font-size:100%;background:pink}.tickerAction_replaced:before{content:" REPL ";color:#CC88FF;font-family:monospace;font-weight:bold;font-size:100%}.tickerAction_addedBad:before{content:" +VfD ";color:#FF8800;font-family:monospace;font-weight:bold;font-size:100%}.tickerAction_removedBad:before{content:" -VfD ";color:#00BB00;font-family:monospace;font-weight:bold;font-size:100%}.tickerAction_addedGood:before{content:" +OK ";color:#00BB00;font-family:monospace;font-weight:bold;font-size:100%}.tickerAction_removedGood:before{content:" -OK ";color:#FF8800;font-family:monospace;font-weight:bold;font-size:100%} .tickerUsage{font-size:80%} .tickerTemplateEntry{font-weight:bold} .tickerSubEntry{} .tickerMinorEntry{color:#666} .tickerMinorEntry a,.tickerMinorEntry a:link,.tickerMinorEntry a:visited{color:#669}#bodyContent .tickerMinorEntry a.extiw,#bodyContent .tickerMinorEntry a.extiw:link,#bodyContent .tickerMinorEntry a.extiw:visited{color:#669}   .toccolours{border:1px solid #aaaaaa;background-color:#f9f9f9;padding:5px;font-size:95%} #bodyContent .plainlinks a{padding:0 !important}#p-nav h5{display:none}.portlet a{text-decoration:none}.portlet a:hover{text-decoration:underline}#p-nav .pBody{padding-right:0}#p-nav a{display:block;width:100%} #editpage-specialchars a{text-decoration:none}#editpage-specialchars a:hover{text-decoration:underline}     div.thumb div a img{background-color:#f9f9f9} #file img{background:url(http://upload.wikimedia.org/wikipedia/commons/5/5d/Checker-16x16.png) repeat} #spoken{position:absolute;float:right;text-align:right;font-size:90%;right:0;z-index:1;background:none;border-bottom-style:none;top:-2.2em;display:block !important} .plainlinksneverexpand a.external.text:after{display:none !important }  div.Boxmerge,div.NavFrame{margin:0px;padding:2px;border:1px solid #aaaaaa;border-collapse:collapse;font-size:95%}div.Boxmerge div.NavFrame{border-style:none;border-style:hidden}div.NavFrame + div.NavFrame,div.NavFrame + table.collapsible,table.collapsible + div.NavFrame,table.collapsible + table.collapsible{border-top-style:none;border-top-style:hidden}div.NavPic{background-color:#ffffff;margin:0px;padding:2px;float:left}div.NavFrame div.NavHead{height:1.6em;font-weight:bold;font-size:100%;text-align:center;background-color:#efefef;cursor:pointer}div.NavFrame p{font-size:100%}div.NavFrame div.NavContent{font-size:100%}div.NavFrame div.NavContent p{font-size:100%}div.NavEnd{margin:0px;padding:0px;line-height:1px;clear:both}span.NavToggle{float:right;display:none; text-align:right;font-weight:normal;font-size:smaller} table.ambox{width:80%;margin:0 auto;border-collapse:collapse;background:#fbfbfb;border:1px solid #aaa;border-left:10px solid #1e90ff; }table.ambox th,table.ambox td{ padding:0.25em 0.5em; }table.ambox td.ambox-image{ width:52px;padding:2px 0px 2px 0.5em; text-align:center}table.ambox td.ambox-imageright{ width:52px;padding:2px 4px 2px 0px; text-align:center}table.ambox-notice{border-left:10px solid #1e90ff;   }table.ambox-serious{border-left:10px solid #b22222; }table.ambox-content{border-left:10px solid #f28500; }table.ambox-style{border-left:10px solid #f4c430; }table.ambox-merge{border-left:10px solid #9932cc; }table.ambox-growth{border-left:10px solid #228b22; }table.ambox-protection{border-left:10px solid #bba; }table.ambox-talk{border-left:10px solid #18e7f8; }table.ambox.ambox-mini{ float:right;clear:right;margin:0 0 0 1em;width:25%} .geo-default{display:inline}.geo-nondefault{display:none}.geo-dms{display:inline}.geo-dec{display:inline}.geo-multi-punct{display:none}.longitude .latitude{white-space:nowrap} .geo{}   #content span.coordinates a.external.text:after,#content span.coordinates a.external.autonumber:after{content:""} #coordinates{position:absolute;z-index:1;border:none;background:none;right:12px;top:1.3em;float:right;margin:0.0em;padding:0.0em;line-height:1.5em;text-align:right;text-indent:0;font-size:85%;text-transform:none;white-space:normal} #coordinates a[href ^="http://"]{background:url(http://upload.wikimedia.org/wikipedia/de/d/d4/Gnome-globe.png) center right no-repeat;padding-right:18px !important}  #catlinks{border:1px solid #aaa;background-color:#f9f9f9;padding:5px;margin-top:1em;clear:both}  table.navbox{background-color:#f9f9f9;border:1px solid #aaaaaa;clear:both;font-size:90%;margin:auto;padding:2px;text-align:center;width:100%}table.navbox + table.navbox{margin-top:-1px; }.navbox-title,.navbox-abovebelow,table.navbox th{text-align:center; padding-left:1em;padding-right:1em}.navbox-group{ white-space:nowrap;text-align:right;font-weight:bold;padding-left:1em;padding-right:1em}.navbox,.navbox-subgroup{background:#fdfdfd; }.navbox-title,table.navbox th{background:#ccccff; }.navbox-abovebelow,.navbox-group,.navbox-subgroup .navbox-title{background:#ddddff; }.navbox-subgroup .navbox-group,.navbox-subgroup .navbox-abovebelow{background:#e6e6ff; }.navbox-even{background:#f7f7f7; }.navbox-odd{background:transparent; }table.navbox tr:not(:first-child) th{background-color:#ddf}#toolbar{border:1px solid #aaaaaa} .editsection{font-weight:normal !important;margin-left:1em} .noedit{padding-top:1px}.noedit .editsection{display:none} .messagebox{border:1px solid #aaa;background-color:#f9f9f9;width:80%;margin:0 auto 1em auto;padding:.2em}.messagebox.merge{border:1px solid #c0b8cc;background-color:#f0e5ff;text-align:center}.messagebox.cleanup{border:1px solid #9f9fff;background-color:#efefff;text-align:center}.messagebox.standard-talk{border:1px solid #c0c090;background-color:#f8eaba}.messagebox.nested-talk{border:1px solid #c0c090;background-color:#f8eaba;width:100%;margin:2px 4px 2px 4px}.messagebox.small{width:238px;font-size:85%;float:right;clear:both;margin:0 0 1em 1em;line-height:1.25em}.messagebox.small-talk{width:238px;font-size:85%;float:right;clear:both;margin:0 0 1em 1em;line-height:1.25em;background:#F8EABA} .template-documentation{clear:both;margin:1em 0 0 0;border:1px solid #aaa;background-color:#ecfcf4;padding:5px} #bodyContent a[href$=".pdf"].external,#bodyContent a[href*=".pdf?"].external,#bodyContent a[href*=".pdf#"].external,#bodyContent a[href$=".PDF"].external,#bodyContent a[href*=".PDF?"].external,#bodyContent a[href*=".PDF#"].external{background:url(http://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Icons-mini-file_acrobat.gif/15px-Icons-mini-file_acrobat.gif) center right no-repeat;padding-right:16px}  span.PDFlink a{background:url(http://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Icons-mini-file_acrobat.gif/15px-Icons-mini-file_acrobat.gif) center right no-repeat !important;padding-right:17px !important}span.geolink a{background:url(http://upload.wikimedia.org/wikipedia/en/a/a7/Monobook-globe.png) center right no-repeat !important;padding-right:11px !important} .TipTrackButton_tip,.TipMouseButton_tip,.TipClickButton_tip,.TipTrack_tip,.TipMouse_tip,.TipClick_tip{border:1px solid #8888aa;background:#f7f8ff;padding:0.5em} span.lanLabel{color:#777777;padding-left:0.5em}tt span.minor{margin:0 -2px 0 -3px;font-size:12px}tt span.newpage{margin:0 1px 0 -6px;font-size:12px}tt span.bot{margin:0 -6px 0 1px;font-size:12px}  div.user-block{padding:5px;border:1px solid #A9A9A9;background-color:#FFEFD5} @media screen,handheld,projection{cite *.printonly{display:none}} .plainlinksneverexpand a.external.text:after{display:none !important}.plainlinksneverexpand a.external.autonumber:after{display:none !important} .plainlinksneverexpand a.external.text:after{display:none !important}.plainlinksneverexpand a.external.autonumber:after{display:none !important} .messagebox{border:1px solid #aaa;background-color:#f9f9f9;width:80%;margin:0 auto 1em auto;padding:.2em}.messagebox.merge{border:1px solid #c0b8cc;background-color:#f0e5ff;text-align:center}.messagebox.cleanup{border:1px solid #9f9fff;background-color:#efefff;text-align:center}.messagebox.standard-talk{border:1px solid #c0c090;background-color:#f8eaba;margin:4px auto}.messagebox.nested-talk{border:1px solid #c0c090;background-color:#f8eaba;width:100%;margin:2px 0 0 0;padding:2px}.messagebox.small{width:238px;font-size:85%;float:right;clear:both;margin:0 0 1em 1em;line-height:1.25em}.messagebox.small-talk{width:238px;font-size:85%;float:right;clear:both;margin:0 0 1em 1em;line-height:1.25em;background:#F8EABA} th.mbox-text,td.mbox-text{ border:none;padding:0.25em 0.9em; width:100%}td.mbox-image{ border:none;padding:2px 0 2px 0.9em; text-align:center}td.mbox-imageright{ border:none;padding:2px 0.9em 2px 0; text-align:center} table.ambox{ margin:-1px 10% 0px; border:1px solid #aaa;border-left:10px solid #1e90ff; background:#fbfbfb}.ambox th.mbox-text,.ambox td.mbox-text{ border:none;padding:0.25em 0.5em; width:100%; }.ambox td.mbox-image{ border:none;padding:2px 0 2px 0.5em; text-align:center}.ambox td.mbox-imageright{ border:none;padding:2px 0.5em 2px 0; text-align:center}table.ambox-notice{border-left:10px solid #1e90ff; }table.ambox-speedy{border-left:10px solid #b22222; background:#fee; }table.ambox-serious,table.ambox-delete{ border-left:10px solid #b22222; }table.ambox-content{border-left:10px solid #f28500; }table.ambox-style{border-left:10px solid #f4c430; }table.ambox-merge,table.ambox-move{ border-left:10px solid #9932cc; }table.ambox-protection{border-left:10px solid #bba; } table.imbox{margin:4px 10%;border-collapse:collapse;border:3px solid #1e90ff; background:#fbfbfb}.imbox .mbox-text .imbox{ margin:0 -0.5em; }.mbox-inside .imbox{ margin:4px}table.imbox-notice{border:3px solid #1e90ff; }table.imbox-speedy{border:3px solid #b22222; background:#fee; }table.imbox-delete{border:3px solid #b22222; }table.imbox-content{border:3px solid #f28500; }table.imbox-style{border:3px solid #f4c430; }table.imbox-move{border:3px solid #9932cc; }table.imbox-protection{border:3px solid #bba; }table.imbox-license{border:3px solid #88a; background:#f7f8ff; }table.imbox-featured{border:3px solid #cba135; } table.cmbox{margin:3px 10%;border-collapse:collapse;border:1px solid #aaa;background:#DFE8FF; }table.cmbox-notice{background:#DFE8FF; }table.cmbox-speedy{margin-top:4px;margin-bottom:4px;border:4px solid #b22222; background:#FFDBDB; }table.cmbox-delete{background:#FFDBDB; }table.cmbox-content{background:#FFE7CE; }table.cmbox-style{background:#FFF9DB; }table.cmbox-move{background:#F1D0FF; }table.cmbox-protection{background:#EFEFE1; } table.ombox{margin:4px 10%;border-collapse:collapse;border:1px solid #aaa; background:#f9f9f9}table.ombox-small{ clear:right;float:right;margin:4px 0 4px 1em;width:238px;font-size:88%;line-height:1.25em}table.ombox-notice{border:1px solid #aaa; }table.ombox-speedy{border:2px solid #b22222; background:#fee; }table.ombox-delete{border:2px solid #b22222; }table.ombox-content{border:1px solid #f28500; }table.ombox-style{border:1px solid #f4c430; }table.ombox-move{border:1px solid #9932cc; }table.ombox-protection{border:2px solid #bba; } table.tmbox{margin:4px 10%;border-collapse:collapse;border:1px solid #c0c090; background:#f8eaba}table.tmbox-small{ clear:right;float:right;margin:4px 0 4px 1em;width:238px;font-size:88%;line-height:1.25em}.mbox-inside .tmbox{ margin:2px}table.tmbox-speedy{border:2px solid #b22222; background:#fee; }table.tmbox-delete{border:2px solid #b22222; }table.tmbox-content{border:2px solid #f28500; }table.tmbox-style{border:2px solid #f4c430; }table.tmbox-move{border:2px solid #9932cc; }table.tmbox-protection,table.tmbox-notice{border:1px solid #c0c090; }   .mcBoto{background-color:#d0b0ff; border:0.15em solid #000000;border-color:#f0d0ff #b090e0 #9070c0 #f0d0ff; border-radius-topleft:.5em;border-radius-topright:.5em;-moz-border-radius:.5em .5em 0em 0em;cursor:pointer;display:inline;margin-right:0.1em;padding:0.2em 0.3em 0.2em 0.3em;position:relative}.mcBoto a,.mcBoto strong{background:none !important;color:#7050a0 !important; font-size:90%;font-weight:bold;padding:0 !important;text-decoration:none !important}.mcBoto a:hover,.mcBoto strong:hover{color:black !important;text-decoration:underline !important}.mcBotoSel{background-color:#9070c0; border:0.15em solid #000000;border-color:#b090e0 #7050a0 #9070c0 #b090e0; border-radius-topleft:.5em;border-radius-topright:.5em;-moz-border-radius:.5em .5em 0em 0em;cursor:default;display:inline;margin-right:0.1em;padding:0.2em 0.3em 0.2em 0.3em;position:relative;color:white}.mcBotoSel a{background:none !important;color:white !important;cursor:default;font-size:90%;font-weight:bold;padding:0 !important;text-decoration:none !important}.mcContingut{background-color:#f8f8ff;border:0.2em solid #9070c0; border-color:#9070c0 #7050a0 #7050a0 #9070c0 ; -moz-border-radius:0em .5em .5em 0em;border-radius-topright:.5em;border-radius-bottomright:.5em;padding:1em;position:static}.mcPestanya{background-color:#f8f8ff;border-color:#7050a0 #b090e0 #b090e0 #7050a0; width:100%} .mcVerd .mcBoto{background-color:#a5e085; border-color:#c0f090 #90d060 #75c045 #c0f090}.mcVerd .mcBoto a,.mcVerd .mcBoto strong{color:#60b030 !important; font-size:90%}.mcVerd .mcBoto a:hover,.mcVerd .mcBoto strong:hover{color:black !important;text-decoration:underline}.mcVerd .mcBotoSel{background-color:#75c045; border-color:#90d060 #60b030 #75c045 #90d060}.mcVerd .mcContingut{background-color:#f5fffa;border-color:#75c045 #60b030 #60b030 #75c045 }.mcVerd .mcPestanya{background-color:#f5fffa;border-color:#60b030 #90d060 #90d060 #60b030} .mcVermell .mcBoto{background-color:#FFAAAA; border-color:#FFCCCC #FF8888 #FF0000 #FFCCCC}.mcVermell .mcBoto a,.mcVermell .mcBoto strong{color:#CC0000 !important; font-size:90%}.mcVermell .mcBoto a:hover .mcVermell .mcBoto strong:hover{color:black !important;text-decoration:underline}.mcVermell .mcBotoSel{background-color:#FF0000; border-color:#FF8888 #CC0000 #FF0000 #FF8888}.mcVermell .mcContingut{background-color:#fffafa;border-color:#FF0000 #CC0000 #CC0000 #FF0000}.mcVermell .mcPestanya{background-color:#fffafa;border-color:#CC0000 #FF0000 #FF0000 #CC0000} .mcBlau .mcBoto{background-color:#a7c1e6; border-color:#c8d6e9 #88abde #5b8dd6 #c8d6e9}.mcBlau .mcBoto a,.mcBlau .mcBoto strong{color:#3379de !important; font-size:90%}.mcBlau .mcBoto a:hover .mcBlau .mcBoto strong:hover{color:black !important;text-decoration:underline}.mcBlau .mcBotoSel{background-color:#5b8dd6; border-color:#88abde #3379de #5b8dd6 #88abde}.mcBlau .mcContingut{background-color:#f0f8ff;border-color:#5b8dd6 #3379de #3379de #5b8dd6}.mcBlau .mcPestanya{background-color:#f0f8ff;border-color:#3379de #88abde #88abde #3379de} .mcGroc .mcBoto{background-color:#fff1a4; border-color:#fef4bc #ffe977 #ffe147 #fef4bc}.mcGroc .mcBoto a,.mcGroc .mcBoto strong{color:#ffd813 !important; font-size:90%}.mcGroc .mcBoto a:hover .mcGroc .mcBoto strong:hover{color:black !important;text-decoration:underline}.mcGroc .mcBotoSel{background-color:#ffe147; border-color:#ffe977 #ffd813 #ffe147 #ffe977}.mcGroc .mcContingut{background-color:#fffce8;border-color:#ffe147 #ffd813 #ffd813 #ffe147}.mcGroc .mcPestanya{background-color:#fffce8;border-color:#ffd813 #88abde #88abde #ffd813} .mcTaronja .mcBoto{background-color:#ffbd7f; border-color:#ffd0a4 #ffac5d #ff9d42 #ffd0a4}.mcTaronja .mcBoto a,.mcTaronja .mcBoto strong{color:#ff820e !important; font-size:90%}.mcTaronja .mcBoto a:hover .mcTaronja .mcBoto strong:hover{color:black !important;text-decoration:underline}.mcTaronja .mcBotoSel{background-color:#ff9d42; border-color:#ffac5d #ff820e #ff9d42 #ffac5d}.mcTaronja .mcContingut{background-color:#ffeedd; border-color:#ff9d42 #ff820e #ff820e #ff9d42}.mcTaronja .mcPestanya{background-color:#ffeedd; border-color:#ff820e #ffac5d #ffac5d #ff820e}   strong.mw-plusminus-neg{color:#c00}.mw-plusminus-pos{color:#060}.mw-plusminus-neg{color:#900}
+.postedit-container{margin:0 auto;position:fixed;top:0;height:0;left:50%;z-index:1000;font-size:13px}.postedit-container:hover{cursor:pointer}.postedit{position:relative;top:0.6em;left:-50%;padding:.6em 3.6em .6em 1.1em;line-height:1.5625em;color:#626465;background-color:#f4f4f4;border:1px solid #dcd9d9;text-shadow:0 0.0625em 0 rgba(255,255,255,0.5);border-radius:5px;box-shadow:0 2px 5px 0 #ccc;-webkit-transition:all 0.25s ease-in-out;-moz-transition:all 0.25s ease-in-out;-ms-transition:all 0.25s ease-in-out;-o-transition:all 0.25s ease-in-out;transition:all 0.25s ease-in-out}.skin-monobook .postedit{top:6em !important}.postedit-faded{opacity:0}.postedit-icon{padding-left:41px;  line-height:25px;background-repeat:no-repeat;background-position:8px 50%}.postedit-icon-checkmark{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAABblBMVEUAAAD///////9PfTf///80aRdTgjn///9Feij///////////9Rfzf///////////9PfjZRgDh1o1xOfTb///////+bwYqLtnj///////9PfTa82K////9WhT6YxIL///9QgDdTgzr////////j7uDl7eLq8efi693k7OH///////9UhjuBr2rp9uRUhjr///9YljVKgir///9WiTlYjT3////9/v57vFlbkT5PjC9dlD/5/fhuq09stUTs9uhxuElctCpfnT1huDFloEZloUZmpENmvDZpvDxpvTxqvjxrvT5rvT9rwTxsqktswD5uwkBvuUdxw0NztFBztU9ztVBzwkp0tlJ1xkd2t1R3uVR4w1F4xk54x014yE15uVZ5v1R5xVB6v1R7yFJ8wVh9xVl9yFR9yVd9ylN+xVh+yFd/x1l/yFeAylmEx1+Ny2uY0Hqe04Wj1Ymv3Ze33qLD47TJ5L3O6cPU7Mrq9eb2+/Q4j37OAAAAQHRSTlMAAQIEBAUFBQwPFB4fJCUoKiosQEhJS01RUlZZXmdydXaChYuSlJSWmJmoq6uur8LExcvM19fg5ejt8fX2+Pr7SljgewAAAKpJREFUGBkFwQNCAwAAAMDLtl3LtrG4rWXbtvX77gAgZ6grFwC0bhwNVgKgdPZx8b0dgLi+s7Wn0VoAqpfOI9+BNADZI7fLrz2pSEwGHZuH+78lSK8ZLkLezF3ooyUG3VPXq2USei9WngeyoG195yBYWDF3E/2pAhl1e9Gr8bGT+bfOFCC2fnvh4X7rcqIAQNNu+HT6sxkAjceTL/2ZAIhv+PorBwBJxfkA//dFHSCBy/UTAAAAAElFTkSuQmCC);background-image:url(/resources/src/mediawiki.action/images/green-checkmark.png?9048a)!ie;background-position:left}.postedit-close{position:absolute;padding:0 .8em;right:0;top:0;font-size:1.25em;font-weight:bold;line-height:2.3em;color:black;text-shadow:0 0.0625em 0 white;text-decoration:none;opacity:0.2;filter:alpha(opacity=20)}.postedit-close:hover{color:black;text-decoration:none;opacity:0.4;filter:alpha(opacity=40)}</style><style>
+.suggestions a.mw-searchSuggest-link,.suggestions a.mw-searchSuggest-link:hover,.suggestions a.mw-searchSuggest-link:active,.suggestions a.mw-searchSuggest-link:focus{color:black;text-decoration:none}.suggestions-result-current a.mw-searchSuggest-link,.suggestions-result-current a.mw-searchSuggest-link:hover,.suggestions-result-current a.mw-searchSuggest-link:active,.suggestions-result-current a.mw-searchSuggest-link:focus{color:white}.suggestions a.mw-searchSuggest-link .special-query{ overflow:hidden;-o-text-overflow:ellipsis; text-overflow:ellipsis;white-space:nowrap}</style><meta name="ResourceLoaderDynamicStyles" content="">
+<link rel="stylesheet" href="Python%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97%20-%20Ubuntu%E4%B8%AD%E6%96%87_files/load.css">
+<style>a:lang(ar),a:lang(kk-arab),a:lang(mzn),a:lang(ps),a:lang(ur){text-decoration:none}</style>
+<script async="" src="Python%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97%20-%20Ubuntu%E4%B8%AD%E6%96%87_files/load.php" type="text/javascript"></script>
+<meta name="generator" content="MediaWiki 1.26.3">
+<link rel="shortcut icon" href="https://wiki.ubuntu.org.cn/favicon.ico">
+<link rel="search" type="application/opensearchdescription+xml" href="https://wiki.ubuntu.org.cn/opensearch_desc.php" title="Ubuntu中文 (zh-hans)">
+<link rel="EditURI" type="application/rsd+xml" href="https://wiki.ubuntu.org.cn/api.php?action=rsd">
+<link rel="alternate" type="application/atom+xml" title="Ubuntu中文的Atom feed" href="https://wiki.ubuntu.org.cn/index.php?title=%E7%89%B9%E6%AE%8A:%E6%9C%80%E8%BF%91%E6%9B%B4%E6%94%B9&amp;feed=atom">
+<link rel="canonical" href="https://wiki.ubuntu.org.cn/Python%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97">
+<script src="Python%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97%20-%20Ubuntu%E4%B8%AD%E6%96%87_files/load_002.php"></script></head>
+<body class="mediawiki ltr sitedir-ltr ns-0 ns-subject page-Python正则表达式操作指南 skin-cavendish action-view">
+<div id="internal"></div>
+
+<div id="globalWrapper" class="view">
+<div id="p-personal" class="portlet">
+<h5>个人工具</h5>
+<div class="pBody">
+<ul>
+<li id="pt-login" class="top-nav-element">
+<span class="top-nav-left">&nbsp;</span>
+<a class="top-nav-mid " href="https://wiki.ubuntu.org.cn/index.php?title=%E7%89%B9%E6%AE%8A:%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95&amp;returnto=Python%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97">
+登录</a>
+<span class="top-nav-right">&nbsp;</span></li>
+</ul>
+</div>
+</div>
+<div id="header">
+<a name="top" id="contentTop"></a>
+<h6>
+<a href="https://wiki.ubuntu.org.cn/%E9%A6%96%E9%A1%B5" title="首页">Python正则表达式操作指南 - Ubuntu中文</a></h6>
+<div id="p-cactions" class="portlet"><ul>
+<li id="ca-nstab-main" class="selected"><a href="https://wiki.ubuntu.org.cn/Python%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97" title="查看内容页面">页面</a></li>
+<li id="ca-talk" class="new"><a href="https://wiki.ubuntu.org.cn/index.php?title=%E8%AE%A8%E8%AE%BA:Python%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97&amp;action=edit&amp;redlink=1" title="关于内容页面的讨论">讨论</a></li>
+<li id="ca-viewsource"><a href="https://wiki.ubuntu.org.cn/index.php?title=Python%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97&amp;action=edit" title="本页面受到保护。
+您可以查看其源代码">查看源代码</a></li>
+<li id="ca-history"><a href="https://wiki.ubuntu.org.cn/index.php?title=Python%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97&amp;action=history" title="本页面过去的版本">历史</a></li> </ul></div>
+<div id="p-search" class="portlet" role="search">
+<h3><label for="searchInput">搜索</label></h3>
+<div id="searchBody" class="pBody">
+<form action="/index.php" id="searchform">
+<input type="hidden" name="title" value="特殊:搜索">
+<input type="search" name="search" placeholder="搜索" title="搜索Ubuntu中文[Alt+Shift+f]" accesskey="f" id="searchInput" autocomplete="off">
+<input type="submit" name="go" value="前往" title="若相同标题存在，则直接前往该页面" id="searchGoButton" class="searchButton">&nbsp;
+<input type="submit" name="fulltext" value="搜索" title="搜索含这些文字的页面" id="mw-searchButton" class="searchButton">
+</form>
+</div>
+</div>
+</div>
+<div id="mBody">
+<div id="side">
+<div id="nav">
+<div class="generated-sidebar portlet" id="p-navigation" role="navigation">
+<h3>导航</h3>
+<div class="pBody">
+<ul>
+<li id="n-mainpage-description"><a href="https://wiki.ubuntu.org.cn/%E9%A6%96%E9%A1%B5" title="访问首页[Alt+Shift+z]" accesskey="z">首页</a></li>
+<li id="n-recentchanges"><a href="https://wiki.ubuntu.org.cn/%E7%89%B9%E6%AE%8A:%E6%9C%80%E8%BF%91%E6%9B%B4%E6%94%B9" title="本wiki最近更改的列表[Alt+Shift+r]" accesskey="r">最近更改</a></li>
+<li id="n-randompage"><a href="https://wiki.ubuntu.org.cn/%E7%89%B9%E6%AE%8A:%E9%9A%8F%E6%9C%BA" title="载入一个随机页面[Alt+Shift+x]" accesskey="x">随机页面</a></li>
+<li id="n-.E9.A1.B5.E9.9D.A2.E5.88.86.E7.B1.BB"><a href="https://wiki.ubuntu.org.cn/%E5%88%86%E7%B1%BB:%E9%A1%B5%E9%9D%A2%E5%88%86%E7%B1%BB">页面分类</a></li>
+<li id="n-help"><a href="https://www.mediawiki.org/wiki/Special:MyLanguage/Help:Contents" title="查找帮助的地方">帮助</a></li>
+</ul>
+</div>
+</div>
+<div class="generated-sidebar portlet" id="p-.E7.BC.96.E8.BE.91" role="navigation">
+<h3>编辑</h3>
+<div class="pBody">
+<ul>
+<li id="n-.E7.BC.96.E8.BE.91.E6.8C.87.E5.8D.97"><a href="https://wiki.ubuntu.org.cn/%E5%88%86%E7%B1%BB:%E8%B4%A1%E7%8C%AE">编辑指南</a></li>
+<li id="n-.E6.B2.99.E7.9B.92"><a href="https://wiki.ubuntu.org.cn/%E6%B2%99%E7%9B%92">沙盒</a></li>
+<li id="n-currentevents"><a href="https://wiki.ubuntu.org.cn/Ubuntu%E4%B8%AD%E6%96%87:%E6%96%B0%E9%97%BB%E5%8A%A8%E6%80%81" title="查看当前事件的背景信息">新闻动态</a></li>
+<li id="n-.E5.AD.97.E8.AF.8D.E5.A4.84.E7.90.86"><a href="https://wiki.ubuntu.org.cn/MediaWiki:Conversiontable/zh-hant">字词处理</a></li>
+</ul>
+</div>
+</div>
+<div class="portlet" id="p-tb" role="navigation">
+<h3>工具</h3>
+<div class="pBody">
+<ul>
+<li id="t-whatlinkshere"><a href="https://wiki.ubuntu.org.cn/%E7%89%B9%E6%AE%8A:%E9%93%BE%E5%85%A5%E9%A1%B5%E9%9D%A2/Python%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97" title="所有链接至本页面的wiki页面的列表[Alt+Shift+j]" accesskey="j">链入页面</a></li>
+<li id="t-recentchangeslinked"><a href="https://wiki.ubuntu.org.cn/%E7%89%B9%E6%AE%8A:%E6%9C%80%E8%BF%91%E9%93%BE%E5%87%BA%E6%9B%B4%E6%94%B9/Python%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97" title="链自本页的页面的最近更改[Alt+Shift+k]" accesskey="k">相关更改</a></li>
+<li id="t-specialpages"><a href="https://wiki.ubuntu.org.cn/%E7%89%B9%E6%AE%8A:%E7%89%B9%E6%AE%8A%E9%A1%B5%E9%9D%A2" title="所有特殊页面的列表[Alt+Shift+q]" accesskey="q">特殊页面</a></li>
+<li id="t-print"><a href="https://wiki.ubuntu.org.cn/index.php?title=Python%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97&amp;printable=yes" rel="alternate" title="本页面的可打印版本[Alt+Shift+p]" accesskey="p">打印版本</a></li>
+<li id="t-permalink"><a href="https://wiki.ubuntu.org.cn/index.php?title=Python%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97&amp;oldid=151894" title="本页面该版本的固定链接">固定链接</a></li>
+<li id="t-info"><a href="https://wiki.ubuntu.org.cn/index.php?title=Python%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97&amp;action=info" title="关于此页面的更多信息">页面信息</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="column-content">
+<div id="content">
+<a id="top"></a>
+<h1 id="firstHeading" class="firstHeading">Python正则表达式操作指南</h1>
+<div id="bodyContent">
+<h3 id="siteSub">来自Ubuntu中文</h3>
+<div id="contentSub"></div>
+<div id="jump-to-nav">跳转至： <a href="#column-one">导航</a>, <a href="#searchInput">搜索</a></div> 
+<div id="mw-content-text" lang="zh-Hans" dir="ltr" class="mw-content-ltr"><p>原文出处：<a rel="nofollow" class="external free" href="http://www.amk.ca/python/howto/regex/">http://www.amk.ca/python/howto/regex/</a>
+</p><p>原文作者：A.M. Kuchling （amk@amk.ca）
+</p><p>授权许可：<a rel="nofollow" class="external text" href="http://www.creativecommons.cn/licenses/by-nc-sa/1.0/">创作共用协议</a>
+</p><p>翻译人员：FireHare
+</p><p>校对人员：<a href="https://wiki.ubuntu.org.cn/Leal" title="Leal" class="mw-redirect">Leal</a>
+</p><p>适用版本：Python 1.5 及后续版本
+</p>
+<hr>
+<p><b> 摘要 </b>
+</p><p><br>
+本文是通过Python的 re 模块来使用正则表达式的一个入门教程，和库参考手册的对应章节相比，更为浅显易懂、循序渐进。<br>
+</p><p>本文可以从 <a rel="nofollow" class="external free" href="http://www.amk.ca/python/howto">http://www.amk.ca/python/howto</a> 捕获<br>
+</p><p><br>
+<b> 目录 </b>
+</p><p><br>
+</p>
+<div id="toc" class="toc"><div id="toctitle"><h2>目录</h2><span class="toctoggle">&nbsp;[<a href="#" id="togglelink">隐藏</a>]&nbsp;</span></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#.E7.AE.80.E4.BB.8B"><span class="tocnumber">1</span> <span class="toctext">简介</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="#.E7.AE.80.E5.8D.95.E6.A8.A1.E5.BC.8F"><span class="tocnumber">2</span> <span class="toctext">简单模式</span></a>
+<ul>
+<li class="toclevel-2"><a href="#.E5.AD.97.E7.AC.A6.E5.8C.B9.E9.85.8D"><span class="tocnumber">2.1</span> <span class="toctext">字符匹配</span></a></li>
+<li class="toclevel-2 tocsection-3"><a href="#.E9.87.8D.E5.A4.8D"><span class="tocnumber">2.2</span> <span class="toctext">重复</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-4"><a href="#.E4.BD.BF.E7.94.A8.E6.AD.A3.E5.88.99.E8.A1.A8.E8.BE.BE.E5.BC.8F"><span class="tocnumber">3</span> <span class="toctext">使用正则表达式</span></a>
+<ul>
+<li class="toclevel-2 tocsection-5"><a href="#.E7.BC.96.E8.AF.91.E6.AD.A3.E5.88.99.E8.A1.A8.E8.BE.BE.E5.BC.8F"><span class="tocnumber">3.1</span> <span class="toctext">编译正则表达式</span></a></li>
+<li class="toclevel-2 tocsection-6"><a href="#.E5.8F.8D.E6.96.9C.E6.9D.A0.E7.9A.84.E9.BA.BB.E7.83.A6"><span class="tocnumber">3.2</span> <span class="toctext">反斜杠的麻烦</span></a></li>
+<li class="toclevel-2"><a href="#.E6.89.A7.E8.A1.8C.E5.8C.B9.E9.85.8D"><span class="tocnumber">3.3</span> <span class="toctext">执行匹配</span></a></li>
+<li class="toclevel-2 tocsection-7"><a href="#.E6.A8.A1.E5.9D.97.E7.BA.A7.E5.87.BD.E6.95.B0"><span class="tocnumber">3.4</span> <span class="toctext">模块级函数</span></a></li>
+<li class="toclevel-2 tocsection-8"><a href="#.E7.BC.96.E8.AF.91.E6.A0.87.E5.BF.97"><span class="tocnumber">3.5</span> <span class="toctext">编译标志</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-9"><a href="#.E6.9B.B4.E5.A4.9A.E6.A8.A1.E5.BC.8F.E5.8A.9F.E8.83.BD"><span class="tocnumber">4</span> <span class="toctext">更多模式功能</span></a>
+<ul>
+<li class="toclevel-2 tocsection-10"><a href="#.E6.9B.B4.E5.A4.9A.E7.9A.84.E5.85.83.E5.AD.97.E7.AC.A6"><span class="tocnumber">4.1</span> <span class="toctext">更多的元字符</span></a></li>
+<li class="toclevel-2 tocsection-11"><a href="#.E5.88.86.E7.BB.84"><span class="tocnumber">4.2</span> <span class="toctext">分组</span></a></li>
+<li class="toclevel-2 tocsection-12"><a href="#.E6.97.A0.E6.8D.95.E8.8E.B7.E7.BB.84.E5.92.8C.E5.91.BD.E5.90.8D.E7.BB.84"><span class="tocnumber">4.3</span> <span class="toctext">无捕获组和命名组</span></a></li>
+<li class="toclevel-2 tocsection-13"><a href="#.E5.89.8D.E5.90.91.E7.95.8C.E5.AE.9A.E7.AC.A6"><span class="tocnumber">4.4</span> <span class="toctext">前向界定符</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-14"><a href="#.E4.BF.AE.E6.94.B9.E5.AD.97.E7.AC.A6.E4.B8.B2"><span class="tocnumber">5</span> <span class="toctext">修改字符串</span></a>
+<ul>
+<li class="toclevel-2 tocsection-15"><a href="#.E5.B0.86.E5.AD.97.E7.AC.A6.E4.B8.B2.E5.88.86.E7.89.87"><span class="tocnumber">5.1</span> <span class="toctext">将字符串分片</span></a></li>
+<li class="toclevel-2 tocsection-16"><a href="#.E6.90.9C.E7.B4.A2.E5.92.8C.E6.9B.BF.E6.8D.A2"><span class="tocnumber">5.2</span> <span class="toctext">搜索和替换</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-17"><a href="#.E5.B8.B8.E8.A7.81.E9.97.AE.E9.A2.98"><span class="tocnumber">6</span> <span class="toctext">常见问题</span></a>
+<ul>
+<li class="toclevel-2 tocsection-18"><a href="#.E4.BD.BF.E7.94.A8.E5.AD.97.E7.AC.A6.E4.B8.B2.E6.96.B9.E5.BC.8F"><span class="tocnumber">6.1</span> <span class="toctext">使用字符串方式</span></a></li>
+<li class="toclevel-2 tocsection-19"><a href="#match.28.29_vs_search.28.29"><span class="tocnumber">6.2</span> <span class="toctext">match() vs search()</span></a></li>
+<li class="toclevel-2 tocsection-20"><a href="#.E8.B4.AA.E5.A9.AA_vs_.E4.B8.8D.E8.B4.AA.E5.A9.AA"><span class="tocnumber">6.3</span> <span class="toctext">贪婪 vs 不贪婪</span></a></li>
+<li class="toclevel-2 tocsection-21"><a href="#.E4.B8.8D.E7.94.A8_re.VERBOSE"><span class="tocnumber">6.4</span> <span class="toctext">不用 re.VERBOSE</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-22"><a href="#.E5.8F.8D.E9.A6.88"><span class="tocnumber">7</span> <span class="toctext">反馈</span></a></li>
+<li class="toclevel-1 tocsection-23"><a href="#.E5.A4.A7.E6.A0.87.E9.A2.98.E6.96.87.E5.AD.97"><span class="tocnumber">8</span> <span class="toctext">大标题文字</span></a></li>
+<li class="toclevel-1 tocsection-24"><a href="#.E5.85.B3.E4.BA.8E.E6.9C.AC.E6.96.87.E6.A1.A3"><span class="tocnumber">9</span> <span class="toctext">关于本文档</span></a></li>
+<li class="toclevel-1 tocsection-25"><a href="#of_LaTeX2HTML_to_the_Python_documentation"><span class="tocnumber">10</span> <span class="toctext">of LaTeX2HTML to the Python documentation</span></a></li>
+</ul>
+</div>
+<h3><span class="mw-headline" id=".E7.AE.80.E4.BB.8B">简介</span></h3>
+<p>Python 自1.5版本起增加了re 模块，它提供 Perl 风格的正则表达式模式。Python 1.5之前版本则是通过 regex 
+模块提供 Emacs 风格的模式。Emacs 风格模式可读性稍差些，而且功能也不强，因此编写新代码时尽量不要再使用 regex 
+模块，当然偶尔你还是可能在老代码里发现其踪影。
+</p><p><br>
+就其本质而言，正则表达式（或 RE）是一种小型的、高度专业化的编程语言，（在Python中）它内嵌在Python中，并通过 re 
+模块实现。使用这个小型语言，你可以为想要匹配的相应字符串集指定规则；该字符串集可能包含英文语句、e-mail地址、TeX命令或任何你想搞定的东
+西。然后你可以问诸如“这个字符串匹配该模式吗？”或“在这个字符串中是否有部分匹配该模式呢？”。你也可以使用 RE 以各种方式来修改或分割字符串。
+</p><p><br>
+正则表达式模式被编译成一系列的字节码，然后由用 C 编写的匹配引擎执行。在高级用法中，也许还要仔细留意引擎是如何执行给定 RE ，如何以特定方式编写 RE 以令生产的字节码运行速度更快。本文并不涉及优化，因为那要求你已充分掌握了匹配引擎的内部机制。
+</p><p><br>
+正则表达式语言相对小型和受限（功能有限），因此并非所有字符串处理都能用正则表达式完成。当然也有些任务可以用正则表达式完成，不过最终表达式会变得异
+常复杂。碰到这些情形时，编写 Python 代码进行处理可能反而更好；尽管 Python 代码比一个精巧的正则表达式要慢些，但它更易理解。
+</p>
+<h3><span class="mw-headline" id=".E7.AE.80.E5.8D.95.E6.A8.A1.E5.BC.8F">简单模式</span></h3>
+<p>我们将从最简单的正则表达式学习开始。由于正则表达式常用于字符串操作，那我们就从最常见的任务：字符匹配 下手。
+</p><p><br>
+有关正则表达式底层的计算机科学上的详细解释（确定性和非确定性有限自动机），你可以查阅编写编译器相关的任何教科书。
+</p>
+<h4><span class="mw-headline" id=".E5.AD.97.E7.AC.A6.E5.8C.B9.E9.85.8D">字符匹配</span></h4>
+<p>大多数字母和字符一般都会和自身匹配。例如，正则表达式 test 会和字符串“test”完全匹配。（你也可以使用大小写不敏感模式，它还能让这个 RE 匹配“Test”或“TEST”；稍后会有更多解释。）</p>
+<p>这个规则当然会有例外；有些字符比较特殊，它们和自身并不匹配，而是会表明应和一些特殊的东西匹配，或者它们会影响到 RE 其它部分的重复次数。本文很大篇幅专门讨论了各种元字符及其作用。</p>
+<p>这里有一个元字符的完整列表；其含义会在本指南余下部分进行讨论。</p>
+<pre>. ^ $ * +&nbsp;? { [ ] \ | ( )</pre>
+<p>我们首先考察的元字符是"[" 和 
+"]"。它们常用来指定一个字符类别，所谓字符类别就是你想匹配的一个字符集。字符可以单个列出，也可以用“-”号分隔的两个给定字符来表示一个字符区
+间。例如，[abc] 将匹配"a", "b", 或 
+"c"中的任意一个字符；也可以用区间[a-c]来表示同一字符集，和前者效果一致。如果你只想匹配小写字母，那么 RE 应写成 [a-z].</p>
+<p>元字符在类别里并不起作用。例如，[akm$]将匹配字符"a", "k", "m", 或 "$" 中的任意一个；"$"通常用作元字符，但在字符类别里，其特性被除去，恢复成普通字符。</p>
+<p>你可以用补集来匹配不在区间范围内的字符。其做法是把"^"作为类别的首个字符；其它地方的"^"只会简单匹配 "^"字符本身。例如，[^5] 将匹配除 "5" 之外的任意字符。</p>
+<p>也许最重要的元字符是反斜杠"\"。 做为 Python 
+中的字符串字母，反斜杠后面可以加不同的字符以表示不同特殊意义。它也可以用于取消所有的元字符，这样你就可以在模式中匹配它们了。举个例子，如果你需要
+匹配字符 "[" 或 "\"，你可以在它们之前用反斜杠来取消它们的特殊意义： \[ 或 \\。</p>
+<p>一些用 "\" 开始的特殊字符所表示的预定义字符集通常是很有用的，象数字集，字母集，或其它非空字符集。下列是可用的预设特殊字符：</p>
+<pre>\d  匹配任何十进制数；它相当于类 [0-9]。
+\D  匹配任何非数字字符；它相当于类 [^0-9]。
+\s  匹配任何空白字符；它相当于类  [ \t\n\r\f\v]。
+\S  匹配任何非空白字符；它相当于类 [^ \t\n\r\f\v]。
+\w  匹配任何字母数字字符；它相当于类 [a-zA-Z0-9_]。
+\W  匹配任何非字母数字字符；它相当于类 [^a-zA-Z0-9_]。
+</pre>
+<p><br>
+</p>
+<p>这样特殊字符都可以包含在一个字符类中。如，[\s,.]字符类将匹配任何空白字符或","或"."。</p>
+<p>本节最后一个元字符是 . 。它匹配除了换行字符外的任何字符，在 alternate 模式（re.DOTALL）下它甚至可以匹配换行。"." 通常被用于你想匹配“任何字符”的地方。</p>
+<h4><span class="mw-headline" id=".E9.87.8D.E5.A4.8D">重复</span></h4>
+<p>正则表达式第一件能做的事是能够匹配不定长的字符集，而这是其它能作用在字符串上的方法所不能做到的。 不过，如果那是正则表达式唯一的附加功能的话，那么它们也就不那么优秀了。它们的另一个功能就是你可以指定正则表达式的一部分的重复次数。
+</p><p>我们讨论的第一个重复功能的元字符是 *。* 并不匹配字母字符 "*"；相反，它指定前一个字符可以被匹配零次或更多次，而不是只有一次。
+</p><p>举个例子，ca*t 将匹配 "ct" (0 个 "a" 字符), "cat" (1 个 "a"), "caaat" (3 个 
+"a" 字符)等等。RE 引擎有各种来自 C 的整数类型大小的内部限制，以防止它匹配超过20亿个 "a" 
+字符；你也许没有足够的内存去建造那么大的字符串，所以将不会累计到那个限制。
+</p><p>象 * 这样地重复是“贪婪的”；当重复一个 RE 时，匹配引擎会试着重复尽可能多的次数。如果模式的后面部分没有被匹配，匹配引擎将退回并再次尝试更小的重复。
+</p><p><br>
+一步步的示例可以使它更加清晰。让我们考虑表达式 a[bcd]*b。它匹配字母 "a"，零个或更多个来自类 [bcd]中的字母，最后以 "b" 结尾。现在想一想该 RE 对字符串 "abcbd" 的匹配。
+</p>
+<table border="1" cellspacing="0">
+<tbody><tr>
+<td>Step</td>
+<td>Matched</td>
+<td>Explanation
+</td></tr>
+<tr>
+<td>1</td>
+<td>a</td>
+<td>a 匹配模式
+</td></tr>
+<tr>
+<td>2</td>
+<td>abcbd</td>
+<td>引擎匹配 [bcd]*，并尽其所能匹配到字符串的结尾
+</td></tr>
+<tr>
+<td>3</td>
+<td>Failure</td>
+<td>引擎尝试匹配 b，但当前位置已经是字符的最后了，所以失败
+</td></tr>
+<tr>
+<td>4</td>
+<td>abcb</td>
+<td>退回，[bcd]*尝试少匹配一个字符。
+</td></tr>
+<tr>
+<td>5</td>
+<td>Failure</td>
+<td>再次尝次b，但在当前最后一位字符是"d"。
+</td></tr>
+<tr>
+<td>6</td>
+<td>abc</td>
+<td>再次退回，[bcd]*只匹配 "bc"。
+</td></tr>
+<tr>
+<td>7</td>
+<td>abcb</td>
+<td>再次尝试 b ，这次当前位上的字符正好是 "b"
+</td></tr></tbody></table>
+<p>RE 的结尾部分现在可以到达了，它匹配 "abcb"。这证明了匹配引擎一开始会尽其所能进行匹配，如果没有匹配然后就逐步退回并反复尝试 RE
+ 剩下来的部分。直到它退回尝试匹配 [bcd] 到零次为止，如果随后还是失败，那么引擎就会认为该字符串根本无法匹配 RE 。
+</p><p><br>
+另一个重复元字符是 +，表示匹配一或更多次。请注意 * 和 + 之间的不同；* 匹配零或更多次，所以可以根本就不出现，而 + 
+则要求至少出现一次。用同一个例子，ca+t 就可以匹配 "cat" (1 个 "a")， "caaat" (3 个 "a")， 但不能匹配 
+"ct"。
+</p><p><br>
+还有更多的限定符。问号&nbsp;? 匹配一次或零次；你可以认为它用于标识某事物是可选的。例如：home-?brew 匹配 "homebrew" 或 "home-brew"。
+</p><p><br>
+最复杂的重复限定符是 {m,n}(注意m,n之间不能有空格)，其中 m 和 n 是十进制整数。该限定符的意思是至少有 m 个重复，至多到 n 
+个重复。举个例子，a/{1,3}b 将匹配 "a/b"，"a//b" 和 "a///b"。它不能匹配 "ab" 因为没有斜杠，也不能匹配 
+"a////b" ，因为有四个。
+</p><p><br>
+你可以忽略 m 或 n；因为会为缺失的值假设一个合理的值。忽略 m 会认为下边界是 0，而忽略 n 的结果将是上边界为无穷大 -- 实际上是先前我们提到的20亿，但这也许同无穷大一样。
+</p><p><br>
+细心的读者也许注意到其他三个限定符都可以用这样方式来表示。 {0,} 等同于 *，{1,} 等同于 +，而{0,1}则与&nbsp;? 相同。如果可以的话，最好使用 *，+，或?。很简单因为它们更短也更容易懂。
+</p>
+<h3><span class="mw-headline" id=".E4.BD.BF.E7.94.A8.E6.AD.A3.E5.88.99.E8.A1.A8.E8.BE.BE.E5.BC.8F">使用正则表达式</span></h3>
+<p>现在我们已经看了一些简单的正则表达式，那么我们实际在 Python 中是如何使用它们的呢？ re 模块提供了一个正则表达式引擎的接口，可以让你将 REs 编译成对象并用它们来进行匹配。
+</p>
+<h4><span class="mw-headline" id=".E7.BC.96.E8.AF.91.E6.AD.A3.E5.88.99.E8.A1.A8.E8.BE.BE.E5.BC.8F">编译正则表达式</span></h4>
+<p>正则表达式被编译成 `RegexObject` 实例，可以为不同的操作提供方法，如模式匹配搜索或字符串替换。
+</p>
+<pre>#python
+&gt;&gt;&gt; import re
+&gt;&gt;&gt; p = re.compile('ab*')
+&gt;&gt;&gt; print p
+&lt;_sre.SRE_Pattern object at 0xb76e1a70&gt;
+</pre>
+<p>re.compile() 也接受可选的标志参数，常用来实现不同的特殊功能和语法变更。我们稍后将查看所有可用的设置，但现在只举一个例子：
+</p>
+<pre>#!python
+&gt;&gt;&gt; p = re.compile('ab*', re.IGNORECASE)
+</pre>
+<p>RE 被做为一个字符串发送给 re.compile()。REs 被处理成字符串是因为正则表达式不是 Python 
+语言的核心部分，也没有为它创建特定的语法。（应用程序根本就不需要 REs，因此没必要包含它们去使语言说明变得臃肿不堪。）而 re 
+模块则只是以一个 C 扩展模块的形式来被 Python 包含，就象 socket 或 zlib 模块一样
+</p><p><br>
+将 REs 作为字符串以保证 Python 语言的简洁，但这样带来的一个麻烦就是象下节标题所讲的。
+</p>
+<h4><span class="mw-headline" id=".E5.8F.8D.E6.96.9C.E6.9D.A0.E7.9A.84.E9.BA.BB.E7.83.A6">反斜杠的麻烦</span></h4>
+<p>在早期规定中，正则表达式用反斜杠字符 ("\") 来表示特殊格式或允许使用特殊字符而不调用它的特殊用法。这就与 Python 在字符串中的那些起相同作用的相同字符产生了冲突。
+</p><p><br>
+让我们举例说明，你想写一个 RE 以匹配字符串 "\section"，可能是在一个 LATEX 
+文件查找。为了要在程序代码中判断，首先要写出想要匹配的字符串。接下来你需要在所有反斜杠和其它元字符前加反斜杠来取消其特殊意义，结果要匹配的字符串
+就成了"\\section"。 
+当把这个字符串传递给re.compile()时必须还是"\\section"。然而，作为Python的字符串实值(string 
+literals)来表示的话，"\\section"中两个反斜杠还要再次取消特殊意义，最后结果就变成了"\\\\section"。
+</p>
+<table border="1" cellspacing="0">
+<tbody><tr>
+<td>字符</td>
+<td>阶段
+</td></tr>
+<tr>
+<td>\section </td>
+<td>要匹配的字符串
+</td></tr>
+<tr>
+<td>\\section</td>
+<td>为 re.compile 取消反斜杠的特殊意义
+</td></tr>
+<tr>
+<td>"\\\\section"</td>
+<td>为"\\section"的字符串实值(string literals)取消反斜杠的特殊意义
+</td></tr></tbody></table>
+<p><br>
+简单地说，为了匹配一个反斜杠，不得不在 RE 字符串中写 '\\\\'，因为正则表达式中必须是 "\\"，而每个反斜杠在常规的 Python 
+字符串实值中必须表示成 "\\"。在 REs 中反斜杠的这个重复特性会导致大量重复的反斜杠，而且所生成的字符串也很难懂。
+</p><p>解决的办法就是为正则表达式使用 Python 的 raw 字符串表示；在字符串前加个 "r" 反斜杠就不会被任何特殊方式处理，所以
+ r"\n" 就是包含"\" 和 "n" 的两个字符，而 "\n" 则是一个字符，表示一个换行。正则表达式通常在 Python 代码中都是用这种
+ raw 字符串表示。
+</p>
+<table border="1" cellspacing="0">
+<tbody><tr>
+<td>常规字符串</td>
+<td>Raw 字符串
+</td></tr>
+<tr>
+<td>"ab*"</td>
+<td>r"ab*"
+</td></tr>
+<tr>
+<td>"\\\\section"</td>
+<td>r"\\section"
+</td></tr>
+<tr>
+<td>"\\w+\\s+\\1"</td>
+<td>r"\w+\s+\1"
+</td></tr></tbody></table>
+<h4><span class="mw-headline" id=".E6.89.A7.E8.A1.8C.E5.8C.B9.E9.85.8D">执行匹配</span></h4>
+<p>一旦你有了已经编译了的正则表达式的对象，你要用它做什么呢？`RegexObject` 实例有一些方法和属性。这里只显示了最重要的几个，如果要看完整的列表请查阅 Python Library Reference
+</p>
+<table border="1" cellspacing="0">
+<tbody><tr>
+<td>方法/属性</td><td>作用
+</td></tr>
+<tr>
+<td>match()</td><td>决定 RE 是否在字符串刚开始的位置匹配
+</td></tr>
+<tr>
+<td>search()</td><td>扫描字符串，找到这个 RE 匹配的位置
+</td></tr>
+<tr>
+<td>findall()</td><td>找到 RE 匹配的所有子串，并把它们作为一个列表返回
+</td></tr>
+<tr>
+<td>finditer()</td><td>找到 RE 匹配的所有子串，并把它们作为一个迭代器返回
+</td></tr></tbody></table>
+<p><br>
+如果没有匹配到的话，match() 和 search() 将返回 None。如果成功的话，就会返回一个 `MatchObject` 实例，其中有这次匹配的信息：它是从哪里开始和结束，它所匹配的子串等等。
+</p><p><br>
+</p><p>你可以用采用人机对话并用 re 模块实验的方式来学习它。如果你有 Tkinter 的话，你也许可以考虑参考一下 Tools/scripts/redemo.py，一个包含在 Python 发行版里的示范程序。
+</p>
+<p></p><p><br>
+</p><p>首先，运行 Python 解释器，导入 re 模块并编译一个 RE：
+</p>
+<p></p>
+<pre>#!python
+Python 2.2.2 (#1, Feb 10 2003, 12:57:01)
+&gt;&gt;&gt; import re
+&gt;&gt;&gt; p = re.compile('[a-z]+')
+&gt;&gt;&gt; p
+&lt;_sre.SRE_Pattern object at 80c3c28&gt;
+</pre>
+<p>现在，你可以试着用 RE 的 [a-z]+ 去匹配不同的字符串。一个空字符串将根本不能匹配，因为 + 的意思是 “一个或更多的重复次数”。
+ 在这种情况下 match() 将返回 None，因为它使解释器没有输出。你可以明确地打印出 match() 的结果来弄清这一点。
+</p>
+<pre>#!python
+&gt;&gt;&gt; p.match("")
+&gt;&gt;&gt; print p.match("")
+None
+</pre>
+<p>现在，让我们试着用它来匹配一个字符串，如 "tempo"。这时，match() 将返回一个 MatchObject。因此你可以将结果保存在变量里以便後面使用。
+</p>
+<pre>#!python
+&gt;&gt;&gt; m = p.match( 'tempo')
+&gt;&gt;&gt; print m
+&lt;_sre.SRE_Match object at 80c4f68&gt;
+</pre>
+<p>现在你可以查询 `MatchObject` 关于匹配字符串的相关信息了。MatchObject 实例也有几个方法和属性；最重要的那些如下所示：
+</p>
+<table border="1" cellspacing="0">
+<tbody><tr>
+<td>方法/属性</td><td>作用
+</td></tr>
+<tr>
+<td>group()</td><td>返回被 RE 匹配的字符串
+</td></tr>
+<tr>
+<td>start()</td><td>返回匹配开始的位置
+</td></tr>
+<tr>
+<td>end()</td><td>返回匹配结束的位置
+</td></tr>
+<tr>
+<td>span()</td><td>返回一个元组包含匹配 (开始,结束) 的位置
+</td></tr></tbody></table>
+<p><br>
+试试这些方法不久就会清楚它们的作用了：
+</p>
+<pre>#!python
+&gt;&gt;&gt; m.group()
+'tempo'
+&gt;&gt;&gt; m.start(), m.end()
+(0, 5)
+&gt;&gt;&gt; m.span()
+(0, 5)
+</pre>
+<p>group() 返回 RE 匹配的子串。start() 和 end() 返回匹配开始和结束时的索引。span() 
+则用单个元组把开始和结束时的索引一起返回。因为匹配方法检查到如果 RE 在字符串开始处开始匹配，那么 start() 将总是为零。然而， 
+`RegexObject` 实例的 search 方法扫描下面的字符串的话，在这种情况下，匹配开始的位置就也许不是零了。
+</p>
+<pre>#!python
+&gt;&gt;&gt; print p.match('::: message')
+None
+&gt;&gt;&gt; m = p.search('::: message')&nbsp;; print m
+&lt;re.MatchObject instance at 80c9650&gt;
+&gt;&gt;&gt; m.group()
+'message'
+&gt;&gt;&gt; m.span()
+(4, 11)
+</pre>
+<p>在实际程序中，最常见的作法是将 `MatchObject` 保存在一个变量里，然後检查它是否为 None，通常如下所示：
+</p>
+<pre>#!python
+p = re.compile( ... )
+m = p.match( 'string goes here' )
+if m:
+print 'Match found: ', m.group()
+else:
+print 'No match'
+</pre>
+<p>两个 `RegexObject` 方法返回所有匹配模式的子串。findall()返回一个匹配字符串行表：
+</p>
+<pre>#!python
+&gt;&gt;&gt; p = re.compile('\d+')
+&gt;&gt;&gt; p.findall('12 drummers drumming, 11 pipers piping, 10 lords a-leaping')
+['12', '11', '10']
+</pre>
+<p>findall() 在它返回结果时不得不创建一个列表。在 Python 2.2中，也可以用 finditer() 方法。
+</p>
+<pre>#!python
+&gt;&gt;&gt; iterator = p.finditer('12 drummers drumming, 11 ... 10 ...')
+&gt;&gt;&gt; iterator
+&lt;callable-iterator object at 0x401833ac&gt;
+&gt;&gt;&gt; for match in iterator:
+...     print match.span()
+...
+(0, 2)
+(22, 24)
+(29, 31)
+</pre>
+<h4><span class="mw-headline" id=".E6.A8.A1.E5.9D.97.E7.BA.A7.E5.87.BD.E6.95.B0">模块级函数</span></h4>
+<p>你不一定要产生一个 `RegexObject` 对象然后再调用它的方法；re 模块也提供了顶级函数调用如 
+match()、search()、sub() 等等。这些函数使用 RE 字符串作为第一个参数，而后面的参数则与相应 `RegexObject` 
+的方法参数相同，返回则要么是 None 要么就是一个 `MatchObject` 的实例。
+</p>
+<pre>#!python
+&gt;&gt;&gt; print re.match(r'From\s+', 'Fromage amk')
+None
+&gt;&gt;&gt; re.match(r'From\s+', 'From amk Thu May 14 19:12:10 1998')
+&lt;re.MatchObject instance at 80c5978&gt;
+</pre>
+<p>Under the hood, 这些函数简单地产生一个 RegexOject 并在其上调用相应的方法。它们也在缓存里保存编译后的对象，因此在将来调用用到相同 RE 时就会更快。
+</p><p><br>
+你将使用这些模块级函数，还是先得到一个 `RegexObject` 再调用它的方法呢？如何选择依赖于怎样用 RE 
+更有效率以及你个人编码风格。如果一个 RE 
+在代码中只做用一次的话，那么模块级函数也许更方便。如果程序包含很多的正则表达式，或在多处复用同一个的话，那么将全部定义放在一起，在一段代码中提前
+编译所有的 REs 更有用。从标准库中看一个例子，这是从 xmllib.py 文件中提取出来的：
+</p>
+<pre>#!python
+ref = re.compile( ... )
+entityref = re.compile( ... )
+charref = re.compile( ... )
+starttagopen = re.compile( ... )
+</pre>
+<p>我通常更喜欢使用编译对象，甚至它只用一次，但很少人会像我这样做(如同一个纯粹主义者)。
+</p>
+<h4><span class="mw-headline" id=".E7.BC.96.E8.AF.91.E6.A0.87.E5.BF.97">编译标志</span></h4>
+<p>编译标志让你可以修改正则表达式的一些运行方式。在 re 模块中标志可以使用两个名字，一个是全名如 
+IGNORECASE，一个是缩写，一字母形式如 I。（如果你熟悉 Perl 的模式修改，一字母形式使用同样的字母；例如 
+re.VERBOSE的缩写形式是 re.X。）多个标志可以通过按位 OR-ing 它们来指定。如 re.I | re.M 被设置成 I 和 M 
+标志：
+</p><p><br>
+这有个可用标志表，对每个标志后面都有详细的说明。
+</p>
+<table border="1" cellspacing="0">
+<tbody><tr>
+<td>标志</td>
+<td>含义
+</td></tr>
+<tr>
+<td>DOTALL, S</td>
+<td>使 . 匹配包括换行在内的所有字符
+</td></tr>
+<tr>
+<td>IGNORECASE, I</td>
+<td>使匹配对大小写不敏感
+</td></tr>
+<tr>
+<td>LOCALE, L </td>
+<td>做本地化识别（locale-aware）匹配
+</td></tr>
+<tr>
+<td>MULTILINE, M</td>
+<td>多行匹配，影响 ^ 和 $
+</td></tr>
+<tr>
+<td>VERBOSE, X</td>
+<td>能够使用 REs 的 verbose 状态，使之被组织得更清晰易懂
+</td></tr></tbody></table>
+<p><b>I</b><br>
+<b>IGNORECASE</b>
+</p><p>使匹配对大小写不敏感；字符类和字符串匹配字母时忽略大小写。举个例子，[A-Z]也可以匹配小写字母，Spam 可以匹配 "Spam", "spam", 或 "spAM"。这个小写字母并不考虑当前位置。
+</p><p><b>L</b><br>
+<b>LOCALE</b>
+</p><p>影响 \w, \W, \b, 和 \B，这取决于当前的本地化设置。
+</p><p>locales 是 C 语言库中的一项功能，是用来为需要考虑不同语言的编程提供帮助的。举个例子，如果你正在处理法文文本，你想用 
+\w+ 来匹配文字，但 \w 只匹配字符类 [A-Za-z]；它并不能匹配 "é" 或 
+"ç"。如果你的系统配置适当且本地化设置为法语，那么内部的 C 函数将告诉程序 "é" 也应该被认为是一个字母。当在编译正则表达式时使用 
+LOCALE 标志会得到用这些 C 函数来处理 \w 后的编译对象；这会更慢，但也会象你希望的那样可以用 \w+ 来匹配法文文本。
+</p><p><b>M</b><br>
+<b>MULTILINE</b>
+</p><p><br>
+(此时 ^ 和 $ 不会被解释; 它们将在 4.1 节被介绍.)
+</p><p><br>
+使用 "^" 只匹配字符串的开始，而 $ 则只匹配字符串的结尾和直接在换行前（如果有的话）的字符串结尾。当本标志指定后， "^" 匹配字符串的开始和字符串中每行的开始。同样的， $ 元字符匹配字符串结尾和字符串中每行的结尾（直接在每个换行之前）。
+</p><p><b>S</b><br>
+<b>DOTALL</b>
+</p><p>使 "." 特殊字符完全匹配任何字符，包括换行；没有这个标志， "." 匹配除了换行外的任何字符。
+</p><p><b>X</b><br>
+<b>VERBOSE</b>
+</p><p><br>
+该标志通过给予你更灵活的格式以便你将正则表达式写得更易于理解。当该标志被指定时，在 RE 
+字符串中的空白符被忽略，除非该空白符在字符类中或在反斜杠之后；这可以让你更清晰地组织和缩进 RE。它也可以允许你将注释写入 
+RE，这些注释会被引擎忽略；注释用 "#"号 来标识，不过该符号不能在字符串或反斜杠之后。
+</p><p><br>
+举个例子，这里有一个使用 re.VERBOSE 的 RE；看看读它轻松了多少？
+</p>
+<pre>#!python
+charref = re.compile(r"""&amp;[[]]		   # Start of a numeric entity reference|||here has wrong.i can't fix
+(
+[0-9]+[^0-9]      # Decimal form
+| 0[0-7]+[^0-7]   # Octal form
+| x[0-9a-fA-F]+[^0-9a-fA-F] # Hexadecimal form
+)
+""", re.VERBOSE)
+</pre>
+<p>没有 verbose 设置， RE 会看起来象这样：
+</p>
+<pre>#!python
+charref = re.compile("&amp;#([0-9]+[^0-9]"
+"|0[0-7]+[^0-7]"
+"|x[0-9a-fA-F]+[^0-9a-fA-F])")
+</pre>
+<p>在上面的例子里，Python 的字符串自动连接可以用来将 RE 分成更小的部分，但它比用 re.VERBOSE 标志时更难懂
+</p>
+<h3><span class="mw-headline" id=".E6.9B.B4.E5.A4.9A.E6.A8.A1.E5.BC.8F.E5.8A.9F.E8.83.BD">更多模式功能</span></h3>
+<p>到目前为止，我们只展示了正则表达式的一部分功能。在本节，我们将展示一些新的元字符和如何使用组来检索被匹配的文本部分。
+</p><p>==
+==
+</p>
+<h4><span class="mw-headline" id=".E6.9B.B4.E5.A4.9A.E7.9A.84.E5.85.83.E5.AD.97.E7.AC.A6">更多的元字符</span></h4>
+<p><b>粗体文字</b><a rel="nofollow" class="external text" href="http://www.example.com/">链接标题</a>还有一些我们还没展示的元字符，其中的大部分将在本节展示。
+</p><p><br>
+剩下来要讨论的一部分元字符是零宽界定符（zero-width 
+assertions）。它们并不会使引擎在处理字符串时更快;相反，它们根本就没有对应任何字符，只是简单的成功或失败。举个例子， \b 
+是一个在单词边界定位当前位置的界定符（assertions），这个位置根本就不会被 \b 改变。这意味着零宽界定符（zero-width 
+assertions）将永远不会被重复，因为如果它们在给定位置匹配一次，那么它们很明显可以被匹配无数次。
+</p><p><b>|</b>
+</p><p><br>
+可选项，或者 "or" 操作符。如果 A 和 B 是正则表达式，A|B 将匹配任何匹配了 "A" 或 "B" 的字符串。| 
+的优先级非常低，是为了当你有多字符串要选择时能适当地运行。Crow|Servo 将匹配"Crow" 或 "Servo", 而不是 "Cro", 
+一个 "w" 或 一个 "S", 和 "ervo"。
+</p><p><br>
+为了匹配字母 "|"，可以用 \|，或将其包含在字符类中，如[|]。
+</p><p><b>^</b>
+</p><p><br>
+匹配行首。除非设置 MULTILINE 标志，它只是匹配字符串的开始。在 MULTILINE 模式里，它也可以直接匹配字符串中的每个换行。
+</p><p><br>
+例如，如果你只希望匹配在行首单词 "From"，那么 RE 将用 ^From。
+</p>
+<pre>#!python
+&gt;&gt;&gt; print re.search('^From', 'From Here to Eternity')
+&lt;re.MatchObject instance at 80c1520&gt;
+&gt;&gt;&gt; print re.search('^From', 'Reciting From Memory')
+None
+</pre>
+<p><b>$</b>
+</p><p><br>
+匹配行尾，行尾被定义为要么是字符串尾，要么是一个换行字符后面的任何位置。
+</p>
+<pre>#!python
+&gt;&gt;&gt; print re.search('}$', '{block}')
+&lt;re.MatchObject instance at 80adfa8&gt;
+&gt;&gt;&gt; print re.search('}$', '{block} ')
+None
+&gt;&gt;&gt; print re.search('}$', '{block}\n')
+&lt;re.MatchObject instance at 80adfa8&gt;
+</pre>
+<p>匹配一个 "$"，使用 \$ 或将其包含在字符类中，如[$]。
+</p><p><b>\A</b>
+</p><p><br>
+只匹配字符串首。当不在 MULTILINE 模式，\A 和 ^ 实际上是一样的。然而，在 MULTILINE 模式里它们是不同的；\A 只是匹配字符串首，而 ^ 还可以匹配在换行符之后字符串的任何位置。
+</p><p><b>\Z</b>
+</p><p>Matches only at the end of the string. <br>只匹配字符串尾。
+</p><p><b>\b</b>
+</p><p>单词边界。这是个零宽界定符（zero-width assertions）只用以匹配单词的词首和词尾。单词被定义为一个字母数字序列，因此词尾就是用空白符或非字母数字符来标示的。
+</p><p><br>
+下面的例子只匹配 "class" 整个单词；而当它被包含在其他单词中时不匹配。
+</p>
+<pre>#!python
+&gt;&gt;&gt; p = re.compile(r'\bclass\b')
+&gt;&gt;&gt; print p.search('no class at all')
+&lt;re.MatchObject instance at 80c8f28&gt;
+&gt;&gt;&gt; print p.search('the declassified algorithm')
+None
+&gt;&gt;&gt; print p.search('one subclass is')
+None
+</pre>
+<p>当用这个特殊序列时你应该记住这里有两个微妙之处。第一个是 Python 字符串和正则表达式之间最糟的冲突。在 Python 
+字符串里，"\b" 是反斜杠字符，ASCII值是8。如果你没有使用 raw 字符串时，那么 Python 将会把 "\b" 
+转换成一个回退符，你的 RE 将无法象你希望的那样匹配它了。下面的例子看起来和我们前面的 RE 一样，但在 RE 字符串前少了一个 "r" 。
+</p>
+<pre>#!python
+&gt;&gt;&gt; p = re.compile('\bclass\b')
+&gt;&gt;&gt; print p.search('no class at all')
+None
+&gt;&gt;&gt; print p.search('\b' + 'class' + '\b')
+&lt;re.MatchObject instance at 80c3ee0&gt;
+</pre>
+<p>第二个在字符类中，这个限定符（assertion）不起作用，\b 表示回退符，以便与 Python 字符串兼容。
+</p><p><b>\B</b>
+</p><p><br>
+另一个零宽界定符（zero-width assertions），它正好同 \b 相反，只在当前位置不在单词边界时匹配。
+</p>
+<h4><span class="mw-headline" id=".E5.88.86.E7.BB.84">分组</span></h4>
+<p>你经常需要得到比 RE 是否匹配还要多的信息。正则表达式常常用来分析字符串，编写一个 RE 
+匹配感兴趣的部分并将其分成几个小组。举个例子，一个 RFC-822 的头部用 ":" 
+隔成一个头部名和一个值，这就可以通过编写一个正则表达式匹配整个头部，用一组匹配头部名，另一组匹配头部值的方式来处理。
+</p><p><br>
+组是通过 "(" 和 ")" 元字符来标识的。 "(" 和 ")" 
+有很多在数学表达式中相同的意思；它们一起把在它们里面的表达式组成一组。举个例子，你可以用重复限制符，象 *, +,&nbsp;?, 和 
+{m,n}，来重复组里的内容，比如说(ab)* 将匹配零或更多个重复的 "ab"。
+</p>
+<pre>#!python
+&gt;&gt;&gt; p = re.compile('(ab)*')
+&gt;&gt;&gt; print p.match('ababababab').span()
+(0, 10)
+</pre>
+<p>组用 "(" 和 ")" 来指定，并且得到它们匹配文本的开始和结尾索引；这就可以通过一个参数用 group()、start()、end()
+ 和 span() 来进行检索。组是从 0 开始计数的。组 0 总是存在；它就是整个 RE，所以 `MatchObject` 的方法都把组 0 
+作为它们缺省的参数。稍后我们将看到怎样表达不能得到它们所匹配文本的 span。
+</p>
+<pre>#!python
+&gt;&gt;&gt; p = re.compile('(a)b')
+&gt;&gt;&gt; m = p.match('ab')
+&gt;&gt;&gt; m.group()
+'ab'
+&gt;&gt;&gt; m.group(0)
+'ab'
+</pre>
+<p>小组是从左向右计数的，从1开始。组可以被嵌套。计数的数值可以通过从左到右计算打开的括号数来确定。
+</p>
+<pre>#!python
+&gt;&gt;&gt; p = re.compile('(a(b)c)d')
+&gt;&gt;&gt; m = p.match('abcd')
+&gt;&gt;&gt; m.group(0)
+'abcd'
+&gt;&gt;&gt; m.group(1)
+'abc'
+&gt;&gt;&gt; m.group(2)
+'b'
+</pre>
+<p>group() 可以一次输入多个组号，在这种情况下它将返回一个包含那些组所对应值的元组。
+</p>
+<pre>#!python
+&gt;&gt;&gt; m.group(2,1,2)
+('b', 'abc', 'b')
+</pre>
+<p>The groups() 方法返回一个包含所有小组字符串的元组，从 1 到 所含的小组号。
+</p>
+<pre>#!python
+&gt;&gt;&gt; m.groups()
+('abc', 'b')
+</pre>
+<p>模式中的逆向引用允许你指定先前捕获组的内容，该组也必须在字符串当前位置被找到。举个例子，如果组 1 的内容能够在当前位置找到的话，\1 
+就成功否则失败。记住 Python 字符串也是用反斜杠加数据来允许字符串中包含任意字符的，所以当在 RE 中使用逆向引用时确保使用 raw 
+字符串。
+</p><p><br>
+例如，下面的 RE 在一个字符串中找到成双的词。
+</p>
+<pre>#!python
+&gt;&gt;&gt; p = re.compile(r'(\b\w+)\s+\1')
+&gt;&gt;&gt; p.search('Paris in the the spring').group()
+'the the'
+</pre>
+<p>象这样只是搜索一个字符串的逆向引用并不常见 -- 用这种方式重复数据的文本格式并不多见 -- 但你不久就可以发现它们用在字符串替换上非常有用。
+</p>
+<h4><span class="mw-headline" id=".E6.97.A0.E6.8D.95.E8.8E.B7.E7.BB.84.E5.92.8C.E5.91.BD.E5.90.8D.E7.BB.84">无捕获组和命名组</span></h4>
+<p>精心设计的 REs 也许会用很多组，既可以捕获感兴趣的子串，又可以分组和结构化 RE 本身。在复杂的 REs 里，追踪组号变得困难。有两个功能可以对这个问题有所帮助。它们也都使用正则表达式扩展的通用语法，因此我们来看看第一个。
+</p><p><br>
+Perl 5 对标准正则表达式增加了几个附加功能，Python 的 re 模块也支持其中的大部分。选择一个新的单按键元字符或一个以 "\" 
+开始的特殊序列来表示新的功能，而又不会使 Perl 正则表达式与标准正则表达式产生混乱是有难度的。如果你选择 "&amp;" 
+做为新的元字符，举个例子，老的表达式认为 "&amp;" 是一个正常的字符，而不会在使用 \&amp; 或 [&amp;] 时也不会转义。
+</p><p><br>
+Perl 开发人员的解决方法是使用 (?...) 来做为扩展语法。"?" 在括号后面会直接导致一个语法错误，因为 "?" 没有任何字符可以重复，因此它不会产生任何兼容问题。紧随 "?" 之后的字符指出扩展的用途，因此 (?=foo)
+</p><p><br>
+Python 新增了一个扩展语法到 Perl 扩展语法中。如果在问号后的第一个字符是 "P"，你就可以知道它是针对 Python 
+的扩展。目前有两个这样的扩展: (?P&lt;name&gt;...) 定义一个命名组，(?P=name) 则是对命名组的逆向引用。如果 
+Perl 5 的未来版本使用不同的语法增加了相同的功能，那么 re 模块也将改变以支持新的语法，与此同时为了兼容性的目的而继续保持的 
+Python 专用语法。
+</p><p><br>
+现在我们看一下普通的扩展语法，我们回过头来简化在复杂 REs 
+中使用组运行的特性。因为组是从左到右编号的，而且一个复杂的表达式也许会使用许多组，它可以使跟踪当前组号变得困难，而修改如此复杂的 RE 
+是十分麻烦的。在开始时插入一个新组，你可以改变它之后的每个组号。
+</p><p><br>
+首先，有时你想用一个组去收集正则表达式的一部分，但又对组的内容不感兴趣。你可以用一个无捕获组: (?:...) 来实现这项功能，这样你可以在括号中发送任何其他正则表达式。
+</p>
+<pre>#!python
+&gt;&gt;&gt; m = re.match("([abc])+", "abc")
+&gt;&gt;&gt; m.groups()
+('c',)
+&gt;&gt;&gt; m = re.match("(?:[abc])+", "abc")
+&gt;&gt;&gt; m.groups()
+()
+</pre>
+<p>除了捕获匹配组的内容之外，无捕获组与捕获组表现完全一样；你可以在其中放置任何字符，可以用重复元字符如 "*" 
+来重复它，可以在其他组（无捕获组与捕获组）中嵌套它。(?:...) 
+对于修改已有组尤其有用，因为你可以不用改变所有其他组号的情况下添加一个新组。捕获组和无捕获组在搜索效率方面也没什么不同，没有哪一个比另一个更快。
+</p><p><br>
+其次，更重要和强大的是命名组；与用数字指定组不同的是，它可以用名字来指定。
+</p><p><br>
+命令组的语法是 Python 专用扩展之一： 
+(?P&lt;name&gt;...)。名字很明显是组的名字。除了该组有个名字之外，命名组也同捕获组是相同的。`MatchObject` 
+的方法处理捕获组时接受的要么是表示组号的整数，要么是包含组名的字符串。命名组也可以是数字，所以你可以通过两种方式来得到一个组的信息：
+</p>
+<pre>#!python
+&gt;&gt;&gt; p = re.compile(r'(?P&lt;word&gt;\b\w+\b)')
+&gt;&gt;&gt; m = p.search( '(((( Lots of punctuation )))' )
+&gt;&gt;&gt; m.group('word')
+'Lots'
+&gt;&gt;&gt; m.group(1)
+'Lots'
+</pre>
+<p>命名组是便于使用的，因为它可以让你使用容易记住的名字来代替不得不记住的数字。这里有一个来自 imaplib 模块的 RE 示例：
+</p>
+<pre>#!python
+InternalDate = re.compile(r'INTERNALDATE "'
+r'(?P&lt;day&gt;[ 123][0-9])-(?P&lt;mon&gt;[A-Z][a-z][a-z])-'
+	r'(?P&lt;year&gt;[0-9][0-9][0-9][0-9])'
+r' (?P&lt;hour&gt;[0-9][0-9]):(?P&lt;min&gt;[0-9][0-9]):(?P&lt;sec&gt;[0-9][0-9])'
+r' (?P&lt;zonen&gt;[-+])(?P&lt;zoneh&gt;[0-9][0-9])(?P&lt;zonem&gt;[0-9][0-9])'
+r'"')
+</pre>
+<p>很明显，得到 m.group('zonem') 要比记住得到组 9 要容易得多。
+</p><p><br>
+因为逆向引用的语法，象 (...)\1 这样的表达式所表示的是组号，这时用组名代替组号自然会有差别。还有一个 Python 
+扩展：(?P=name) ，它可以使叫 name 的组内容再次在当前位置发现。正则表达式为了找到重复的单词，(\b\w+)\s+\1 
+也可以被写成 (?P&lt;word&gt;\b\w+)\s+(?P=word)：
+</p>
+<pre>#!python
+&gt;&gt;&gt; p = re.compile(r'(?P&lt;word&gt;\b\w+)\s+(?P=word)')
+&gt;&gt;&gt; p.search('Paris in the the spring').group()
+'the the'
+</pre>
+<h4><span class="mw-headline" id=".E5.89.8D.E5.90.91.E7.95.8C.E5.AE.9A.E7.AC.A6">前向界定符</span></h4>
+<p>另一个零宽界定符（zero-width assertion）是前向界定符。前向界定符包括前向肯定界定符和前项否定界定符，如下所示：
+</p><p><b>(?=...)</b>
+</p><p>前向肯定界定符。如果所含正则表达式，以 ... 表示，在当前位置成功匹配时成功，否则失败。但一旦所含表达式已经尝试，匹配引擎根本没有提高；模式的剩余部分还要尝试界定符的右边。
+</p><p><b>(?!...)</b>
+</p><p>前向否定界定符。与肯定界定符相反；当所含表达式不能在字符串当前位置匹配时成功
+</p><p><br>
+通过示范在哪前向可以成功有助于具体实现。考虑一个简单的模式用于匹配一个文件名，并将其通过 "." 分成基本名和扩展名两部分。如在 "news.rc" 中，"news" 是基本名，"rc" 是文件的扩展名。
+</p><p><br>
+匹配模式非常简单：
+</p>
+<pre>.*[.].*$
+</pre>
+<p>注意 "." 需要特殊对待，因为它是一个元字符；我把它放在一个字符类中。另外注意后面的 $; 
+添加这个是为了确保字符串所有的剩余部分必须被包含在扩展名中。这个正则表达式匹配 "foo.bar"、"autoexec.bat"、 
+"sendmail.cf" 和 "printers.conf"。
+</p><p><br>
+现在，考虑把问题变得复杂点；如果你想匹配的扩展名不是 "bat" 的文件名？一些不正确的尝试：
+</p>
+<pre>.*[.][^b].*$
+</pre>
+<p>上面的第一次去除 "bat" 的尝试是要求扩展名的第一个字符不是 "b"。这是错误的，因为该模式也不能匹配 "foo.bar"。
+</p>
+<pre>.*[.]([^b]..|.[^a].|..[^t])$
+</pre>
+<p>当你试着修补第一个解决方法而要求匹配下列情况之一时表达式更乱了：扩展名的第一个字符不是 "b"; 第二个字符不是 "a"；或第三个字符不是
+ "t"。这样可以接受 "foo.bar" 而拒绝 "autoexec.bat"，但这要求只能是三个字符的扩展名而不接受两个字符的扩展名如 
+"sendmail.cf"。我们将在努力修补它时再次把该模式变得复杂。
+</p>
+<pre>.*[.]([^b].?.?|.[^a]?.?|..?[^t]?)$
+</pre>
+<p>在第三次尝试中，第二和第三个字母都变成可选，为的是允许匹配比三个字符更短的扩展名，如 "sendmail.cf"。
+</p><p><br>
+该模式现在变得非常复杂，这使它很难读懂。更糟的是，如果问题变化了，你想扩展名不是 "bat" 和 "exe"，该模式甚至会变得更复杂和混乱。
+</p><p><br>
+前向否定把所有这些裁剪成：
+</p>
+<pre>.*[.](?!bat$).*$
+</pre>
+<p>前向的意思：如果表达式 bat 在这里没有匹配，尝试模式的其余部分；如果 bat$ 匹配，整个模式将失败。后面的 $ 被要求是为了确保象 "sample.batch" 这样扩展名以 "bat" 开头的会被允许。
+</p><p><br>
+将另一个文件扩展名排除在外现在也容易；简单地将其做为可选项放在界定符中。下面的这个模式将以 "bat" 或 "exe" 结尾的文件名排除在外。
+</p>
+<pre>.*[.](?!bat$|exe$).*$
+</pre>
+<h3><span class="mw-headline" id=".E4.BF.AE.E6.94.B9.E5.AD.97.E7.AC.A6.E4.B8.B2">修改字符串</span></h3>
+<p>到目前为止，我们简单地搜索了一个静态字符串。正则表达式通常也用不同的方式，通过下面的 `RegexObject` 方法，来修改字符串。
+</p>
+<table border="1" cellspacing="0">
+<tbody><tr>
+<td>方法/属性</td>
+<td>作用
+</td></tr>
+<tr>
+<td>split()</td>
+<td>将字符串在 RE 匹配的地方分片并生成一个列表，
+</td></tr>
+<tr>
+<td>sub()</td>
+<td>找到 RE 匹配的所有子串，并将其用一个不同的字符串替换
+</td></tr>
+<tr>
+<td>subn()</td>
+<td>与 sub() 相同，但返回新的字符串和替换次数
+</td></tr></tbody></table>
+<h4><span class="mw-headline" id=".E5.B0.86.E5.AD.97.E7.AC.A6.E4.B8.B2.E5.88.86.E7.89.87">将字符串分片</span></h4>
+<p>`RegexObject` 的 split() 方法在 RE 匹配的地方将字符串分片，将返回列表。它同字符串的 split() 
+方法相似但提供更多的定界符；split()只支持空白符和固定字符串。就象你预料的那样，也有一个模块级的 re.split() 函数。
+</p>
+<pre>split(string [, maxsplit = 0])
+</pre>
+<p>通过正则表达式将字符串分片。如果捕获括号在 RE 中使用，那么它们的内容也会作为结果列表的一部分返回。如果 maxsplit 非零，那么最多只能分出 maxsplit 个分片。
+</p><p><br>
+你可以通过设置 maxsplit 值来限制分片数。当 maxsplit 非零时，最多只能有 maxsplit 个分片，字符串的其余部分被做为列表的最后部分返回。在下面的例子中，定界符可以是非数字字母字符的任意序列。
+</p>
+<pre>#!python
+&gt;&gt;&gt; p = re.compile(r'\W+')
+&gt;&gt;&gt; p.split('This is a test, short and sweet, of split().')
+['This', 'is', 'a', 'test', 'short', 'and', 'sweet', 'of', 'split', '']
+&gt;&gt;&gt; p.split('This is a test, short and sweet, of split().', 3)
+['This', 'is', 'a', 'test, short and sweet, of split().']
+</pre>
+<p>有时，你不仅对定界符之间的文本感兴趣，也需要知道定界符是什么。如果捕获括号在 RE 中使用，那么它们的值也会当作列表的一部分返回。比较下面的调用：
+</p>
+<pre>#!python
+&gt;&gt;&gt; p = re.compile(r'\W+')
+&gt;&gt;&gt; p2 = re.compile(r'(\W+)')
+&gt;&gt;&gt; p.split('This... is a test.')
+['This', 'is', 'a', 'test', '']
+&gt;&gt;&gt; p2.split('This... is a test.')
+['This', '... ', 'is', ' ', 'a', ' ', 'test', '.', '']
+</pre>
+<p>模块级函数 re.split() 将 RE 作为第一个参数，其他一样。
+</p>
+<pre>#!python
+&gt;&gt;&gt; re.split('[\W]+', 'Words, words, words.')
+['Words', 'words', 'words', '']
+&gt;&gt;&gt; re.split('([\W]+)', 'Words, words, words.')
+['Words', ', ', 'words', ', ', 'words', '.', '']
+&gt;&gt;&gt; re.split('[\W]+', 'Words, words, words.', 1)
+['Words', 'words, words.']
+</pre>
+<h4><span class="mw-headline" id=".E6.90.9C.E7.B4.A2.E5.92.8C.E6.9B.BF.E6.8D.A2">搜索和替换</span></h4>
+<p>其他常见的用途就是找到所有模式匹配的字符串并用不同的字符串来替换它们。sub() 方法提供一个替换值，可以是字符串或一个函数，和一个要被处理的字符串。
+</p>
+<pre>sub(replacement, string[, count = 0])
+</pre>
+<p>返回的字符串是在字符串中用 RE 最左边不重复的匹配来替换。如果模式没有发现，字符将被没有改变地返回。
+</p><p><br>
+可选参数 count 是模式匹配后替换的最大次数；count 必须是非负整数。缺省值是 0 表示替换所有的匹配。
+</p><p><br>
+这里有个使用 sub() 方法的简单例子。它用单词 "colour" 替换颜色名。
+</p>
+<pre>#!python
+&gt;&gt;&gt; p = re.compile( '(blue|white|red)')
+&gt;&gt;&gt; p.sub( 'colour', 'blue socks and red shoes')
+'colour socks and colour shoes'
+&gt;&gt;&gt; p.sub( 'colour', 'blue socks and red shoes', count=1)
+'colour socks and red shoes'
+</pre>
+<p>subn() 方法作用一样，但返回的是包含新字符串和替换执行次数的两元组。
+</p>
+<pre>#!python
+&gt;&gt;&gt; p = re.compile( '(blue|white|red)')
+&gt;&gt;&gt; p.subn( 'colour', 'blue socks and red shoes')
+('colour socks and colour shoes', 2)
+&gt;&gt;&gt; p.subn( 'colour', 'no colours at all')
+('no colours at all', 0)
+</pre>
+<p>空匹配只有在它们没有紧挨着前一个匹配时才会被替换掉。
+</p>
+<pre>#!python
+&gt;&gt;&gt; p = re.compile('x*')
+&gt;&gt;&gt; p.sub('-', 'abxd')
+'-a-b-d-'
+</pre>
+<p>如果替换的是一个字符串，任何在其中的反斜杠都会被处理。"\n" 将会被转换成一个换行符，"\r"转换成回车等等。未知的转义如 "\j" 
+则保持原样。逆向引用，如 "\6"，被 RE 中相应的组匹配而被子串替换。这使你可以在替换后的字符串中插入原始文本的一部分。
+</p><p><br>
+这个例子匹配被 "{" 和 "}" 括起来的单词 "section"，并将 "section" 替换成 "subsection"。
+</p>
+<pre>#!python
+&gt;&gt;&gt; p = re.compile('section{ ( [^}]* ) }', re.VERBOSE)
+&gt;&gt;&gt; p.sub(r'subsection{\1}','section{First} section{second}')
+'subsection{First} subsection{second}'
+</pre>
+<p>还可以指定用 (?P&lt;name&gt;...) 语法定义的命名组。"\g&lt;name&gt;" 将通过组名 "name" 
+用子串来匹配，并且 "\g&lt;number&gt;" 使用相应的组号。所以 "\g&lt;2&gt;" 等于 
+"\2"，但能在替换字符串里含义不清，如 "\g&lt;2&gt;0"。（"\20" 被解释成对组 20 的引用，而不是对后面跟着一个字母 
+"0" 的组 2 的引用。）
+</p>
+<pre>#!python
+&gt;&gt;&gt; p = re.compile('section{ (?P&lt;name&gt; [^}]* ) }', re.VERBOSE)
+&gt;&gt;&gt; p.sub(r'subsection{\1}','section{First}')
+'subsection{First}'
+&gt;&gt;&gt; p.sub(r'subsection{\g&lt;1&gt;}','section{First}')
+'subsection{First}'
+&gt;&gt;&gt; p.sub(r'subsection{\g&lt;name&gt;}','section{First}')
+'subsection{First}'
+</pre>
+<p>替换也可以是一个甚至给你更多控制的函数。如果替换是个函数，该函数将会被模式中每一个不重复的匹配所调用。在每次调用时，函数会被传入一个 `MatchObject` 的对象作为参数，因此可以用这个对象去计算出替换字符串并返回它。
+</p><p><br>
+在下面的例子里，替换函数将十进制翻译成十六进制：
+</p>
+<pre>#!python
+&gt;&gt;&gt; def hexrepl( match ):
+...     "Return the hex string for a decimal number"
+...     value = int( match.group() )
+...     return hex(value)
+...
+&gt;&gt;&gt; p = re.compile(r'\d+')
+&gt;&gt;&gt; p.sub(hexrepl, 'Call 65490 for printing, 49152 for user code.')
+'Call 0xffd2 for printing, 0xc000 for user code.'
+</pre>
+<p>当使用模块级的 re.sub() 函数时，模式作为第一个参数。模式也许是一个字符串或一个 
+`RegexObject`；如果你需要指定正则表达式标志，你必须要么使用 `RegexObject` 做第一个参数，或用使用模式内嵌修正器，如 
+sub("(?i)b+", "x", "bbbb BBBB") returns 'x x'。
+</p>
+<h3><span class="mw-headline" id=".E5.B8.B8.E8.A7.81.E9.97.AE.E9.A2.98">常见问题</span></h3>
+<p>正则表达式对一些应用程序来说是一个强大的工具，但在有些时候它并不直观而且有时它们不按你期望的运行。本节将指出一些最容易犯的常见错误。
+</p>
+<h4><span class="mw-headline" id=".E4.BD.BF.E7.94.A8.E5.AD.97.E7.AC.A6.E4.B8.B2.E6.96.B9.E5.BC.8F">使用字符串方式</span></h4>
+<p>有时使用 re 模块是个错误。如果你匹配一个固定的字符串或单个的字符类，并且你没有使用 re 的任何象 IGNORECASE 
+标志的功能，那么就没有必要使用正则表达式了。字符串有一些方法是对固定字符串进行操作的，它们通常快很多，因为它们都是一个个经过优化的 C 
+小循环，用以代替大的、更具通用性的正则表达式引擎。
+</p><p><br>
+举个 用一个固定字符串替换另一个 的例子，如：你可以把 "deed" 替换成 "word"。re.sub() 
+似乎正是胜任这个工作的函数，但还是考虑考虑 replace() 方法吧。注意 replace() 也可以在单词里面进行替换，可以把 
+"swordfish" 变成 "sdeedfish"。不过 RE 也是可以做到的。（为了避免替换单词的一部分，模式将写成 
+\bword\b，这是为了要求 "word" 两边有一个单词边界。这是个超出 replace 能力的工作）。
+</p><p><br>
+另一个常见任务是从一个字符串中删除单个字符或用另一个字符来替代它。你也许可以用 re.sub('\n',' ', s) 这样来实现，但 translate() 能够实现这两个任务，而且比任何正则表达式操作起来更快。
+（translate 需要配合 string.maketrans 使用。例如：import string 后 'a1b3'.translate(string.maketrans('ab', 'cd')) ）
+</p><p><br>
+</p><p>总之，在使用 re 模块之前，先考虑一下你的问题是否可以用更快、更简单的字符串方法来解决。
+</p>
+<h4><span class="mw-headline" id="match.28.29_vs_search.28.29">match() vs search()</span></h4>
+<p>match() 函数只检查 RE 是否在字符串开始处匹配，而 search() 则是扫描整个字符串。记住这一区别是重要的。记住，match() 只报告一次成功的匹配，它将从 0 处开始；如果匹配不是从 0 开始的，match() 将不会报告它。
+</p>
+<pre>#!python
+&gt;&gt;&gt; print re.match('super', 'superstition').span()
+(0, 5)
+&gt;&gt;&gt; print re.match('super', 'insuperable')
+None
+</pre>
+<p>另一方面，search() 将扫描整个字符串，并报告它找到的第一个匹配。
+</p>
+<pre>#!python
+&gt;&gt;&gt; print re.search('super', 'superstition').span()
+(0, 5)
+&gt;&gt;&gt; print re.search('super', 'insuperable').span()
+(2, 7)
+</pre>
+<p>有时你可能倾向于使用 re.match()，只在RE的前面部分添加 .* 。请尽量不要这么做，最好采用 re.search() 
+代替之。正则表达式编译器会对 REs 做一些分析以便可以在查找匹配时提高处理速度。一个那样的分析机会指出匹配的第一个字符是什么；举个例子，模式 
+Crow 必须从 "C" 开始匹配。分析机可以让引擎快速扫描字符串以找到开始字符，并只在 "C" 被发现后才开始全部匹配。
+</p><p>添加 .* 会使这个优化失败，这就要扫描到字符串尾部，然后回溯以找到 RE 剩余部分的匹配。使用 re.search() 代替。
+</p>
+<h4><span class="mw-headline" id=".E8.B4.AA.E5.A9.AA_vs_.E4.B8.8D.E8.B4.AA.E5.A9.AA">贪婪 vs 不贪婪</span></h4>
+<p>当重复一个正则表达式时，如用 a*，操作结果是尽可能多地匹配模式。当你试着匹配一对对称的定界符，如 HTML 标志中的尖括号时这个事实经常困扰你。匹配单个 HTML 标志的模式不能正常工作，因为 .* 的本质是“贪婪”的
+</p>
+<pre>#!python
+&gt;&gt;&gt; s = '&lt;html&gt;&lt;head&gt;&lt;title&gt;Title&lt;/title&gt;'
+&gt;&gt;&gt; len(s)
+32
+&gt;&gt;&gt; print re.match('&lt;.*&gt;', s).span()
+(0, 32)
+&gt;&gt;&gt; print re.match('&lt;.*&gt;', s).group()
+&lt;html&gt;&lt;head&gt;&lt;title&gt;Title&lt;/title&gt;
+</pre>
+<p>RE 匹配 在 "<code>&lt;html&gt;</code>" 中的 "&lt;"，.* 消耗掉字符串的剩余部分。在 RE 
+中保持更多的左，虽然 &gt; 不能匹配在字符串结尾，因此正则表达式必须一个字符一个字符地回溯，直到它找到 &gt; 的匹配。最终的匹配从 
+"&lt;html" 中的 "&lt;" 到 "&lt;/title&gt;" 中的 "&gt;",这并不是你所想要的结果。
+</p><p><br>
+在这种情况下，解决方案是使用不贪婪的限定符 *?、+?、?? 或 {m,n}?，尽可能匹配小的文本。在上面的例子里， "&gt;" 在第一个 
+"&lt;" 之后被立即尝试，当它失败时，引擎一次增加一个字符，并在每步重试 "&gt;"。这个处理将得到正确的结果：
+</p>
+<pre>#!python
+&gt;&gt;&gt; print re.match('&lt;.*?&gt;', s).group()
+&lt;html&gt;
+</pre>
+<p>注意用正则表达式分析 HTML 或 XML 是痛苦的。变化混乱的模式将处理常见情况，但 HTML 和 XML 
+则是明显会打破正则表达式的特殊情况；当你编写一个正则表达式去处理所有可能的情况时，模式将变得非常复杂。象这样的任务用 HTML 或 XML 
+解析器。
+</p><p><i><b>粗体文字</b></i>粗体文字'
+</p>
+<hr>
+<h4><span class="mw-headline" id=".E4.B8.8D.E7.94.A8_re.VERBOSE">不用 re.VERBOSE</span></h4>
+<p>现在你可能注意到正则表达式的表示是十分紧凑，但它们非常不好读。中度复杂的 REs 可以变成反斜杠、圆括号和元字符的长长集合，以致于使它们很难读懂。
+</p><p><br>
+在这些 REs 中，当编译正则表达式时指定 re.VERBOSE 标志是有帮助的，因为它允许你可以编辑正则表达式的格式使之更清楚。
+</p><p><br>
+re.VERBOSE 标志有这么几个作用。在正则表达式中不在字符类中的空白符被忽略。这就意味着象 dog | cat 这样的表达式和可读性差的 
+dog|cat 相同，但 [a b] 将匹配字符 "a"、"b" 或 空格。另外，你也可以把注释放到 RE 中；注释是从 "#" 
+到下一行。当使用三引号字符串时，可以使 REs 格式更加干净：
+</p>
+<pre>#!python
+pat = re.compile(r"""
+\s*                 # Skip leading whitespace
+(?P&lt;header&gt;[^:]+)   # Header name
+\s*&nbsp;:               # Whitespace, and a colon
+(?P&lt;value&gt;.*?)      # The header's value -- *? used to
+# lose the following trailing whitespace
+\s*$                # Trailing whitespace to end-of-line
+""", re.VERBOSE)
+</pre>
+<p>这个要难读得多：
+</p>
+<pre>#!python
+pat = re.compile(r"\s*(?P&lt;header&gt;[^:]+)\s*:(?P&lt;value&gt;.*?)\s*$")
+</pre>
+<h3><span class="mw-headline" id=".E5.8F.8D.E9.A6.88">反馈</span></h3>
+<p>正则表达式是一个复杂的主题。本文能否有助于你理解呢？哪些部分是否不清晰，或在这儿没有找到你所遇到的问题？如果是那样的话，请将建议发给作者以便改进。
+</p><p>描述正则表达式最全面的书非Jeffrey Friedl 写的《精通正则表达式》莫属，该书由O'Reilly 出版。可惜该书只专注于
+ Perl 和 Java 风格的正则表达式，不含任何 Python 材料，所以不足以用作Python编程时的参考。（第一版包含有 Python 
+现已过时的 regex 模块，自然用处不大）。
+</p><p>《精通正则表达式》第三版已经有部分正则表达式使用python说明，另外PHP风格的更是独立一个章节说明。--why？
+</p>
+<h2><span class="mw-headline" id=".E5.A4.A7.E6.A0.87.E9.A2.98.E6.96.87.E5.AD.97">大标题文字</span></h2>
+<h2><span class="mw-headline" id=".E5.85.B3.E4.BA.8E.E6.9C.AC.E6.96.87.E6.A1.A3">关于本文档</span></h2>
+<p>本文档使用 LaTeX2HTML 转换器生成。
+</p><p>LaTeX2HTML is Copyright © 1993, 1994, 1995, 1996, 1997, Nikos 
+Drakos, Computer Based Learning Unit, University of Leeds, and Copyright
+ © 1997, 1998, Ross Moore, Mathematics Department, Macquarie University,
+ Sydney.
+</p><p>The application
+</p>
+<h2><span class="mw-headline" id="of_LaTeX2HTML_to_the_Python_documentation">of LaTeX2HTML to the Python documentation</span></h2>
+<pre>[[Media:<a href="https://wiki.ubuntu.org.cn/index.php?title=%E7%89%B9%E6%AE%8A:%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6&amp;wpDestFile=Example.ogg" class="new" title="Example.ogg">Media:Example.ogg</a>[[Media:Example.ogg]]]]has been heavily tailored by Fred L. Drake, Jr. Original navigation icons were contributed by Christopher Petrilli.ssssssssssssssssss
+</pre>
+<p>问候语?@#
+</p>
+
+
+
+</div><div class="printfooter">
+取自“<a dir="ltr" href="https://wiki.ubuntu.org.cn/index.php?title=Python%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97&amp;oldid=151894">https://wiki.ubuntu.org.cn/index.php?title=Python正则表达式操作指南&amp;oldid=151894</a>”</div>
+<div id="catlinks" class="catlinks"><div id="mw-normal-catlinks" class="mw-normal-catlinks"><a href="https://wiki.ubuntu.org.cn/%E7%89%B9%E6%AE%8A:%E9%A1%B5%E9%9D%A2%E5%88%86%E7%B1%BB" title="特殊:页面分类">分类</a>：<ul><li><a href="https://wiki.ubuntu.org.cn/%E5%88%86%E7%B1%BB:%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91" title="分类:程序开发">程序开发</a></li></ul></div></div> 
+</div>
+</div>
+</div>
+</div>
+<div class="visualClear"></div>
+<div id="footer">
+<table>
+<tbody><tr>
+<td rowspan="2" class="f-iconsection">
+</td>
+<td align="center">
+<ul id="f-list">
+<li id="f-credits">本页面被Ubuntu中文匿名用户<a href="https://wiki.ubuntu.org.cn/%E7%89%B9%E6%AE%8A:%E7%94%A8%E6%88%B7%E8%B4%A1%E7%8C%AE/" title="特殊:用户贡献/"></a>最后修改于2014年8月26日 (星期二) 20:59。 基于Ubuntu中文匿名用户<a href="https://wiki.ubuntu.org.cn/%E7%89%B9%E6%AE%8A:%E7%94%A8%E6%88%B7%E8%B4%A1%E7%8C%AE/121.33.190.182" title="特殊:用户贡献/121.33.190.182">121.33.190.182</a>、<a href="https://wiki.ubuntu.org.cn/%E7%89%B9%E6%AE%8A:%E7%94%A8%E6%88%B7%E8%B4%A1%E7%8C%AE/61.141.158.178" title="特殊:用户贡献/61.141.158.178">61.141.158.178</a>、<a href="https://wiki.ubuntu.org.cn/%E7%89%B9%E6%AE%8A:%E7%94%A8%E6%88%B7%E8%B4%A1%E7%8C%AE/1.62.246.131" title="特殊:用户贡献/1.62.246.131">1.62.246.131</a>和<a href="https://wiki.ubuntu.org.cn/%E7%89%B9%E6%AE%8A:%E7%94%A8%E6%88%B7%E8%B4%A1%E7%8C%AE/182.91.234.199" title="特殊:用户贡献/182.91.234.199">182.91.234.199</a>和<a href="https://wiki.ubuntu.org.cn/index.php?title=Python%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97&amp;action=credits" title="Python正则表达式操作指南">其他</a>的工作。</li>
+<li id="f-privacy"><a href="https://wiki.ubuntu.org.cn/Ubuntu%E4%B8%AD%E6%96%87:%E9%9A%90%E7%A7%81%E6%94%BF%E7%AD%96" title="Ubuntu中文:隐私政策">隐私政策</a></li>
+<li id="f-about"><a href="https://wiki.ubuntu.org.cn/Ubuntu%E4%B8%AD%E6%96%87:%E5%85%B3%E4%BA%8E" title="Ubuntu中文:关于">关于Ubuntu中文</a></li>
+<li id="f-disclaimer"><a href="https://wiki.ubuntu.org.cn/Ubuntu%E4%B8%AD%E6%96%87:%E5%85%8D%E8%B4%A3%E5%A3%B0%E6%98%8E" title="Ubuntu中文:免责声明">免责声明</a></li>
+</ul></td>
+<td rowspan="2" class="f-iconsection">
+<div id="f-poweredbyico"><a href="https://www.mediawiki.org/"><img src="Python%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97%20-%20Ubuntu%E4%B8%AD%E6%96%87_files/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" srcset="Python%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97%20-%20Ubuntu%E4%B8%AD%E6%96%87_files/poweredby_mediawiki_132x47.png 1.5x, Python%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97%20-%20Ubuntu%E4%B8%AD%E6%96%87_files/poweredby_mediawiki_176x62.png 2x" width="88" height="31"></a></div>
+</td>
+</tr>
+<tr>
+<td><div id="skin-info">
+Mozilla Cavendish Theme based on Cavendish style by Gabriel Wicke modified by <a href="http://www.dasch-tour.de/" title="DaSch-Tour Blog" target="_blank">DaSch</a> for the <a href="http://www.wecowi.de/" title="Web Community Wiki">Web Community Wiki</a><br>
+<a href="https://github.com/DaSchTour/Cavendish" title="github projectpage">github Projectpage</a> – <a href="https://github.com/DaSchTour/Cavendish/issues" title="Bug reporting at github">Report Bug</a> – Skin-Version: 2.3.4 </div></td>
+</tr>
+</tbody></table>
+</div>
+
+
+<script type="text/javascript">window.RLQ = window.RLQ || []; window.RLQ.push( function () {
+mw.loader.state({"user":"ready","user.groups":"ready"});mw.loader.load(["mediawiki.toc","mediawiki.action.view.postEdit","site","mediawiki.user","mediawiki.hidpi","mediawiki.page.ready","mediawiki.searchSuggest"]);
+} );</script><script type="text/javascript">window.RLQ = window.RLQ || []; window.RLQ.push( function () {
+mw.config.set({"wgBackendResponseTime":217});
+} );</script><div style="display: none; font-size: 11.3333px;" class="suggestions"><div class="suggestions-results"></div><div class="suggestions-special"></div></div></body></html>

@@ -1,0 +1,6 @@
+while i < 10 {  // this is comment
+    sum = sum + i
+    i = i + 1
+}
+sum
+"hello world"

@@ -1,0 +1,135 @@
+$ nsys profile --stats=true --force-overwrite true -o ./tensorrt_eval_profile build/tensorrt_eval
+Collecting data...
+img/img0.png 推理结果: 0
+img/img1.png 推理结果: 1
+img/img2.png 推理结果: 2
+img/img3.png 推理结果: 3
+img/img4.png 推理结果: 4
+img/img5.png 推理结果: 5
+img/img6.png 推理结果: 6
+img/img7.png 推理结果: 7
+img/img8.png 推理结果: 8
+img/img9.png 推理结果: 9
+Processing events...
+Capturing symbol files...
+Saving temporary "/tmp/nsys-report-bcc6-96ac-1e71-44cc.qdstrm" file to disk...
+Creating final output files...
+
+Processing [==============================================================100%]
+
+**** Analysis failed with:
+Status: TargetProfilingFailed
+Props {
+  Items {
+    Type: DeviceId
+    Value: "Local (CLI)"
+  }
+}
+Error {
+  Type: RuntimeError
+  SubError {
+    Type: ProcessEventsError
+    Props {
+      Items {
+        Type: ErrorText
+        Value: "/build/agent/work/20a3cfcd1c25021d/QuadD/Host/Analysis/Modules/TraceProcessEvent.cpp(47): Throw in function const string& {anonymous}::GetCudaCallbackName(bool, uint32_t, const QuadDAnalysis::MoreInjection&)\nDynamic exception type: boost::exception_detail::clone_impl<QuadDCommon::InvalidArgumentException>\nstd::exception::what: InvalidArgumentException\n[QuadDCommon::tag_error_text*] = Unknown API driver activity\n[boost::errinfo_errno_*] = 673, \"Unknown error 673\"\n"
+      }
+    }
+  }
+}
+Status: TargetProfilingFailed
+Props {
+  Items {
+    Type: DeviceId
+    Value: "Local (CLI)"
+  }
+}
+Error {
+  Type: RuntimeError
+  SubError {
+    Type: ProcessEventsError
+    Props {
+      Items {
+        Type: ErrorText
+        Value: "/build/agent/work/20a3cfcd1c25021d/QuadD/Host/Analysis/Modules/TraceProcessEvent.cpp(47): Throw in function const string& {anonymous}::GetCudaCallbackName(bool, uint32_t, const QuadDAnalysis::MoreInjection&)\nDynamic exception type: boost::exception_detail::clone_impl<QuadDCommon::InvalidArgumentException>\nstd::exception::what: InvalidArgumentException\n[QuadDCommon::tag_error_text*] = Unknown API driver activity\n[boost::errinfo_errno_*] = 626, \"Unknown error 626\"\n"
+      }
+    }
+  }
+}
+
+
+**** Errors occurred while processing the raw events. ****
+**** Please see the Diagnostics Summary page after opening the qdrep file in GUI. ****
+
+Saved report file to "/tmp/nsys-report-bcc6-96ac-1e71-44cc.qdrep"
+Exporting 5862 events: [==================================================100%]
+
+Exported successfully to
+/tmp/nsys-report-bcc6-96ac-1e71-44cc.sqlite
+
+Generating CUDA API Statistics...
+CUDA API Statistics (nanoseconds)
+
+
+
+
+CUDA trace data was not collected.
+
+
+Generating Operating System Runtime API Statistics...
+Operating System Runtime API Statistics (nanoseconds)
+
+Time(%)      Total Time       Calls         Average         Minimum         Maximum  Name                                                                            
+-------  --------------  ----------  --------------  --------------  --------------  --------------------------------------------------------------------------------
+   52.7       281384955          13      21644996.5           20494       100070438  sem_timedwait                                                                   
+   37.5       200071205          12      16672600.4          140735       100123895  poll                                                                            
+    8.9        47385212         771         61459.4            1019        13697878  ioctl                                                                           
+    0.3         1865969          63         29618.6            3596          728219  mmap64                                                                          
+    0.3         1459935           2        729967.5            1625         1458310  read                                                                            
+    0.1          536838          76          7063.7            4457           26230  open64                                                                          
+    0.1          499336          33         15131.4            1095          406995  fopen                                                                           
+    0.0          178829           5         35765.8           28411           42034  pthread_create                                                                  
+    0.0           66560          12          5546.7            1750           27944  mmap                                                                            
+    0.0           54200          16          3387.5            1240           23305  fread                                                                           
+    0.0           26976          10          2697.6            2140            5721  putc                                                                            
+    0.0           26652           1         26652.0           26652           26652  fgets                                                                           
+    0.0           22630          10          2263.0            1521            3173  write                                                                           
+    0.0           15413           5          3082.6            1875            4230  open                                                                            
+    0.0           11400           5          2280.0            1292            3535  munmap                                                                          
+    0.0           10301           6          1716.8            1038            3049  fclose                                                                          
+    0.0            5309           1          5309.0            5309            5309  fopen64                                                                         
+    0.0            4333           2          2166.5            1764            2569  socket                                                                          
+    0.0            3812           1          3812.0            3812            3812  connect                                                                         
+    0.0            3125           1          3125.0            3125            3125  pipe2                                                                           
+    0.0            2598           1          2598.0            2598            2598  fwrite                                                                          
+    0.0            1873           1          1873.0            1873            1873  fcntl                                                                           
+    0.0            1611           1          1611.0            1611            1611  bind                                                                            
+
+
+
+
+Generating NVTX Push-Pop Range Statistics...
+NVTX Push-Pop Range Statistics (nanoseconds)
+
+Time(%)      Total Time   Instances         Average         Minimum         Maximum  Range                                                                                      
+-------  --------------  ----------  --------------  --------------  --------------  -------------------------------------------------------------------------------------------
+   50.1        14878799          10       1487879.9           46434        14414420  TensorRT:ExecutionContext::enqueue                                                         
+   16.6         4936416          10        493641.6            6954         4856885  TensorRT:/conv1/Conv + /Relu                                                               
+   13.3         3950618          10        395061.8            4939         3901354  TensorRT:Reformatting CopyNode for Input Tensor 0 to /Reshape + reshape_before_/fc1/Gemm   
+   12.7         3770475          10        377047.5            3695         3734675  TensorRT:/conv2/Conv + /Relu_1                                                             
+    6.3         1882459          10        188245.9            5057         1832961  TensorRT:Reformatting CopyNode for Input Tensor 0 to /fc3/Gemm                             
+    0.2           57091          10          5709.1            4509           12021  TensorRT:/fc1/Gemm + /Relu_2                                                               
+    0.2           51995          10          5199.5            4015            9121  TensorRT:/pool/MaxPool                                                                     
+    0.2           49679          10          4967.9            3969           10590  TensorRT:/fc2/Gemm + /Relu_3                                                               
+    0.2           46071          10          4607.1            3580            9450  TensorRT:/fc3/Gemm                                                                         
+    0.1           35722          10          3572.2            2877            8316  TensorRT:/pool_1/MaxPool                                                                   
+    0.0            4005          10           400.5             285             980  TensorRT:/Reshape + reshape_before_/fc1/Gemm                                               
+    0.0            3803          10           380.3             273             727  TensorRT:reshape_after_/fc3/Gemm                                                           
+    0.0            3330          10           333.0             246             647  TensorRT:Reformatting CopyNode for Input Tensor 0 to /fc2/Gemm + /Relu_3                   
+    0.0            2545          10           254.5             157             492  TensorRT:Reformatting CopyNode for Input Tensor 0 to /fc1/Gemm + /Relu_2                   
+
+
+
+Report file moved to "/home/hexu/git/Collection.Of.Python.Utility.Tools/pytorch/mnist/Learning-TensorRT/tensorrt/./tensorrt_eval_profile.qdstrm"
+Report file moved to "/home/hexu/git/Collection.Of.Python.Utility.Tools/pytorch/mnist/Learning-TensorRT/tensorrt/./tensorrt_eval_profile.qdrep"
+Report file moved to "/home/hexu/git/Collection.Of.Python.Utility.Tools/pytorch/mnist/Learning-TensorRT/tensorrt/./tensorrt_eval_profile.sqlite"

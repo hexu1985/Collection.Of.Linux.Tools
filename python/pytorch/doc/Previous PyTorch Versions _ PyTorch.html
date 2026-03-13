@@ -1,0 +1,2276 @@
+<!DOCTYPE html>
+<!-- saved from url=(0050)https://pytorch.org/get-started/previous-versions/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <!-- Google Tag Manager -->
+  <script src="./Previous PyTorch Versions _ PyTorch_files/leadflows.js" type="text/javascript" id="LeadFlows-8112310" crossorigin="anonymous" data-leadin-portal-id="8112310" data-leadin-env="prod" data-loader="hs-scriptloader" data-hsjs-portal="8112310" data-hsjs-env="prod" data-hsjs-hublet="na1"></script><script src="./Previous PyTorch Versions _ PyTorch_files/8112310.js" type="text/javascript" id="hs-analytics"></script><script src="./Previous PyTorch Versions _ PyTorch_files/fb.js" type="text/javascript" id="hs-ads-pixel-8112310" data-ads-portal-id="8112310" data-ads-env="prod" data-loader="hs-scriptloader" data-hsjs-portal="8112310" data-hsjs-env="prod" data-hsjs-hublet="na1"></script><script src="./Previous PyTorch Versions _ PyTorch_files/web-interactives-embed.js" type="text/javascript" id="hubspot-web-interactives-loader" crossorigin="anonymous" data-loader="hs-scriptloader" data-hsjs-portal="8112310" data-hsjs-env="prod" data-hsjs-hublet="na1"></script><script src="./Previous PyTorch Versions _ PyTorch_files/conversations-embed.js" type="text/javascript" id="hubspot-messages-loader" data-loader="hs-scriptloader" data-hsjs-portal="8112310" data-hsjs-env="prod" data-hsjs-hublet="na1"></script><script src="./Previous PyTorch Versions _ PyTorch_files/collectedforms.js" type="text/javascript" id="CollectedForms-8112310" crossorigin="anonymous" data-leadin-portal-id="8112310" data-leadin-env="prod" data-loader="hs-scriptloader" data-hsjs-portal="8112310" data-hsjs-env="prod" data-hsjs-hublet="na1"></script><script src="./Previous PyTorch Versions _ PyTorch_files/8112310(1).js" type="text/javascript" id="cookieBanner-8112310" data-cookieconsent="ignore" data-hs-ignore="true" data-loader="hs-scriptloader" data-hsjs-portal="8112310" data-hsjs-env="prod" data-hsjs-hublet="na1"></script><script async="" id="demandbase_js_lib" src="./Previous PyTorch Versions _ PyTorch_files/e8693e2ee5fcbf3b.min.js"></script><script type="text/javascript" async="" src="./Previous PyTorch Versions _ PyTorch_files/js"></script><script type="text/javascript" async="" src="./Previous PyTorch Versions _ PyTorch_files/analytics.js"></script><script type="text/javascript" async="" src="./Previous PyTorch Versions _ PyTorch_files/js(1)"></script><script src="./Previous PyTorch Versions _ PyTorch_files/232741255631043" async=""></script><script src="./Previous PyTorch Versions _ PyTorch_files/243028289693773" async=""></script><script async="" src="./Previous PyTorch Versions _ PyTorch_files/fbevents.js"></script><script async="" src="./Previous PyTorch Versions _ PyTorch_files/gtm.js"></script><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-T8XT4PS');</script>
+  <!-- End Google Tag Manager -->
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="shortcut icon" type="image/x-icon" href="https://pytorch.org/favicon.ico?">
+  <title>
+    
+      Previous PyTorch Versions | PyTorch
+    
+  </title>
+  <meta name="robots" content="index, follow">
+
+<meta name="description" content="Installing previous versions of PyTorch
+
+">
+
+  <meta property="og:image" content="https://pytorch.org/assets/images/social-share.jpg">
+  <meta name="twitter:image" content="https://pytorch.org/assets/images/social-share.jpg">
+
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Previous PyTorch Versions">
+<meta property="og:description" content="Installing previous versions of PyTorch
+
+">
+<meta property="og:site_name" content="PyTorch">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Previous PyTorch Versions">
+<meta name="twitter:description" content="Installing previous versions of PyTorch
+
+">
+
+  <style class="anchorjs"></style><link rel="stylesheet" href="./Previous PyTorch Versions _ PyTorch_files/main.css">
+  <script src="./Previous PyTorch Versions _ PyTorch_files/jquery.min.js"></script>
+  <script src="./Previous PyTorch Versions _ PyTorch_files/popper.min.js"></script>
+  <script src="./Previous PyTorch Versions _ PyTorch_files/bootstrap.min.js"></script>
+  <script src="./Previous PyTorch Versions _ PyTorch_files/anchor.min.js"></script>
+  <script type="text/x-mathjax-config;executed=true">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+        inlineMath: [['$','$']]
+      }
+    });
+  </script>
+  <script src="./Previous PyTorch Versions _ PyTorch_files/MathJax.js" id=""></script>
+  <script type="text/javascript" src="./Previous PyTorch Versions _ PyTorch_files/docsearch.min.js"></script>
+  
+    <script async="" src="./Previous PyTorch Versions _ PyTorch_files/js(2)"></script>
+
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "UA-117752657-2");
+</script>
+
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '243028289693773');
+    fbq('track', 'PageView');
+</script>
+
+<noscript>
+  <img height="1" width="1"
+  src="https://www.facebook.com/tr?id=243028289693773&ev=PageView
+  &noscript=1"/>
+</noscript>
+
+    <!-- Twitter universal website tag code -->
+<style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Menu_Button .MathJax_Hover_Arrow {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px; font-family: 'Courier New',Courier; font-size: 9px; color: #F0F0F0}
+.MathJax_Menu_Button .MathJax_Hover_Arrow span {display: block; background-color: #AAA; border: 1px solid; border-radius: 3px; line-height: 0; padding: 4px}
+.MathJax_Hover_Arrow:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_Hover_Arrow:hover span {background-color: #CCC!important}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 5px 0px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 5px; -webkit-border-radius: 5px; -moz-border-radius: 5px; -khtml-border-radius: 5px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 1px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: .7em}
+.MathJax_MenuRadioCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuLabel {padding: 1px 2em 3px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #DDDDDD; margin: 4px 3px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: #606872; color: white}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+</style><style type="text/css">.MathJax_Preview .MJXf-math {color: inherit!important}
+</style><style type="text/css">.MJX_Assistive_MathML {position: absolute!important; top: 0; left: 0; clip: rect(1px, 1px, 1px, 1px); padding: 1px 0 0 0!important; border: 0!important; height: 1px!important; width: 1px!important; overflow: hidden!important; display: block!important; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none}
+.MJX_Assistive_MathML.MJX_Assistive_MathML_Block {width: 100%!important}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1em; bottom: 1.5em; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><style type="text/css">.MJXp-script {font-size: .8em}
+.MJXp-right {-webkit-transform-origin: right; -moz-transform-origin: right; -ms-transform-origin: right; -o-transform-origin: right; transform-origin: right}
+.MJXp-bold {font-weight: bold}
+.MJXp-italic {font-style: italic}
+.MJXp-scr {font-family: MathJax_Script,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-frak {font-family: MathJax_Fraktur,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-sf {font-family: MathJax_SansSerif,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-cal {font-family: MathJax_Caligraphic,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-mono {font-family: MathJax_Typewriter,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-largeop {font-size: 150%}
+.MJXp-largeop.MJXp-int {vertical-align: -.2em}
+.MJXp-math {display: inline-block; line-height: 1.2; text-indent: 0; font-family: 'Times New Roman',Times,STIXGeneral,serif; white-space: nowrap; border-collapse: collapse}
+.MJXp-display {display: block; text-align: center; margin: 1em 0}
+.MJXp-math span {display: inline-block}
+.MJXp-box {display: block!important; text-align: center}
+.MJXp-box:after {content: " "}
+.MJXp-rule {display: block!important; margin-top: .1em}
+.MJXp-char {display: block!important}
+.MJXp-mo {margin: 0 .15em}
+.MJXp-mfrac {margin: 0 .125em; vertical-align: .25em}
+.MJXp-denom {display: inline-table!important; width: 100%}
+.MJXp-denom > * {display: table-row!important}
+.MJXp-surd {vertical-align: top}
+.MJXp-surd > * {display: block!important}
+.MJXp-script-box > *  {display: table!important; height: 50%}
+.MJXp-script-box > * > * {display: table-cell!important; vertical-align: top}
+.MJXp-script-box > *:last-child > * {vertical-align: bottom}
+.MJXp-script-box > * > * > * {display: block!important}
+.MJXp-mphantom {visibility: hidden}
+.MJXp-munderover {display: inline-table!important}
+.MJXp-over {display: inline-block!important; text-align: center}
+.MJXp-over > * {display: block!important}
+.MJXp-munderover > * {display: table-row!important}
+.MJXp-mtable {vertical-align: .25em; margin: 0 .125em}
+.MJXp-mtable > * {display: inline-table!important; vertical-align: middle}
+.MJXp-mtr {display: table-row!important}
+.MJXp-mtd {display: table-cell!important; text-align: center; padding: .5em 0 0 .5em}
+.MJXp-mtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-mlabeledtr {display: table-row!important}
+.MJXp-mlabeledtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mlabeledtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MJXp-scale0 {-webkit-transform: scaleX(.0); -moz-transform: scaleX(.0); -ms-transform: scaleX(.0); -o-transform: scaleX(.0); transform: scaleX(.0)}
+.MJXp-scale1 {-webkit-transform: scaleX(.1); -moz-transform: scaleX(.1); -ms-transform: scaleX(.1); -o-transform: scaleX(.1); transform: scaleX(.1)}
+.MJXp-scale2 {-webkit-transform: scaleX(.2); -moz-transform: scaleX(.2); -ms-transform: scaleX(.2); -o-transform: scaleX(.2); transform: scaleX(.2)}
+.MJXp-scale3 {-webkit-transform: scaleX(.3); -moz-transform: scaleX(.3); -ms-transform: scaleX(.3); -o-transform: scaleX(.3); transform: scaleX(.3)}
+.MJXp-scale4 {-webkit-transform: scaleX(.4); -moz-transform: scaleX(.4); -ms-transform: scaleX(.4); -o-transform: scaleX(.4); transform: scaleX(.4)}
+.MJXp-scale5 {-webkit-transform: scaleX(.5); -moz-transform: scaleX(.5); -ms-transform: scaleX(.5); -o-transform: scaleX(.5); transform: scaleX(.5)}
+.MJXp-scale6 {-webkit-transform: scaleX(.6); -moz-transform: scaleX(.6); -ms-transform: scaleX(.6); -o-transform: scaleX(.6); transform: scaleX(.6)}
+.MJXp-scale7 {-webkit-transform: scaleX(.7); -moz-transform: scaleX(.7); -ms-transform: scaleX(.7); -o-transform: scaleX(.7); transform: scaleX(.7)}
+.MJXp-scale8 {-webkit-transform: scaleX(.8); -moz-transform: scaleX(.8); -ms-transform: scaleX(.8); -o-transform: scaleX(.8); transform: scaleX(.8)}
+.MJXp-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
+.MathJax_PHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style><style id="_goober"> .go2933276541{position:fixed;display:block;width:100%;height:0px;margin:0px;padding:0px;overflow:visible;transform-style:preserve-3d;background:transparent;backface-visibility:hidden;pointer-events:none;left:0px;z-index:9998;}.go2369186930{top:0px;z-index:9999;height:100%;width:100%;}.go1348078617{bottom:0px;}.go2417249464{position:fixed;z-index:9989;}.go3921366393{left:0;bottom:0;}.go3967842156{right:0;bottom:0;}.go613305155{left:0;top:0;}.go471583506{right:0;top:0;}.go3670563033{position:relative;overflow:hidden;display:none;}.go1041095097{display:block;}.go1632949049{position:absolute;pointer-events:none;width:101vw;height:101vh;background:rgba(0,0,0,0.7);opacity:0;z-index:-1;}.go2512015367{z-index:99998;opacity:0.8;visibility:visible;pointer-events:all;cursor:pointer;}.go1432718904{overflow:hidden;}.go812842568{display:block !important;position:static !important;box-sizing:border-box !important;background:transparent !important;border:none;min-height:0px !important;max-height:none !important;margin:0px;padding:0px !important;height:100% !important;width:1px !important;max-width:100% !important;min-width:100% !important;}.go2729809544{z-index:99999;visibility:hidden;position:absolute;inset:50vh auto auto 50%;transform:translate(-50%,-50%);left:50%;top:50%;opacity:0;pointer-events:none;max-height:95%;max-width:95%;}.go1011812720{pointer-events:auto !important;visibility:visible;opacity:1;transition:opacity 1s ease-in;}.go456419034{transition:opacity 0.3s ease-in;}.go3128134379{pointer-events:auto !important;visibility:visible !important;max-height:95vh !important;transition:max-height 1s ease-in;}.go494047706{z-index:9999;width:100%;max-height:95%;position:fixed;visibility:hidden;}.go2481764524{z-index:9999;width:100%;max-height:95%;position:fixed;visibility:hidden;bottom:0px;}.go2685733372{visibility:hidden;}.go2985984737{visibility:visible !important;}.go3281949485{pointer-events:auto !important;visibility:visible !important;max-height:95vh !important;transform:none !important;}.go3539422596{z-index:9999;width:100%;max-height:95%;position:fixed;visibility:hidden;transition:transform 0.5s cubic-bezier(0.31,-0.2,0.04,1.47);}.go988075951{z-index:9999;position:fixed;left:10px;top:10px;max-height:95vh !important;max-width:95%;visibility:hidden;}.go2699082514{z-index:9999;position:fixed;right:10px;top:10px;max-height:95vh !important;max-width:95%;visibility:hidden;}.go1595992025{z-index:9999;position:fixed;left:10px;bottom:10px;max-height:95vh !important;max-width:95%;visibility:hidden;}.go1222083472{z-index:9999;position:fixed;right:10px;bottom:10px;max-height:95vh !important;max-width:95%;visibility:hidden;}.go722322694{transition:none !important;}.go26732895{cursor:pointer;}.go2083580917{display:flex;justify-content:center;align-items:center;}</style><style type="text/css">html.hs-messages-widget-open.hs-messages-mobile,html.hs-messages-widget-open.hs-messages-mobile body{overflow:hidden!important;position:relative!important}html.hs-messages-widget-open.hs-messages-mobile body{height:100%!important;margin:0!important}#hubspot-messages-iframe-container{display:initial!important;z-index:2147483647;position:fixed!important;bottom:0!important}#hubspot-messages-iframe-container.widget-align-left{left:0!important}#hubspot-messages-iframe-container.widget-align-right{right:0!important}#hubspot-messages-iframe-container.internal{z-index:1016}#hubspot-messages-iframe-container.internal iframe{min-width:108px}#hubspot-messages-iframe-container .hs-shadow-container{display:initial!important;z-index:-1;position:absolute;width:0;height:0;bottom:0;content:""}#hubspot-messages-iframe-container .hs-shadow-container.internal{display:none!important}#hubspot-messages-iframe-container .hs-shadow-container.active{width:400px;height:400px}#hubspot-messages-iframe-container iframe{display:initial!important;width:100%!important;height:100%!important;border:none!important;position:absolute!important;bottom:0!important;right:0!important;background:transparent!important}.hs-drag-handle{position:absolute;bottom:16px;cursor:grab;height:60px;display:none;align-items:center}.hs-drag-handle--right{right:76px}.hs-drag-handle--left{left:76px}.hs-drag-overlay{position:absolute;top:0;left:0;right:0;bottom:0;user-select:none;z-index:999;display:none}</style></head><body class="get-started"><div id="hs-web-interactives-top-push-anchor" class="go3670563033"></div><div id="MathJax_Message" style="display: none;"></div><img height="1" width="1" style="display:none;" alt="" src="./Previous PyTorch Versions _ PyTorch_files/adsct">
+<img height="1" width="1" style="display:none;" alt="" src="./Previous PyTorch Versions _ PyTorch_files/adsct(1)">
+<!-- End Twitter universal website tag code -->
+
+  
+  <link rel="stylesheet" href="./Previous PyTorch Versions _ PyTorch_files/docsearch.min.css">
+  <link href="https://pytorch.org/feed.xml" type="application/atom+xml" rel="alternate" title="Pythorch Blog Posts">
+
+
+  
+    <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T8XT4PS"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+ <div class="hello-bar">
+  <div class="container">
+    Join us in Silicon Valley September 18-19 at the 2024 PyTorch Conference. <a target="_blank" href="https://events.linuxfoundation.org/pytorch-conference/?__hstc=132719121.845067bab57129f39cab1b1174adf435.1716541664134.1716541664134.1716548275104.2&amp;__hssc=132719121.1.1716548275104&amp;__hsfp=1665771410">Learn more</a>.
+  </div>
+</div>
+<div class="container-fluid header-holder get-started-header">
+  <div class="container">
+    
+
+<div class="header-container">
+  <a class="header-logo" href="https://pytorch.org/" aria-label="PyTorch"></a>
+
+  <div class="main-menu">
+  <ul>
+    <li class="main-menu-item">
+      <div id="dropdownMenuButton" data-toggle="resources-dropdown" class="resources-dropdown">
+        <a class="with-down-arrow">
+          Learn
+        </a>
+        <div class="resources-dropdown-menu">
+          <a class="nav-dropdown-item" href="https://pytorch.org/get-started">
+            <span class="dropdown-title">Get Started</span>
+            <p>Run PyTorch locally or get started quickly with one of the supported cloud platforms</p>
+          </a>
+          <a class="nav-dropdown-item" href="https://pytorch.org/tutorials/">
+            <span class="dropdown-title">Tutorials</span>
+            <p>Whats new in PyTorch tutorials</p>
+          </a>
+          <a class="nav-dropdown-item" href="https://pytorch.org/tutorials/beginner/basics/intro.html">
+            <span class="dropdown-title">Learn the Basics</span>
+            <p>Familiarize yourself with PyTorch concepts and modules</p>
+          </a>
+          <a class="nav-dropdown-item" href="https://pytorch.org/tutorials/recipes/recipes_index.html">
+            <span class="dropdown-title">PyTorch Recipes</span>
+            <p>Bite-size, ready-to-deploy PyTorch code examples</p>
+          </a>
+          <a class="nav-dropdown-item" href="https://pytorch.org/tutorials/beginner/introyt.html">
+            <span class="dropdown-title">Intro to PyTorch - YouTube Series</span>
+            <p>Master PyTorch basics with our engaging YouTube tutorial series</p>
+          </a>
+        </div>
+      </div>
+    </li>
+
+    <li class="main-menu-item">
+      <div id="dropdownMenuButton" data-toggle="resources-dropdown" class="resources-dropdown">
+        <a class="with-down-arrow">
+          Ecosystem 
+        </a>
+        <div class="resources-dropdown-menu">
+          <a class="nav-dropdown-item" href="https://pytorch.org/ecosystem">
+            <span class="dropdown-title">Tools</span>
+            <p>Learn about the tools and frameworks in the PyTorch Ecosystem</p>
+          </a>
+          <a class="nav-dropdown-item" href="https://pytorch.org/#community-module">
+            <span class="dropdown-title">Community</span>
+            <p>Join the PyTorch developer community to contribute, learn, and get your questions answered.</p>
+          </a>
+          <a class="nav-dropdown-item" href="https://discuss.pytorch.org/" target="_blank">
+            <span class="dropdown-title">Forums</span>
+            <p>A place to discuss PyTorch code, issues, install, research</p>
+          </a>
+          <a class="nav-dropdown-item" href="https://pytorch.org/resources">
+            <span class="dropdown-title">Developer Resources</span>
+            <p>Find resources and get questions answered</p>
+          </a>
+          <a class="nav-dropdown-item" href="https://pytorch.org/ecosystem/contributor-awards-2023">
+            <span class="dropdown-title">Contributor Awards - 2023</span>
+            <p>Award winners announced at this year's PyTorch Conference</p>
+          </a>
+        </div>
+      </div>
+    </li>
+
+    <li class="main-menu-item">
+      <div id="dropdownMenuButton" data-toggle="resources-dropdown" class="resources-dropdown">
+        <a class="with-down-arrow">
+          Edge 
+        </a>
+        <div class="resources-dropdown-menu">
+          <a class="nav-dropdown-item" href="https://pytorch.org/edge">
+            <span class="dropdown-title">About PyTorch Edge</span>
+            <p>Build innovative and privacy-aware AI experiences for edge devices</p>
+          </a>
+          <a class="nav-dropdown-item" href="https://pytorch.org/executorch-overview">
+            <span class="dropdown-title">ExecuTorch</span>
+            <p>End-to-end solution for enabling on-device inference capabilities across mobile and edge devices</p>
+          </a>
+        </div>
+      </div>
+    </li>
+
+    <li class="main-menu-item">
+      <div id="docsDropdownButton" data-toggle="resources-dropdown" class="resources-dropdown">
+        <a class="with-down-arrow">
+          Docs
+        </a>
+        <div class="resources-dropdown-menu">
+          <a class="nav-dropdown-item" href="https://pytorch.org/docs">
+            <span class="dropdown-title">PyTorch</span>
+            <p>Explore the documentation for comprehensive guidance on how to use PyTorch.</p>
+          </a>
+          <a class="nav-dropdown-item" href="https://pytorch.org/pytorch-domains">
+            <span class="dropdown-title">PyTorch Domains</span>
+            <p> Read the PyTorch Domains documentation to learn more about domain-specific libraries.</p>
+          </a>
+        </div>
+      </div>
+    </li>
+
+    <li class="main-menu-item">
+      <div id="dropdownMenuButton" data-toggle="resources-dropdown" class="resources-dropdown">
+        <a class="with-down-arrow">
+          Blog &amp; News
+        </a>
+        <div class="resources-dropdown-menu">
+          <a class="nav-dropdown-item" href="https://pytorch.org/blog">
+            <span class="dropdown-title">PyTorch Blog</span>
+            <p>Catch up on the latest technical news and happenings</p>
+          </a>
+          <a class="nav-dropdown-item" href="https://pytorch.org/community-blog">
+            <span class="dropdown-title">Community Blog</span>
+            <p>Stories from the PyTorch ecosystem</p>
+          </a>
+          <a class="nav-dropdown-item" href="https://pytorch.org/videos">
+            <span class="dropdown-title">Videos</span>
+            <p>Learn about the latest PyTorch tutorials, new, and more </p>
+          </a>
+          <a class="nav-dropdown-item" href="https://pytorch.org/community-stories">
+            <span class="dropdown-title">Community Stories</span>
+            <p>Learn how our community solves real, everyday machine learning problems with PyTorch</p>
+          </a>
+          <a class="nav-dropdown-item" href="https://pytorch.org/events">
+            <span class="dropdown-title">Events</span>
+            <p>Find events, webinars, and podcasts</p>
+          </a>
+        </div>
+      </div>
+    </li>
+
+    <li class="main-menu-item">
+      <div id="resourcesDropdownButton" data-toggle="resources-dropdown" class="resources-dropdown">
+        <a class="with-down-arrow">
+          About
+        </a>
+        <div class="resources-dropdown-menu">
+          <a class="nav-dropdown-item" href="https://pytorch.org/foundation">
+            <span class="dropdown-title">PyTorch Foundation</span>
+            <p>Learn more about the PyTorch Foundation.</p>
+          </a>
+          <a class="nav-dropdown-item" href="https://pytorch.org/governing-board">
+            <span class="dropdown-title">Governing Board</span>
+          </a>
+        </div>
+      </div>
+    </li>
+
+    <li class="main-menu-item">
+      <a href="https://pytorch.org/join" data-cta="join">
+        Become a Member
+      </a>
+    </li>
+
+    <li class="main-menu-item" id="github-main-menu-link">
+      <a href="https://github.com/pytorch/pytorch" title="Go to PyTorch GitHub" target="_blank">
+        <div id="topnav-gh-icon"></div>
+      </a>
+    </li>
+
+    <li class="navSearchWrapper reactNavSearchWrapper" key="search">
+      <div class="search-border">
+        <div id="search-icon"></div>
+        <span class="algolia-autocomplete" style="position: relative; display: inline-block; direction: ltr;"><input id="search-input" type="text" title="Search" class="ds-input" autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-label="search input" aria-owns="algolia-autocomplete-listbox-0" dir="auto" style="position: relative; vertical-align: top;"><pre aria-hidden="true" style="position: absolute; visibility: hidden; white-space: pre; font-family: FreightSans, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 18px; font-style: normal; font-variant: normal; font-weight: 300; word-spacing: 0px; letter-spacing: normal; text-indent: 0px; text-rendering: auto; text-transform: none;"></pre><span class="ds-dropdown-menu" role="listbox" id="algolia-autocomplete-listbox-0" style="position: absolute; top: 100%; z-index: 100; display: none; left: 0px; right: auto;"><div class="ds-dataset-1"></div></span></span>
+        <div id="close-search">X</div>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<script src="./Previous PyTorch Versions _ PyTorch_files/main-menu-dropdown.js"></script>
+
+
+  <a class="main-menu-open-button" href="https://pytorch.org/get-started/previous-versions/#" data-behavior="open-mobile-menu"></a>
+</div>
+
+  </div>
+</div>
+
+
+    <div class="main-background get-started-background"></div>
+
+    
+
+    <div class="jumbotron jumbotron-fluid on-dark-background">
+      <div class="container">
+        <h1>Get Started</h1>
+
+        <p class="lead">
+          Select preferences and run the command to install PyTorch locally, or
+          get started quickly with one of the supported cloud platforms.
+        </p>
+      </div>
+    </div>
+
+    <div class="main-content-wrapper">
+      <div class="main-content">
+        <div class="container-fluid nav-menu-wrapper">
+          <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-light main-content-menu">
+              <ul class="navbar-nav">
+                
+                <li class="nav-item">
+                  <a class="nav-link get-started-nav-link" data-id="get-started-locally" href="https://pytorch.org/get-started/locally/">Start Locally</a>
+                </li>
+                
+                <li class="nav-item">
+                  <a class="nav-link get-started-nav-link" data-id="pytorch" href="https://pytorch.org/get-started/pytorch-2.0/">PyTorch 2.0</a>
+                </li>
+                
+                <li class="nav-item">
+                  <a class="nav-link get-started-nav-link" data-id="get-started-via-cloud-partners" href="https://pytorch.org/get-started/cloud-partners/">Start via Cloud Partners</a>
+                </li>
+                
+                <li class="nav-item nav-select">
+                  <a class="nav-link get-started-nav-link" data-id="previous-versions" href="https://pytorch.org/get-started/previous-versions/">Previous PyTorch Versions</a>
+                </li>
+                
+                <li class="nav-item">
+                  <a class="nav-link get-started-nav-link" data-id="mobile" href="https://pytorch.org/get-started/executorch/">ExecuTorch</a>
+                </li>
+                
+              </ul>
+            </nav>
+          </div>
+        </div>
+
+        <div class="container">
+          
+
+          <div class="article-wrapper" data-id="">
+            <article class="pytorch-article"><h2 id="installing-previous-versions-of-pytorch">Installing previous versions of PyTorch<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#installing-previous-versions-of-pytorch" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>We’d prefer you install the <a href="https://pytorch.org/get-started/locally">latest version</a>,
+but old binaries and installation instructions are provided below for
+your convenience.</p>
+
+<h2 id="commands-for-versions--100">Commands for Versions &gt;= 1.0.0<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#commands-for-versions--100" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<h3 id="v222">v2.2.2<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#v222" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<h4 id="conda">Conda<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#conda" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># conda
+conda install pytorch==2.2.2 torchvision==0.17.2 torchaudio==2.2.2 -c pytorch
+</code></pre></div></div>
+
+<h5 id="linux-and-windows">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CUDA 11.8
+conda install pytorch==2.2.2 torchvision==0.17.2 torchaudio==2.2.2 pytorch-cuda=11.8 -c pytorch -c nvidia
+# CUDA 12.1
+conda install pytorch==2.2.2 torchvision==0.17.2 torchaudio==2.2.2 pytorch-cuda=12.1 -c pytorch -c nvidia
+# CPU Only
+conda install pytorch==2.2.2 torchvision==0.17.2 torchaudio==2.2.2 cpuonly -c pytorch
+</code></pre></div></div>
+
+<h4 id="wheel">Wheel<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#wheel" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-1">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-1" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install torch==2.2.2 torchvision==0.17.2 torchaudio==2.2.2
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-1">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-1" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># ROCM 5.7 (Linux only)
+pip install torch==2.2.2 torchvision==0.17.2 torchaudio==2.2.2 --index-url https://download.pytorch.org/whl/rocm5.7
+# CUDA 11.8
+pip install torch==2.2.2 torchvision==0.17.2 torchaudio==2.2.2 --index-url https://download.pytorch.org/whl/cu118
+# CUDA 12.1
+pip install torch==2.2.2 torchvision==0.17.2 torchaudio==2.2.2 --index-url https://download.pytorch.org/whl/cu121
+# CPU only
+pip install torch==2.2.2 torchvision==0.17.2 torchaudio==2.2.2 --index-url https://download.pytorch.org/whl/cpu
+</code></pre></div></div>
+
+<h3 id="v221">v2.2.1<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#v221" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<h4 id="conda-1">Conda<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#conda-1" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-2">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-2" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># conda
+conda install pytorch==2.2.1 torchvision==0.17.1 torchaudio==2.2.1 -c pytorch
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-2">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-2" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CUDA 11.8
+conda install pytorch==2.2.1 torchvision==0.17.1 torchaudio==2.2.1 pytorch-cuda=11.8 -c pytorch -c nvidia
+# CUDA 12.1
+conda install pytorch==2.2.1 torchvision==0.17.1 torchaudio==2.2.1 pytorch-cuda=12.1 -c pytorch -c nvidia
+# CPU Only
+conda install pytorch==2.2.1 torchvision==0.17.1 torchaudio==2.2.1 cpuonly -c pytorch
+</code></pre></div></div>
+
+<h4 id="wheel-1">Wheel<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#wheel-1" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-3">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-3" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install torch==2.2.1 torchvision==0.17.1 torchaudio==2.2.1
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-3">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-3" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># ROCM 5.7 (Linux only)
+pip install torch==2.2.1 torchvision==0.17.1 torchaudio==2.2.1 --index-url https://download.pytorch.org/whl/rocm5.7
+# CUDA 11.8
+pip install torch==2.2.1 torchvision==0.17.1 torchaudio==2.2.1 --index-url https://download.pytorch.org/whl/cu118
+# CUDA 12.1
+pip install torch==2.2.1 torchvision==0.17.1 torchaudio==2.2.1 --index-url https://download.pytorch.org/whl/cu121
+# CPU only
+pip install torch==2.2.1 torchvision==0.17.1 torchaudio==2.2.1 --index-url https://download.pytorch.org/whl/cpu
+</code></pre></div></div>
+
+<h3 id="v220">v2.2.0<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#v220" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<h4 id="conda-2">Conda<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#conda-2" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-4">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-4" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># conda
+conda install pytorch==2.2.0 torchvision==0.17.0 torchaudio==2.2.0 -c pytorch
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-4">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-4" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CUDA 11.8
+conda install pytorch==2.2.0 torchvision==0.17.0 torchaudio==2.2.0 pytorch-cuda=11.8 -c pytorch -c nvidia
+# CUDA 12.1
+conda install pytorch==2.2.0 torchvision==0.17.0 torchaudio==2.2.0 pytorch-cuda=12.1 -c pytorch -c nvidia
+# CPU Only
+conda install pytorch==2.2.0 torchvision==0.17.0 torchaudio==2.2.0 cpuonly -c pytorch
+</code></pre></div></div>
+
+<h4 id="wheel-2">Wheel<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#wheel-2" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-5">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-5" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install torch==2.2.0 torchvision==0.17.0 torchaudio==2.2.0
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-5">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-5" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># ROCM 5.6 (Linux only)
+pip install torch==2.2.0 torchvision==0.17.0 torchaudio==2.2.0 --index-url https://download.pytorch.org/whl/rocm5.6
+# CUDA 11.8
+pip install torch==2.2.0 torchvision==0.17.0 torchaudio==2.2.0 --index-url https://download.pytorch.org/whl/cu118
+# CUDA 12.1
+pip install torch==2.2.0 torchvision==0.17.0 torchaudio==2.2.0 --index-url https://download.pytorch.org/whl/cu121
+# CPU only
+pip install torch==2.2.0 torchvision==0.17.0 torchaudio==2.2.0 --index-url https://download.pytorch.org/whl/cpu
+</code></pre></div></div>
+
+<h3 id="v212">v2.1.2<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#v212" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<h4 id="conda-3">Conda<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#conda-3" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-6">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-6" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># conda
+conda install pytorch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 -c pytorch
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-6">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-6" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CUDA 11.8
+conda install pytorch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 pytorch-cuda=11.8 -c pytorch -c nvidia
+# CUDA 12.1
+conda install pytorch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 pytorch-cuda=12.1 -c pytorch -c nvidia
+# CPU Only
+conda install pytorch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 cpuonly -c pytorch
+</code></pre></div></div>
+
+<h4 id="wheel-3">Wheel<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#wheel-3" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-7">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-7" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-7">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-7" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># ROCM 5.6 (Linux only)
+pip install torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 --index-url https://download.pytorch.org/whl/rocm5.6
+# CUDA 11.8
+pip install torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 --index-url https://download.pytorch.org/whl/cu118
+# CUDA 12.1
+pip install torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 --index-url https://download.pytorch.org/whl/cu121
+# CPU only
+pip install torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 --index-url https://download.pytorch.org/whl/cpu
+</code></pre></div></div>
+
+<h3 id="v211">v2.1.1<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#v211" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<h4 id="conda-4">Conda<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#conda-4" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-8">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-8" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># conda
+conda install pytorch==2.1.1 torchvision==0.16.1 torchaudio==2.1.1 -c pytorch
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-8">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-8" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CUDA 11.8
+conda install pytorch==2.1.1 torchvision==0.16.1 torchaudio==2.1.1 pytorch-cuda=11.8 -c pytorch -c nvidia
+# CUDA 12.1
+conda install pytorch==2.1.1 torchvision==0.16.1 torchaudio==2.1.1 pytorch-cuda=12.1 -c pytorch -c nvidia
+# CPU Only
+conda install pytorch==2.1.1 torchvision==0.16.1 torchaudio==2.1.1 cpuonly -c pytorch
+</code></pre></div></div>
+
+<h4 id="wheel-4">Wheel<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#wheel-4" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-9">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-9" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install torch==2.1.1 torchvision==0.16.1 torchaudio==2.1.1
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-9">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-9" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># ROCM 5.6 (Linux only)
+pip install torch==2.1.1 torchvision==0.16.1 torchaudio==2.1.1 --index-url https://download.pytorch.org/whl/rocm5.6
+# CUDA 11.8
+pip install torch==2.1.1 torchvision==0.16.1 torchaudio==2.1.1 --index-url https://download.pytorch.org/whl/cu118
+# CUDA 12.1
+pip install torch==2.1.1 torchvision==0.16.1 torchaudio==2.1.1 --index-url https://download.pytorch.org/whl/cu121
+# CPU only
+pip install torch==2.1.1 torchvision==0.16.1 torchaudio==2.1.1 --index-url https://download.pytorch.org/whl/cpu
+</code></pre></div></div>
+
+<h3 id="v210">v2.1.0<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#v210" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<h4 id="conda-5">Conda<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#conda-5" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-10">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-10" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># conda
+conda install pytorch==2.1.0 torchvision==0.16.0 torchaudio==2.1.0 -c pytorch
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-10">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-10" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CUDA 11.8
+conda install pytorch==2.1.0 torchvision==0.16.0 torchaudio==2.1.0 pytorch-cuda=11.8 -c pytorch -c nvidia
+# CUDA 12.1
+conda install pytorch==2.1.0 torchvision==0.16.0 torchaudio==2.1.0 pytorch-cuda=12.1 -c pytorch -c nvidia
+# CPU Only
+conda install pytorch==2.1.0 torchvision==0.16.0 torchaudio==2.1.0 cpuonly -c pytorch
+</code></pre></div></div>
+
+<h4 id="wheel-5">Wheel<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#wheel-5" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-11">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-11" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install torch==2.1.0 torchvision==0.16.0 torchaudio==2.1.0
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-11">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-11" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># ROCM 5.6 (Linux only)
+pip install torch==2.1.0 torchvision==0.16.0 torchaudio==2.1.0 --index-url https://download.pytorch.org/whl/rocm5.6
+# CUDA 11.8
+pip install torch==2.1.0 torchvision==0.16.0 torchaudio==2.1.0 --index-url https://download.pytorch.org/whl/cu118
+# CUDA 12.1
+pip install torch==2.1.0 torchvision==0.16.0 torchaudio==2.1.0 --index-url https://download.pytorch.org/whl/cu121
+# CPU only
+pip install torch==2.1.0 torchvision==0.16.0 torchaudio==2.1.0 --index-url https://download.pytorch.org/whl/cpu
+</code></pre></div></div>
+
+<h3 id="v201">v2.0.1<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#v201" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<h4 id="conda-6">Conda<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#conda-6" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-12">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-12" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># conda
+conda install pytorch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 -c pytorch
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-12">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-12" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CUDA 11.7
+conda install pytorch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 pytorch-cuda=11.7 -c pytorch -c nvidia
+# CUDA 11.8
+conda install pytorch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 pytorch-cuda=11.8 -c pytorch -c nvidia
+# CPU Only
+conda install pytorch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 cpuonly -c pytorch
+</code></pre></div></div>
+
+<h4 id="wheel-6">Wheel<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#wheel-6" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-13">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-13" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-13">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-13" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># ROCM 5.4.2 (Linux only)
+pip install torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 --index-url https://download.pytorch.org/whl/rocm5.4.2
+# CUDA 11.7
+pip install torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2
+# CUDA 11.8
+pip install torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 --index-url https://download.pytorch.org/whl/cu118
+# CPU only
+pip install torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 --index-url https://download.pytorch.org/whl/cpu
+</code></pre></div></div>
+
+<h3 id="v200">v2.0.0<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#v200" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<h4 id="conda-7">Conda<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#conda-7" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-14">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-14" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># conda
+conda install pytorch==2.0.0 torchvision==0.15.0 torchaudio==2.0.0 -c pytorch
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-14">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-14" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CUDA 11.7
+conda install pytorch==2.0.0 torchvision==0.15.0 torchaudio==2.0.0 pytorch-cuda=11.7 -c pytorch -c nvidia
+# CUDA 11.8
+conda install pytorch==2.0.0 torchvision==0.15.0 torchaudio==2.0.0 pytorch-cuda=11.8 -c pytorch -c nvidia
+# CPU Only
+conda install pytorch==2.0.0 torchvision==0.15.0 torchaudio==2.0.0 cpuonly -c pytorch
+</code></pre></div></div>
+
+<h4 id="wheel-7">Wheel<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#wheel-7" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-15">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-15" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install torch==2.0.0 torchvision==0.15.1 torchaudio==2.0.1
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-15">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-15" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># ROCM 5.4.2 (Linux only)
+pip install torch==2.0.0 torchvision==0.15.1 torchaudio==2.0.1 --index-url https://download.pytorch.org/whl/rocm5.4.2
+# CUDA 11.7
+pip install torch==2.0.0 torchvision==0.15.1 torchaudio==2.0.1
+# CUDA 11.8
+pip install torch==2.0.0 torchvision==0.15.1 torchaudio==2.0.1 --index-url https://download.pytorch.org/whl/cu118
+# CPU only
+pip install torch==2.0.0 torchvision==0.15.1 torchaudio==2.0.1 --index-url https://download.pytorch.org/whl/cpu
+</code></pre></div></div>
+
+<h3 id="v1131">v1.13.1<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#v1131" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<h4 id="conda-8">Conda<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#conda-8" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-16">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-16" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># conda
+conda install pytorch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 -c pytorch
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-16">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-16" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CUDA 11.6
+conda install pytorch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 pytorch-cuda=11.6 -c pytorch -c nvidia
+# CUDA 11.7
+conda install pytorch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 pytorch-cuda=11.7 -c pytorch -c nvidia
+# CPU Only
+conda install pytorch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 cpuonly -c pytorch
+</code></pre></div></div>
+
+<h4 id="wheel-8">Wheel<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#wheel-8" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-17">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-17" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install torch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-17">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-17" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># ROCM 5.2 (Linux only)
+pip install torch==1.13.1+rocm5.2 torchvision==0.14.1+rocm5.2 torchaudio==0.13.1 --extra-index-url https://download.pytorch.org/whl/rocm5.2
+# CUDA 11.6
+pip install torch==1.13.1+cu116 torchvision==0.14.1+cu116 torchaudio==0.13.1 --extra-index-url https://download.pytorch.org/whl/cu116
+# CUDA 11.7
+pip install torch==1.13.1+cu117 torchvision==0.14.1+cu117 torchaudio==0.13.1 --extra-index-url https://download.pytorch.org/whl/cu117
+# CPU only
+pip install torch==1.13.1+cpu torchvision==0.14.1+cpu torchaudio==0.13.1 --extra-index-url https://download.pytorch.org/whl/cpu
+</code></pre></div></div>
+
+<h3 id="v1130">v1.13.0<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#v1130" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<h4 id="conda-9">Conda<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#conda-9" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-18">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-18" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># conda
+conda install pytorch==1.13.0 torchvision==0.14.0 torchaudio==0.13.0 -c pytorch
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-18">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-18" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CUDA 11.6
+conda install pytorch==1.13.0 torchvision==0.14.0 torchaudio==0.13.0 pytorch-cuda=11.6 -c pytorch -c nvidia
+# CUDA 11.7
+conda install pytorch==1.13.0 torchvision==0.14.0 torchaudio==0.13.0 pytorch-cuda=11.7 -c pytorch -c nvidia
+# CPU Only
+conda install pytorch==1.13.0 torchvision==0.14.0 torchaudio==0.13.0 cpuonly -c pytorch
+</code></pre></div></div>
+
+<h4 id="wheel-9">Wheel<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#wheel-9" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-19">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-19" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install torch==1.13.0 torchvision==0.14.0 torchaudio==0.13.0
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-19">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-19" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># ROCM 5.2 (Linux only)
+pip install torch==1.13.0+rocm5.2 torchvision==0.14.0+rocm5.2 torchaudio==0.13.0 --extra-index-url https://download.pytorch.org/whl/rocm5.2
+# CUDA 11.6
+pip install torch==1.13.0+cu116 torchvision==0.14.0+cu116 torchaudio==0.13.0 --extra-index-url https://download.pytorch.org/whl/cu116
+# CUDA 11.7
+pip install torch==1.13.0+cu117 torchvision==0.14.0+cu117 torchaudio==0.13.0 --extra-index-url https://download.pytorch.org/whl/cu117
+# CPU only
+pip install torch==1.13.0+cpu torchvision==0.14.0+cpu torchaudio==0.13.0 --extra-index-url https://download.pytorch.org/whl/cpu
+</code></pre></div></div>
+
+<h3 id="v1121">v1.12.1<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#v1121" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<h4 id="conda-10">Conda<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#conda-10" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-20">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-20" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># conda
+conda install pytorch==1.12.1 torchvision==0.13.1 torchaudio==0.12.1 -c pytorch
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-20">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-20" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CUDA 10.2
+conda install pytorch==1.12.1 torchvision==0.13.1 torchaudio==0.12.1 cudatoolkit=10.2 -c pytorch
+# CUDA 11.3
+conda install pytorch==1.12.1 torchvision==0.13.1 torchaudio==0.12.1 cudatoolkit=11.3 -c pytorch
+# CUDA 11.6
+conda install pytorch==1.12.1 torchvision==0.13.1 torchaudio==0.12.1 cudatoolkit=11.6 -c pytorch -c conda-forge
+# CPU Only
+conda install pytorch==1.12.1 torchvision==0.13.1 torchaudio==0.12.1 cpuonly -c pytorch
+</code></pre></div></div>
+
+<h4 id="wheel-10">Wheel<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#wheel-10" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-21">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-21" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install torch==1.12.1 torchvision==0.13.1 torchaudio==0.12.1
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-21">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-21" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># ROCM 5.1.1 (Linux only)
+pip install torch==1.12.1+rocm5.1.1 torchvision==0.13.1+rocm5.1.1 torchaudio==0.12.1 --extra-index-url  https://download.pytorch.org/whl/rocm5.1.1
+# CUDA 11.6
+pip install torch==1.12.1+cu116 torchvision==0.13.1+cu116 torchaudio==0.12.1 --extra-index-url https://download.pytorch.org/whl/cu116
+# CUDA 11.3
+pip install torch==1.12.1+cu113 torchvision==0.13.1+cu113 torchaudio==0.12.1 --extra-index-url https://download.pytorch.org/whl/cu113
+# CUDA 10.2
+pip install torch==1.12.1+cu102 torchvision==0.13.1+cu102 torchaudio==0.12.1 --extra-index-url https://download.pytorch.org/whl/cu102
+# CPU only
+pip install torch==1.12.1+cpu torchvision==0.13.1+cpu torchaudio==0.12.1 --extra-index-url https://download.pytorch.org/whl/cpu
+</code></pre></div></div>
+
+<h3 id="v1120">v1.12.0<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#v1120" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<h4 id="conda-11">Conda<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#conda-11" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-22">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-22" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># conda
+conda install pytorch==1.12.0 torchvision==0.13.0 torchaudio==0.12.0 -c pytorch
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-22">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-22" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CUDA 10.2
+conda install pytorch==1.12.0 torchvision==0.13.0 torchaudio==0.12.0 cudatoolkit=10.2 -c pytorch
+# CUDA 11.3
+conda install pytorch==1.12.0 torchvision==0.13.0 torchaudio==0.12.0 cudatoolkit=11.3 -c pytorch
+# CUDA 11.6
+conda install pytorch==1.12.0 torchvision==0.13.0 torchaudio==0.12.0 cudatoolkit=11.6 -c pytorch -c conda-forge
+# CPU Only
+conda install pytorch==1.12.0 torchvision==0.13.0 torchaudio==0.12.0 cpuonly -c pytorch
+</code></pre></div></div>
+
+<h4 id="wheel-11">Wheel<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#wheel-11" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-23">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-23" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install torch==1.12.0 torchvision==0.13.0 torchaudio==0.12.0
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-23">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-23" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># ROCM 5.1.1 (Linux only)
+pip install torch==1.12.0+rocm5.1.1 torchvision==0.13.0+rocm5.1.1 torchaudio==0.12.0 --extra-index-url  https://download.pytorch.org/whl/rocm5.1.1
+# CUDA 11.6
+pip install torch==1.12.0+cu116 torchvision==0.13.0+cu116 torchaudio==0.12.0 --extra-index-url https://download.pytorch.org/whl/cu116
+# CUDA 11.3
+pip install torch==1.12.0+cu113 torchvision==0.13.0+cu113 torchaudio==0.12.0 --extra-index-url https://download.pytorch.org/whl/cu113
+# CUDA 10.2
+pip install torch==1.12.0+cu102 torchvision==0.13.0+cu102 torchaudio==0.12.0 --extra-index-url https://download.pytorch.org/whl/cu102
+# CPU only
+pip install torch==1.12.0+cpu torchvision==0.13.0+cpu torchaudio==0.12.0 --extra-index-url https://download.pytorch.org/whl/cpu
+</code></pre></div></div>
+
+<h3 id="v1110">v1.11.0<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#v1110" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<h4 id="conda-12">Conda<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#conda-12" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-24">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-24" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># conda
+conda install pytorch==1.11.0 torchvision==0.12.0 torchaudio==0.11.0 -c pytorch
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-24">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-24" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CUDA 10.2
+conda install pytorch==1.11.0 torchvision==0.12.0 torchaudio==0.11.0 cudatoolkit=10.2 -c pytorch
+
+# CUDA 11.3
+conda install pytorch==1.11.0 torchvision==0.12.0 torchaudio==0.11.0 cudatoolkit=11.3 -c pytorch
+
+# CPU Only
+conda install pytorch==1.11.0 torchvision==0.12.0 torchaudio==0.11.0 cpuonly -c pytorch
+</code></pre></div></div>
+
+<h4 id="wheel-12">Wheel<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#wheel-12" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-25">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-25" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install torch==1.11.0 torchvision==0.12.0 torchaudio==0.11.0
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-25">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-25" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># ROCM 4.5.2 (Linux only)
+pip install torch==1.11.0+rocm4.5.2 torchvision==0.12.0+rocm4.5.2 torchaudio==0.11.0 --extra-index-url  https://download.pytorch.org/whl/rocm4.5.2
+
+# CUDA 11.3
+pip install torch==1.11.0+cu113 torchvision==0.12.0+cu113 torchaudio==0.11.0 --extra-index-url https://download.pytorch.org/whl/cu113
+
+# CUDA 10.2
+pip install torch==1.11.0+cu102 torchvision==0.12.0+cu102 torchaudio==0.11.0 --extra-index-url https://download.pytorch.org/whl/cu102
+
+# CPU only
+pip install torch==1.11.0+cpu torchvision==0.12.0+cpu torchaudio==0.11.0 --extra-index-url https://download.pytorch.org/whl/cpu
+</code></pre></div></div>
+
+<h3 id="v1101">v1.10.1<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#v1101" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<h4 id="conda-13">Conda<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#conda-13" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-26">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-26" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># conda
+conda install pytorch==1.10.1 torchvision==0.11.2 torchaudio==0.10.1 -c pytorch
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-26">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-26" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CUDA 10.2
+conda install pytorch==1.10.1 torchvision==0.11.2 torchaudio==0.10.1 cudatoolkit=10.2 -c pytorch
+
+# CUDA 11.3
+conda install pytorch==1.10.1 torchvision==0.11.2 torchaudio==0.10.1 cudatoolkit=11.3 -c pytorch -c conda-forge
+
+# CPU Only
+conda install pytorch==1.10.1 torchvision==0.11.2 torchaudio==0.10.1 cpuonly -c pytorch
+</code></pre></div></div>
+
+<h4 id="wheel-13">Wheel<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#wheel-13" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-27">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-27" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install torch==1.10.1 torchvision==0.11.2 torchaudio==0.10.1
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-27">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-27" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># ROCM 4.2 (Linux only)
+pip install torch==1.10.1+rocm4.2 torchvision==0.11.2+rocm4.2 torchaudio==0.10.1 -f https://download.pytorch.org/whl/rocm4.2/torch_stable.html
+
+# ROCM 4.1 (Linux only)
+pip install torch==1.10.1+rocm4.1 torchvision==0.11.2+rocm4.1 torchaudio==0.10.1 -f https://download.pytorch.org/whl/torch_stable.html
+
+# ROCM 4.0.1 (Linux only)
+pip install torch==1.10.1+rocm4.0.1 torchvision==0.10.2+rocm4.0.1 torchaudio==0.10.1 -f https://download.pytorch.org/whl/torch_stable.html
+
+# CUDA 11.1
+pip install torch==1.10.1+cu111 torchvision==0.11.2+cu111 torchaudio==0.10.1 -f https://download.pytorch.org/whl/cu111/torch_stable.html
+
+# CUDA 10.2
+pip install torch==1.10.1+cu102 torchvision==0.11.2+cu102 torchaudio==0.10.1 -f https://download.pytorch.org/whl/cu102/torch_stable.html
+
+# CPU only
+pip install torch==1.10.1+cpu torchvision==0.11.2+cpu torchaudio==0.10.1 -f https://download.pytorch.org/whl/cpu/torch_stable.html
+</code></pre></div></div>
+
+<h3 id="v1100">v1.10.0<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#v1100" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<h4 id="conda-14">Conda<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#conda-14" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-28">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-28" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># conda
+conda install pytorch==1.10.0 torchvision==0.11.0 torchaudio==0.10.0 -c pytorch
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-28">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-28" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CUDA 10.2
+conda install pytorch==1.10.0 torchvision==0.11.0 torchaudio==0.10.0 cudatoolkit=10.2 -c pytorch
+
+# CUDA 11.3
+conda install pytorch==1.10.0 torchvision==0.11.0 torchaudio==0.10.0 cudatoolkit=11.3 -c pytorch -c conda-forge
+
+# CPU Only
+conda install pytorch==1.10.0 torchvision==0.11.0 torchaudio==0.10.0 cpuonly -c pytorch
+</code></pre></div></div>
+
+<h4 id="wheel-14">Wheel<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#wheel-14" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-29">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-29" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install torch==1.10.0 torchvision==0.11.0 torchaudio==0.10.0
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-29">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-29" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># ROCM 4.2 (Linux only)
+pip install torch==1.10.0+rocm4.2 torchvision==0.11.0+rocm4.2 torchaudio==0.10.0 -f https://download.pytorch.org/whl/torch_stable.html
+
+# ROCM 4.1 (Linux only)
+pip install torch==1.10.0+rocm4.1 torchvision==0.11.0+rocm4.1 torchaudio==0.10.0 -f https://download.pytorch.org/whl/torch_stable.html
+
+# ROCM 4.0.1 (Linux only)
+pip install torch==1.10.0+rocm4.0.1 torchvision==0.10.1+rocm4.0.1 torchaudio==0.10.0 -f https://download.pytorch.org/whl/torch_stable.html
+
+# CUDA 11.1
+pip install torch==1.10.0+cu111 torchvision==0.11.0+cu111 torchaudio==0.10.0 -f https://download.pytorch.org/whl/torch_stable.html
+
+# CUDA 10.2
+pip install torch==1.10.0+cu102 torchvision==0.11.0+cu102 torchaudio==0.10.0 -f https://download.pytorch.org/whl/torch_stable.html
+
+# CPU only
+pip install torch==1.10.0+cpu torchvision==0.11.0+cpu torchaudio==0.10.0 -f https://download.pytorch.org/whl/torch_stable.html
+</code></pre></div></div>
+
+<h3 id="v191">v1.9.1<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#v191" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<h4 id="conda-15">Conda<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#conda-15" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-30">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-30" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># conda
+conda install pytorch==1.9.1 torchvision==0.10.1 torchaudio==0.9.1 -c pytorch
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-30">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-30" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CUDA 10.2
+conda install pytorch==1.9.1 torchvision==0.10.1 torchaudio==0.9.1 cudatoolkit=10.2 -c pytorch
+
+# CUDA 11.3
+conda install pytorch==1.9.1 torchvision==0.10.1 torchaudio==0.9.1 cudatoolkit=11.3 -c pytorch -c conda-forge
+
+# CPU Only
+conda install pytorch==1.9.1 torchvision==0.10.1 torchaudio==0.9.1 cpuonly -c pytorch
+</code></pre></div></div>
+
+<h4 id="wheel-15">Wheel<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#wheel-15" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-31">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-31" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install torch==1.9.1 torchvision==0.10.1 torchaudio==0.9.1
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-31">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-31" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># ROCM 4.2 (Linux only)
+pip install torch==1.9.1+rocm4.2 torchvision==0.10.1+rocm4.2 torchaudio==0.9.1 -f https://download.pytorch.org/whl/torch_stable.html
+
+# ROCM 4.1 (Linux only)
+pip install torch==1.9.1+rocm4.1 torchvision==0.10.1+rocm4.1 torchaudio==0.9.1 -f https://download.pytorch.org/whl/torch_stable.html
+
+# ROCM 4.0.1 (Linux only)
+pip install torch==1.9.1+rocm4.0.1 torchvision==0.10.1+rocm4.0.1 torchaudio==0.9.1 -f https://download.pytorch.org/whl/torch_stable.html
+
+# CUDA 11.1
+pip install torch==1.9.1+cu111 torchvision==0.10.1+cu111 torchaudio==0.9.1 -f https://download.pytorch.org/whl/torch_stable.html
+
+# CUDA 10.2
+pip install torch==1.9.1+cu102 torchvision==0.10.1+cu102 torchaudio==0.9.1 -f https://download.pytorch.org/whl/torch_stable.html
+
+# CPU only
+pip install torch==1.9.1+cpu torchvision==0.10.1+cpu torchaudio==0.9.1 -f https://download.pytorch.org/whl/torch_stable.html
+</code></pre></div></div>
+
+<h3 id="v190">v1.9.0<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#v190" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<h4 id="conda-16">Conda<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#conda-16" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-32">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-32" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># conda
+conda install pytorch==1.9.0 torchvision==0.10.0 torchaudio==0.9.0 -c pytorch
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-32">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-32" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CUDA 10.2
+conda install pytorch==1.9.0 torchvision==0.10.0 torchaudio==0.9.0 cudatoolkit=10.2 -c pytorch
+
+# CUDA 11.3
+conda install pytorch==1.9.0 torchvision==0.10.0 torchaudio==0.9.0 cudatoolkit=11.3 -c pytorch -c conda-forge
+
+# CPU Only
+conda install pytorch==1.9.0 torchvision==0.10.0 torchaudio==0.9.0 cpuonly -c pytorch
+</code></pre></div></div>
+
+<h4 id="wheel-16">Wheel<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#wheel-16" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-33">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-33" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install torch==1.9.0 torchvision==0.10.0 torchaudio==0.9.0
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-33">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-33" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># ROCM 4.2 (Linux only)
+pip install torch==1.9.0+rocm4.2 torchvision==0.10.0+rocm4.2 torchaudio==0.9.0 -f https://download.pytorch.org/whl/torch_stable.html
+
+# ROCM 4.1 (Linux only)
+pip install torch==1.9.0+rocm4.1 torchvision==0.10.0+rocm4.1 torchaudio==0.9.0 -f https://download.pytorch.org/whl/torch_stable.html
+
+# ROCM 4.0.1 (Linux only)
+pip install torch==1.9.0+rocm4.0.1 torchvision==0.10.0+rocm4.0.1 torchaudio==0.9.0 -f https://download.pytorch.org/whl/torch_stable.html
+
+# CUDA 11.1
+pip install torch==1.9.0+cu111 torchvision==0.10.0+cu111 torchaudio==0.9.0 -f https://download.pytorch.org/whl/torch_stable.html
+
+# CUDA 10.2
+pip install torch==1.9.0+cu102 torchvision==0.10.0+cu102 torchaudio==0.9.0 -f https://download.pytorch.org/whl/torch_stable.html
+
+# CPU only
+pip install torch==1.9.0+cpu torchvision==0.10.0+cpu torchaudio==0.9.0 -f https://download.pytorch.org/whl/torch_stable.html
+</code></pre></div></div>
+
+<h3 id="v182-with-lts-support">v1.8.2 with LTS support<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#v182-with-lts-support" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<h4 id="conda-17">Conda<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#conda-17" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-34">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-34" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<p>macOS is currently not supported for LTS.</p>
+
+<h5 id="linux-and-windows-34">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-34" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CUDA 10.2
+# NOTE: PyTorch LTS version 1.8.2 is only supported for Python &lt;= 3.8.
+conda install pytorch torchvision torchaudio cudatoolkit=10.2 -c pytorch-lts
+
+# CUDA 11.1 (Linux)
+# NOTE: 'nvidia' channel is required for cudatoolkit 11.1 &lt;br&gt; &lt;b&gt;NOTE:&lt;/b&gt; Pytorch LTS version 1.8.2 is only supported for Python &lt;= 3.8.
+conda install pytorch torchvision torchaudio cudatoolkit=11.1 -c pytorch-lts -c nvidia
+
+# CUDA 11.1 (Windows)
+# 'conda-forge' channel is required for cudatoolkit 11.1 &lt;br&gt; &lt;b&gt;NOTE:&lt;/b&gt; Pytorch LTS version 1.8.2 is only supported for Python &lt;= 3.8.
+conda install pytorch torchvision torchaudio cudatoolkit=11.1 -c pytorch-lts -c conda-forge
+
+# CPU Only
+# Pytorch LTS version 1.8.2 is only supported for Python &lt;= 3.8.
+conda install pytorch torchvision torchaudio cpuonly -c pytorch-lts
+
+# ROCM5.x
+
+Not supported in LTS.
+</code></pre></div></div>
+
+<h4 id="wheel-17">Wheel<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#wheel-17" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-35">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-35" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<p>macOS is currently not supported in LTS.</p>
+
+<h5 id="linux-and-windows-35">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-35" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CUDA 10.2
+pip3 install torch==1.8.2 torchvision==0.9.2 torchaudio==0.8.2 --extra-index-url https://download.pytorch.org/whl/lts/1.8/cu102
+
+# CUDA 11.1
+pip3 install torch==1.8.2 torchvision==0.9.2 torchaudio==0.8.2 --extra-index-url https://download.pytorch.org/whl/lts/1.8/cu111
+
+# CPU Only
+pip3 install torch==1.8.2 torchvision==0.9.2 torchaudio==0.8.2 --extra-index-url https://download.pytorch.org/whl/lts/1.8/cpu
+
+# ROCM5.x
+
+Not supported in LTS.
+</code></pre></div></div>
+
+<h3 id="v181">v1.8.1<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#v181" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<h4 id="conda-18">Conda<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#conda-18" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-36">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-36" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># conda
+conda install pytorch==1.8.1 torchvision==0.9.1 torchaudio==0.8.1 -c pytorch
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-36">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-36" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CUDA 10.2
+conda install pytorch==1.8.1 torchvision==0.9.1 torchaudio==0.8.1 cudatoolkit=10.2 -c pytorch
+
+# CUDA 11.3
+conda install pytorch==1.8.1 torchvision==0.9.1 torchaudio==0.8.1 cudatoolkit=11.3 -c pytorch -c conda-forge
+
+# CPU Only
+conda install pytorch==1.8.1 torchvision==0.9.1 torchaudio==0.8.1 cpuonly -c pytorch
+</code></pre></div></div>
+
+<h4 id="wheel-18">Wheel<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#wheel-18" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-37">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-37" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install torch==1.8.1 torchvision==0.9.1 torchaudio==0.8.1
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-37">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-37" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># ROCM 4.0.1 (Linux only)
+pip install torch==1.8.1+rocm4.0.1 torchvision==0.9.1+rocm4.0.1 torchaudio==0.8.1 -f https://download.pytorch.org/whl/torch_stable.html
+
+# ROCM 3.10 (Linux only)
+pip install torch==1.8.1+rocm3.10 torchvision==0.9.1+rocm3.10 torchaudio==0.8.1 -f https://download.pytorch.org/whl/torch_stable.html
+
+# CUDA 11.1
+pip install torch==1.8.1+cu111 torchvision==0.9.1+cu111 torchaudio==0.8.1 -f https://download.pytorch.org/whl/torch_stable.html
+
+# CUDA 10.2
+pip install torch==1.8.1+cu102 torchvision==0.9.1+cu102 torchaudio==0.8.1 -f https://download.pytorch.org/whl/torch_stable.html
+
+# CUDA 10.1
+pip install torch==1.8.1+cu101 torchvision==0.9.1+cu101 torchaudio==0.8.1 -f https://download.pytorch.org/whl/torch_stable.html
+
+# CPU only
+pip install torch==1.8.1+cpu torchvision==0.9.1+cpu torchaudio==0.8.1 -f https://download.pytorch.org/whl/torch_stable.html
+</code></pre></div></div>
+
+<h3 id="v180">v1.8.0<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#v180" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<h4 id="conda-19">Conda<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#conda-19" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-38">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-38" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># conda
+conda install pytorch==1.8.0 torchvision==0.9.0 torchaudio==0.8.0 -c pytorch
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-38">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-38" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CUDA 10.2
+conda install pytorch==1.8.0 torchvision==0.9.0 torchaudio==0.8.0 cudatoolkit=10.2 -c pytorch
+
+# CUDA 11.1
+conda install pytorch==1.8.0 torchvision==0.9.0 torchaudio==0.8.0 cudatoolkit=11.1 -c pytorch -c conda-forge
+
+# CPU Only
+conda install pytorch==1.8.0 torchvision==0.9.0 torchaudio==0.8.0 cpuonly -c pytorch
+</code></pre></div></div>
+
+<h4 id="wheel-19">Wheel<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#wheel-19" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-39">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-39" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install torch==1.8.0 torchvision==0.9.0 torchaudio==0.8.0
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-39">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-39" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># RocM 4.0.1 (Linux only)
+pip install torch -f https://download.pytorch.org/whl/rocm4.0.1/torch_stable.html
+pip install ninja
+pip install 'git+https://github.com/pytorch/vision.git@v0.9.0'
+
+# CUDA 11.1
+pip install torch==1.8.0+cu111 torchvision==0.9.0+cu111 torchaudio==0.8.0 -f https://download.pytorch.org/whl/torch_stable.html
+
+# CUDA 10.2
+pip install torch==1.8.0 torchvision==0.9.0 torchaudio==0.8.0
+
+# CPU only
+pip install torch==1.8.0+cpu torchvision==0.9.0+cpu torchaudio==0.8.0 -f https://download.pytorch.org/whl/torch_stable.html
+</code></pre></div></div>
+
+<h3 id="v171">v1.7.1<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#v171" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<h4 id="conda-20">Conda<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#conda-20" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-40">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-40" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># conda
+conda install pytorch==1.7.1 torchvision==0.8.2 torchaudio==0.7.2 -c pytorch
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-40">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-40" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CUDA 9.2
+conda install pytorch==1.7.1 torchvision==0.8.2 torchaudio==0.7.2 cudatoolkit=9.2 -c pytorch
+
+# CUDA 10.1
+conda install pytorch==1.7.1 torchvision==0.8.2 torchaudio==0.7.2 cudatoolkit=10.1 -c pytorch
+
+# CUDA 10.2
+conda install pytorch==1.7.1 torchvision==0.8.2 torchaudio==0.7.2 cudatoolkit=10.2 -c pytorch
+
+# CUDA 11.0
+conda install pytorch==1.7.1 torchvision==0.8.2 torchaudio==0.7.2 cudatoolkit=11.0 -c pytorch
+
+# CPU Only
+conda install pytorch==1.7.1 torchvision==0.8.2 torchaudio==0.7.2 cpuonly -c pytorch
+</code></pre></div></div>
+
+<h4 id="wheel-20">Wheel<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#wheel-20" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-41">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-41" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install torch==1.7.1 torchvision==0.8.2 torchaudio==0.7.2
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-41">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-41" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CUDA 11.0
+pip install torch==1.7.1+cu110 torchvision==0.8.2+cu110 torchaudio==0.7.2 -f https://download.pytorch.org/whl/torch_stable.html
+
+# CUDA 10.2
+pip install torch==1.7.1 torchvision==0.8.2 torchaudio==0.7.2
+
+# CUDA 10.1
+pip install torch==1.7.1+cu101 torchvision==0.8.2+cu101 torchaudio==0.7.2 -f https://download.pytorch.org/whl/torch_stable.html
+
+# CUDA 9.2
+pip install torch==1.7.1+cu92 torchvision==0.8.2+cu92 torchaudio==0.7.2 -f https://download.pytorch.org/whl/torch_stable.html
+
+# CPU only
+pip install torch==1.7.1+cpu torchvision==0.8.2+cpu torchaudio==0.7.2 -f https://download.pytorch.org/whl/torch_stable.html
+</code></pre></div></div>
+
+<h3 id="v170">v1.7.0<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#v170" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<h4 id="conda-21">Conda<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#conda-21" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-42">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-42" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># conda
+conda install pytorch==1.7.0 torchvision==0.8.0 torchaudio==0.7.0 -c pytorch
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-42">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-42" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CUDA 9.2
+conda install pytorch==1.7.0 torchvision==0.8.0 torchaudio==0.7.0 cudatoolkit=9.2 -c pytorch
+
+# CUDA 10.1
+conda install pytorch==1.7.0 torchvision==0.8.0 torchaudio==0.7.0 cudatoolkit=10.1 -c pytorch
+
+# CUDA 10.2
+conda install pytorch==1.7.0 torchvision==0.8.0 torchaudio==0.7.0 cudatoolkit=10.2 -c pytorch
+
+# CUDA 11.0
+conda install pytorch==1.7.0 torchvision==0.8.0 torchaudio==0.7.0 cudatoolkit=11.0 -c pytorch
+
+# CPU Only
+conda install pytorch==1.7.0 torchvision==0.8.0 torchaudio==0.7.0 cpuonly -c pytorch
+</code></pre></div></div>
+
+<h4 id="wheel-21">Wheel<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#wheel-21" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-43">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-43" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install torch==1.7.0 torchvision==0.8.0 torchaudio==0.7.0
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-43">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-43" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CUDA 11.0
+pip install torch==1.7.0+cu110 torchvision==0.8.0+cu110 torchaudio==0.7.0 -f https://download.pytorch.org/whl/torch_stable.html
+
+# CUDA 10.2
+pip install torch==1.7.0 torchvision==0.8.0 torchaudio==0.7.0
+
+# CUDA 10.1
+pip install torch==1.7.0+cu101 torchvision==0.8.0+cu101 torchaudio==0.7.0 -f https://download.pytorch.org/whl/torch_stable.html
+
+# CUDA 9.2
+pip install torch==1.7.0+cu92 torchvision==0.8.0+cu92 torchaudio==0.7.0 -f https://download.pytorch.org/whl/torch_stable.html
+
+# CPU only
+pip install torch==1.7.0+cpu torchvision==0.8.0+cpu torchaudio==0.7.0 -f https://download.pytorch.org/whl/torch_stable.html
+</code></pre></div></div>
+
+<h3 id="v160">v1.6.0<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#v160" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<h4 id="conda-22">Conda<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#conda-22" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-44">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-44" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># conda
+conda install pytorch==1.6.0 torchvision==0.7.0 -c pytorch
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-44">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-44" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CUDA 9.2
+conda install pytorch==1.6.0 torchvision==0.7.0 cudatoolkit=9.2 -c pytorch
+
+# CUDA 10.1
+conda install pytorch==1.6.0 torchvision==0.7.0 cudatoolkit=10.1 -c pytorch
+
+# CUDA 10.2
+conda install pytorch==1.6.0 torchvision==0.7.0 cudatoolkit=10.2 -c pytorch
+
+# CPU Only
+conda install pytorch==1.6.0 torchvision==0.7.0 cpuonly -c pytorch
+</code></pre></div></div>
+
+<h4 id="wheel-22">Wheel<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#wheel-22" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-45">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-45" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install torch==1.6.0 torchvision==0.7.0
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-45">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-45" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CUDA 10.2
+pip install torch==1.6.0 torchvision==0.7.0
+
+# CUDA 10.1
+pip install torch==1.6.0+cu101 torchvision==0.7.0+cu101 -f https://download.pytorch.org/whl/torch_stable.html
+
+# CUDA 9.2
+pip install torch==1.6.0+cu92 torchvision==0.7.0+cu92 -f https://download.pytorch.org/whl/torch_stable.html
+
+# CPU only
+pip install torch==1.6.0+cpu torchvision==0.7.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+</code></pre></div></div>
+
+<h3 id="v151">v1.5.1<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#v151" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<h4 id="conda-23">Conda<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#conda-23" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-46">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-46" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># conda
+conda install pytorch==1.5.1 torchvision==0.6.1 -c pytorch
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-46">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-46" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CUDA 9.2
+conda install pytorch==1.5.1 torchvision==0.6.1 cudatoolkit=9.2 -c pytorch
+
+# CUDA 10.1
+conda install pytorch==1.5.1 torchvision==0.6.1 cudatoolkit=10.1 -c pytorch
+
+# CUDA 10.2
+conda install pytorch==1.5.1 torchvision==0.6.1 cudatoolkit=10.2 -c pytorch
+
+# CPU Only
+conda install pytorch==1.5.1 torchvision==0.6.1 cpuonly -c pytorch
+</code></pre></div></div>
+
+<h4 id="wheel-23">Wheel<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#wheel-23" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-47">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-47" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install torch==1.5.1 torchvision==0.6.1
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-47">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-47" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CUDA 10.2
+pip install torch==1.5.1 torchvision==0.6.1
+
+# CUDA 10.1
+pip install torch==1.5.1+cu101 torchvision==0.6.1+cu101 -f https://download.pytorch.org/whl/torch_stable.html
+
+# CUDA 9.2
+pip install torch==1.5.1+cu92 torchvision==0.6.1+cu92 -f https://download.pytorch.org/whl/torch_stable.html
+
+# CPU only
+pip install torch==1.5.1+cpu torchvision==0.6.1+cpu -f https://download.pytorch.org/whl/torch_stable.html
+</code></pre></div></div>
+
+<h3 id="v150">v1.5.0<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#v150" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<h4 id="conda-24">Conda<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#conda-24" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-48">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-48" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># conda
+conda install pytorch==1.5.0 torchvision==0.6.0 -c pytorch
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-48">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-48" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CUDA 9.2
+conda install pytorch==1.5.0 torchvision==0.6.0 cudatoolkit=9.2 -c pytorch
+
+# CUDA 10.1
+conda install pytorch==1.5.0 torchvision==0.6.0 cudatoolkit=10.1 -c pytorch
+
+# CUDA 10.2
+conda install pytorch==1.5.0 torchvision==0.6.0 cudatoolkit=10.2 -c pytorch
+
+# CPU Only
+conda install pytorch==1.5.0 torchvision==0.6.0 cpuonly -c pytorch
+</code></pre></div></div>
+
+<h4 id="wheel-24">Wheel<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#wheel-24" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-49">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-49" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install torch==1.5.0 torchvision==0.6.0
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-49">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-49" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CUDA 10.2
+pip install torch==1.5.0 torchvision==0.6.0
+
+# CUDA 10.1
+pip install torch==1.5.0+cu101 torchvision==0.6.0+cu101 -f https://download.pytorch.org/whl/torch_stable.html
+
+# CUDA 9.2
+pip install torch==1.5.0+cu92 torchvision==0.6.0+cu92 -f https://download.pytorch.org/whl/torch_stable.html
+
+# CPU only
+pip install torch==1.5.0+cpu torchvision==0.6.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+</code></pre></div></div>
+
+<h3 id="v140">v1.4.0<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#v140" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<h4 id="conda-25">Conda<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#conda-25" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-50">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-50" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># conda
+conda install pytorch==1.4.0 torchvision==0.5.0 -c pytorch
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-50">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-50" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CUDA 9.2
+conda install pytorch==1.4.0 torchvision==0.5.0 cudatoolkit=9.2 -c pytorch
+
+# CUDA 10.1
+conda install pytorch==1.4.0 torchvision==0.5.0 cudatoolkit=10.1 -c pytorch
+
+# CPU Only
+conda install pytorch==1.4.0 torchvision==0.5.0 cpuonly -c pytorch
+</code></pre></div></div>
+
+<h4 id="wheel-25">Wheel<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#wheel-25" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-51">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-51" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install torch==1.4.0 torchvision==0.5.0
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-51">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-51" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CUDA 10.1
+pip install torch==1.4.0 torchvision==0.5.0
+
+# CUDA 9.2
+pip install torch==1.4.0+cu92 torchvision==0.5.0+cu92 -f https://download.pytorch.org/whl/torch_stable.html
+
+# CPU only
+pip install torch==1.4.0+cpu torchvision==0.5.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+</code></pre></div></div>
+
+<h3 id="v120">v1.2.0<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#v120" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<h4 id="conda-26">Conda<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#conda-26" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-52">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-52" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># conda
+conda install pytorch==1.2.0 torchvision==0.4.0 -c pytorch
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-52">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-52" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CUDA 9.2
+conda install pytorch==1.2.0 torchvision==0.4.0 cudatoolkit=9.2 -c pytorch
+
+# CUDA 10.0
+conda install pytorch==1.2.0 torchvision==0.4.0 cudatoolkit=10.0 -c pytorch
+
+# CPU Only
+conda install pytorch==1.2.0 torchvision==0.4.0 cpuonly -c pytorch
+</code></pre></div></div>
+
+<h4 id="wheel-26">Wheel<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#wheel-26" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-53">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-53" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install torch==1.2.0 torchvision==0.4.0
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-53">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-53" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CUDA 10.0
+pip install torch==1.2.0 torchvision==0.4.0
+
+# CUDA 9.2
+pip install torch==1.2.0+cu92 torchvision==0.4.0+cu92 -f https://download.pytorch.org/whl/torch_stable.html
+
+# CPU only
+pip install torch==1.2.0+cpu torchvision==0.4.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+</code></pre></div></div>
+
+<h3 id="v110">v1.1.0<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#v110" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<h4 id="conda-27">Conda<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#conda-27" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-54">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-54" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># conda
+conda install pytorch==1.1.0 torchvision==0.3.0 -c pytorch
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-54">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-54" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CUDA 9.0
+conda install pytorch==1.1.0 torchvision==0.3.0 cudatoolkit=9.0 -c pytorch
+
+# CUDA 10.0
+conda install pytorch==1.1.0 torchvision==0.3.0 cudatoolkit=10.0 -c pytorch
+
+# CPU Only
+conda install pytorch-cpu==1.1.0 torchvision-cpu==0.3.0 cpuonly -c pytorch
+</code></pre></div></div>
+
+<h4 id="wheel-27">Wheel<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#wheel-27" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-55">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-55" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install torch==1.1.0 torchvision==0.3.0
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-55">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-55" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CUDA 10.0
+Download and install wheel from https://download.pytorch.org/whl/cu100/torch_stable.html
+
+# CUDA 9.0
+Download and install wheel from https://download.pytorch.org/whl/cu90/torch_stable.html
+
+# CPU only
+Download and install wheel from https://download.pytorch.org/whl/cpu/torch_stable.html
+</code></pre></div></div>
+
+<h3 id="v101">v1.0.1<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#v101" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<h4 id="conda-28">Conda<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#conda-28" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-56">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-56" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># conda
+conda install pytorch==1.0.1 torchvision==0.2.2 -c pytorch
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-56">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-56" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CUDA 9.0
+conda install pytorch==1.0.1 torchvision==0.2.2 cudatoolkit=9.0 -c pytorch
+
+# CUDA 10.0
+conda install pytorch==1.0.1 torchvision==0.2.2 cudatoolkit=10.0 -c pytorch
+
+# CPU Only
+conda install pytorch-cpu==1.0.1 torchvision-cpu==0.2.2 cpuonly -c pytorch
+</code></pre></div></div>
+
+<h4 id="wheel-28">Wheel<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#wheel-28" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-57">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-57" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install torch==1.0.1 torchvision==0.2.2
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-57">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-57" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CUDA 10.0
+Download and install wheel from https://download.pytorch.org/whl/cu100/torch_stable.html
+
+# CUDA 9.0
+Download and install wheel from https://download.pytorch.org/whl/cu90/torch_stable.html
+
+# CPU only
+Download and install wheel from https://download.pytorch.org/whl/cpu/torch_stable.html
+</code></pre></div></div>
+
+<h3 id="v100">v1.0.0<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#v100" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<h4 id="conda-29">Conda<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#conda-29" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-58">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-58" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># conda
+conda install pytorch==1.0.0 torchvision==0.2.1 -c pytorch
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-58">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-58" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CUDA 10.0
+conda install pytorch==1.0.0 torchvision==0.2.1 cuda100 -c pytorch
+
+# CUDA 9.0
+conda install pytorch==1.0.0 torchvision==0.2.1 cuda90 -c pytorch
+
+# CUDA 8.0
+conda install pytorch==1.0.0 torchvision==0.2.1 cuda80 -c pytorch
+
+# CPU Only
+conda install pytorch-cpu==1.0.0 torchvision-cpu==0.2.1 cpuonly -c pytorch
+</code></pre></div></div>
+
+<h4 id="wheel-29">Wheel<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#wheel-29" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<h5 id="osx-59">OSX<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#osx-59" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install torch==1.0.0 torchvision==0.2.1
+</code></pre></div></div>
+
+<h5 id="linux-and-windows-59">Linux and Windows<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#linux-and-windows-59" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CUDA 10.0
+Download and install wheel from https://download.pytorch.org/whl/cu100/torch_stable.html
+
+# CUDA 9.0
+Download and install wheel from https://download.pytorch.org/whl/cu90/torch_stable.html
+
+# CUDA 8.0
+Download and install wheel from https://download.pytorch.org/whl/cu80/torch_stable.html
+
+# CPU only
+Download and install wheel from https://download.pytorch.org/whl/cpu/torch_stable.html
+</code></pre></div></div>
+
+<h2 id="commands-for-versions--100-1">Commands for Versions &lt; 1.0.0<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#commands-for-versions--100-1" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<h3 id="via-conda">Via conda<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#via-conda" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<blockquote>
+  <p>This should be used for most previous macOS version installs.</p>
+</blockquote>
+
+<p>To install a previous version of PyTorch via Anaconda or Miniconda,
+replace “0.4.1” in the following commands with the desired version
+(i.e., “0.2.0”).</p>
+
+<p>Installing with CUDA 9</p>
+
+<p><code class="language-plaintext highlighter-rouge">conda install pytorch=0.4.1 cuda90 -c pytorch</code></p>
+
+<p>or</p>
+
+<p><code class="language-plaintext highlighter-rouge">conda install pytorch=0.4.1 cuda92 -c pytorch</code></p>
+
+<p>Installing with CUDA 8</p>
+
+<p><code class="language-plaintext highlighter-rouge">conda install pytorch=0.4.1 cuda80 -c pytorch</code></p>
+
+<p>Installing with CUDA 7.5</p>
+
+<p><code class="language-plaintext highlighter-rouge">conda install pytorch=0.4.1 cuda75 -c pytorch</code></p>
+
+<p>Installing without CUDA</p>
+
+<p><code class="language-plaintext highlighter-rouge">conda install pytorch=0.4.1 -c pytorch</code></p>
+
+<h3 id="from-source">From source<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#from-source" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<p>It is possible to checkout an older version of <a href="https://github.com/pytorch/pytorch" target="_blank">PyTorch</a>
+and build it.
+You can list tags in PyTorch git repository with <code class="language-plaintext highlighter-rouge">git tag</code> and checkout a
+particular one (replace ‘0.1.9’ with the desired version) with</p>
+
+<p><code class="language-plaintext highlighter-rouge">git checkout v0.1.9</code></p>
+
+<p>Follow the install from source instructions in the README.md of the PyTorch
+checkout.</p>
+
+<h3 id="via-pip">Via pip<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#via-pip" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<p>Download the <code class="language-plaintext highlighter-rouge">whl</code> file with the desired version from the following html pages:</p>
+
+<ul>
+  <li><a href="https://download.pytorch.org/whl/cpu/torch_stable.html" target="_blank">https://download.pytorch.org/whl/cpu/torch_stable.html</a> # CPU-only build</li>
+  <li><a href="https://download.pytorch.org/whl/cu80/torch_stable.html" target="_blank">https://download.pytorch.org/whl/cu80/torch_stable.html</a> # CUDA 8.0 build</li>
+  <li><a href="https://download.pytorch.org/whl/cu90/torch_stable.html" target="_blank">https://download.pytorch.org/whl/cu90/torch_stable.html</a> # CUDA 9.0 build</li>
+  <li><a href="https://download.pytorch.org/whl/cu92/torch_stable.html" target="_blank">https://download.pytorch.org/whl/cu92/torch_stable.html</a> # CUDA 9.2 build</li>
+  <li><a href="https://download.pytorch.org/whl/cu100/torch_stable.html" target="_blank">https://download.pytorch.org/whl/cu100/torch_stable.html</a> # CUDA 10.0 build</li>
+</ul>
+
+<p>Then, install the file with <code class="language-plaintext highlighter-rouge">pip install [downloaded file]</code></p>
+
+<p>Note: most pytorch versions are available only for specific CUDA versions. For example pytorch=1.0.1 is not available for CUDA 9.2</p>
+
+<h3 id="old-pytorch-linux-binaries-compiled-with-cuda-75">(Old) PyTorch Linux binaries compiled with CUDA 7.5<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#old-pytorch-linux-binaries-compiled-with-cuda-75" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<p>These predate the html page above and have to be manually installed by downloading the wheel file and <code class="language-plaintext highlighter-rouge">pip install downloaded_file</code></p>
+
+<ul>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.3.0.post4-cp36-cp36m-linux_x86_64.whl" target="_blank">cu75/torch-0.3.0.post4-cp36-cp36m-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.3.0.post4-cp35-cp35m-linux_x86_64.whl" target="_blank">cu75/torch-0.3.0.post4-cp35-cp35m-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.3.0.post4-cp27-cp27mu-linux_x86_64.whl" target="_blank">cu75/torch-0.3.0.post4-cp27-cp27mu-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.3.0.post4-cp27-cp27m-linux_x86_64.whl" target="_blank">cu75/torch-0.3.0.post4-cp27-cp27m-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.2.0.post3-cp36-cp36m-manylinux1_x86_64.whl" target="_blank">cu75/torch-0.2.0.post3-cp36-cp36m-manylinux1_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.2.0.post3-cp35-cp35m-manylinux1_x86_64.whl" target="_blank">cu75/torch-0.2.0.post3-cp35-cp35m-manylinux1_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.2.0.post3-cp27-cp27mu-manylinux1_x86_64.whl" target="_blank">cu75/torch-0.2.0.post3-cp27-cp27mu-manylinux1_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.2.0.post3-cp27-cp27m-manylinux1_x86_64.whl" target="_blank">cu75/torch-0.2.0.post3-cp27-cp27m-manylinux1_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.2.0.post2-cp36-cp36m-manylinux1_x86_64.whl" target="_blank">cu75/torch-0.2.0.post2-cp36-cp36m-manylinux1_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.2.0.post2-cp35-cp35m-manylinux1_x86_64.whl" target="_blank">cu75/torch-0.2.0.post2-cp35-cp35m-manylinux1_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.2.0.post2-cp27-cp27mu-manylinux1_x86_64.whl" target="_blank">cu75/torch-0.2.0.post2-cp27-cp27mu-manylinux1_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.2.0.post2-cp27-cp27m-manylinux1_x86_64.whl" target="_blank">cu75/torch-0.2.0.post2-cp27-cp27m-manylinux1_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.2.0.post1-cp36-cp36m-manylinux1_x86_64.whl" target="_blank">cu75/torch-0.2.0.post1-cp36-cp36m-manylinux1_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.2.0.post1-cp35-cp35m-manylinux1_x86_64.whl" target="_blank">cu75/torch-0.2.0.post1-cp35-cp35m-manylinux1_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.2.0.post1-cp27-cp27mu-manylinux1_x86_64.whl" target="_blank">cu75/torch-0.2.0.post1-cp27-cp27mu-manylinux1_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.2.0.post1-cp27-cp27m-manylinux1_x86_64.whl" target="_blank">cu75/torch-0.2.0.post1-cp27-cp27m-manylinux1_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.1.12.post2-cp36-cp36m-linux_x86_64.whl" target="_blank">cu75/torch-0.1.12.post2-cp36-cp36m-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.1.12.post2-cp35-cp35m-linux_x86_64.whl" target="_blank">cu75/torch-0.1.12.post2-cp35-cp35m-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.1.12.post2-cp27-none-linux_x86_64.whl" target="_blank">cu75/torch-0.1.12.post2-cp27-none-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.1.12.post1-cp36-cp36m-linux_x86_64.whl" target="_blank">cu75/torch-0.1.12.post1-cp36-cp36m-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.1.12.post1-cp35-cp35m-linux_x86_64.whl" target="_blank">cu75/torch-0.1.12.post1-cp35-cp35m-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.1.12.post1-cp27-none-linux_x86_64.whl" target="_blank">cu75/torch-0.1.12.post1-cp27-none-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.1.11.post5-cp36-cp36m-linux_x86_64.whl" target="_blank">cu75/torch-0.1.11.post5-cp36-cp36m-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.1.11.post5-cp35-cp35m-linux_x86_64.whl" target="_blank">cu75/torch-0.1.11.post5-cp35-cp35m-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.1.11.post5-cp27-none-linux_x86_64.whl" target="_blank">cu75/torch-0.1.11.post5-cp27-none-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.1.11.post4-cp36-cp36m-linux_x86_64.whl" target="_blank">cu75/torch-0.1.11.post4-cp36-cp36m-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.1.11.post4-cp35-cp35m-linux_x86_64.whl" target="_blank">cu75/torch-0.1.11.post4-cp35-cp35m-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.1.11.post4-cp27-none-linux_x86_64.whl" target="_blank">cu75/torch-0.1.11.post4-cp27-none-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.1.10.post2-cp36-cp36m-linux_x86_64.whl" target="_blank">cu75/torch-0.1.10.post2-cp36-cp36m-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.1.10.post2-cp35-cp35m-linux_x86_64.whl" target="_blank">cu75/torch-0.1.10.post2-cp35-cp35m-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.1.10.post2-cp27-none-linux_x86_64.whl" target="_blank">cu75/torch-0.1.10.post2-cp27-none-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.1.10.post1-cp36-cp36m-linux_x86_64.whl" target="_blank">cu75/torch-0.1.10.post1-cp36-cp36m-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.1.10.post1-cp35-cp35m-linux_x86_64.whl" target="_blank">cu75/torch-0.1.10.post1-cp35-cp35m-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.1.10.post1-cp27-none-linux_x86_64.whl" target="_blank">cu75/torch-0.1.10.post1-cp27-none-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.1.9.post2-cp36-cp36m-linux_x86_64.whl" target="_blank">cu75/torch-0.1.9.post2-cp36-cp36m-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.1.9.post2-cp35-cp35m-linux_x86_64.whl" target="_blank">cu75/torch-0.1.9.post2-cp35-cp35m-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.1.9.post2-cp27-none-linux_x86_64.whl" target="_blank">cu75/torch-0.1.9.post2-cp27-none-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.1.9.post1-cp36-cp36m-linux_x86_64.whl" target="_blank">cu75/torch-0.1.9.post1-cp36-cp36m-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.1.9.post1-cp35-cp35m-linux_x86_64.whl" target="_blank">cu75/torch-0.1.9.post1-cp35-cp35m-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.1.9.post1-cp27-none-linux_x86_64.whl" target="_blank">cu75/torch-0.1.9.post1-cp27-none-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.1.8.post1-cp36-cp36m-linux_x86_64.whl" target="_blank">cu75/torch-0.1.8.post1-cp36-cp36m-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.1.8.post1-cp35-cp35m-linux_x86_64.whl" target="_blank">cu75/torch-0.1.8.post1-cp35-cp35m-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.1.8.post1-cp27-none-linux_x86_64.whl" target="_blank">cu75/torch-0.1.8.post1-cp27-none-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.1.7.post2-cp36-cp36m-linux_x86_64.whl" target="_blank">cu75/torch-0.1.7.post2-cp36-cp36m-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.1.7.post2-cp35-cp35m-linux_x86_64.whl" target="_blank">cu75/torch-0.1.7.post2-cp35-cp35m-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.1.7.post2-cp27-none-linux_x86_64.whl" target="_blank">cu75/torch-0.1.7.post2-cp27-none-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.1.6.post22-cp35-cp35m-linux_x86_64.whl" target="_blank">cu75/torch-0.1.6.post22-cp35-cp35m-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.1.6.post22-cp27-none-linux_x86_64.whl" target="_blank">cu75/torch-0.1.6.post22-cp27-none-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.1.6.post20-cp35-cp35m-linux_x86_64.whl" target="_blank">cu75/torch-0.1.6.post20-cp35-cp35m-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu75/torch-0.1.6.post20-cp27-cp27mu-linux_x86_64.whl" target="_blank">cu75/torch-0.1.6.post20-cp27-cp27mu-linux_x86_64.whl</a></li>
+</ul>
+
+<h3 id="windows-binaries">Windows binaries<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#windows-binaries" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<ul>
+  <li><a href="https://download.pytorch.org/whl/cpu/torch-1.0.0-cp35-cp35m-win_amd64.whl" target="_blank">cpu/torch-1.0.0-cp35-cp35m-win_amd64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu80/torch-1.0.0-cp35-cp35m-win_amd64.whl" target="_blank">cu80/torch-1.0.0-cp35-cp35m-win_amd64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu90/torch-1.0.0-cp35-cp35m-win_amd64.whl" target="_blank">cu90/torch-1.0.0-cp35-cp35m-win_amd64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu100/torch-1.0.0-cp35-cp35m-win_amd64.whl" target="_blank">cu100/torch-1.0.0-cp35-cp35m-win_amd64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cpu/torch-1.0.0-cp36-cp36m-win_amd64.whl" target="_blank">cpu/torch-1.0.0-cp36-cp36m-win_amd64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu80/torch-1.0.0-cp36-cp36m-win_amd64.whl" target="_blank">cu80/torch-1.0.0-cp36-cp36m-win_amd64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu90/torch-1.0.0-cp36-cp36m-win_amd64.whl" target="_blank">cu90/torch-1.0.0-cp36-cp36m-win_amd64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu100/torch-1.0.0-cp36-cp36m-win_amd64.whl" target="_blank">cu100/torch-1.0.0-cp36-cp36m-win_amd64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cpu/torch-1.0.0-cp37-cp37m-win_amd64.whl" target="_blank">cpu/torch-1.0.0-cp37-cp37m-win_amd64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu80/torch-1.0.0-cp37-cp37m-win_amd64.whl" target="_blank">cu80/torch-1.0.0-cp37-cp37m-win_amd64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu90/torch-1.0.0-cp37-cp37m-win_amd64.whl" target="_blank">cu90/torch-1.0.0-cp37-cp37m-win_amd64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu100/torch-1.0.0-cp37-cp37m-win_amd64.whl" target="_blank">cu100/torch-1.0.0-cp37-cp37m-win_amd64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cpu/torch-0.4.1-cp35-cp35m-win_amd64.whl" target="_blank">cpu/torch-0.4.1-cp35-cp35m-win_amd64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu80/torch-0.4.1-cp35-cp35m-win_amd64.whl" target="_blank">cu80/torch-0.4.1-cp35-cp35m-win_amd64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu90/torch-0.4.1-cp35-cp35m-win_amd64.whl" target="_blank">cu90/torch-0.4.1-cp35-cp35m-win_amd64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu92/torch-0.4.1-cp35-cp35m-win_amd64.whl" target="_blank">cu92/torch-0.4.1-cp35-cp35m-win_amd64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cpu/torch-0.4.1-cp36-cp36m-win_amd64.whl" target="_blank">cpu/torch-0.4.1-cp36-cp36m-win_amd64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu80/torch-0.4.1-cp36-cp36m-win_amd64.whl" target="_blank">cu80/torch-0.4.1-cp36-cp36m-win_amd64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu90/torch-0.4.1-cp36-cp36m-win_amd64.whl" target="_blank">cu90/torch-0.4.1-cp36-cp36m-win_amd64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu92/torch-0.4.1-cp36-cp36m-win_amd64.whl" target="_blank">cu92/torch-0.4.1-cp36-cp36m-win_amd64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cpu/torch-0.4.1-cp37-cp37m-win_amd64.whl" target="_blank">cpu/torch-0.4.1-cp37-cp37m-win_amd64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu80/torch-0.4.1-cp37-cp37m-win_amd64.whl" target="_blank">cu80/torch-0.4.1-cp37-cp37m-win_amd64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu90/torch-0.4.1-cp37-cp37m-win_amd64.whl" target="_blank">cu90/torch-0.4.1-cp37-cp37m-win_amd64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cu92/torch-0.4.1-cp37-cp37m-win_amd64.whl" target="_blank">cu92/torch-0.4.1-cp37-cp37m-win_amd64.whl</a></li>
+</ul>
+
+<h3 id="mac-and-misc-binaries">Mac and misc. binaries<a class="anchorjs-link " href="https://pytorch.org/get-started/previous-versions/#mac-and-misc-binaries" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<p>For recent macOS binaries, use <code class="language-plaintext highlighter-rouge">conda</code>:</p>
+
+<p>e.g.,</p>
+
+<p><code class="language-plaintext highlighter-rouge">conda install pytorch=0.4.1 cuda90 -c pytorch</code>
+<code class="language-plaintext highlighter-rouge">conda install pytorch=0.4.1 cuda92 -c pytorch</code>
+<code class="language-plaintext highlighter-rouge">conda install pytorch=0.4.1 cuda80 -c pytorch</code>
+<code class="language-plaintext highlighter-rouge">conda install pytorch=0.4.1 -c pytorch</code> # No CUDA</p>
+
+<ul>
+  <li><a href="https://download.pytorch.org/whl/torchvision-0.1.6-py3-none-any.whl" target="_blank">torchvision-0.1.6-py3-none-any.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torchvision-0.1.6-py2-none-any.whl" target="_blank">torchvision-0.1.6-py2-none-any.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cpu/torch-1.0.0-cp37-none-macosx_10_7_x86_64.whl" target="_blank">torch-1.0.0-cp37-none-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cpu/torch-1.0.0-cp36-none-macosx_10_7_x86_64.whl" target="_blank">torch-1.0.0-cp36-none-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cpu/torch-1.0.0-cp35-none-macosx_10_6_x86_64.whl" target="_blank">torch-1.0.0-cp35-none-macosx_10_6_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/cpu/torch-1.0.0-cp27-none-macosx_10_6_x86_64.whl" target="_blank">torch-1.0.0-cp27-none-macosx_10_6_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.4.0-cp36-cp36m-macosx_10_7_x86_64.whl" target="_blank">torch-0.4.0-cp36-cp36m-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.4.0-cp35-cp35m-macosx_10_6_x86_64.whl" target="_blank">torch-0.4.0-cp35-cp35m-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.4.0-cp27-none-macosx_10_6_x86_64.whl" target="_blank">torch-0.4.0-cp27-none-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.3.1-cp36-cp36m-macosx_10_7_x86_64.whl" target="_blank">torch-0.3.1-cp36-cp36m-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.3.1-cp35-cp35m-macosx_10_6_x86_64.whl" target="_blank">torch-0.3.1-cp35-cp35m-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.3.1-cp27-none-macosx_10_6_x86_64.whl" target="_blank">torch-0.3.1-cp27-none-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.3.0.post4-cp36-cp36m-macosx_10_7_x86_64.whl" target="_blank">torch-0.3.0.post4-cp36-cp36m-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.3.0.post4-cp35-cp35m-macosx_10_6_x86_64.whl" target="_blank">torch-0.3.0.post4-cp35-cp35m-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.3.0.post4-cp27-none-macosx_10_6_x86_64.whl" target="_blank">torch-0.3.0.post4-cp27-none-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.2.0.post3-cp36-cp36m-macosx_10_7_x86_64.whl" target="_blank">torch-0.2.0.post3-cp36-cp36m-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.2.0.post3-cp35-cp35m-macosx_10_7_x86_64.whl" target="_blank">torch-0.2.0.post3-cp35-cp35m-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.2.0.post3-cp27-none-macosx_10_7_x86_64.whl" target="_blank">torch-0.2.0.post3-cp27-none-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.2.0.post2-cp36-cp36m-macosx_10_7_x86_64.whl" target="_blank">torch-0.2.0.post2-cp36-cp36m-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.2.0.post2-cp35-cp35m-macosx_10_7_x86_64.whl" target="_blank">torch-0.2.0.post2-cp35-cp35m-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.2.0.post2-cp27-none-macosx_10_7_x86_64.whl" target="_blank">torch-0.2.0.post2-cp27-none-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.2.0.post1-cp36-cp36m-macosx_10_7_x86_64.whl" target="_blank">torch-0.2.0.post1-cp36-cp36m-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.2.0.post1-cp35-cp35m-macosx_10_7_x86_64.whl" target="_blank">torch-0.2.0.post1-cp35-cp35m-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.2.0.post1-cp27-none-macosx_10_7_x86_64.whl" target="_blank">torch-0.2.0.post1-cp27-none-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.1.12.post2-cp36-cp36m-macosx_10_7_x86_64.whl" target="_blank">torch-0.1.12.post2-cp36-cp36m-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.1.12.post2-cp35-cp35m-macosx_10_7_x86_64.whl" target="_blank">torch-0.1.12.post2-cp35-cp35m-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.1.12.post2-cp27-none-macosx_10_7_x86_64.whl" target="_blank">torch-0.1.12.post2-cp27-none-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.1.12.post1-cp36-cp36m-macosx_10_7_x86_64.whl" target="_blank">torch-0.1.12.post1-cp36-cp36m-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.1.12.post1-cp35-cp35m-macosx_10_7_x86_64.whl" target="_blank">torch-0.1.12.post1-cp35-cp35m-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.1.12.post1-cp27-none-macosx_10_7_x86_64.whl" target="_blank">torch-0.1.12.post1-cp27-none-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.1.11.post5-cp36-cp36m-macosx_10_7_x86_64.whl" target="_blank">torch-0.1.11.post5-cp36-cp36m-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.1.11.post5-cp35-cp35m-macosx_10_7_x86_64.whl" target="_blank">torch-0.1.11.post5-cp35-cp35m-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.1.11.post5-cp27-none-macosx_10_7_x86_64.whl" target="_blank">torch-0.1.11.post5-cp27-none-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.1.11.post4-cp36-cp36m-macosx_10_7_x86_64.whl" target="_blank">torch-0.1.11.post4-cp36-cp36m-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.1.11.post4-cp35-cp35m-macosx_10_7_x86_64.whl" target="_blank">torch-0.1.11.post4-cp35-cp35m-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.1.11.post4-cp27-none-macosx_10_7_x86_64.whl" target="_blank">torch-0.1.11.post4-cp27-none-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.1.10.post1-cp36-cp36m-macosx_10_7_x86_64.whl" target="_blank">torch-0.1.10.post1-cp36-cp36m-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.1.10.post1-cp35-cp35m-macosx_10_6_x86_64.whl" target="_blank">torch-0.1.10.post1-cp35-cp35m-macosx_10_6_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.1.10.post1-cp27-none-macosx_10_7_x86_64.whl" target="_blank">torch-0.1.10.post1-cp27-none-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.1.9.post2-cp36-cp36m-macosx_10_7_x86_64.whl" target="_blank">torch-0.1.9.post2-cp36-cp36m-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.1.9.post2-cp35-cp35m-macosx_10_6_x86_64.whl" target="_blank">torch-0.1.9.post2-cp35-cp35m-macosx_10_6_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.1.9.post2-cp27-none-macosx_10_7_x86_64.whl" target="_blank">torch-0.1.9.post2-cp27-none-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.1.9.post1-cp36-cp36m-macosx_10_7_x86_64.whl" target="_blank">torch-0.1.9.post1-cp36-cp36m-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.1.9.post1-cp35-cp35m-macosx_10_6_x86_64.whl" target="_blank">torch-0.1.9.post1-cp35-cp35m-macosx_10_6_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.1.9.post1-cp27-none-macosx_10_7_x86_64.whl" target="_blank">torch-0.1.9.post1-cp27-none-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.1.8.post1-cp36-cp36m-macosx_10_7_x86_64.whl" target="_blank">torch-0.1.8.post1-cp36-cp36m-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.1.8.post1-cp35-cp35m-macosx_10_6_x86_64.whl" target="_blank">torch-0.1.8.post1-cp35-cp35m-macosx_10_6_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.1.8.post1-cp27-none-macosx_10_7_x86_64.whl" target="_blank">torch-0.1.8.post1-cp27-none-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.1.7.post2-cp36-cp36m-macosx_10_7_x86_64.whl" target="_blank">torch-0.1.7.post2-cp36-cp36m-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.1.7.post2-cp35-cp35m-macosx_10_6_x86_64.whl" target="_blank">torch-0.1.7.post2-cp35-cp35m-macosx_10_6_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.1.7.post2-cp27-none-macosx_10_7_x86_64.whl" target="_blank">torch-0.1.7.post2-cp27-none-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.1.6.post22-cp35-cp35m-macosx_10_6_x86_64.whl" target="_blank">torch-0.1.6.post22-cp35-cp35m-macosx_10_6_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.1.6.post22-cp27-none-macosx_10_7_x86_64.whl" target="_blank">torch-0.1.6.post22-cp27-none-macosx_10_7_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.1.6.post20-cp35-cp35m-linux_x86_64.whl" target="_blank">torch-0.1.6.post20-cp35-cp35m-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.1.6.post20-cp27-cp27mu-linux_x86_64.whl" target="_blank">torch-0.1.6.post20-cp27-cp27mu-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.1.6.post17-cp35-cp35m-linux_x86_64.whl" target="_blank">torch-0.1.6.post17-cp35-cp35m-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.1.6.post17-cp27-cp27mu-linux_x86_64.whl" target="_blank">torch-0.1.6.post17-cp27-cp27mu-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.1-cp35-cp35m-macosx_10_6_x86_64.whl" target="_blank">torch-0.1-cp35-cp35m-macosx_10_6_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch-0.1-cp27-cp27m-macosx_10_6_x86_64.whl" target="_blank">torch-0.1-cp27-cp27m-macosx_10_6_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch_cuda80-0.1.6.post20-cp35-cp35m-linux_x86_64.whl" target="_blank">torch_cuda80-0.1.6.post20-cp35-cp35m-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch_cuda80-0.1.6.post20-cp27-cp27mu-linux_x86_64.whl" target="_blank">torch_cuda80-0.1.6.post20-cp27-cp27mu-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch_cuda80-0.1.6.post17-cp35-cp35m-linux_x86_64.whl" target="_blank">torch_cuda80-0.1.6.post17-cp35-cp35m-linux_x86_64.whl</a></li>
+  <li><a href="https://download.pytorch.org/whl/torch_cuda80-0.1.6.post17-cp27-cp27mu-linux_x86_64.whl" target="_blank">torch_cuda80-0.1.6.post17-cp27-cp27mu-linux_x86_64.whl</a></li>
+</ul>
+
+<script page-id="previous-versions" src="./Previous PyTorch Versions _ PyTorch_files/menu-tab-selection.js"></script>
+
+<script src="./Previous PyTorch Versions _ PyTorch_files/quick-start-module.js"></script>
+
+<script src="./Previous PyTorch Versions _ PyTorch_files/show-screencast.js"></script>
+
+<script src="./Previous PyTorch Versions _ PyTorch_files/get-started-sidebar.js"></script>
+
+</article>
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid docs-tutorials-resources">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 text-center">
+        <h2>Docs</h2>
+        <p>Access comprehensive developer documentation for PyTorch</p>
+        <a class="with-right-arrow" href="https://pytorch.org/docs">View Docs</a>
+      </div>
+
+      <div class="col-md-4 text-center">
+        <h2>Tutorials</h2>
+        <p>Get in-depth tutorials for beginners and advanced developers</p>
+        <a class="with-right-arrow" href="https://pytorch.org/tutorials">View Tutorials</a>
+      </div>
+
+      <div class="col-md-4 text-center">
+        <h2>Resources</h2>
+        <p>Find development resources and get your questions answered</p>
+        <a class="with-right-arrow" href="https://pytorch.org/resources">View Resources</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container footer-container">
+    <div class="lf-grid">
+      <div class="footer-logo-wrapper">
+        <a href="https://pytorch.org/" class="footer-logo">
+          <img src="./Previous PyTorch Versions _ PyTorch_files/logo-icon.svg" alt="PyTorch logo" width="40">
+        </a>
+      </div>
+
+      <ul class="social-links">
+        <li><a href="https://www.facebook.com/pytorch" target="_blank" title="PyTorch on Facebook">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="-0.51 -0.26 26.45 26.45" aria-label="Facebook"><path fill="currentColor" d="M25.497 13.075c0-2.45-.698-4.848-2.011-6.911a12.765 12.765 0 0 0-5.398-4.73A12.671 12.671 0 0 0 11.008.38a12.705 12.705 0 0 0-6.529 2.95A12.827 12.827 0 0 0 .563 9.358a12.896 12.896 0 0 0-.07 7.201 12.831 12.831 0 0 0 3.801 6.103 12.709 12.709 0 0 0 6.471 3.078v-8.957H7.53v-3.708h3.235v-2.824c0-3.213 1.903-4.988 4.813-4.988.956.014 1.909.097 2.852.25V8.67h-1.607a1.83 1.83 0 0 0-1.518.497 1.854 1.854 0 0 0-.561 1.505v2.404h3.535l-.563 3.708h-2.97v8.957a12.725 12.725 0 0 0 7.697-4.337 12.87 12.87 0 0 0 3.054-8.328z"></path></svg>	
+        </a></li>
+        <li><a href="https://twitter.com/pytorch" target="_blank" title="PyTorch on X">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" aria-label="X"><path fill="currentColor" d="M178.57 127.15 290.27 0h-26.46l-97.03 110.38L89.34 0H0l117.13 166.93L0 300.25h26.46l102.4-116.59 81.8 116.59h89.34M36.01 19.54H76.66l187.13 262.13h-40.66"></path></svg>
+        </a></li>
+        <li><a href="https://www.youtube.com/pytorch" target="_blank" title="PyTorch on YouTube">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0.21 0.27 34.45 25.07" aria-label="YouTube"><path fill="currentColor" d="M33.729 6.084s-.327-2.33-1.317-3.356a4.691 4.691 0 0 0-3.32-1.432c-4.634-.34-11.589-.34-11.589-.34h-.014s-6.954 0-11.59.342a4.692 4.692 0 0 0-3.32 1.432c-.993 1.025-1.315 3.354-1.315 3.354a52.189 52.189 0 0 0-.331 5.473v2.566c.014 1.829.125 3.656.331 5.472 0 0 .322 2.33 1.316 3.36 1.26 1.345 2.916 1.3 3.653 1.445 2.65.26 11.263.34 11.263.34s6.96-.01 11.597-.353a4.691 4.691 0 0 0 3.32-1.432c.993-1.026 1.316-3.356 1.316-3.356.206-1.817.316-3.644.33-5.473v-2.57a52.26 52.26 0 0 0-.33-5.472zM14.076 17.232V7.729l8.951 4.768-8.95 4.735z"></path></svg>	
+        </a></li>
+        <li><a href="https://www.linkedin.com/company/pytorch" target="_blank" title="PyTorch on LinkedIn">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="-10.23 -10.23 531.96 531.96" aria-label="LinkedIn"><rect width="512" height="512" rx="0" fill="currentColor"></rect><circle fill="#000" cx="142" cy="138" r="37"></circle><path stroke="#000" stroke-width="66" d="M244 194v198M142 194v198"></path><path fill="#000" d="M276 282c0-20 13-40 36-40 24 0 33 18 33 45v105h66V279c0-61-32-89-76-89-34 0-51 19-59 32"></path></svg>
+        </a></li>
+        <li><a href="https://social.lfx.dev/@pytorch" rel="me" target="_blank" title="PyTorch on Mastodon">
+          <svg fill="currentColor" aria-label="Mastodon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xml:space="preserve"><path d="M21.327 8.566c0-4.339-2.843-5.61-2.843-5.61-1.433-.658-3.894-.935-6.451-.956h-.063c-2.557.021-5.016.298-6.45.956 0 0-2.843 1.272-2.843 5.61 0 .993-.019 2.181.012 3.441.103 4.243.778 8.425 4.701 9.463 1.809.479 3.362.579 4.612.51 2.268-.126 3.541-.809 3.541-.809l-.075-1.646s-1.621.511-3.441.449c-1.804-.062-3.707-.194-3.999-2.409a4.523 4.523 0 0 1-.04-.621s1.77.433 4.014.536c1.372.063 2.658-.08 3.965-.236 2.506-.299 4.688-1.843 4.962-3.254.434-2.223.398-5.424.398-5.424zm-3.353 5.59h-2.081V9.057c0-1.075-.452-1.62-1.357-1.62-1 0-1.501.647-1.501 1.927v2.791h-2.069V9.364c0-1.28-.501-1.927-1.502-1.927-.905 0-1.357.546-1.357 1.62v5.099H6.026V8.903c0-1.074.273-1.927.823-2.558.566-.631 1.307-.955 2.228-.955 1.065 0 1.872.409 2.405 1.228l.518.869.519-.869c.533-.819 1.34-1.228 2.405-1.228.92 0 1.662.324 2.228.955.549.631.822 1.484.822 2.558v5.253z"></path></svg>
+        </a></li>
+      </ul>
+    </div>
+
+    <div class="privacy-policy">
+      <div class="copyright">
+        <p>© Copyright The Linux Foundation. The PyTorch Foundation is a project of The Linux Foundation. 
+          For web site terms of use, trademark policy and other policies applicable to The PyTorch Foundation please see 
+          <a href="https://www.linuxfoundation.org/legal/policies/?__hstc=132719121.845067bab57129f39cab1b1174adf435.1716541664134.1716541664134.1716548275104.2&amp;__hssc=132719121.1.1716548275104&amp;__hsfp=1665771410" target="_blank">Linux Foundation Policies</a>. The PyTorch Foundation supports the PyTorch open source 
+          project, which has been established as PyTorch Project a Series of LF Projects, LLC. For policies applicable to the PyTorch Project a Series of LF Projects, LLC, 
+          please see <a href="https://www.lfprojects.org/policies/" target="_blank">LF Projects, LLC Policies</a>. <a href="https://www.linuxfoundation.org/privacy?__hstc=132719121.845067bab57129f39cab1b1174adf435.1716541664134.1716541664134.1716548275104.2&amp;__hssc=132719121.1.1716548275104&amp;__hsfp=1665771410" target="_blank">Privacy Policy</a> and <a href="https://www.linuxfoundation.org/terms?__hstc=132719121.845067bab57129f39cab1b1174adf435.1716541664134.1716541664134.1716548275104.2&amp;__hssc=132719121.1.1716548275104&amp;__hsfp=1665771410" target="_blank">Terms of Use</a>.</p>
+      </div>
+    </div>
+  </div>
+  <img height="1" width="1" style="border-style:none;" alt="" src="./Previous PyTorch Versions _ PyTorch_files/saved_resource">
+
+</footer>
+
+<div class="mobile-main-menu">
+  <div class="container-fluid">
+    <div class="container">
+      <div class="mobile-main-menu-header-container">
+        <a class="header-logo" href="https://pytorch.org/" aria-label="PyTorch"></a>
+        <a class="main-menu-close-button" href="https://pytorch.org/get-started/previous-versions/#" data-behavior="close-mobile-menu"></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="mobile-main-menu-links-container">
+
+    <div class="main-menu">
+      <ul>
+        <li class="navSearchWrapper reactNavSearchWrapper tabletSearchWrapper" key="search">
+          <div class="mobile-search-border">
+            <span class="algolia-autocomplete" style="position: relative; display: inline-block; direction: ltr;"><input id="mobile-search-input" type="text" title="Search" class="ds-input" autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-label="search input" aria-owns="algolia-autocomplete-listbox-2" dir="auto" style="position: relative; vertical-align: top;"><pre aria-hidden="true" style="position: absolute; visibility: hidden; white-space: pre; font-family: FreightSans, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 32px; font-style: normal; font-variant: normal; font-weight: 400; word-spacing: 0px; letter-spacing: normal; text-indent: 0px; text-rendering: auto; text-transform: none;"></pre><span class="ds-dropdown-menu" role="listbox" id="algolia-autocomplete-listbox-2" style="position: absolute; top: 100%; z-index: 100; display: none; left: 0px; right: auto;"><div class="ds-dataset-3"></div></span></span>
+            <div id="mobile-search-icon"></div>
+          </div>
+        </li>
+
+        <li class="resources-mobile-menu-title">
+          <a>Learn</a>
+        </li>
+        <ul class="resources-mobile-menu-items">
+          <li>
+            <a href="https://pytorch.org/get-started">Get Started</a> 
+          </li>
+          <li>
+            <a href="https://pytorch.org/tutorials">Tutorials</a>
+          </li>
+          <li>
+            <a href="https://pytorch.org/tutorials/beginner/basics/intro.html">Learn the Basics</a>
+          </li>
+          <li>
+            <a href="https://pytorch.org/tutorials/recipes/recipes_index.html">PyTorch Recipes</a>
+          </li>
+          <li>
+            <a href="https://pytorch.org/tutorials/beginner/introyt.html">Introduction to PyTorch - YouTube Series</a>
+          </li>
+        </ul>
+        <li class="resources-mobile-menu-title">
+          <a>Ecosystem</a>
+        </li>
+        <ul class="resources-mobile-menu-items">
+          <li>
+            <a href="https://pytorch.org/ecosystem">Tools</a>
+          </li>
+          <li>
+            <a href="https://pytorch.org/#community-module">Community</a>
+          </li>
+          <li>
+            <a href="https://discuss.pytorch.org/" target="_blank">Forums</a>
+          </li>
+          <li>
+            <a href="https://pytorch.org/resources">Developer Resources</a>
+          </li>
+          <li>
+            <a href="https://pytorch.org/ecosystem/contributor-awards-2023">Contributor Awards - 2023</a>
+          </li>
+        </ul>
+        <li class="resources-mobile-menu-title">
+          <a>Edge</a>
+        </li>
+        <ul class="resources-mobile-menu-items">
+          <li>
+            <a href="https://pytorch.org/edge">About PyTorch Edge</a>
+          </li>
+          <li>
+            <a href="https://pytorch.org/executorch-overview">ExecuTorch</a>
+          </li>
+        </ul>
+        <li class="resources-mobile-menu-title">
+          <a>Docs</a>
+        </li>
+        <ul class="resources-mobile-menu-items">
+          <li>
+            <a href="https://pytorch.org/docs">PyTorch</a>
+          </li>
+          <li>
+            <a href="https://pytorch.org/pytorch-domains">PyTorch Domains</a>
+          </li>
+        </ul>
+
+        <li class="resources-mobile-menu-title">
+          <a>Blog &amp; News</a>
+        </li>
+        <ul class="resources-mobile-menu-items">
+          <li>
+            <a href="https://pytorch.org/blog">PyTorch Blog</a>
+          </li>
+          <li>
+            <a href="https://pytorch.org/community-blog">Community Blog</a>
+          </li>
+          <li>
+            <a href="https://pytorch.org/videos">Videos</a>
+          </li>
+          <li>
+            <a href="https://pytorch.org/community-stories">Community Stories</a>
+          </li>
+          <li>
+            <a href="https://pytorch.org/events">Events</a>
+          </li>
+        </ul>
+        <li class="resources-mobile-menu-title">
+          <a>About</a>
+        </li>
+        <ul class="resources-mobile-menu-items">
+          <li>
+            <a href="https://pytorch.org/foundation">PyTorch Foundation</a>
+          </li>
+          <li>
+            <a href="https://pytorch.org/governing-board">Governing Board</a>
+          </li>
+        </ul>
+        <li class="resources-mobile-menu-title">
+          <a href="https://pytorch.org/join">Become a Member</a>
+        </li>
+        <li class="resources-mobile-menu-title">
+          <a href="https://github.com/pytorch/pytorch" title="Go to PyTorch GitHub" target="_blank"><div id="topnav-gh-icon"></div></a>
+        </li>
+
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+
+<script src="./Previous PyTorch Versions _ PyTorch_files/mobile-menu.js"></script>
+<script src="./Previous PyTorch Versions _ PyTorch_files/scroll-to-anchor.js"></script>
+<script src="./Previous PyTorch Versions _ PyTorch_files/external-links-new-tab.js"></script>
+
+  <script src="./Previous PyTorch Versions _ PyTorch_files/search-bar.js"></script>
+
+<script src="./Previous PyTorch Versions _ PyTorch_files/cookie-banner.js"></script>
+
+<script type="text/javascript">
+  mobileMenu.bind();
+  anchors.add('.pytorch-article h2, .pytorch-article h3, .pytorch-article h4, .pytorch-article h5');
+
+  // Add class to links that have code blocks, since we cannot create links in code blocks
+  $("a code.highlighter-rouge").each(function(e) {
+    $(this).closest("a").addClass("has-code");
+  });
+
+  scrollToAnchor.bind();
+
+  var hasStaticHeader = $(".blog-header, .blog-detail-header, .resources-header, .get-started-header, .features-header, .ecosystem-header, .hub-header, .mobile-header, .announcement-header, .comm-stories-header").length > 0;
+
+  if (!hasStaticHeader) {
+    $(window).on("scroll", function() {
+      var top = $(this).scrollTop();
+      var fullPosition = $(".main-background").height() - $(".header-holder").height();
+
+      if (top <= 40) {
+        $(".header-holder").css({"backgroundColor": "rgba(0, 0, 0, 0.165)"});
+      } else if (top >= fullPosition) {
+        $(".header-holder").css({"backgroundColor": "#000000"});
+      } else {
+        var bgColor = "rgba(0, 0, 0, " + top / fullPosition + ")";
+        $(".header-holder").css({"backgroundColor": bgColor});
+      }
+    });
+  }
+</script>
+
+
+  <script src="./Previous PyTorch Versions _ PyTorch_files/track-events.js"></script>
+  <script>trackEvents.bind();</script>
+
+
+
+<div class="cookie-banner-wrapper">
+  <div class="container">
+    <p class="gdpr-notice">To analyze traffic and optimize your experience, we serve cookies on this site. By clicking or navigating, you agree to allow our usage of cookies. As the current maintainers of this site, Facebook’s Cookies Policy applies. Learn more, including about available controls: <a href="https://www.facebook.com/policies/cookies/">Cookies Policy</a>.</p>
+    <img class="close-button" src="./Previous PyTorch Versions _ PyTorch_files/pytorch-x.svg">
+  </div>
+</div>
+
+
+  
+
+<script type="text/javascript" id="">(function(a,b,c,d,e){a=b.createElement(c);b=b.getElementsByTagName(c)[0];a.async=1;a.id=e;a.src=d;b.parentNode.insertBefore(a,b)})(window,document,"script","https://tag.demandbase.com/e8693e2ee5fcbf3b.min.js","demandbase_js_lib");</script>
+<script type="text/javascript" id="hs-script-loader" src="./Previous PyTorch Versions _ PyTorch_files/8112310(2).js"></script><iframe alt="" aria-hidden="true" width="0" height="0" sandbox="" id="db-sync" src="./Previous PyTorch Versions _ PyTorch_files/sync.html" style="display: none; border: 0px;"></iframe><img alt="" aria-hidden="true" width="0" height="0" id="db_lr_pixel_ad" src="./Previous PyTorch Versions _ PyTorch_files/464526.gif" style="display: none;">
+<iframe owner="archetype" title="archetype" style="display: none; visibility: hidden;" src="./Previous PyTorch Versions _ PyTorch_files/saved_resource.html"></iframe>
+<div class="go2933276541 go2369186930" id="hs-web-interactives-top-anchor"><div id="hs-interactives-modal-overlay" class="go1632949049"></div></div>
+<div class="go2933276541 go1348078617" id="hs-web-interactives-bottom-anchor"></div>
+<div id="hs-web-interactives-floating-container">
+  <div id="hs-web-interactives-floating-top-left-anchor" class="go2417249464 go613305155">
+  </div>
+  <div id="hs-web-interactives-floating-top-right-anchor" class="go2417249464 go471583506">
+  </div>
+  <div id="hs-web-interactives-floating-bottom-left-anchor" class="go2417249464 go3921366393">
+  </div>
+  <div id="hs-web-interactives-floating-bottom-right-anchor" class="go2417249464 go3967842156">
+  </div>
+</div>
+</body></html>

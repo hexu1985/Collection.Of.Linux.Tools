@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<!-- saved from url=(0056)https://code-maven.com/slides/python/argparse-print-help -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+  <link href="./argparse print help explicitely_files/style_20210518.css" rel="stylesheet">
+  <link href="./argparse print help explicitely_files/light_20200725.css" rel="stylesheet">
+  <link href="./argparse print help explicitely_files/dracula_20200725.css" rel="stylesheet">
+  <link rel="canonical" href="https://code-maven.com/slides/python/argparse-print-help">
+  <title>argparse print help explicitely</title>
+<meta http-equiv="origin-trial" content="AymqwRC7u88Y4JPvfIF2F37QKylC04248hLCdJAsh8xgOfe/dVJPV3XS3wLFca1ZMVOtnBfVjaCMTVudWM//5g4AAAB7eyJvcmlnaW4iOiJodHRwczovL3d3dy5nb29nbGV0YWdtYW5hZ2VyLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjk1MTY3OTk5LCJpc1RoaXJkUGFydHkiOnRydWV9"></head>
+<body>
+<input type="hidden" id="extension" value="">
+
+<nav id="top_menu">
+    <ul>
+      <li><a href="https://code-maven.com/">Code Maven</a></li>
+      <li><a href="https://code-maven.com/slides/">Slides</a></li>
+      <li><a href="https://code-maven.com/about">About</a></li>
+      <li id="helpbutton">Press ? for keyboard navigation</li>
+    </ul>
+</nav>
+
+
+<div class="banner" id="banner-top" style="display: block;">
+</div>
+
+
+<div id="content">
+
+<div class="nextprev">
+
+   <a class="prev slidebutton navigation" id="prev" href="https://code-maven.com/slides/python/argparse-shortnames" style="display: block;">❮<span class="prev-text"> Short names</span></a>
+
+
+   <a class="next slidebutton navigation" id="next" href="https://code-maven.com/slides/python/argparse-xor" style="display: block;"><span class="next-text">Argparse xor - mutual exlucise - only one - exactly one </span>❯</a>
+
+   <div class="clear-both"></div>
+</div>
+
+
+
+<div id="keywords" class="extra" style="display: block;">
+<ul>
+  
+    <li>print_help</li>
+  
+</ul>
+</div>
+
+
+<h1 id="title">argparse print help explicitely</h1>
+<hr>
+
+
+  
+  
+  
+  
+
+  
+  
+      <b></b><br>
+      
+         <b><a href="https://github.com/szabgab/slides/tree/main/python/examples/argparse/argparse_print_help.py" rel="nofollow">examples/argparse/argparse_print_help.py</a></b><br>
+      
+
+<pre class="included-code dracula"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">argparse</span>
+
+<span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">'--age'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">'Your age in years'</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">age</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+    <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">age</span><span class="p">)</span>
+</pre></div>
+
+</pre>
+
+  
+  
+  
+
+
+
+<div id="links" class="navigation" style="display: block;">
+  <hr>
+  <ul>
+    <li><a class="slidebutton" href="https://code-maven.com/slides/python/">Index (i)</a></li>
+    <li><a class="slidebutton" href="https://code-maven.com/slides/python/toc">Table of Contents (t)</a></li>
+    <li><a class="slidebutton" href="https://code-maven.com/slides/python/keywords">Indexed keywords (k)</a></li>
+    <li><a class="slidebutton" id="chapter" href="https://code-maven.com/slides/python/argparse">Chapter TOC (d)</a></li>
+    <li><a class="slidebutton" id="showhide" href="https://code-maven.com/slides/python/argparse-print-help">Hide/Show (h)</a></li>
+  </ul>
+</div>
+
+<div id="footer">
+    <hr>
+    <ul>
+      <li>Copyright 2023 <a href="https://szabgab.com/">Gábor Szabó</a></li>
+      <li>@szabgab</li>
+      <li>Last updated at 2023-11-30 08:22:09.908605</li>
+    </ul>
+</div>
+
+</div>
+
+<script src="./argparse print help explicitely_files/slides.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async="" src="./argparse print help explicitely_files/js"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-CB0RC0YM71');
+</script>
+
+
+
+</body></html>

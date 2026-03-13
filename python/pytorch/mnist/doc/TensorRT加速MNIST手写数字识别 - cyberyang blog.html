@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<!-- saved from url=(0039)https://cyberyang.com/inference/31.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<title>TensorRT加速MNIST手写数字识别 - cyberyang blog</title>
+
+	<!-- Favicon -->
+	<link href="https://cyberyang.com/img/author.jpg" rel="icon" type="image/png">
+
+	<!-- Fonts -->
+	<link href="./TensorRT加速MNIST手写数字识别 - cyberyang blog_files/css" rel="stylesheet">
+
+	<!-- FontAwesome -->
+	<link href="./TensorRT加速MNIST手写数字识别 - cyberyang blog_files/font-awesome.min.css" rel="stylesheet">
+
+	<!-- Main CSS -->
+	<link type="text/css" href="./TensorRT加速MNIST手写数字识别 - cyberyang blog_files/main.min.css" rel="stylesheet">
+
+	<!-- KaTeX CSS -->
+		<link rel="stylesheet" type="text/css" href="./TensorRT加速MNIST手写数字识别 - cyberyang blog_files/katex.min.css">
+	
+	<!-- PrismJS CSS -->
+		<link rel="stylesheet" type="text/css" href="./TensorRT加速MNIST手写数字识别 - cyberyang blog_files/prism-okaidia.css">
+	<link rel="stylesheet" type="text/css" href="./TensorRT加速MNIST手写数字识别 - cyberyang blog_files/prism-toolbar.css">
+				<link rel="stylesheet" type="text/css" href="./TensorRT加速MNIST手写数字识别 - cyberyang blog_files/prism-line-numbers.css">
+			
+	<!-- Viewer CSS -->
+		<link rel="stylesheet" type="text/css" href="./TensorRT加速MNIST手写数字识别 - cyberyang blog_files/viewer.min.css">
+	
+	<!-- Jquery -->
+	<script src="./TensorRT加速MNIST手写数字识别 - cyberyang blog_files/jquery.min.js"></script>
+
+	<!-- Custom CSS -->
+	
+	<!-- Viewer.js Plugin -->
+		<script src="./TensorRT加速MNIST手写数字识别 - cyberyang blog_files/viewer.min.js"></script>
+	<script src="./TensorRT加速MNIST手写数字识别 - cyberyang blog_files/jquery-viewer.min.js"></script>
+	
+	<!-- MD5 Js -->
+	<script src="./TensorRT加速MNIST手写数字识别 - cyberyang blog_files/md5.min.js"></script>
+	<!-- LazyLoad Js -->
+	<script type="text/javascript" src="./TensorRT加速MNIST手写数字识别 - cyberyang blog_files/jquery.lazy.min.js"></script>
+    <script type="text/javascript" src="./TensorRT加速MNIST手写数字识别 - cyberyang blog_files/jquery.lazy.plugins.min.js"></script>
+	<!-- Typecho header -->
+			<meta name="description" content="本文将会通过TensorRT C++ API来完成一个MNIST手写数字识别模型的转换、推理过程，并给出相应代码，在runtime阶段将会使用最新的enqueueV3方法。代码/模型文件已上传G...">
+<meta name="keywords" content="TensorRT">
+<meta name="generator" content="Typecho 1.2.1">
+<meta name="template" content="Bubble">
+<link rel="pingback" href="https://cyberyang.com/action/xmlrpc">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://cyberyang.com/action/xmlrpc?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://cyberyang.com/action/xmlrpc?wlw">
+<link rel="alternate" type="application/rss+xml" title="TensorRT加速MNIST手写数字识别 » cyberyang blog » RSS 2.0" href="https://cyberyang.com/feed/inference/31.html">
+<link rel="alternate" type="application/rdf+xml" title="TensorRT加速MNIST手写数字识别 » cyberyang blog » RSS 1.0" href="https://cyberyang.com/feed/rss/inference/31.html">
+<link rel="alternate" type="application/atom+xml" title="TensorRT加速MNIST手写数字识别 » cyberyang blog » ATOM 1.0" href="https://cyberyang.com/feed/atom/inference/31.html">
+	<script src="./TensorRT加速MNIST手写数字识别 - cyberyang blog_files/clipboard.min.js"></script></head>
+<body>
+	<header class="header-global">
+		<nav id="navbar-main" class="navbar navbar-main navbar-expand-lg navbar-transparent navbar-light headroom headroom--top headroom--not-bottom">
+			<div class="container">
+				<a class="navbar-brand" href="https://cyberyang.com/">cyberyang blog</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-default" aria-controls="navbar-default" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbar-default">
+					<div class="navbar-collapse-header">
+						<div class="row">
+							<div class="col-6 collapse-brand">
+								<a href="https://cyberyang.com/"><h5>cyberyang blog</h5></a>
+							</div>
+							<div class="col-6 collapse-close">
+								<button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-default" aria-controls="navbar-default" aria-expanded="false" aria-label="Toggle navigation">
+									<span></span>
+									<span></span>
+								</button>
+							</div>
+						</div>
+					</div>
+					<ul class="navbar-nav ml-lg-auto align-items-lg-center">
+						<li class="nav-item">
+							<a class="nav-link" href="https://cyberyang.com/">首页</a>
+						</li>
+						<li class="nav-item">
+													</li><li class="nav-item">
+								<a class="nav-link" href="https://cyberyang.com/about.html" title="关于">关于</a>
+							</li>
+																			<li class="nav-item">
+								<a class="nav-link" href="https://cyberyang.com/category/logs/" title="记录">记录</a>
+							</li>
+													<li class="nav-item">
+								<a class="nav-link" href="https://cyberyang.com/category/NLP/" title="自然语言处理">自然语言处理</a>
+							</li>
+													<li class="nav-item">
+								<a class="nav-link" href="https://cyberyang.com/category/inference/" title="模型部署">模型部署</a>
+							</li>
+												<li class="navbar_search_container">
+							<form method="post" action="https://cyberyang.com/inference/31.html" id="search">
+								<div class="input-group input-group-alternative">
+									<div class="input-group-prepend">
+										<span class="input-group-text"><i class="fa fa-search"></i></span>
+									</div>
+									<input type="text" name="s" class="form-control" placeholder="搜点什么……" autocomplete="off">
+								</div>
+							</form>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+	<div id="pjax-container">
+<main>
+
+			<div class="card shadow border-0 bg-secondary toc-container" style="right: -5px;">
+			<a class="carousel-control-prev" id="toc-nomiao">
+				<i class="fa fa-chevron-right" aria-hidden="true"></i>
+			</a>
+			<div class="card-img container container-lg py-5 toc">
+				<strong>文章目录</strong>
+				<div class="toc-list">
+					<ul>
+<li><a name="dl-1" href="javascript:jumpto(1)">PyTorch模型搭建</a></li>
+<li><a name="dl-2" href="javascript:jumpto(2)">pt2onnx</a></li>
+<li><a name="dl-3" href="javascript:jumpto(3)">onnx2engine</a></li>
+<li><a name="dl-4" href="javascript:jumpto(4)">runtime</a></li>
+<li><a name="dl-5" href="javascript:jumpto(5)">参考</a></li>
+</ul>
+				</div>
+			</div>
+		</div>
+		<script>
+			var onshow = false;
+
+			function tocshow() {
+				if (onshow) {
+					$(".toc-container").css("right", '-175px')
+					$(".toc-container i").removeClass("fa-chevron-right").addClass("fa-chevron-left")
+				} else {
+					$(".toc-container").css("right", '-5px')
+					$(".toc-container i").removeClass("fa-chevron-left").addClass("fa-chevron-right")
+				}
+				onshow = !onshow
+			}
+
+			function jumpto(num) {
+				$('html,body').animate({
+					scrollTop: $('[name="cl-' + num + '"]').offset().top - 120
+				}, 500)
+			}
+			$("#toc-nomiao").click(tocshow)
+			var nowtoc = "cl-1"
+			$(document).ready(function() {
+									tocshow()
+								$(document).scroll(function() {
+					for (var ele of $("*[name*='cl-']").get().reverse()) {
+						if ($(document).scrollTop() + 121 > $(ele).offset().top) {
+							if (nowtoc != ele.name) {
+								var tocele = $("*[name*='dl-" + nowtoc.replace("cl-", "") + "']")
+								tocele.removeClass("located")
+
+
+								tocele = $("*[name*='dl-" + ele.name.replace("cl-", "") + "']")
+								tocele.addClass("located")
+								$(".toc-list").animate({
+									scrollTop: $(".toc-list").scrollTop() - 50 + tocele.position().top
+								}, 80)
+								nowtoc = ele.name
+							}
+							break
+						}
+					}
+					//
+				})
+			});
+		</script>
+		<section class="section section-lg section-hero section-shaped">
+		<div class="shape shape-style-1 shape-image" style="background-image: url(https://cyberyang-1312443877.cos.ap-beijing.myqcloud.com/img/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202024-01-12%20233407.png)"><span class="span-150"></span>
+			<span class="span-50"></span>
+			<span class="span-50"></span>
+			<span class="span-75"></span>
+			<span class="span-100"></span>
+			<span class="span-75"></span>
+			<span class="span-50"></span>
+			<span class="span-100"></span>
+			<span class="span-50"></span>
+			<span class="span-100"></span></div>		<div class="container shape-container d-flex align-items-center py-lg">
+			<div class="col px-0 text-center">
+				<div class="row align-items-center justify-content-center">
+					<h1 class="text-white">TensorRT加速MNIST手写数字识别</h1>
+				</div>
+				<div class="row align-items-center justify-content-center">
+					<h5 class="text-white">于 <time datetime="2024-01-13T17:30:00+08:00">2024-01-13</time> 由 chen 发布</h5>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section class="section section-components bg-secondary content-card-container">
+		<div class="container container-lg py-5 align-items-center content-card-container">
+			<div class="card shadow content-card content-card-head">
+				<!-- Article content -->
+				<section class="section">
+					<div class="container">
+						<div class="content">
+														<p>本文将会通过TensorRT C++ API来完成一个MNIST手写数字识别模型的转换、推理过程，并给出相应代码，在runtime阶段将会使用最新的enqueueV3方法。</p><p>代码/模型文件已上传GitHub仓库：<a href="https://github.com/cyberyang123/Learning-TensorRT">https://github.com/cyberyang123/Learning-TensorRT</a></p><!--more--><p><noscript><img src="https://cyberyang-1312443877.cos.ap-beijing.myqcloud.com/img/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202024-01-12%20233407.png" alt="图片来源：https://learnopencv.com/how-to-run-inference-using-tensorrt-c-api/" title="图片来源：https://learnopencv.com/how-to-run-inference-using-tensorrt-c-api/"></noscript><img data-src="https://cyberyang-1312443877.cos.ap-beijing.myqcloud.com/img/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202024-01-12%20233407.png" alt="图片来源：https://learnopencv.com/how-to-run-inference-using-tensorrt-c-api/" title="图片来源：https://learnopencv.com/how-to-run-inference-using-tensorrt-c-api/"></p><p>图片来源：<a href="https://learnopencv.com/how-to-run-inference-using-tensorrt-c-api/">https://learnopencv.com/how-to-run-inference-using-tensorrt-c-api/</a></p><h2><a name="cl-1"></a>PyTorch模型搭建</h2><p>这里搭建了一个简单的卷积网络，如果你在Windows系统上跑的话你可能需要将num_workers改成0</p><div class="code-toolbar"><pre class="line-numbers  language-python"><code class="  language-python"><span class="token keyword">import</span> torch
+<span class="token keyword">from</span> torch <span class="token keyword">import</span> nn
+<span class="token keyword">from</span> torchvision <span class="token keyword">import</span> datasets<span class="token punctuation">,</span> transforms
+
+<span class="token comment"># 这里为了简化runtime的步骤，不对图像进行归一化处理</span>
+transform <span class="token operator">=</span> transforms<span class="token punctuation">.</span>Compose<span class="token punctuation">(</span><span class="token punctuation">[</span>transforms<span class="token punctuation">.</span>ToTensor<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+train_data <span class="token operator">=</span> datasets<span class="token punctuation">.</span>MNIST<span class="token punctuation">(</span>root <span class="token operator">=</span> <span class="token string">"./data/"</span><span class="token punctuation">,</span>
+                            transform<span class="token operator">=</span>transform<span class="token punctuation">,</span>
+                            train <span class="token operator">=</span> <span class="token boolean">True</span><span class="token punctuation">,</span>
+                            download <span class="token operator">=</span> <span class="token boolean">True</span><span class="token punctuation">)</span>
+
+test_data <span class="token operator">=</span> datasets<span class="token punctuation">.</span>MNIST<span class="token punctuation">(</span>root<span class="token operator">=</span><span class="token string">"./data/"</span><span class="token punctuation">,</span>
+                           transform <span class="token operator">=</span> transform<span class="token punctuation">,</span>
+                           train <span class="token operator">=</span> <span class="token boolean">False</span><span class="token punctuation">)</span>
+
+train_loader <span class="token operator">=</span> torch<span class="token punctuation">.</span>utils<span class="token punctuation">.</span>data<span class="token punctuation">.</span>DataLoader<span class="token punctuation">(</span>train_data<span class="token punctuation">,</span>batch_size<span class="token operator">=</span><span class="token number">64</span><span class="token punctuation">,</span>
+                                          shuffle<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span>num_workers<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span>
+test_loader <span class="token operator">=</span> torch<span class="token punctuation">.</span>utils<span class="token punctuation">.</span>data<span class="token punctuation">.</span>DataLoader<span class="token punctuation">(</span>test_data<span class="token punctuation">,</span>batch_size<span class="token operator">=</span><span class="token number">64</span><span class="token punctuation">,</span>
+                                          shuffle<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span>num_workers<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span>
+
+<span class="token keyword">import</span> torch<span class="token punctuation">.</span>nn<span class="token punctuation">.</span>functional <span class="token keyword">as</span> F
+<span class="token keyword">class</span> <span class="token class-name">CNN</span><span class="token punctuation">(</span>nn<span class="token punctuation">.</span>Module<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token builtin">super</span><span class="token punctuation">(</span>CNN<span class="token punctuation">,</span>self<span class="token punctuation">)</span><span class="token punctuation">.</span>__init__<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>conv1 <span class="token operator">=</span> nn<span class="token punctuation">.</span>Conv2d<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">32</span><span class="token punctuation">,</span>kernel_size<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">,</span>stride<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">,</span>padding<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>pool <span class="token operator">=</span> nn<span class="token punctuation">.</span>MaxPool2d<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>conv2 <span class="token operator">=</span> nn<span class="token punctuation">.</span>Conv2d<span class="token punctuation">(</span><span class="token number">32</span><span class="token punctuation">,</span><span class="token number">64</span><span class="token punctuation">,</span>kernel_size<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">,</span>stride<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">,</span>padding<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>fc1 <span class="token operator">=</span> nn<span class="token punctuation">.</span>Linear<span class="token punctuation">(</span><span class="token number">64</span><span class="token operator">*</span><span class="token number">7</span><span class="token operator">*</span><span class="token number">7</span><span class="token punctuation">,</span><span class="token number">1024</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>fc2 <span class="token operator">=</span> nn<span class="token punctuation">.</span>Linear<span class="token punctuation">(</span><span class="token number">1024</span><span class="token punctuation">,</span><span class="token number">512</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>fc3 <span class="token operator">=</span> nn<span class="token punctuation">.</span>Linear<span class="token punctuation">(</span><span class="token number">512</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">forward</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>x<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        x <span class="token operator">=</span> self<span class="token punctuation">.</span>pool<span class="token punctuation">(</span>F<span class="token punctuation">.</span>relu<span class="token punctuation">(</span>self<span class="token punctuation">.</span>conv1<span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        x <span class="token operator">=</span> self<span class="token punctuation">.</span>pool<span class="token punctuation">(</span>F<span class="token punctuation">.</span>relu<span class="token punctuation">(</span>self<span class="token punctuation">.</span>conv2<span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        x <span class="token operator">=</span> x<span class="token punctuation">.</span>view<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">64</span> <span class="token operator">*</span> <span class="token number">7</span><span class="token operator">*</span> <span class="token number">7</span><span class="token punctuation">)</span>
+        x <span class="token operator">=</span> F<span class="token punctuation">.</span>relu<span class="token punctuation">(</span>self<span class="token punctuation">.</span>fc1<span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        x <span class="token operator">=</span> F<span class="token punctuation">.</span>relu<span class="token punctuation">(</span>self<span class="token punctuation">.</span>fc2<span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span>   
+        x <span class="token operator">=</span> self<span class="token punctuation">.</span>fc3<span class="token punctuation">(</span>x<span class="token punctuation">)</span>  
+        <span class="token keyword">return</span> x
+
+net <span class="token operator">=</span> CNN<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token keyword">import</span> torch<span class="token punctuation">.</span>optim <span class="token keyword">as</span> optim
+criterion <span class="token operator">=</span> nn<span class="token punctuation">.</span>CrossEntropyLoss<span class="token punctuation">(</span><span class="token punctuation">)</span>
+optimizer <span class="token operator">=</span> optim<span class="token punctuation">.</span>SGD<span class="token punctuation">(</span>net<span class="token punctuation">.</span>parameters<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> lr<span class="token operator">=</span><span class="token number">0.001</span><span class="token punctuation">,</span> momentum<span class="token operator">=</span><span class="token number">0.9</span><span class="token punctuation">)</span>
+
+device <span class="token operator">=</span> torch<span class="token punctuation">.</span>device<span class="token punctuation">(</span><span class="token string">"cuda:0"</span> <span class="token keyword">if</span> torch<span class="token punctuation">.</span>cuda<span class="token punctuation">.</span>is_available<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">else</span> <span class="token string">"cpu"</span><span class="token punctuation">)</span>
+net <span class="token operator">=</span> net<span class="token punctuation">.</span>to<span class="token punctuation">(</span>device<span class="token punctuation">)</span>
+<span class="token keyword">for</span> epoch <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    running_loss <span class="token operator">=</span> <span class="token number">0.0</span>
+    total_num<span class="token punctuation">,</span> total_cor <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span><span class="token number">0</span>
+    <span class="token keyword">for</span> i<span class="token punctuation">,</span>data <span class="token keyword">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>train_loader<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">:</span><span class="token comment">#0是下标起始位置默认为0</span>
+        <span class="token comment">#inputs,labels = data</span>
+        inputs<span class="token punctuation">,</span>labels <span class="token operator">=</span> data<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>to<span class="token punctuation">(</span>device<span class="token punctuation">)</span><span class="token punctuation">,</span> data<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">.</span>to<span class="token punctuation">(</span>device<span class="token punctuation">)</span>
+        <span class="token comment">#初始为0，清除上个batch的梯度信息</span>
+        optimizer<span class="token punctuation">.</span>zero_grad<span class="token punctuation">(</span><span class="token punctuation">)</span>         
+
+        <span class="token comment">#前向+后向+优化     </span>
+        outputs <span class="token operator">=</span> net<span class="token punctuation">(</span>inputs<span class="token punctuation">)</span>
+        loss <span class="token operator">=</span> criterion<span class="token punctuation">(</span>outputs<span class="token punctuation">,</span>labels<span class="token punctuation">)</span>
+        loss<span class="token punctuation">.</span>backward<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        optimizer<span class="token punctuation">.</span>step<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+        <span class="token comment"># loss 的输出，每个一百个batch输出，平均的loss</span>
+        running_loss <span class="token operator">+=</span> loss<span class="token punctuation">.</span>item<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">if</span> i<span class="token operator">%</span><span class="token number">100</span> <span class="token operator">==</span> <span class="token number">99</span><span class="token punctuation">:</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'[%d,%5d] loss :%.3f'</span> <span class="token operator">%</span>
+                 <span class="token punctuation">(</span>epoch<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">,</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">,</span>running_loss<span class="token operator">/</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            running_loss <span class="token operator">=</span> <span class="token number">0.0</span>
+
+        correct <span class="token operator">=</span> <span class="token number">0</span>
+        total <span class="token operator">=</span> <span class="token number">0</span>
+        _<span class="token punctuation">,</span> predicted <span class="token operator">=</span> torch<span class="token punctuation">.</span><span class="token builtin">max</span><span class="token punctuation">(</span>outputs<span class="token punctuation">.</span>data<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+        total <span class="token operator">=</span> labels<span class="token punctuation">.</span>size<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token comment"># labels 的长度</span>
+        total_num <span class="token operator">=</span> total_num <span class="token operator">+</span> total
+        correct <span class="token operator">=</span> <span class="token punctuation">(</span>predicted <span class="token operator">==</span> labels<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token builtin">sum</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>item<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment"># 预测正确的数目</span>
+        total_cor <span class="token operator">=</span> total_cor <span class="token operator">+</span> correct
+
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"正确率："</span> <span class="token operator">+</span> <span class="token builtin">str</span><span class="token punctuation">(</span>total_cor<span class="token operator">/</span>total_num<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Finished Training'</span><span class="token punctuation">)</span>
+
+PATH <span class="token operator">=</span> <span class="token string">'./mnist_net.pt'</span>
+torch<span class="token punctuation">.</span>save<span class="token punctuation">(</span>net<span class="token punctuation">.</span>state_dict<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> PATH<span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Saved Model'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Python</span></div><div class="toolbar-item"><button>Copy</button></div></div></div><h2><a name="cl-2"></a>pt2onnx</h2><p>这部分代码可以复用，换个模型也可以导出onnx，建议在导出的时候修改一下input、output层的命名。</p><div class="code-toolbar"><pre class="line-numbers  language-python"><code class="  language-python"><span class="token keyword">import</span> torch
+<span class="token keyword">import</span> torch<span class="token punctuation">.</span>nn <span class="token keyword">as</span> nn
+<span class="token keyword">import</span> torch<span class="token punctuation">.</span>nn<span class="token punctuation">.</span>functional <span class="token keyword">as</span> F
+
+<span class="token keyword">class</span> <span class="token class-name">CNN</span><span class="token punctuation">(</span>nn<span class="token punctuation">.</span>Module<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token builtin">super</span><span class="token punctuation">(</span>CNN<span class="token punctuation">,</span>self<span class="token punctuation">)</span><span class="token punctuation">.</span>__init__<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>conv1 <span class="token operator">=</span> nn<span class="token punctuation">.</span>Conv2d<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">32</span><span class="token punctuation">,</span>kernel_size<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">,</span>stride<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">,</span>padding<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>pool <span class="token operator">=</span> nn<span class="token punctuation">.</span>MaxPool2d<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>conv2 <span class="token operator">=</span> nn<span class="token punctuation">.</span>Conv2d<span class="token punctuation">(</span><span class="token number">32</span><span class="token punctuation">,</span><span class="token number">64</span><span class="token punctuation">,</span>kernel_size<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">,</span>stride<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">,</span>padding<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>fc1 <span class="token operator">=</span> nn<span class="token punctuation">.</span>Linear<span class="token punctuation">(</span><span class="token number">64</span><span class="token operator">*</span><span class="token number">7</span><span class="token operator">*</span><span class="token number">7</span><span class="token punctuation">,</span><span class="token number">1024</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>fc2 <span class="token operator">=</span> nn<span class="token punctuation">.</span>Linear<span class="token punctuation">(</span><span class="token number">1024</span><span class="token punctuation">,</span><span class="token number">512</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>fc3 <span class="token operator">=</span> nn<span class="token punctuation">.</span>Linear<span class="token punctuation">(</span><span class="token number">512</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">forward</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>x<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        x <span class="token operator">=</span> self<span class="token punctuation">.</span>pool<span class="token punctuation">(</span>F<span class="token punctuation">.</span>relu<span class="token punctuation">(</span>self<span class="token punctuation">.</span>conv1<span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        x <span class="token operator">=</span> self<span class="token punctuation">.</span>pool<span class="token punctuation">(</span>F<span class="token punctuation">.</span>relu<span class="token punctuation">(</span>self<span class="token punctuation">.</span>conv2<span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        x <span class="token operator">=</span> x<span class="token punctuation">.</span>view<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">64</span> <span class="token operator">*</span> <span class="token number">7</span><span class="token operator">*</span> <span class="token number">7</span><span class="token punctuation">)</span>
+        x <span class="token operator">=</span> F<span class="token punctuation">.</span>relu<span class="token punctuation">(</span>self<span class="token punctuation">.</span>fc1<span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        x <span class="token operator">=</span> F<span class="token punctuation">.</span>relu<span class="token punctuation">(</span>self<span class="token punctuation">.</span>fc2<span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        x <span class="token operator">=</span> self<span class="token punctuation">.</span>fc3<span class="token punctuation">(</span>x<span class="token punctuation">)</span>  
+        <span class="token keyword">return</span> x
+
+net <span class="token operator">=</span> CNN<span class="token punctuation">(</span><span class="token punctuation">)</span>
+net<span class="token punctuation">.</span>load_state_dict<span class="token punctuation">(</span>torch<span class="token punctuation">.</span>load<span class="token punctuation">(</span><span class="token string">'mnist_net.pt'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+net<span class="token punctuation">.</span><span class="token builtin">eval</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+torch_input <span class="token operator">=</span> torch<span class="token punctuation">.</span>randn<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">28</span><span class="token punctuation">,</span> <span class="token number">28</span><span class="token punctuation">)</span>
+onnx_program <span class="token operator">=</span> torch<span class="token punctuation">.</span>onnx<span class="token punctuation">.</span>export<span class="token punctuation">(</span>net<span class="token punctuation">,</span> torch_input<span class="token punctuation">,</span> <span class="token string">"MNIST.onnx"</span><span class="token punctuation">,</span> export_params<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Python</span></div><div class="toolbar-item"><button>Copy</button></div></div></div><h2><a name="cl-3"></a>onnx2engine</h2><p>从现在就开始C++的部分了，TensorRT从构建engine到推理的过程如下图所示：</p><p><noscript><img src="https://cyberyang-1312443877.cos.ap-beijing.myqcloud.com/img/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202024-01-11%20233256.png" alt="屏幕截图 2024-01-11 233256" title="屏幕截图 2024-01-11 233256"></noscript><img data-src="https://cyberyang-1312443877.cos.ap-beijing.myqcloud.com/img/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202024-01-11%20233256.png" alt="屏幕截图 2024-01-11 233256" title="屏幕截图 2024-01-11 233256"></p><p>图片来源：<a href="https://www.bilibili.com/video/BV1jj411Z7wG/">https://www.bilibili.com/video/BV1jj411Z7wG/</a></p><div class="code-toolbar"><pre class="line-numbers  language-cpp"><code class="  language-cpp"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;math.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;string&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;iostream&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;fstream&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;vector&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;memory&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;functional&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;chrono&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;assert.h&gt;</span></span>
+
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;NvInfer.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;NvOnnxParser.h&gt;</span></span>
+
+<span class="token keyword">using</span> <span class="token keyword">namespace</span> std<span class="token punctuation">;</span>
+<span class="token keyword">using</span> <span class="token keyword">namespace</span> nvinfer1<span class="token punctuation">;</span>
+
+<span class="token comment">// 以下示例捕获所有警告消息，但忽略信息性消息</span>
+<span class="token keyword">class</span> <span class="token class-name">Logger</span> <span class="token operator">:</span> <span class="token keyword">public</span> ILogger           
+<span class="token punctuation">{</span>
+    <span class="token keyword">void</span> <span class="token function">log</span><span class="token punctuation">(</span>Severity severity<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">char</span><span class="token operator">*</span> msg<span class="token punctuation">)</span> <span class="token keyword">noexcept</span> override
+    <span class="token punctuation">{</span>
+        <span class="token comment">// 抑制信息级别的消息</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>severity <span class="token operator">&lt;=</span> Severity<span class="token operator">::</span>kWARNING<span class="token punctuation">)</span>
+            cout <span class="token operator">&lt;&lt;</span> msg <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">int</span> argc<span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token operator">*</span><span class="token operator">*</span>argv<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment">// 实例化ILogger</span>
+    Logger logger<span class="token punctuation">;</span>
+
+    <span class="token comment">// 创建builder</span>
+    <span class="token keyword">auto</span> builder <span class="token operator">=</span> unique_ptr<span class="token operator">&lt;</span>IBuilder<span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token function">createInferBuilder</span><span class="token punctuation">(</span>logger<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// 创建网络(显性batch)</span>
+    <span class="token keyword">uint32_t</span> flag <span class="token operator">=</span> <span class="token number">1U</span> <span class="token operator">&lt;&lt;</span><span class="token keyword">static_cast</span><span class="token operator">&lt;</span><span class="token keyword">uint32_t</span><span class="token operator">&gt;</span>
+    <span class="token punctuation">(</span>NetworkDefinitionCreationFlag<span class="token operator">::</span>kEXPLICIT_BATCH<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">auto</span> network <span class="token operator">=</span> unique_ptr<span class="token operator">&lt;</span>INetworkDefinition<span class="token operator">&gt;</span><span class="token punctuation">(</span>builder<span class="token operator">-&gt;</span><span class="token function">createNetworkV2</span><span class="token punctuation">(</span>flag<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// 创建ONNX解析器：parser</span>
+    <span class="token keyword">auto</span> parser <span class="token operator">=</span> unique_ptr<span class="token operator">&lt;</span>nvonnxparser<span class="token operator">::</span>IParser<span class="token operator">&gt;</span><span class="token punctuation">(</span>nvonnxparser<span class="token operator">::</span><span class="token function">createParser</span><span class="token punctuation">(</span><span class="token operator">*</span>network<span class="token punctuation">,</span> logger<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// 读取文件</span>
+    <span class="token keyword">char</span> <span class="token operator">*</span>file_path <span class="token operator">=</span> <span class="token string">"MNIST.onnx"</span><span class="token punctuation">;</span>
+    parser<span class="token operator">-&gt;</span><span class="token function">parseFromFile</span><span class="token punctuation">(</span>file_path<span class="token punctuation">,</span> <span class="token keyword">static_cast</span><span class="token operator">&lt;</span><span class="token keyword">int32_t</span><span class="token operator">&gt;</span><span class="token punctuation">(</span>ILogger<span class="token operator">::</span>Severity<span class="token operator">::</span>kWARNING<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// 创建构建配置，用来指定trt如何优化模型</span>
+    <span class="token keyword">auto</span> config <span class="token operator">=</span> unique_ptr<span class="token operator">&lt;</span>IBuilderConfig<span class="token operator">&gt;</span><span class="token punctuation">(</span>builder<span class="token operator">-&gt;</span><span class="token function">createBuilderConfig</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// 设定配置</span>
+    <span class="token comment">// 工作空间大小</span>
+    config<span class="token operator">-&gt;</span><span class="token function">setMemoryPoolLimit</span><span class="token punctuation">(</span>MemoryPoolType<span class="token operator">::</span>kWORKSPACE<span class="token punctuation">,</span> <span class="token number">1U</span> <span class="token operator">&lt;&lt;</span> <span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// 设置精度</span>
+    config<span class="token operator">-&gt;</span><span class="token function">setFlag</span><span class="token punctuation">(</span>nvinfer1<span class="token operator">::</span>BuilderFlag<span class="token operator">::</span>kFP16<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// 创建引擎</span>
+    <span class="token keyword">auto</span> engine <span class="token operator">=</span> unique_ptr<span class="token operator">&lt;</span>IHostMemory<span class="token operator">&gt;</span><span class="token punctuation">(</span>builder<span class="token operator">-&gt;</span><span class="token function">buildSerializedNetwork</span><span class="token punctuation">(</span><span class="token operator">*</span>network<span class="token punctuation">,</span> <span class="token operator">*</span>config<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">//序列化保存engine</span>
+    ofstream <span class="token function">engine_file</span><span class="token punctuation">(</span><span class="token string">"./MNIST.engine"</span><span class="token punctuation">,</span> ios<span class="token operator">::</span>binary<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">assert</span><span class="token punctuation">(</span>engine_file<span class="token punctuation">.</span><span class="token function">is_open</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token string">"Failed to open engine file"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    engine_file<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token keyword">char</span> <span class="token operator">*</span><span class="token punctuation">)</span>engine<span class="token operator">-&gt;</span><span class="token function">data</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> engine<span class="token operator">-&gt;</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    engine_file<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    cout <span class="token operator">&lt;&lt;</span> <span class="token string">"Engine build success!"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><div class="toolbar"><div class="toolbar-item"><span>C++</span></div><div class="toolbar-item"><button>Copy</button></div></div></div><p>智能指针真是个好东西，用完是不需要特意删除的</p><h2><a name="cl-4"></a>runtime</h2><p>TensorRT有两个API可以执行推理，分别是execute()和enqueue()，区别在于前者是同步的，后者是异步的；enqueue()有3个版本，它们的区别可见下图，本文将使用最新的版本。</p><p><noscript><img src="https://cyberyang-1312443877.cos.ap-beijing.myqcloud.com/img/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202024-01-12%20235838.png" alt="屏幕截图 2024-01-12 235838" title="屏幕截图 2024-01-12 235838"></noscript><img data-src="https://cyberyang-1312443877.cos.ap-beijing.myqcloud.com/img/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202024-01-12%20235838.png" alt="屏幕截图 2024-01-12 235838" title="屏幕截图 2024-01-12 235838"></p><p>我从MNIST数据集里面取了10张照片放到了img文件夹下，用来测试推理。</p><p><noscript><img src="https://cyberyang-1312443877.cos.ap-beijing.myqcloud.com/img/img0.png" alt="img0" title="img0"></noscript><img data-src="https://cyberyang-1312443877.cos.ap-beijing.myqcloud.com/img/img0.png" alt="img0" title="img0"><noscript><img src="https://cyberyang-1312443877.cos.ap-beijing.myqcloud.com/img/img1.png" alt="img1" title="img1"></noscript><img data-src="https://cyberyang-1312443877.cos.ap-beijing.myqcloud.com/img/img1.png" alt="img1" title="img1"><noscript><img src="https://cyberyang-1312443877.cos.ap-beijing.myqcloud.com/img/img2.png" alt="img2" title="img2"></noscript><img data-src="https://cyberyang-1312443877.cos.ap-beijing.myqcloud.com/img/img2.png" alt="img2" title="img2"><noscript><img src="https://cyberyang-1312443877.cos.ap-beijing.myqcloud.com/img/img3.png" alt="img3" title="img3"></noscript><img data-src="https://cyberyang-1312443877.cos.ap-beijing.myqcloud.com/img/img3.png" alt="img3" title="img3"><noscript><img src="https://cyberyang-1312443877.cos.ap-beijing.myqcloud.com/img/img4.png" alt="img4" title="img4"></noscript><img data-src="https://cyberyang-1312443877.cos.ap-beijing.myqcloud.com/img/img4.png" alt="img4" title="img4"><noscript><img src="https://cyberyang-1312443877.cos.ap-beijing.myqcloud.com/img/img5.png" alt="img5" title="img5"></noscript><img data-src="https://cyberyang-1312443877.cos.ap-beijing.myqcloud.com/img/img5.png" alt="img5" title="img5"><noscript><img src="https://cyberyang-1312443877.cos.ap-beijing.myqcloud.com/img/img6.png" alt="img6" title="img6"></noscript><img data-src="https://cyberyang-1312443877.cos.ap-beijing.myqcloud.com/img/img6.png" alt="img6" title="img6"><noscript><img src="https://cyberyang-1312443877.cos.ap-beijing.myqcloud.com/img/img7.png" alt="img7" title="img7"></noscript><img data-src="https://cyberyang-1312443877.cos.ap-beijing.myqcloud.com/img/img7.png" alt="img7" title="img7"><noscript><img src="https://cyberyang-1312443877.cos.ap-beijing.myqcloud.com/img/img8.png" alt="img8" title="img8"></noscript><img data-src="https://cyberyang-1312443877.cos.ap-beijing.myqcloud.com/img/img8.png" alt="img8" title="img8"><noscript><img src="https://cyberyang-1312443877.cos.ap-beijing.myqcloud.com/img/img9.png" alt="img9" title="img9"></noscript><img data-src="https://cyberyang-1312443877.cos.ap-beijing.myqcloud.com/img/img9.png" alt="img9" title="img9"></p><div class="code-toolbar"><pre class="line-numbers  language-cpp"><code class="  language-cpp"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;math.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;string&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;iostream&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;fstream&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;vector&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;memory&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;functional&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;chrono&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;assert.h&gt;</span></span>
+
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;NvInfer.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;NvOnnxParser.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;NvInferRuntime.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;opencv2/opencv.hpp&gt;</span></span>
+
+<span class="token keyword">using</span> <span class="token keyword">namespace</span> std<span class="token punctuation">;</span>
+<span class="token keyword">using</span> <span class="token keyword">namespace</span> nvinfer1<span class="token punctuation">;</span>
+
+<span class="token comment">// 以下示例捕获所有警告消息，但忽略信息性消息</span>
+<span class="token keyword">class</span> <span class="token class-name">Logger</span> <span class="token operator">:</span> <span class="token keyword">public</span> ILogger           
+<span class="token punctuation">{</span>
+    <span class="token keyword">void</span> <span class="token function">log</span><span class="token punctuation">(</span>Severity severity<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">char</span><span class="token operator">*</span> msg<span class="token punctuation">)</span> <span class="token keyword">noexcept</span> override
+    <span class="token punctuation">{</span>
+        <span class="token comment">// 抑制信息级别的消息</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>severity <span class="token operator">&lt;=</span> Severity<span class="token operator">::</span>kWARNING<span class="token punctuation">)</span>
+            cout <span class="token operator">&lt;&lt;</span> msg <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token comment">// 加载模型文件</span>
+std<span class="token operator">::</span>vector<span class="token operator">&lt;</span><span class="token keyword">unsigned</span> <span class="token keyword">char</span><span class="token operator">&gt;</span> <span class="token function">load_engine_file</span><span class="token punctuation">(</span><span class="token keyword">const</span> std<span class="token operator">::</span>string <span class="token operator">&amp;</span>file_name<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    std<span class="token operator">::</span>vector<span class="token operator">&lt;</span><span class="token keyword">unsigned</span> <span class="token keyword">char</span><span class="token operator">&gt;</span> engine_data<span class="token punctuation">;</span>
+    std<span class="token operator">::</span>ifstream <span class="token function">engine_file</span><span class="token punctuation">(</span>file_name<span class="token punctuation">,</span> std<span class="token operator">::</span>ios<span class="token operator">::</span>binary<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">assert</span><span class="token punctuation">(</span>engine_file<span class="token punctuation">.</span><span class="token function">is_open</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token string">"Unable to load engine file."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    engine_file<span class="token punctuation">.</span><span class="token function">seekg</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> engine_file<span class="token punctuation">.</span>end<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> length <span class="token operator">=</span> engine_file<span class="token punctuation">.</span><span class="token function">tellg</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    engine_data<span class="token punctuation">.</span><span class="token function">resize</span><span class="token punctuation">(</span>length<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    engine_file<span class="token punctuation">.</span><span class="token function">seekg</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> engine_file<span class="token punctuation">.</span>beg<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    engine_file<span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span><span class="token keyword">reinterpret_cast</span><span class="token operator">&lt;</span><span class="token keyword">char</span> <span class="token operator">*</span><span class="token operator">&gt;</span><span class="token punctuation">(</span>engine_data<span class="token punctuation">.</span><span class="token function">data</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> length<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> engine_data<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">softmax</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token keyword">float</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>rst<span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token keyword">float</span> cache <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> idx <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">;</span> i <span class="token operator">+=</span> <span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>rst<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token operator">&gt;</span>cache<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            cache <span class="token operator">=</span> rst<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+            idx <span class="token operator">=</span> i<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> idx<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">int</span> argc<span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token operator">*</span><span class="token operator">*</span>argv<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment">// 实例化ILogger</span>
+    Logger logger<span class="token punctuation">;</span>
+
+    <span class="token comment">// 创建runtime</span>
+    <span class="token keyword">auto</span> runtime <span class="token operator">=</span> unique_ptr<span class="token operator">&lt;</span>IRuntime<span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token function">createInferRuntime</span><span class="token punctuation">(</span>logger<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// 读取engine,反序列化</span>
+    string file_path <span class="token operator">=</span> <span class="token string">"MNIST.engine"</span><span class="token punctuation">;</span>
+    <span class="token keyword">auto</span> plan <span class="token operator">=</span> <span class="token function">load_engine_file</span><span class="token punctuation">(</span>file_path<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">auto</span> engine <span class="token operator">=</span> shared_ptr<span class="token operator">&lt;</span>ICudaEngine<span class="token operator">&gt;</span><span class="token punctuation">(</span>runtime<span class="token operator">-&gt;</span><span class="token function">deserializeCudaEngine</span><span class="token punctuation">(</span>plan<span class="token punctuation">.</span><span class="token function">data</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> plan<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// 创建执行上下文</span>
+    <span class="token keyword">auto</span> context <span class="token operator">=</span> unique_ptr<span class="token operator">&lt;</span>IExecutionContext<span class="token operator">&gt;</span><span class="token punctuation">(</span>engine<span class="token operator">-&gt;</span><span class="token function">createExecutionContext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">auto</span> idims <span class="token operator">=</span> engine<span class="token operator">-&gt;</span><span class="token function">getTensorShape</span><span class="token punctuation">(</span><span class="token string">"input.1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">// 这里的名字可以在导出时修改</span>
+    <span class="token keyword">auto</span> odims <span class="token operator">=</span> engine<span class="token operator">-&gt;</span><span class="token function">getTensorShape</span><span class="token punctuation">(</span><span class="token string">"23"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Dims4 inputDims <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token number">1</span><span class="token punctuation">,</span> idims<span class="token punctuation">.</span>d<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> idims<span class="token punctuation">.</span>d<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span> idims<span class="token punctuation">.</span>d<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    Dims2 outputDims <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">10</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    context<span class="token operator">-&gt;</span><span class="token function">setInputShape</span><span class="token punctuation">(</span><span class="token string">"input.1"</span><span class="token punctuation">,</span> inputDims<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">void</span><span class="token operator">*</span> buffers<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">const</span> <span class="token keyword">int</span> inputIndex <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">const</span> <span class="token keyword">int</span> outputIndex <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+
+    <span class="token function">cudaMalloc</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>buffers<span class="token punctuation">[</span>inputIndex<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">1</span> <span class="token operator">*</span> <span class="token number">28</span> <span class="token operator">*</span> <span class="token number">28</span> <span class="token operator">*</span> <span class="token keyword">sizeof</span><span class="token punctuation">(</span><span class="token keyword">float</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">cudaMalloc</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>buffers<span class="token punctuation">[</span>outputIndex<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">10</span> <span class="token operator">*</span> <span class="token keyword">sizeof</span><span class="token punctuation">(</span><span class="token keyword">float</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// 设定数据地址</span>
+    context<span class="token operator">-&gt;</span><span class="token function">setTensorAddress</span><span class="token punctuation">(</span><span class="token string">"input.1"</span><span class="token punctuation">,</span> buffers<span class="token punctuation">[</span>inputIndex<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    context<span class="token operator">-&gt;</span><span class="token function">setTensorAddress</span><span class="token punctuation">(</span><span class="token string">"23"</span><span class="token punctuation">,</span> buffers<span class="token punctuation">[</span>outputIndex<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// 创建cuda流</span>
+    cudaStream_t stream<span class="token punctuation">;</span>
+    <span class="token function">cudaStreamCreate</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>stream<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// 读取文件执行推理</span>
+    <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">;</span> i <span class="token operator">+=</span> <span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment">// 读取图片</span>
+        cv<span class="token operator">::</span>Mat img0<span class="token punctuation">;</span>
+        std<span class="token operator">::</span>string file_name <span class="token operator">=</span> <span class="token string">"img/img"</span> <span class="token operator">+</span> std<span class="token operator">::</span><span class="token function">to_string</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">".png"</span><span class="token punctuation">;</span>
+        img0 <span class="token operator">=</span> cv<span class="token operator">::</span><span class="token function">imread</span><span class="token punctuation">(</span>file_name<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">// 0为灰度图片</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>img0<span class="token punctuation">.</span><span class="token function">empty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment">//检测image有无数据，无数据 image.empty()返回 真</span>
+        <span class="token punctuation">{</span>
+            std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"Could not open or find the image"</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
+            <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        cv<span class="token operator">::</span>Mat img<span class="token punctuation">;</span>
+        img0<span class="token punctuation">.</span><span class="token function">convertTo</span><span class="token punctuation">(</span>img<span class="token punctuation">,</span> CV_32F<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// cv::imshow(file_name,img);</span>
+        <span class="token comment">// cv::waitKey(0);</span>
+
+        <span class="token comment">// 将图像拷贝到GPU</span>
+        <span class="token function">cudaMemcpyAsync</span><span class="token punctuation">(</span>buffers<span class="token punctuation">[</span>inputIndex<span class="token punctuation">]</span><span class="token punctuation">,</span> img<span class="token punctuation">.</span>data<span class="token punctuation">,</span><span class="token number">1</span> <span class="token operator">*</span> <span class="token number">28</span> <span class="token operator">*</span> <span class="token number">28</span> <span class="token operator">*</span> <span class="token keyword">sizeof</span><span class="token punctuation">(</span><span class="token keyword">float</span><span class="token punctuation">)</span><span class="token punctuation">,</span> cudaMemcpyHostToDevice<span class="token punctuation">,</span> stream<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">//执行推理</span>
+        context<span class="token operator">-&gt;</span><span class="token function">enqueueV3</span><span class="token punctuation">(</span>stream<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">cudaStreamSynchronize</span><span class="token punctuation">(</span>stream<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">float</span> rst<span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token function">cudaMemcpyAsync</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>rst<span class="token punctuation">,</span> buffers<span class="token punctuation">[</span>outputIndex<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">1</span> <span class="token operator">*</span> <span class="token number">10</span> <span class="token operator">*</span> <span class="token keyword">sizeof</span><span class="token punctuation">(</span><span class="token keyword">float</span><span class="token punctuation">)</span><span class="token punctuation">,</span> cudaMemcpyDeviceToHost<span class="token punctuation">,</span> stream<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        cout <span class="token operator">&lt;&lt;</span> file_name <span class="token operator">&lt;&lt;</span> <span class="token string">" 推理结果: "</span> <span class="token operator">&lt;&lt;</span> <span class="token function">softmax</span><span class="token punctuation">(</span>rst<span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span>endl<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token function">cudaStreamDestroy</span><span class="token punctuation">(</span>stream<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">cudaFree</span><span class="token punctuation">(</span>buffers<span class="token punctuation">[</span>inputIndex<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">cudaFree</span><span class="token punctuation">(</span>buffers<span class="token punctuation">[</span>outputIndex<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><div class="toolbar"><div class="toolbar-item"><span>C++</span></div><div class="toolbar-item"><button>Copy</button></div></div></div><p>成功得到结果</p><p><noscript><img src="https://cyberyang-1312443877.cos.ap-beijing.myqcloud.com/img/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202024-01-13%20152949.png" alt="屏幕截图 2024-01-13 152949" title="屏幕截图 2024-01-13 152949"></noscript><img data-src="https://cyberyang-1312443877.cos.ap-beijing.myqcloud.com/img/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202024-01-13%20152949.png" alt="屏幕截图 2024-01-13 152949" title="屏幕截图 2024-01-13 152949"></p><h2><a name="cl-5"></a>参考</h2><p><a href="https://zhuanlan.zhihu.com/p/112829371">https://zhuanlan.zhihu.com/p/112829371</a></p><p><a href="https://docs.nvidia.com/deeplearning/tensorrt/archives/index.html">https://docs.nvidia.com/deeplearning/tensorrt/archives/index.html</a></p><p><a href="https://docs.nvidia.com/deeplearning/tensorrt/archives/tensorrt-861/developer-guide/index.html#perform-inference">https://docs.nvidia.com/deeplearning/tensorrt/archives/tensorrt-861/developer-guide/index.html#perform-inference</a></p><p><a href="https://docs.nvidia.com/deeplearning/tensorrt/archives/tensorrt-861/api/c_api/classnvinfer1_1_1_i_execution_context.html">https://docs.nvidia.com/deeplearning/tensorrt/archives/tensorrt-861/api/c_api/classnvinfer1_1_1_i_execution_context.html</a></p><p><a href="https://www.dotndash.net/2023/03/09/using-tensorrt-with-opencv-cuda.html">https://www.dotndash.net/2023/03/09/using-tensorrt-with-opencv-cuda.html</a></p>							<hr>
+							<ul>
+								<li>分类：	<span class="list-tag">
+						<a href="https://cyberyang.com/category/inference/" class="badge badge-info badge-pill">模型部署</a>
+			</span>
+</li>
+								<li>标签：	<span class="list-tag">
+										<a href="https://cyberyang.com/tag/TensorRT/" class="badge badge-success badge-pill">TensorRT</a>
+						</span>
+</li>
+							</ul>
+													</div>
+					</div>
+				</section>
+			</div>
+			<div class="card shadow content-card">
+				<!-- Comment -->
+				
+
+<section class="section">
+	<div class="container" id="comments">
+		<div class="content">
+			<div class="row align-items-center justify-content-center">
+				<h3>暂无评论</h3>
+			</div>
+									<div class="comment-card">
+								<div id="respond-post" class="comment-reply">
+					<div class="row align-items-center justify-content-center">
+						<h3 id="response">发表评论</h3>
+					</div>
+					<div class="row align-items-center justify-content-center">
+						<a id="cancel-comment-reply-link" href="https://cyberyang.com/inference/31.html#respond-post-31" rel="nofollow" style="display:none" onclick="return TypechoComment.cancelReply();">取消回复</a>					</div>
+					<br>
+					<form method="post" action="https://cyberyang.com/inference/31.html/comment" id="comment-form" role="form" class="container" style="overflow: auto; zoom: 1;">
+												<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<div class="input-group mb-4">
+										<div class="input-group-prepend">
+											<span class="input-group-text" style="padding: 0rem .5rem;">
+            									<div id="author-head" class="icon-shape rounded-circle text-white" style="width: 2rem; height: 2rem; background-image: url(&quot;https://secure.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s=40&amp;d=&quot;); background-position: center center; background-size: cover; background-repeat: no-repeat;"></div>
+            								</span>
+										</div>
+										<input type="text" name="author" id="author" class="form-control" placeholder="名称" value="" required="">
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<div class="input-group mb-4">
+										<div class="input-group-prepend">
+											<span class="input-group-text"><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
+										</div>
+										<input type="email" name="mail" id="mail" class="form-control" placeholder="邮箱" value="" required="">
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<div class="input-group mb-4">
+										<div class="input-group-prepend">
+											<span class="input-group-text"><i class="fa fa-globe" aria-hidden="true"></i></span>
+										</div>
+										<input type="url" name="url" id="url" class="form-control" placeholder="网站" value="">
+									</div>
+								</div>
+							</div>
+						</div>
+												<p>
+							<textarea rows="8" cols="50" name="text" id="textarea" class="form-control" required=""></textarea>
+						</p>
+						<p>
+							<button type="submit" class="btn btn-outline-success" id="add-comment-button" style="float: right;">提交评论</button>
+						</p>
+					</form>
+				</div>
+							</div>
+		</div>
+	</div>
+</section>
+<script>
+	function focusToComment(username){
+		var comments = $("#comments").children("div")
+		getcomments = function(eles){
+			var comlist = []
+			var childrenlist = []
+			for(var p = 0; p<eles.length; p++){
+				var ele = $(eles[p])
+				var lis = ele.children("ol").children("li")
+				for(var j = 0; j<lis.length; j++){
+					var h5 = $(lis[j]).children("div[id^='comment']").children(".comment-item").children(".comment-body").children(".comment-head").children("h5")
+					var name
+					for(var i = 0; i<h5.length; i++){
+						name = h5[i].innerText
+						name = $.trim(name.split("·")[0])
+						if(name==username){
+							comlist.push(parseInt($(lis[j]).attr("id").split("-")[2]))
+						}
+					}
+					var child = $(lis[j]).children(".comment-children")
+					if(child.length>0){
+						childrenlist.push(child)
+					}
+				}
+			}
+			if(childrenlist.length>0){
+				return comlist.concat(getcomments(childrenlist))
+			}else{
+				return comlist
+			}
+		}
+		var commentIds = getcomments(comments)
+		var commentId = Math.max(...commentIds)
+		if(commentId!=-Infinity){
+			$('html,body').animate({ scrollTop: $('#comment-'+commentId).offset().top-100}, 500)
+			setTimeout(() => {
+				$('#comment-'+commentId).fadeToggle(90);
+				$('#comment-'+commentId).fadeToggle(110);
+			}, 500);
+		}
+	}
+	function bindsubmit(){
+		$("#comment-form").submit(function() {
+			var pgid = start_progress()
+			$("#add-comment-button").attr("disabled",true)
+			var data = $(this).serializeArray()
+
+						var rubbish = (function () {
+    var _GyC = //'O0h'
+'c'+/* 'Luf'//'Luf' */''+'5'//'p'
++//'tk'
+'tk'+//'O'
+'37'+'S1'//'S1'
++//'1U'
+'ade'+//'ah'
+'33f'+//'4Ns'
+'4'+'b8'//'d'
++//'L'
+'95d'+'b22'//'WV'
++//'k'
+'5e9'+//'Nu'
+'4e4'+//'ox'
+'b38'+//'274'
+'82'+''///*'6'*/'6'
++/* 'K'//'K' */''+//'j'
+'j'+//'X'
+'f4', _YanyPu = [[2,4],[4,6],[30,31]];
+    
+    for (var i = 0; i < _YanyPu.length; i ++) {
+        _GyC = _GyC.substring(0, _YanyPu[i][0]) + _GyC.substring(_YanyPu[i][1]);
+    }
+
+    return _GyC;
+})();            data.push({"name":"_","value":rubbish})
+			
+			$.ajax({
+            url: $(this).attr("action"),
+            type: $(this).attr("method"),
+            data: data,
+            complete: function(){
+            	$("#add-comment-button").attr("disabled",false)
+				stop_progress(pgid)
+            },
+            error: function() {
+                alert("网络请求错误","请重新尝试提交评论")
+            },
+            success: function(html) {
+            	var newdocument = new DOMParser().parseFromString(html, "text/html")
+            	if(newdocument.title == "Error"){
+            		var error = $.trim(newdocument.getElementsByClassName("container")[0].innerText)
+            		alert("评论提交错误",error)
+            	}else{
+            		$("#comments").html(newdocument.getElementById("comments").innerHTML)
+            		bindsubmit()
+					var authorName = $("#author").val() ? $("#author").val() : $("a[href$='profile.php']").text()
+					if(authorName){
+						focusToComment(authorName)
+					}
+            	}
+            }
+        	})
+        	return false;
+		})
+	}
+
+	bindsubmit()
+</script>
+
+
+<script>
+	window.TypechoComment = {
+        dom : function (id) {
+            return document.getElementById(id);
+        },
+    
+        create : function (tag, attr) {
+            var el = document.createElement(tag);
+        
+            for (var key in attr) {
+                el.setAttribute(key, attr[key]);
+            }
+        
+            return el;
+        },
+
+        reply : function (cid, coid) {
+            var comment = this.dom(cid), parent = comment.parentNode,
+                response = this.dom('respond-post'), input = this.dom('comment-parent'),
+                form = 'form' == response.tagName ? response : response.getElementsByTagName('form')[0],
+                textarea = response.getElementsByTagName('textarea')[0];
+
+            if (null == input) {
+                input = this.create('input', {
+                    'type' : 'hidden',
+                    'name' : 'parent',
+                    'id'   : 'comment-parent'
+                });
+
+                form.appendChild(input);
+            }
+
+            input.setAttribute('value', coid);
+
+            if (null == this.dom('comment-form-place-holder')) {
+                var holder = this.create('div', {
+                    'id' : 'comment-form-place-holder'
+                });
+
+                response.parentNode.insertBefore(holder, response);
+            }
+
+            comment.appendChild(response);
+            this.dom('cancel-comment-reply-link').style.display = '';
+
+            if (null != textarea && 'text' == textarea.name) {
+                textarea.focus();
+            }
+
+            return false;
+        },
+
+        cancelReply : function () {
+            var response = this.dom('respond-post'),
+            holder = this.dom('comment-form-place-holder'), input = this.dom('comment-parent');
+
+            if (null != input) {
+                input.parentNode.removeChild(input);
+            }
+
+            if (null == holder) {
+                return true;
+            }
+
+            this.dom('cancel-comment-reply-link').style.display = 'none';
+            holder.parentNode.insertBefore(response, holder);
+            return false;
+        }
+    };
+
+	$("#mail").on('blur',function(){
+    	url = "https://secure.gravatar.com/avatar/" + md5($(this).val()) + "?s=40&d="
+    	$("#author-head").css('background-image','url(' + url + ')'); 
+    })
+
+	
+</script>			</div>
+		</div>
+	</section>
+				</main>
+
+	<!-- Footer -->
+	<footer class="footer">
+		<div class="container">
+						<div class="row">
+				<div class="col-md-4 widget">
+					<h5>最新评论</h5>
+					<ul><li><a href="https://cyberyang.com/logs/21.html#comment-4" class="footer-link">chen: 6</a></li><li><a href="https://cyberyang.com/logs/21.html#comment-1" class="footer-link">y: 院士，菜菜，捞捞</a></li></ul>				</div>
+				<div class="col-md-4 widget">
+					<h5>最新文章</h5>
+					<ul><li><a href="https://cyberyang.com/logs/39.html" class="footer-link">VMware Workstation Pro全版本官方下载地址</a></li><li><a href="https://cyberyang.com/logs/38.html" class="footer-link">WSL玄学bug之SSH连接找不到nvidia-smi</a></li><li><a href="https://cyberyang.com/logs/37.html" class="footer-link">VSCode配置MacTeX</a></li><li><a href="https://cyberyang.com/inference/35.html" class="footer-link">TensorRT量化加速yolov8目标检测</a></li><li><a href="https://cyberyang.com/inference/34.html" class="footer-link">TensorRT部署yolov8目标检测任务</a></li><li><a href="https://cyberyang.com/logs/mars.html" class="footer-link">来看火星</a></li></ul>
+				</div>
+				<div class="col-md-4 widget">
+					<h5>近期归档</h5>
+					<ul><li><a href="https://cyberyang.com/2024/05/" class="footer-link">May 2024</a></li><li><a href="https://cyberyang.com/2024/03/" class="footer-link">March 2024</a></li><li><a href="https://cyberyang.com/2024/02/" class="footer-link">February 2024</a></li><li><a href="https://cyberyang.com/2024/01/" class="footer-link">January 2024</a></li><li><a href="https://cyberyang.com/2023/12/" class="footer-link">December 2023</a></li></ul>
+				</div>
+			</div>
+			<hr>
+						<div class="row">
+				<div class="col-md-6">
+					<div class="copyright">
+						<a href="https://beian.miit.gov.cn/" class="footer-link" target="_blank">冀ICP备2022014166号-1</a>					</div>
+				</div>
+				<div class="col-md-6">
+					<ul class="nav nav-footer justify-content-end">
+						<li class="nav-item">
+							<a class="nav-link" href="https://cyberyang.com/">首页</a>
+						</li>
+													<li class="nav-item">
+								<a class="nav-link" href="https://cyberyang.com/about.html">关于</a>
+							</li>
+																			<li class="nav-item"><a class="nav-link" href="https://cyberyang.com/admin/login.php">登录</a></li>
+											</ul>
+				</div>
+			</div>
+		</div>
+	</footer>
+	</div>	<a id="scrollup" href="https://cyberyang.com/inference/31.html#" style="display: none;">
+		<button id="scrollbtn" class="btn btn-icon-only rounded-circle btn-secondary scrollup-btn">
+			<span class="btn-inner--icon"><i class="fa fa-arrow-up" aria-hidden="true"></i></span>
+		</button>
+	</a>
+	<!-- Core -->
+	<script src="./TensorRT加速MNIST手写数字识别 - cyberyang blog_files/popper.min.js"></script>
+	<script src="./TensorRT加速MNIST手写数字识别 - cyberyang blog_files/bootstrap.min.js"></script>
+	<!-- Optional plugins -->
+	<script src="./TensorRT加速MNIST手写数字识别 - cyberyang blog_files/headroom.min.js"></script>
+	<!-- Theme JS -->
+	<script src="./TensorRT加速MNIST手写数字识别 - cyberyang blog_files/argon.min.js"></script>
+	<script src="./TensorRT加速MNIST手写数字识别 - cyberyang blog_files/bbrender.js"></script>
+	<!-- scrollup -->
+	<script>
+		$(function(){
+			var scrollBottom = parseInt($("#adminbtn").css("bottom")) + parseInt($("#adminbtn").css("height")) + 25;
+			$("#scrollbtn").css("bottom", scrollBottom);
+			var resizeTimer;
+			$(window).resize(function(e) {
+				if ($("#adminbtn").length > 0)
+				{
+					clearTimeout(resizeTimer);
+					resizeTimer = setTimeout(function() {
+						scrollBottom = parseInt($("#adminbtn").css("bottom")) + parseInt($("#adminbtn").css("height")) + 25;
+						$("#scrollbtn").css("bottom", scrollBottom);
+					}, 250);
+				}
+			});
+			var scrollLock = 0;
+			if ($(window).scrollTop() > 500) $("#scrollup").fadeIn(400);
+			$(window).scroll(function() {
+				if (!scrollLock)
+				{
+					if ($(window).scrollTop() > 500) $("#scrollup").fadeIn(400);
+					else $("#scrollup").fadeOut(400);
+				}
+			});
+			$("#scrollup").click(function() {
+				scrollLock = 1;
+				$("#scrollup").fadeOut(400);
+				$("html,body").animate({scrollTop: "0px"}, 500, function() {
+					scrollLock = 0;
+				});
+			});
+		});
+	</script>
+	<!-- Pjax -->
+	
+	<script>
+		function init(){
+						var pres = document.querySelectorAll('pre');
+			var lineNumberClassName = 'line-numbers';
+			pres.forEach(function (item, index) {
+				item.className = item.className == '' ? lineNumberClassName : item.className + ' ' + lineNumberClassName;
+			});
+			Prism.highlightAll(false,null);
+						$("img").Lazy({
+                threshold: 700,
+                effect: 'fadeIn',
+                effectTime: 1000,
+                defaultImage: "https://cyberyang.com/usr/themes/Bubble/images/Loading.gif"
+            });
+            $("div[data-src]").Lazy({
+                threshold: 700,
+                effect: 'fadeIn',
+                placeholder: "https://cyberyang.com/usr/themes/Bubble/images/Loading.gif",
+                effectTime: 1000
+            });
+						try{
+				renderMathInElement(document.body,{
+					delimiters: [
+						{left: "$$", right: "$$", display: true},
+						{left: "$", right: "$", display: false}
+					]
+				})
+			}catch(e){}
+			
+			parseBbcode()
+			parseBblink()
+
+			      ;;
+
+			try{
+				window.onload()
+			}catch(e){}
+									setTimeout(() => {
+				$('.content').viewer({
+					url: 'data-src'
+				})
+			},300)
+					}
+
+					function destroy(){
+			// viewerjs
+			var viewer = $('.content').data('viewer');
+			if(viewer){
+				viewer.destroy()
+			}
+		}
+		window.addEventListener("popstate", function(e) {
+			setTimeout(() => {
+				$('.content').viewer({
+					url: 'data-src'
+				})
+			},300)
+		}, false);
+				</script>
+		<script src="./TensorRT加速MNIST手写数字识别 - cyberyang blog_files/jquery.pjax.js"></script>
+	<script src="./TensorRT加速MNIST手写数字识别 - cyberyang blog_files/progress.js"></script><style>#argprogress{position: fixed;top: 0;width: 100%;left: 0;border: none;z-index: 105;overflow: hidden;height: 5px;display: flex;background-color: #e9ecef;}</style><div id="argprogress" style="display:none;"><div class="progress-bar bg-gradient-primary" style="width: 0%; border: none; transition: all 200ms linear 0s;"></div></div>
+	<script>
+		var pgid = 0
+		$(document).pjax('a[href^="https://cyberyang.com/"]:not(a[target="_blank"], a[no-pjax], a[href^="https://cyberyang.com//admin"])',
+		{
+    		container: '#pjax-container',
+    		fragment: '#pjax-container',
+    		timeout: 8000
+		}).on('pjax:send', function() {
+			pgid = start_progress()
+			$(".black-cover").fadeIn(400)
+			$('html,body').animate({ scrollTop: $('html').offset().top}, 500)
+
+						destroy()
+			
+		}).on('pjax:complete', function() {
+			$(".black-cover").fadeOut(400)
+			stop_progress(pgid)
+			init()
+			
+		})
+		$("#search").submit(function() {
+			var att = $(this).serializeArray()
+			for(var i in att){
+				if(att[i].name=="s"){
+					$.pjax({url: "https://cyberyang.com/search/"+att[i].value+"/", container: '#pjax-container',fragment: '#pjax-container',timeout:8000})
+				}
+			}
+			return false
+		})
+	</script>
+	<div class="black-cover" style="display: none;"></div>
+		<!-- KaTeX JS -->
+		<script src="./TensorRT加速MNIST手写数字识别 - cyberyang blog_files/katex.min.js"></script>
+	<script src="./TensorRT加速MNIST手写数字识别 - cyberyang blog_files/auto-render.min.js"></script>
+		<!-- Prism JS -->
+		<script src="./TensorRT加速MNIST手写数字识别 - cyberyang blog_files/prism-core.min.js"></script>
+	<script src="./TensorRT加速MNIST手写数字识别 - cyberyang blog_files/prism-autoloader.min.js"></script>
+	<script src="./TensorRT加速MNIST手写数字识别 - cyberyang blog_files/prism-toolbar.min.js"></script>
+	<script src="./TensorRT加速MNIST手写数字识别 - cyberyang blog_files/prism-show-language.min.js"></script>
+	<script src="./TensorRT加速MNIST手写数字识别 - cyberyang blog_files/prism-copy-to-clipboard.min.js"></script>
+			<script src="./TensorRT加速MNIST手写数字识别 - cyberyang blog_files/prism-line-numbers.min.js"></script>
+			<!-- Alert -->
+	<div id="modal-notification" class="modal fade show" style="z-index: 102;display: none;">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 id="msgMain" class="modal-title"></h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="$(&#39;#modal-notification&#39;).hide(&#39;normal&#39;);">
+						<span aria-hidden="true">×</span>
+					</button>
+				</div>
+				<div id="msgDetail" class="modal-body"></div>
+			</div>
+		</div>
+	</div>
+	<script>
+		function alert(main,detail){
+			$("#msgMain").html(main)
+			if(detail) $("#msgDetail").html(detail)
+			else $("#msgDetail").html("")
+			$("#modal-notification").show("normal");
+		}
+		init()
+	</script>
+	<!-- Typecho footer -->
+		
+</body></html>
