@@ -100,7 +100,7 @@ sudo mkdir -p /etc/docker
 sudo tee /etc/docker/daemon.json <<EOF
 {
   "registry-mirrors": [
-    "https://docker.xuanyuan.me",
+    "https://docker.m.daocloud.io",
     "https://docker.mirrors.ustc.edu.cn",
     "https://registry.docker-cn.com"
   ]
