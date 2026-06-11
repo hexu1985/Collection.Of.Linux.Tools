@@ -2,34 +2,7 @@
 
 # 定义要监控的进程列表
 processes=(
-    "syzk-daemon"
-    "syzk-dds2file"
-    "syzk-dds2mp4"
-    "syzk-rte-dev"
-    "syzk-pdriver"
-    "syzk-lidar"
-    "syzk-radar"
-    "syzk-fusion"
-    "syzk-camera"
-    "syzk-lidar-ai"
-    "syzk-boundary"
-    "syzk-lidar-seg"
-    "syzk-csvlog"
-    "syzk-297"
-    "syzk-task-mgt"
-    "syzk-log"
-    "syzk-local-plan"
-    "syzk-dignose"
-    "syzk-server-map"
-    "syzk-safe"
-    "syzk-broadcast"
-    "syzk-faultdia"
-    "syzk-vcutrans"
-    "syzk-netcloud"
-    "syzk-video"
-    "syzk-upgrade"
-    "syzk-rte-file"
-    "syzk-control"
+    "example"
 )
 
 # 检查 FlameGraph 工具是否存在

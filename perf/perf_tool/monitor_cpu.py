@@ -9,34 +9,7 @@ from datetime import datetime
 
 # 定义要监控的线程列表
 process_names = [
-    "syzk-daemon",
-    "syzk-dds2file",
-    "syzk-dds2mp4",
-    "syzk-rte-dev",
-    "syzk-pdriver",
-    "syzk-lidar",
-    "syzk-radar",
-    "syzk-fusion",
-    "syzk-camera",
-    "syzk-lidar-ai",
-    "syzk-boundary",
-    "syzk-lidar-seg",
-    "syzk-csvlog",
-    "syzk-297",
-    "syzk-task-mgt",
-    "syzk-log",
-    "syzk-local-plan",
-    "syzk-dignose",
-    "syzk-server-map",
-    "syzk-safe",
-    "syzk-broadcast",
-    "syzk-faultdia",
-    "syzk-vcutrans",
-    "syzk-netcloud",
-    "syzk-video",
-    "syzk-upgrade",
-    "syzk-rte-file",
-    "syzk-control"
+        "example"
 ]
 
 # 存储每个进程的 CPU 利用率历史数据

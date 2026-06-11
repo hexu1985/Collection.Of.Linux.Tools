@@ -2,8 +2,7 @@
 
 # 定义要监控的进程列表
 processes=(
-    "syzk-dds2mp4"
-#    "syzk-camera"
+    "example"
 )
 # 检查 FlameGraph 工具是否存在
 stackcollapse_script="./flamegraph/stackcollapse-perf.pl"
